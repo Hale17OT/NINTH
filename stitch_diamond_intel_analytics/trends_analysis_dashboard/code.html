@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DiamondData | MLB Trends &amp; Sharp Flow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=IBM+Plex+Mono:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(7, 17, 31, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .trend-up { color: #41EAD4; }
+        .trend-down { color: #FF206E; }
+        .pulse-pink {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.2); }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1a0a05; }
+        ::-webkit-scrollbar-thumb { background: #462f29; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#ffdbd1",
+                        "surface-dim": "#200f09",
+                        "surface-container-highest": "#462f29",
+                        "on-primary-fixed": "#00201c",
+                        "on-primary": "#003731",
+                        "on-tertiary-fixed": "#2c0b40",
+                        "secondary-fixed": "#ffd9de",
+                        "on-surface-variant": "#bacac6",
+                        "on-error": "#690005",
+                        "surface-variant": "#462f29",
+                        "on-primary-fixed-variant": "#005047",
+                        "tertiary-fixed-dim": "#e1b7f6",
+                        "on-secondary-fixed-variant": "#900039",
+                        "on-secondary-container": "#5a0020",
+                        "on-secondary": "#660026",
+                        "tertiary": "#fbe9ff",
+                        "secondary-container": "#ff4d7d",
+                        "inverse-on-surface": "#412b25",
+                        "on-tertiary-container": "#6f4c83",
+                        "on-background": "#ffdbd1",
+                        "primary-container": "#41ead4",
+                        "surface-container-high": "#3a251f",
+                        "surface": "#200f09",
+                        "on-secondary-fixed": "#400015",
+                        "secondary-fixed-dim": "#ffb2be",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#f4d9ff",
+                        "surface-container-lowest": "#1a0a05",
+                        "surface-container-low": "#2a1711",
+                        "inverse-primary": "#006b5f",
+                        "surface-container": "#2e1b15",
+                        "surface-bright": "#4b342d",
+                        "outline": "#859490",
+                        "on-tertiary-fixed-variant": "#5a396e",
+                        "primary-fixed": "#58fae4",
+                        "on-tertiary": "#422256",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#ffdbd1",
+                        "background": "#200f09",
+                        "surface-tint": "#2bdec8",
+                        "secondary": "#ffb2be",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#2bdec8",
+                        "tertiary-container": "#ecc4ff",
+                        "primary": "#a8ffef",
+                        "on-primary-container": "#00665b",
+                        "outline-variant": "#3b4a47"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "container-max": "1440px",
+                        "base": "4px",
+                        "xl": "48px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "stat-main": ["IBM Plex Mono"],
+                        "display-lg": ["Inter"],
+                        "stat-support": ["IBM Plex Mono"],
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "stat-main": ["20px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "stat-support": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body-lg">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-xl">
+<h1 class="font-display-lg text-headline-md font-bold text-primary tracking-tight">DiamondData</h1>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="font-headline-sm text-headline-sm font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Live</a>
+<a class="font-headline-sm text-headline-sm font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Betting</a>
+<a class="font-headline-sm text-headline-sm font-label-caps text-label-caps text-primary border-b-2 border-primary pb-2" href="#">Trends</a>
+<a class="font-headline-sm text-headline-sm font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Sabermetrics</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all active:scale-95">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all active:scale-95">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A close-up high-resolution profile portrait of a professional sports analyst wearing a sleek headset, set against a background of multiple glowing data monitors showing baseball statistics in a dark, high-tech control room with teal and pink neon highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJP-FNovDcCtnuFprwX3ZMLRJrXcVDqIzpklyrdOUu-2QAeJKTwQSvWDfbRrv-xMmyT7ms0Q7Off4nen3i9gimv08kXfQNJdeDvgJXoVmiJ5IE4O1GbA83S113kCKKtWVYQKycbAuPD4AClGeQL_kF-kDXzc_d3mN0bQ5ZWx4HYFcvoQ6Zv8lSofoaKyd5tQUOnisaqMaB48OvNgpmpUalb4E6TfEL0aKsj0SvX4qIAnLc8UXpv-6IsNzkXiuZ7bXwqa70VNx8TvU"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-surface-container-low/40 backdrop-blur-md border-r border-white/5 shadow-xl hidden md:flex flex-col pt-24 pb-md px-md">
+<div class="mb-xl px-sm">
+<h3 class="font-display-lg text-headline-sm text-primary">Pro Terminal</h3>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-70">Premium Access</p>
+</div>
+<nav class="flex-1 space-y-sm">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-lg text-body-lg font-label-caps text-label-caps">Command Center</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">sensors</span>
+<span class="font-body-lg text-body-lg font-label-caps text-label-caps">Live Tracker</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-primary-container/20 text-primary border-r-4 border-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-body-lg text-body-lg font-label-caps text-label-caps">Deep Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-lg text-body-lg font-label-caps text-label-caps">Team Hub</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5 hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-lg text-body-lg font-label-caps text-label-caps">Betting Edge</span>
+</a>
+</nav>
+<div class="border-t border-white/5 pt-md space-y-sm">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-error transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-caps text-label-caps">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:pl-64 pt-24 min-h-screen px-lg pb-xl">
+<div class="max-w-container-max mx-auto space-y-lg">
+<!-- Hero Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary tracking-tighter uppercase italic">MLB Trends</h2>
+<p class="text-on-surface-variant font-body-lg max-w-xl">Deep-intelligence surfacing of momentum shifts, betting flow imbalances, and structural performance outliers across the league.</p>
+</div>
+<div class="flex gap-sm">
+<div class="flex bg-surface-container-high rounded-lg p-1 border border-white/10">
+<button class="px-md py-base bg-primary text-surface-dim font-label-caps text-label-caps rounded transition-all">L10 GAMES</button>
+<button class="px-md py-base text-on-surface-variant font-label-caps text-label-caps hover:text-on-surface transition-all">SEASON</button>
+<button class="px-md py-base text-on-surface-variant font-label-caps text-label-caps hover:text-on-surface transition-all">POST-ASB</button>
+</div>
+<button class="flex items-center gap-sm bg-surface-container-high border border-white/10 px-md py-sm rounded-lg hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span class="font-label-caps text-label-caps">Filters</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Hottest/Coldest Column -->
+<div class="md:col-span-4 space-y-lg">
+<!-- Edge Feed: Hottest Teams -->
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="p-md border-b border-white/5 flex justify-between items-center bg-white/5">
+<span class="font-label-caps text-label-caps flex items-center gap-sm trend-up">
+<span class="w-2 h-2 rounded-full bg-primary-container pulse-pink"></span>
+                                HOT MOMENTUM
+                            </span>
+<span class="material-symbols-outlined text-primary">bolt</span>
+</div>
+<div class="p-0">
+<!-- Team Row -->
+<div class="flex items-center justify-between p-md hover:bg-white/5 transition-all border-b border-white/5 group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-white/5 flex items-center justify-center border border-white/10">
+<span class="font-stat-main text-stat-main">LAD</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm">LA Dodgers</p>
+<p class="font-stat-support text-stat-support text-on-surface-variant">8-2 L10 • W5 Streak</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-stat-main text-stat-main trend-up">+14.2u</p>
+<p class="font-stat-support text-stat-support text-on-surface-variant">ROI 22%</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-white/5 transition-all border-b border-white/5 group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-white/5 flex items-center justify-center border border-white/10">
+<span class="font-stat-main text-stat-main">TEX</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm">Texas Rangers</p>
+<p class="font-stat-support text-stat-support text-on-surface-variant">7-3 L10 • W2 Streak</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-stat-main text-stat-main trend-up">+9.8u</p>
+<p class="font-stat-support text-stat-support text-on-surface-variant">ROI 15%</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-white/5 transition-all group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-white/5 flex items-center justify-center border border-white/10">
+<span class="font-stat-main text-stat-main">PHI</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm">Philadelphia Phillies</p>
+<p class="font-stat-support text-stat-support text-on-surface-variant">7-3 L10 • W1 Streak</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-stat-main text-stat-main trend-up">+7.5u</p>
+<p class="font-stat-support text-stat-support text-on-surface-variant">ROI 11%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Coldest Teams -->
+<div class="glass-card rounded-xl overflow-hidden opacity-80">
+<div class="p-md border-b border-white/5 flex justify-between items-center bg-white/5">
+<span class="font-label-caps text-label-caps flex items-center gap-sm trend-down uppercase">
+                                Cold Streak
+                            </span>
+<span class="material-symbols-outlined text-secondary-container">ac_unit</span>
+</div>
+<div class="p-md space-y-md">
+<div class="flex items-center justify-between">
+<span class="font-body-lg text-body-lg">Oakland Athletics</span>
+<span class="font-stat-main text-stat-main trend-down">-12.4u</span>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full" style="width: 85%"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-lg text-body-lg">Chicago White Sox</span>
+<span class="font-stat-main text-stat-main trend-down">-10.1u</span>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full" style="width: 72%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Center Chart & Analysis Column -->
+<div class="md:col-span-8 space-y-lg">
+<!-- Main Trend Chart Area -->
+<div class="glass-card rounded-xl p-lg relative overflow-hidden min-h-[400px] flex flex-col">
+
+<div class="relative z-10 flex justify-between items-start mb-xl">
+<div>
+<h3 class="font-headline-md text-headline-md">First 5 Inning Performance</h3>
+<p class="text-on-surface-variant font-body-sm">Tracking F5 ML profitability vs. full-game outcomes.</p>
+</div>
+<div class="flex gap-sm">
+<span class="px-sm py-1 rounded bg-primary/10 border border-primary/20 text-primary font-label-caps text-[10px]">REAL-TIME FLOW</span>
+<span class="px-sm py-1 rounded bg-secondary/10 border border-secondary/20 text-secondary font-label-caps text-[10px]">SHARP INDICATOR</span>
+</div>
+</div>
+<!-- Bar Chart Component (Visual Placeholder) -->
+<div class="relative z-10 flex-1 flex items-end gap-md pb-md">
+<div class="flex-1 flex flex-col items-center group cursor-pointer">
+<div class="w-full bg-primary/20 border-t border-x border-primary rounded-t-sm relative group-hover:bg-primary/40 transition-all" style="height: 180px;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 font-stat-main text-stat-main opacity-0 group-hover:opacity-100 transition-opacity">72%</div>
+</div>
+<span class="font-label-caps text-label-caps mt-md text-on-surface-variant group-hover:text-primary">ATL</span>
+</div>
+<div class="flex-1 flex flex-col items-center group cursor-pointer">
+<div class="w-full bg-primary/20 border-t border-x border-primary rounded-t-sm relative group-hover:bg-primary/40 transition-all" style="height: 140px;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 font-stat-main text-stat-main opacity-0 group-hover:opacity-100 transition-opacity">65%</div>
+</div>
+<span class="font-label-caps text-label-caps mt-md text-on-surface-variant group-hover:text-primary">BAL</span>
+</div>
+<div class="flex-1 flex flex-col items-center group cursor-pointer">
+<div class="w-full bg-primary/20 border-t border-x border-primary rounded-t-sm relative group-hover:bg-primary/40 transition-all" style="height: 165px;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 font-stat-main text-stat-main opacity-0 group-hover:opacity-100 transition-opacity">69%</div>
+</div>
+<span class="font-label-caps text-label-caps mt-md text-on-surface-variant group-hover:text-primary">NYY</span>
+</div>
+<div class="flex-1 flex flex-col items-center group cursor-pointer">
+<div class="w-full bg-primary/20 border-t border-x border-primary rounded-t-sm relative group-hover:bg-primary/40 transition-all" style="height: 120px;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 font-stat-main text-stat-main opacity-0 group-hover:opacity-100 transition-opacity">58%</div>
+</div>
+<span class="font-label-caps text-label-caps mt-md text-on-surface-variant group-hover:text-primary">HOU</span>
+</div>
+<div class="flex-1 flex flex-col items-center group cursor-pointer">
+<div class="w-full bg-primary/20 border-t border-x border-primary rounded-t-sm relative group-hover:bg-primary/40 transition-all" style="height: 155px;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 font-stat-main text-stat-main opacity-0 group-hover:opacity-100 transition-opacity">64%</div>
+</div>
+<span class="font-label-caps text-label-caps mt-md text-on-surface-variant group-hover:text-primary">TBR</span>
+</div>
+<div class="flex-1 flex flex-col items-center group cursor-pointer">
+<div class="w-full bg-secondary/20 border-t border-x border-secondary rounded-t-sm relative group-hover:bg-secondary/40 transition-all" style="height: 80px;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 font-stat-main text-stat-main opacity-0 group-hover:opacity-100 transition-opacity">34%</div>
+</div>
+<span class="font-label-caps text-label-caps mt-md text-on-surface-variant group-hover:text-secondary">COL</span>
+</div>
+<div class="flex-1 flex flex-col items-center group cursor-pointer">
+<div class="w-full bg-secondary/20 border-t border-x border-secondary rounded-t-sm relative group-hover:bg-secondary/40 transition-all" style="height: 60px;">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 font-stat-main text-stat-main opacity-0 group-hover:opacity-100 transition-opacity">22%</div>
+</div>
+<span class="font-label-caps text-label-caps mt-md text-on-surface-variant group-hover:text-secondary">KCR</span>
+</div>
+</div>
+<!-- Insight Footer -->
+<div class="relative z-10 border-t border-white/5 pt-md mt-md flex items-center justify-between">
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">
+<span class="text-primary font-bold">AI INSIGHT:</span> Atlanta Braves are currently covering the F5 spread in 82% of home starts against divisional opponents.
+                            </p>
+<button class="font-label-caps text-label-caps text-primary hover:underline transition-all">VIEW ALL TEAMS</button>
+</div>
+</div>
+<!-- Secondary Row: Splits and Over/Under -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-lg">
+<!-- Home/Away Splits -->
+<div class="glass-card rounded-xl p-md">
+<h4 class="font-label-caps text-label-caps mb-md text-on-surface-variant border-b border-white/5 pb-sm">HOME/AWAY PROFITABILITY</h4>
+<div class="space-y-md">
+<div class="flex items-center gap-md">
+<span class="font-stat-main text-sm w-12 text-on-surface-variant">SEA</span>
+<div class="flex-1 flex h-6 rounded bg-white/5 overflow-hidden">
+<div class="bg-primary/60 border-r border-white/20" style="width: 70%"></div>
+<div class="bg-secondary/40" style="width: 30%"></div>
+</div>
+<span class="font-stat-support text-stat-support">70% HOME</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-stat-main text-sm w-12 text-on-surface-variant">MIN</span>
+<div class="flex-1 flex h-6 rounded bg-white/5 overflow-hidden">
+<div class="bg-primary/60 border-r border-white/20" style="width: 62%"></div>
+<div class="bg-secondary/40" style="width: 38%"></div>
+</div>
+<span class="font-stat-support text-stat-support">62% HOME</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-stat-main text-sm w-12 text-on-surface-variant">ARI</span>
+<div class="flex-1 flex h-6 rounded bg-white/5 overflow-hidden">
+<div class="bg-primary/60 border-r border-white/20" style="width: 45%"></div>
+<div class="bg-secondary/40" style="width: 55%"></div>
+</div>
+<span class="font-stat-support text-stat-support">55% ROAD</span>
+</div>
+</div>
+</div>
+<!-- Over/Under Trends -->
+<div class="glass-card rounded-xl p-md">
+<h4 class="font-label-caps text-label-caps mb-md text-on-surface-variant border-b border-white/5 pb-sm">OVER/UNDER FLOW (L15)</h4>
+<div class="space-y-sm">
+<div class="p-sm bg-white/5 rounded border border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+<span class="font-body-lg text-body-lg">CIN @ MIL</span>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-label-caps text-secondary">OVER (12-3)</span>
+</div>
+</div>
+<div class="p-sm bg-white/5 rounded border border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="font-body-lg text-body-lg">SFG @ SD</span>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-label-caps text-primary">UNDER (11-4)</span>
+</div>
+</div>
+<div class="p-sm bg-white/5 rounded border border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+<span class="font-body-lg text-body-lg">NYM @ MIA</span>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-label-caps text-secondary">OVER (10-5)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sharp Money Flow - Full Width Strip -->
+<section class="glass-card rounded-xl p-lg border-l-4 border-primary">
+<div class="flex items-center justify-between mb-lg">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary text-3xl">query_stats</span>
+<div>
+<h3 class="font-headline-md text-headline-md">Sharp Money Imbalance</h3>
+<p class="text-on-surface-variant font-body-sm">Games where pro handles significantly deviate from public ticket counts.</p>
+</div>
+</div>
+<button class="bg-primary text-surface-dim font-label-caps text-label-caps px-lg py-sm rounded-lg active:scale-95 duration-150">UNLOCK FULL FEED</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Ticket/Handle Comparison Card -->
+<div class="bg-white/5 rounded-lg p-md border border-white/10 hover:border-primary/50 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-md">
+<span class="font-stat-main text-stat-main">TOR @ BOS</span>
+<span class="bg-primary/20 text-primary px-2 py-0.5 rounded text-[10px] font-bold">WHALE ALERT</span>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
+<span>TICKETS: TOR 68%</span>
+<span>MONEY: BOS 74%</span>
+</div>
+<div class="relative h-2 bg-white/10 rounded-full overflow-hidden flex">
+<div class="h-full bg-secondary" style="width: 26%"></div>
+<div class="h-full bg-primary" style="width: 74%"></div>
+</div>
+</div>
+</div>
+<div class="bg-white/5 rounded-lg p-md border border-white/10 hover:border-primary/50 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-md">
+<span class="font-stat-main text-stat-main">DET @ CLE</span>
+<span class="bg-white/10 text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">EQUAL SPLIT</span>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
+<span>TICKETS: DET 51%</span>
+<span>MONEY: CLE 49%</span>
+</div>
+<div class="relative h-2 bg-white/10 rounded-full overflow-hidden flex">
+<div class="h-full bg-secondary" style="width: 51%"></div>
+<div class="h-full bg-primary" style="width: 49%"></div>
+</div>
+</div>
+</div>
+<div class="bg-white/5 rounded-lg p-md border border-white/10 hover:border-primary/50 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-md">
+<span class="font-stat-main text-stat-main">PIT @ STL</span>
+<span class="bg-secondary/20 text-secondary px-2 py-0.5 rounded text-[10px] font-bold">PUBLIC FADE</span>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
+<span>TICKETS: STL 82%</span>
+<span>MONEY: PIT 61%</span>
+</div>
+<div class="relative h-2 bg-white/10 rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 61%"></div>
+<div class="h-full bg-secondary" style="width: 39%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface-container-lowest/90 backdrop-blur-xl border-t border-white/10 z-50 flex justify-around items-center py-sm">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label-caps">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">sensors</span>
+<span class="text-[10px] font-label-caps">Live</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-[10px] font-label-caps">Trends</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-[10px] font-label-caps">Edge</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-label-caps">Profile</span>
+</button>
+</nav>
+<!-- Contextual FAB -->
+<button class="fixed bottom-lg right-lg bg-primary-container text-on-primary-container w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">add</span>
+</button>
+<script>
+        // Micro-interactions for chart bars
+        document.querySelectorAll('.group.cursor-pointer').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateY(-4px)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Hover glow effect for the main container
+        const cards = document.querySelectorAll('.glass-card');
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const dx = x - (rect.left + rect.width / 2);
+                const dy = y - (rect.top + rect.height / 2);
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                
+                if(dist < 300) {
+                    card.style.borderColor = `rgba(65, 234, 212, ${0.1 + (1 - dist/300) * 0.4})`;
+                } else {
+                    card.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                }
+            });
+        });
+    </script>
+</body></html>

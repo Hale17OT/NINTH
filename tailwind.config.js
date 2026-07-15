@@ -1,0 +1,1 @@
+export default { content: ['./index.html','./src/**/*.{vue,js}'], theme: { extend: { colors: { ink:'#050A14', panel:'#07111F', raised:'#0B1928', mint:'#41EAD4', pink:'#FF206E', purple:'#613F75' }, fontFamily: { sans:['Inter','sans-serif'], mono:['IBM Plex Mono','monospace'] } } }, plugins: [] }

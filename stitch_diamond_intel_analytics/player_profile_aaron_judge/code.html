@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aaron Judge | Player Analytics Pro Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=IBM+Plex+Mono:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(7, 17, 31, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-accent {
+            box-shadow: 0 0 15px rgba(65, 234, 212, 0.15);
+        }
+        .pulse-secondary {
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.7); opacity: 0.8; }
+            50% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(0.7); opacity: 0.8; }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050A14; }
+        ::-webkit-scrollbar-thumb { background: #462f29; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#ffdbd1",
+                      "surface-dim": "#200f09",
+                      "surface-container-highest": "#462f29",
+                      "on-primary-fixed": "#00201c",
+                      "on-primary": "#003731",
+                      "on-tertiary-fixed": "#2c0b40",
+                      "secondary-fixed": "#ffd9de",
+                      "on-surface-variant": "#bacac6",
+                      "on-error": "#690005",
+                      "surface-variant": "#462f29",
+                      "on-primary-fixed-variant": "#005047",
+                      "tertiary-fixed-dim": "#e1b7f6",
+                      "on-secondary-fixed-variant": "#900039",
+                      "on-secondary-container": "#5a0020",
+                      "on-secondary": "#660026",
+                      "tertiary": "#fbe9ff",
+                      "secondary-container": "#ff4d7d",
+                      "inverse-on-surface": "#412b25",
+                      "on-tertiary-container": "#6f4c83",
+                      "on-background": "#ffdbd1",
+                      "primary-container": "#41ead4",
+                      "surface-container-high": "#3a251f",
+                      "surface": "#200f09",
+                      "on-secondary-fixed": "#400015",
+                      "secondary-fixed-dim": "#ffb2be",
+                      "error-container": "#93000a",
+                      "tertiary-fixed": "#f4d9ff",
+                      "surface-container-lowest": "#1a0a05",
+                      "surface-container-low": "#2a1711",
+                      "inverse-primary": "#006b5f",
+                      "surface-container": "#2e1b15",
+                      "surface-bright": "#4b342d",
+                      "outline": "#859490",
+                      "on-tertiary-fixed-variant": "#5a396e",
+                      "primary-fixed": "#58fae4",
+                      "on-tertiary": "#422256",
+                      "on-error-container": "#ffdad6",
+                      "inverse-surface": "#ffdbd1",
+                      "background": "#050A14",
+                      "surface-tint": "#2bdec8",
+                      "secondary": "#ffb2be",
+                      "error": "#ffb4ab",
+                      "primary": "#a8ffef",
+                      "on-primary-container": "#00665b",
+                      "outline-variant": "#3b4a47"
+              },
+              "borderRadius": {
+                      "DEFAULT": "2px",
+                      "lg": "4px",
+                      "xl": "8px",
+                      "full": "12px"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "container-max": "1440px",
+                      "base": "4px",
+                      "xl": "48px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "stat-main": ["IBM Plex Mono"],
+                      "display-lg": ["Inter"],
+                      "stat-support": ["IBM Plex Mono"],
+                      "headline-md": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "stat-main": ["20px", {"lineHeight": "1", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "stat-support": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface font-body-lg overflow-x-hidden">
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-xl">
+<span class="font-display-lg text-headline-md font-bold text-primary tracking-tight">DiamondData</span>
+<div class="hidden md:flex gap-lg">
+<a class="font-headline-sm text-headline-sm font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Live</a>
+<a class="font-headline-sm text-headline-sm font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Betting</a>
+<a class="font-headline-sm text-headline-sm font-label-caps text-label-caps text-primary border-b-2 border-primary pb-2" href="#">Trends</a>
+<a class="font-headline-sm text-headline-sm font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Sabermetrics</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 duration-150">notifications</span>
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 duration-150">settings</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional close-up of a data analyst's headshot for a sports terminal. The lighting is moody with cool blue and cyan rim lighting, reflecting the high-performance betting environment. The analyst wears modern glasses and a dark tech-fabric shirt. The background is a soft-focus office with multiple monitors displaying data streams." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrLs_PnJnryrmYIkrYHpfA_uE9mHqP4dKjFcGqQNYyahc5yPNNtJ2VGBnzQkZERA4B1-R8jixWi7xyqd_2AmGR3W1lg-W0NSYx7UcPO9fzcvKk6sUezUYYPCcpGyXFbM2hwXw4RelvqWTlQPDX0DQC5aykn5tXS8R7i2etCXIh0n9L8CdJfzShXs00e5a_RK_jbndl3p_K_lUFckhjnvbEwWQAONsjZx1OChksqLjHeEI50hnP2P4pRD4Rohi1zMTCfsa_vIJ0YVY"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-surface-container-low/40 backdrop-blur-md border-r border-white/5 shadow-xl hidden md:flex flex-col h-full pt-24 pb-md px-md">
+<div class="mb-xl px-sm">
+<h2 class="font-display-lg text-headline-sm text-primary">Pro Terminal</h2>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-60">Premium Access</p>
+</div>
+<nav class="flex flex-col gap-sm flex-grow">
+<div class="flex items-center gap-md px-md py-sm rounded bg-primary-container/20 text-primary border-r-4 border-primary transition-transform duration-200 cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Deep Analysis</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm rounded text-on-surface-variant hover:bg-white/5 transition-transform duration-200 cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Command Center</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm rounded text-on-surface-variant hover:bg-white/5 transition-transform duration-200 cursor-pointer">
+<span class="material-symbols-outlined">sensors</span>
+<span class="font-label-caps text-label-caps">Live Tracker</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm rounded text-on-surface-variant hover:bg-white/5 transition-transform duration-200 cursor-pointer">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps text-label-caps">Team Hub</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm rounded text-on-surface-variant hover:bg-white/5 transition-transform duration-200 cursor-pointer">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps text-label-caps">Betting Edge</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-white/5 pt-md flex flex-col gap-sm">
+<div class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</div>
+<div class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-caps text-label-caps">Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-64 pt-24 px-lg pb-xl max-w-container-max mx-auto">
+<!-- Player Hero Section -->
+<header class="relative glass-panel rounded-xl p-lg mb-lg overflow-hidden flex flex-col md:flex-row items-end gap-xl min-h-[320px]">
+
+<div class="w-full md:w-1/3 h-full relative">
+<div class="absolute -bottom-lg left-0 w-full h-[400px]">
+<img class="w-full h-full object-contain object-bottom drop-shadow-[0_0_20px_rgba(65,234,212,0.4)]" data-alt="A hyper-realistic, dynamic action shot of Aaron Judge batting in a Yankee Stadium atmosphere. The image style is cinematic with high contrast, vibrant stadium lights creating a blue and white glow around his silhouette. Fine details like the fabric of the pinstripe jersey and the grain of the wooden bat are visible. The background is a bokeh-blurred night crowd." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-K5xDHsmb2NVfllqLpqNAfr6HZVu9ntRO1OoDZJ2WsP3pqGrghA9IQ3Hp7mkEypJpdoyQBu7WbtOVa1YeTWyG3G1UDq9EStc03XK9U_ApYYGac-SVC1arWQ5ZyaWb5Ezbgl5NxCPY-DjfhstREhJsAgRgmAOZuEARpZQRb0LbdwUDlTqt__YjUMiB6W4VJhC657mzNGWhUdlTcUV3i486CBCWDKmPJhfVi41AyH9o87-QKJRlCC4WnDVTaa_3jY9o2GYH56pJ-tw"/>
+</div>
+</div>
+<div class="flex-grow pb-sm relative z-10">
+<div class="flex flex-col md:flex-row md:items-center gap-md mb-md">
+<span class="bg-secondary-container text-on-secondary-container px-sm py-1 font-label-caps text-[10px] rounded inline-flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-on-secondary pulse-secondary"></span> LIVE ACTION
+                    </span>
+<span class="font-label-caps text-label-caps text-primary opacity-80">New York Yankees • #99 • Center Field</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary uppercase leading-tight mb-sm">Aaron Judge</h1>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-lg mt-md">
+<div class="border-l border-primary/20 pl-md">
+<p class="font-label-caps text-label-caps text-on-surface-variant">AVG</p>
+<p class="font-stat-main text-stat-main text-primary">.322</p>
+</div>
+<div class="border-l border-primary/20 pl-md">
+<p class="font-label-caps text-label-caps text-on-surface-variant">OPS</p>
+<p class="font-stat-main text-stat-main text-primary">1.159</p>
+</div>
+<div class="border-l border-primary/20 pl-md">
+<p class="font-label-caps text-label-caps text-on-surface-variant">HOME RUNS</p>
+<p class="font-stat-main text-stat-main text-primary">58</p>
+</div>
+<div class="border-l border-primary/20 pl-md">
+<p class="font-label-caps text-label-caps text-on-surface-variant">RBI</p>
+<p class="font-stat-main text-stat-main text-primary">144</p>
+</div>
+</div>
+</div>
+<div class="glass-panel p-md rounded-lg w-full md:w-64">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-sm">TONIGHT'S ODDS</p>
+<div class="flex justify-between items-center mb-2">
+<span class="text-body-sm font-label-caps">OVER 0.5 HR</span>
+<span class="text-primary font-stat-main">+240</span>
+</div>
+<div class="w-full bg-white/10 h-1 rounded-full mb-md">
+<div class="h-full bg-gradient-to-r from-primary to-tertiary w-[35%] rounded-full shadow-[0_0_8px_rgba(65,234,212,0.5)]"></div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container py-2 font-label-caps text-label-caps rounded hover:brightness-110 active:scale-[0.98] transition-all">VIEW ALL PROPS</button>
+</div>
+</header>
+<!-- Bento Grid Analysis -->
+<div class="grid grid-cols-12 gap-lg">
+<!-- Spray Chart (Bento Large) -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">scatter_plot</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Power Tendencies &amp; Spray Chart</h3>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 glass-panel text-[10px] font-label-caps text-primary rounded-full cursor-pointer hover:bg-white/10">LAST 30 DAYS</span>
+<span class="px-3 py-1 glass-panel text-[10px] font-label-caps text-on-surface-variant rounded-full cursor-pointer hover:bg-white/10">SEASON</span>
+</div>
+</div>
+<div class="flex flex-col md:flex-row gap-lg h-full min-h-[400px]">
+<div class="w-full md:w-3/5 relative flex items-center justify-center bg-surface-container-lowest/50 rounded-lg p-md">
+
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-[80%] h-[80%] border-2 border-white/5 rounded-full border-t-transparent -rotate-45"></div>
+</div>
+</div>
+<div class="w-full md:w-2/5 flex flex-col gap-md justify-center">
+<div class="p-md bg-white/5 rounded border border-white/5">
+<p class="font-label-caps text-label-caps text-on-surface-variant">BARREL %</p>
+<div class="flex items-baseline gap-2">
+<span class="font-stat-main text-3xl text-primary">26.4</span>
+<span class="text-[10px] text-primary font-label-caps">99TH PERCENTILE</span>
+</div>
+</div>
+<div class="p-md bg-white/5 rounded border border-white/5">
+<p class="font-label-caps text-label-caps text-on-surface-variant">HARD HIT %</p>
+<div class="flex items-baseline gap-2">
+<span class="font-stat-main text-3xl text-primary">60.8</span>
+<span class="text-[10px] text-primary font-label-caps">LEAGUE LEADER</span>
+</div>
+</div>
+<div class="p-md bg-white/5 rounded border border-white/5">
+<p class="font-label-caps text-label-caps text-on-surface-variant">AVG EXIT VELO</p>
+<div class="flex items-baseline gap-2">
+<span class="font-stat-main text-3xl text-primary">96.2</span>
+<span class="text-[10px] text-on-surface-variant font-label-caps">MPH</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-white/5 flex gap-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_5px_rgba(65,234,212,1)]"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">HOME RUN</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_5px_rgba(255,178,190,1)]"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">EXTRA BASE HIT</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-white/40"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">OUT / SINGLE</span>
+</div>
+</div>
+</div>
+<!-- Betting Analytics (Bento Small) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+<div class="glass-panel rounded-xl p-lg flex-grow border-l-2 border-primary">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary">query_stats</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Sharp Prop Edge</h3>
+</div>
+<div class="space-y-md">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps">Over 1.5 Hits+Runs+RBI</span>
+<span class="font-stat-main text-primary text-sm">-120</span>
+</div>
+<div class="w-full h-8 glass-panel rounded overflow-hidden flex items-center px-sm relative">
+<div class="absolute inset-y-0 left-0 bg-primary/20 w-[72%] border-r border-primary"></div>
+<span class="relative z-10 text-[10px] font-label-caps">72% HIT RATE L10 GMS</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps">Total Bases Over 1.5</span>
+<span class="font-stat-main text-primary text-sm">+105</span>
+</div>
+<div class="w-full h-8 glass-panel rounded overflow-hidden flex items-center px-sm relative">
+<div class="absolute inset-y-0 left-0 bg-primary/20 w-[58%] border-r border-primary"></div>
+<span class="relative z-10 text-[10px] font-label-caps">58% HIT RATE L10 GMS</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps">Over 0.5 Walks</span>
+<span class="font-stat-main text-primary text-sm">-140</span>
+</div>
+<div class="w-full h-8 glass-panel rounded overflow-hidden flex items-center px-sm relative">
+<div class="absolute inset-y-0 left-0 bg-primary/20 w-[84%] border-r border-primary"></div>
+<span class="relative z-10 text-[10px] font-label-caps">84% HIT RATE L10 GMS</span>
+</div>
+</div>
+</div>
+<div class="mt-lg p-md bg-surface-container-highest/30 border border-white/5 rounded-lg">
+<div class="flex items-center gap-2 mb-sm text-secondary">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="font-label-caps text-[10px]">UPSET ALERT</span>
+</div>
+<p class="text-body-sm text-on-surface-variant leading-relaxed">
+                            Judge is 0-for-8 career against tonight's starter, Grayson Rodriguez, with 5 Ks. Consider the <span class="text-secondary font-bold">UNDER</span> on 0.5 Hits.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Matchup Table (Bento Medium) -->
+<div class="col-span-12 lg:col-span-5 glass-panel rounded-xl p-lg">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Vs. Projected Pitchers</h3>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">open_in_new</span>
+</div>
+<div class="space-y-sm">
+<!-- Table Header -->
+<div class="grid grid-cols-6 px-sm pb-2 border-b border-white/5 text-[10px] font-label-caps text-on-surface-variant uppercase tracking-widest">
+<div class="col-span-2">Pitcher</div>
+<div class="text-center">AB</div>
+<div class="text-center">AVG</div>
+<div class="text-center">K%</div>
+<div class="text-right">OPS</div>
+</div>
+<!-- Row 1 -->
+<div class="grid grid-cols-6 p-sm rounded hover:bg-white/5 transition-colors items-center">
+<div class="col-span-2 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest"></div>
+<span class="text-body-sm font-semibold">G. Rodriguez</span>
+</div>
+<div class="text-center font-stat-support">8</div>
+<div class="text-center font-stat-support text-secondary">.000</div>
+<div class="text-center font-stat-support text-secondary">62.5</div>
+<div class="text-right font-stat-support">.125</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-6 p-sm rounded hover:bg-white/5 transition-colors items-center">
+<div class="col-span-2 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest"></div>
+<span class="text-body-sm font-semibold">C. Burnes</span>
+</div>
+<div class="text-center font-stat-support">12</div>
+<div class="text-center font-stat-support text-primary">.417</div>
+<div class="text-center font-stat-support">16.7</div>
+<div class="text-right font-stat-support text-primary">1.450</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-6 p-sm rounded hover:bg-white/5 transition-colors items-center">
+<div class="col-span-2 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest"></div>
+<span class="text-body-sm font-semibold">K. Bradish</span>
+</div>
+<div class="text-center font-stat-support">15</div>
+<div class="text-center font-stat-support">.267</div>
+<div class="text-center font-stat-support">26.7</div>
+<div class="text-right font-stat-support">.840</div>
+</div>
+<!-- Row 4 -->
+<div class="grid grid-cols-6 p-sm rounded hover:bg-white/5 transition-colors items-center">
+<div class="col-span-2 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest"></div>
+<span class="text-body-sm font-semibold">C. Kimbrel</span>
+</div>
+<div class="text-center font-stat-support">9</div>
+<div class="text-center font-stat-support text-primary">.333</div>
+<div class="text-center font-stat-support">22.2</div>
+<div class="text-right font-stat-support text-primary">1.102</div>
+</div>
+</div>
+</div>
+<!-- Rolling Average Graph (Bento Medium) -->
+<div class="col-span-12 lg:col-span-7 glass-panel rounded-xl p-lg flex flex-col">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Rolling 50-PA wOBA</h3>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded bg-primary"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">JUDGE 2024</span>
+<span class="w-3 h-3 rounded bg-white/20 ml-2"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">LGE AVG (.315)</span>
+</div>
+</div>
+<div class="flex-grow min-h-[220px] relative mt-md">
+<div class="absolute inset-0 border-b border-white/10 flex items-end">
+<!-- Simulated CSS Graph -->
+<div class="w-full h-full flex items-end justify-between px-md gap-1">
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[40%] rounded-t-sm"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[55%] rounded-t-sm"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[48%] rounded-t-sm"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[72%] rounded-t-sm"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[92%] rounded-t-sm glow-accent border-t-2 border-primary"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[88%] rounded-t-sm border-t-2 border-primary"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[95%] rounded-t-sm border-t-2 border-primary"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[100%] rounded-t-sm border-t-2 border-primary glow-accent"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[82%] rounded-t-sm"></div>
+<div class="w-full bg-gradient-to-t from-primary/10 to-primary/40 h-[75%] rounded-t-sm"></div>
+</div>
+<!-- Baseline -->
+<div class="absolute bottom-[35%] left-0 w-full border-t border-dashed border-white/20"></div>
+</div>
+</div>
+<div class="flex justify-between px-md pt-sm text-[10px] font-label-caps text-on-surface-variant">
+<span>APRIL</span>
+<span>MAY</span>
+<span>JUNE</span>
+<span>JULY</span>
+<span>AUG</span>
+<span>SEPT</span>
+</div>
+</div>
+</div>
+<!-- Footer Data Insights -->
+<footer class="mt-lg grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="glass-panel p-md rounded-lg flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">rocket_launch</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">MAX EXIT VELO</p>
+<p class="font-stat-main text-xl">121.3 MPH</p>
+</div>
+</div>
+<div class="glass-panel p-md rounded-lg flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">trending_up</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">WAR (fWAR)</p>
+<p class="font-stat-main text-xl">10.8</p>
+</div>
+</div>
+<div class="glass-panel p-md rounded-lg flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">timer</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">PITCHES PER PA</p>
+<p class="font-stat-main text-xl">4.28</p>
+</div>
+</div>
+</footer>
+</main>
+<script>
+        // Simple micro-interaction for hover states on charts
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            panel.addEventListener('mouseenter', () => {
+                panel.classList.add('border-primary/30');
+            });
+            panel.addEventListener('mouseleave', () => {
+                panel.classList.remove('border-primary/30');
+            });
+        });
+    </script>
+</body></html>

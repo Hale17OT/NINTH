@@ -1,0 +1,34 @@
+{
+  "name": "diamond-intel",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:stats\" \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:client": "vite --host 0.0.0.0",
+    "dev:server": "node --watch server/src/server.js",
+    "dev:stats": "python stats-service/app.py",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "concurrently -k \"python stats-service/app.py\" \"node server/src/server.js\""
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "latest",
+    "chart.js": "^4.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.2",
+    "lucide-vue-next": "^0.468.0",
+    "pinia": "^2.3.0",
+    "vue": "^3.5.13",
+    "vue-chartjs": "^5.3.2",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.0.5"
+  }
+}

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DiamondData | Team Hub - New York Yankees</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=IBM+Plex+Mono:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(7, 17, 31, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-teal {
+            box-shadow: 0 0 15px rgba(65, 234, 212, 0.15);
+        }
+        .pulse-pink {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 1; }
+            70% { transform: scale(1.1); opacity: 0.5; }
+            100% { transform: scale(0.95); opacity: 1; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #41EAD4;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#ffdbd1",
+                        "surface-dim": "#200f09",
+                        "surface-container-highest": "#462f29",
+                        "on-primary-fixed": "#00201c",
+                        "on-primary": "#003731",
+                        "on-tertiary-fixed": "#2c0b40",
+                        "secondary-fixed": "#ffd9de",
+                        "on-surface-variant": "#bacac6",
+                        "on-error": "#690005",
+                        "surface-variant": "#462f29",
+                        "on-primary-fixed-variant": "#005047",
+                        "tertiary-fixed-dim": "#e1b7f6",
+                        "on-secondary-fixed-variant": "#900039",
+                        "on-secondary-container": "#5a0020",
+                        "on-secondary": "#660026",
+                        "tertiary": "#fbe9ff",
+                        "secondary-container": "#ff4d7d",
+                        "inverse-on-surface": "#412b25",
+                        "on-tertiary-container": "#6f4c83",
+                        "on-background": "#ffdbd1",
+                        "primary-container": "#41ead4",
+                        "surface-container-high": "#3a251f",
+                        "surface": "#200f09",
+                        "on-secondary-fixed": "#400015",
+                        "secondary-fixed-dim": "#ffb2be",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#f4d9ff",
+                        "surface-container-lowest": "#1a0a05",
+                        "surface-container-low": "#2a1711",
+                        "inverse-primary": "#006b5f",
+                        "surface-container": "#2e1b15",
+                        "surface-bright": "#4b342d",
+                        "outline": "#859490",
+                        "on-tertiary-fixed-variant": "#5a396e",
+                        "primary-fixed": "#58fae4",
+                        "on-tertiary": "#422256",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#ffdbd1",
+                        "background": "#050A14",
+                        "surface-tint": "#2bdec8",
+                        "secondary": "#ffb2be",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#2bdec8",
+                        "tertiary-container": "#ecc4ff",
+                        "primary": "#a8ffef",
+                        "on-primary-container": "#00665b",
+                        "outline-variant": "#3b4a47"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "container-max": "1440px",
+                        "base": "4px",
+                        "xl": "48px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "stat-main": ["IBM Plex Mono"],
+                        "display-lg": ["Inter"],
+                        "stat-support": ["IBM Plex Mono"],
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "stat-main": ["20px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "stat-support": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-lg selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<div class="flex justify-between items-center px-lg py-sm max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-xl">
+<span class="font-display-lg text-headline-md font-bold text-primary tracking-tight">DiamondData</span>
+<div class="hidden md:flex items-center gap-lg">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Live</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Betting</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors" href="#">Trends</a>
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary pb-2" href="#">Team Hub</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-sm text-on-surface-variant hover:bg-white/5 rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-white/5 rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a sports analyst with a high-tech digital background, showcasing the 'Pro Analyst' persona in the DiamondData ecosystem. The image is crisp, with subtle teal rim lighting and a serious, focused expression. Professional studio photography style, cinematic and modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw31e4_JT9nE8eReFWELhhzKug8p7p5BCwe49f19pyyHxWV_aD-BFS94_yi893qEFL58l8XtqSqrHKXUq6Sr59R76kYev478okKjsTqud-bTN6Zfurb_Y_pcJ80REiJ-WwkrDahGrxbM96e65UqzVRp06Yb_Zj2YTVe6eiUX9ocR1v1XbhOvGWR9l-_K0TmfdTjuNfOqPkGMLH41l4D8udxAlIooA2kpyAhwF1Gf9a4ojdr65JKO7GcDFahOw6fVWf9-lgCDknW_w"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-surface-container-low/40 backdrop-blur-md border-r border-white/5 shadow-xl hidden md:flex flex-col pt-24 pb-md px-md">
+<div class="mb-xl px-sm">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="military_tech">military_tech</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary">Pro Terminal</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant/60">Premium Access</p>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Command Center</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-label-caps text-label-caps">Live Tracker</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">Deep Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-primary-container/20 text-primary border-r-4 border-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-caps text-label-caps">Team Hub</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">Betting Edge</span>
+</a>
+</div>
+<div class="pt-xl space-y-2">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-white/5" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-secondary hover:bg-white/5" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-24 px-lg pb-xl min-h-screen">
+<div class="max-w-container-max mx-auto">
+<!-- Hero Header -->
+<header class="mb-xl relative overflow-hidden rounded-xl h-48 flex items-end">
+
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+<div class="relative z-10 px-xl pb-lg w-full flex flex-col md:flex-row justify-between items-end gap-md">
+<div class="flex items-center gap-lg">
+<div class="w-24 h-24 bg-surface-container-highest rounded-full flex items-center justify-center p-md border-2 border-white/10 glow-teal shadow-2xl">
+<img class="w-full h-full object-contain" data-alt="Official logo of the New York Yankees baseball team, rendered in high-definition with a metallic sheen. The iconic 'NY' interlocking letters are prominent against a dark navy background, surrounded by a subtle teal electric aura. Modern sports branding aesthetic with sharp, clean lines and premium lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApBd5w79SNWXB66ZnWg7dSemvBAUFNJaFyj2ynmcY01PKJVid2CtvmESr0g5WOIkFiVu5h0Rq94PzDHdcU2ISnEYGwiRCWlFc-LUYdBWnlSMCplU8o3mkFcuvGYjsIDGZT_1zE0xdX3A66zR6wRy-PMvHZZS0z7loeDOHnGGN1GJSdlO71jHoRRQsUJb2AGAQxg7KLzPoOnRjtQEySW8Ra1BHyPVuJG0FheYryBzy1L8L8OPKxQAlYF54seqP4vamNGl1lmnWnGG4"/>
+</div>
+<div>
+<div class="flex items-center gap-sm">
+<span class="bg-secondary/10 text-secondary px-sm py-1 rounded text-label-caps font-label-caps uppercase tracking-widest">AL EAST LEADERS</span>
+<div class="w-2 h-2 rounded-full bg-primary pulse-pink"></div>
+<span class="text-primary font-label-caps text-label-caps">LIVE TRACKING ACTIVE</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary mt-sm">New York Yankees</h1>
+<p class="font-stat-support text-stat-support text-on-surface-variant uppercase">82-45 • 1st in AL East • STRK: W4 • DIFF: +142</p>
+</div>
+</div>
+<div class="flex gap-md mb-2">
+<div class="text-right">
+<p class="text-label-caps font-label-caps text-on-surface-variant">WORLD SERIES ODDS</p>
+<p class="text-headline-md font-headline-md text-primary">+450</p>
+</div>
+<div class="w-px h-12 bg-white/10"></div>
+<div class="text-right">
+<p class="text-label-caps font-label-caps text-on-surface-variant">NEXT GAME</p>
+<p class="text-headline-md font-headline-md text-on-surface">vs Red Sox (7:05 PM)</p>
+</div>
+</div>
+</div>
+</header>
+<!-- Bento Grid Dashboard -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Performance Rankings (Col 1-4) -->
+<section class="md:col-span-4 space-y-lg">
+<div class="glass-card rounded-xl p-lg h-full">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+                                Team Efficiency
+                            </h3>
+<span class="text-label-caps font-label-caps text-on-surface-variant">RANK / 30</span>
+</div>
+<div class="space-y-xl">
+<!-- Offensive Ranking -->
+<div>
+<div class="flex justify-between mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Offensive Power</span>
+<span class="font-stat-main text-stat-main text-primary">#2</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary/40 to-primary w-[94%]" style="width: 94%"></div>
+</div>
+<div class="flex justify-between mt-xs">
+<span class="text-stat-support font-stat-support text-on-surface-variant">OPS .812</span>
+<span class="text-stat-support font-stat-support text-on-surface-variant">98th Percentile</span>
+</div>
+</div>
+<!-- Defensive Ranking -->
+<div>
+<div class="flex justify-between mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Defensive Rating</span>
+<span class="font-stat-main text-stat-main text-primary">#5</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary/40 to-primary w-[82%]" style="width: 82%"></div>
+</div>
+<div class="flex justify-between mt-xs">
+<span class="text-stat-support font-stat-support text-on-surface-variant">DRS +42</span>
+<span class="text-stat-support font-stat-support text-on-surface-variant">90th Percentile</span>
+</div>
+</div>
+<!-- Bullpen Strength -->
+<div>
+<div class="flex justify-between mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Bullpen Reliability</span>
+<span class="font-stat-main text-stat-main text-secondary">#14</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-secondary/40 to-secondary w-[55%]" style="width: 55%"></div>
+</div>
+<div class="flex justify-between mt-xs">
+<span class="text-stat-support font-stat-support text-on-surface-variant">ERA 3.98</span>
+<span class="text-stat-support font-stat-support text-on-surface-variant">Avg Performance</span>
+</div>
+</div>
+</div>
+<div class="mt-xl pt-lg border-t border-white/5">
+<div class="p-md bg-secondary/5 rounded-lg border border-secondary/10 flex items-start gap-md">
+<span class="material-symbols-outlined text-secondary" data-icon="warning">warning</span>
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase">Upset Alert</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Bullpen fatigue is at 85%. Late-inning volatility expected for the next 3-game series.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Advanced Trends Chart (Col 5-12) -->
+<section class="md:col-span-8">
+<div class="glass-card rounded-xl p-lg h-full flex flex-col">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+                                Run Differential &amp; Win Probability Trend
+                            </h3>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="text-stat-support font-stat-support text-on-surface-variant">Actual</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="text-stat-support font-stat-support text-on-surface-variant">Expected</span>
+</div>
+<select class="bg-surface-container border-none text-label-caps font-label-caps rounded px-md py-1 outline-none ring-1 ring-white/10 focus:ring-primary transition-all">
+<option>LAST 30 GAMES</option>
+<option>SEASON TOTAL</option>
+</select>
+</div>
+</div>
+<!-- Chart Area -->
+<div class="flex-1 min-h-[300px] relative mt-lg border-l border-b border-white/10">
+
+<!-- Fake Axis Labels -->
+<div class="absolute -left-8 top-0 h-full flex flex-col justify-between text-[10px] text-on-surface-variant/40 font-stat-support">
+<span>+200</span>
+<span>+100</span>
+<span>0</span>
+<span>-100</span>
+</div>
+</div>
+<!-- AI Insight Footer -->
+<div class="mt-lg pt-md bg-white/5 p-md rounded flex items-center justify-between">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+<span class="text-primary font-bold">AI INSIGHT:</span> Yankees are outperforming their expected win total by 4.2 games. Strong correlation between middle-inning home runs and closing efficiency.
+                                </p>
+</div>
+<button class="px-md py-2 border border-white/10 rounded font-label-caps text-label-caps hover:bg-white/10 transition-colors uppercase">Details</button>
+</div>
+</div>
+</section>
+<!-- Team Leaders (Col 1-6) -->
+<section class="md:col-span-6 space-y-lg">
+<div class="glass-card rounded-xl p-lg overflow-hidden relative">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="stars">stars</span>
+                            Impact Leaders
+                        </h3>
+<div class="grid grid-cols-2 gap-lg">
+<!-- Leader 1: Judge -->
+<div class="group relative">
+<div class="relative z-10">
+<div class="aspect-square bg-gradient-to-br from-primary/20 to-surface rounded-xl overflow-hidden mb-md border border-white/10 group-hover:border-primary transition-all duration-300">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="A professional action portrait of Aaron Judge in his New York Yankees pinstripe uniform. He is captured in a powerful batting stance with focus in his eyes. The lighting is dramatic, high-contrast, with teal and navy blue atmospheric glows. Cinematic sports photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6BPAgcC8swS8WTybJsdcPOsvhBT1rQdkAbkNsCTtDX0DXU2_fSagTh4hLRGUDZx5pkqFHaHJOGyez0SPCt9JXnzcWUaj6itAYdiVXJ0fn1QoOxA8vX4ur6cpV_j3A5zUrT1qGjjbwDhPCDYqd0Tu5ePNDrSexuQEk9P1_3DcQkwNYDgMYxLh4TOScQU-rsMYz980a0niteh3YXOKZvLa4U1J7_jILgEjU9dUJO_NxVVwIaL1u09VUhfKVu5v6TjYelQ-np6MYAN4"/>
+</div>
+<p class="font-headline-sm text-headline-sm">Aaron Judge</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-md">CF • MVP CANDIDATE</p>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-white/5 p-sm rounded">
+<p class="text-stat-support font-stat-support text-on-surface-variant">HR</p>
+<p class="text-stat-main font-stat-main text-primary">51</p>
+</div>
+<div class="bg-white/5 p-sm rounded">
+<p class="text-stat-support font-stat-support text-on-surface-variant">WAR</p>
+<p class="text-stat-main font-stat-main text-primary">9.2</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Leader 2: Soto -->
+<div class="group relative">
+<div class="relative z-10">
+<div class="aspect-square bg-gradient-to-br from-primary/20 to-surface rounded-xl overflow-hidden mb-md border border-white/10 group-hover:border-primary transition-all duration-300">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="A cinematic studio portrait of Juan Soto in a New York Yankees jersey. He is looking confidently at the camera, wearing a dark navy cap. The background is a blurred stadium at night with teal lens flares and a high-performance, analytical aesthetic. Sharp focus and vibrant contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKJYwskimwZy9sC-WPGQ_Etss22z76xhTUb1ik3y9pOaU-_-CILYPIW3VuxPmzD5CP50flk2vZkwcQWiFtWu0gTqWQPEElaiYf2b1dQyXYoIfhkgnJJuLLPUdk7HOdw9t_p9NgS7EyjNlnAbQAmEzYiwegfqwS4YHY4haJSHamiSYOkZgZaVkAsgLyaIOt6AFNhswI-eiRB9Hav-Y0fKuxfy6EeeWOrnaL4TGrPkMPKvwsbscnxgT_flnPx3abeMt5cS8pwDRDuQM"/>
+</div>
+<p class="font-headline-sm text-headline-sm">Juan Soto</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-md">RF • ON-BASE ELITE</p>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-white/5 p-sm rounded">
+<p class="text-stat-support font-stat-support text-on-surface-variant">OBP</p>
+<p class="text-stat-main font-stat-main text-primary">.418</p>
+</div>
+<div class="bg-white/5 p-sm rounded">
+<p class="text-stat-support font-stat-support text-on-surface-variant">wRC+</p>
+<p class="text-stat-main font-stat-main text-primary">178</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Injury Report & Recent Schedule (Col 7-12) -->
+<section class="md:col-span-6 space-y-lg flex flex-col">
+<!-- Injury Report -->
+<div class="glass-card rounded-xl p-lg flex-1">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-sm text-headline-sm text-secondary flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+                                Injury Protocol
+                            </h3>
+<span class="bg-secondary/10 text-secondary px-sm py-0.5 rounded text-label-caps font-label-caps">3 ACTIVE</span>
+</div>
+<div class="space-y-md">
+<div class="flex items-center justify-between p-md border border-white/5 rounded-lg bg-white/5">
+<div class="flex items-center gap-md">
+<div class="w-2 h-10 bg-secondary rounded-full"></div>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Gerrit Cole</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">RHP • ELBOW INFLAMMATION</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-secondary font-stat-main text-stat-main">15-DAY IL</p>
+<p class="text-stat-support font-stat-support text-on-surface-variant">Est: June 15</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-md border border-white/5 rounded-lg">
+<div class="flex items-center gap-md">
+<div class="w-2 h-10 bg-secondary/40 rounded-full"></div>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">DJ LeMahieu</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">INF • FOOT FRACTURE</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-on-surface-variant font-stat-main text-stat-main">60-DAY IL</p>
+<p class="text-stat-support font-stat-support text-on-surface-variant">Est: August</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Schedule -->
+<div class="glass-card rounded-xl p-lg flex-1">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+                            Recent Performance
+                        </h3>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-sm hover:bg-white/5 transition-colors rounded">
+<div class="flex items-center gap-md">
+<span class="text-stat-support font-stat-support text-on-surface-variant w-12">MAY 28</span>
+<span class="font-label-caps text-label-caps w-12">LAA</span>
+<span class="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-bold rounded">W</span>
+</div>
+<div class="font-stat-main text-stat-main text-on-surface">5 - 2</div>
+<div class="text-stat-support font-stat-support text-primary text-right w-24">COVERED -1.5</div>
+</div>
+<div class="flex items-center justify-between p-sm hover:bg-white/5 transition-colors rounded">
+<div class="flex items-center gap-md">
+<span class="text-stat-support font-stat-support text-on-surface-variant w-12">MAY 27</span>
+<span class="font-label-caps text-label-caps w-12">LAA</span>
+<span class="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-bold rounded">W</span>
+</div>
+<div class="font-stat-main text-stat-main text-on-surface">9 - 1</div>
+<div class="text-stat-support font-stat-support text-primary text-right w-24">COVERED -1.5</div>
+</div>
+<div class="flex items-center justify-between p-sm hover:bg-white/5 transition-colors rounded">
+<div class="flex items-center gap-md">
+<span class="text-stat-support font-stat-support text-on-surface-variant w-12">MAY 26</span>
+<span class="font-label-caps text-label-caps w-12">@SD</span>
+<span class="px-2 py-0.5 bg-secondary/20 text-secondary text-[10px] font-bold rounded">L</span>
+</div>
+<div class="font-stat-main text-stat-main text-on-surface">2 - 5</div>
+<div class="text-stat-support font-stat-support text-secondary text-right w-24">FAILED -1.5</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Standings Table (Full Width) -->
+<section class="md:col-span-12">
+<div class="glass-card rounded-xl overflow-hidden border border-white/5">
+<div class="px-lg py-md border-b border-white/5 flex justify-between items-center bg-white/5">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">AL East Standings</h3>
+<div class="flex gap-md">
+<span class="text-stat-support font-stat-support text-on-surface-variant">L10: 8-2</span>
+<span class="text-stat-support font-stat-support text-on-surface-variant">HOME: 40-20</span>
+</div>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left">
+<thead class="bg-background/40">
+<tr>
+<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase">Team</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-center">W</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-center">L</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-center">PCT</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-center">GB</th>
+<th class="px-md py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-center">STRK</th>
+<th class="px-lg py-md font-label-caps text-label-caps text-on-surface-variant uppercase text-right">RUN DIFF</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="bg-primary/5 border-l-4 border-primary">
+<td class="px-lg py-md flex items-center gap-md">
+<span class="font-stat-main text-stat-main text-primary">1</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">NY Yankees</span>
+</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">82</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">45</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">.646</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">-</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-primary">W4</td>
+<td class="px-lg py-md text-right font-stat-main text-stat-main text-primary">+142</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-lg py-md flex items-center gap-md">
+<span class="font-stat-main text-stat-main text-on-surface-variant">2</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Baltimore Orioles</span>
+</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">78</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">49</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">.614</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">4.0</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">L1</td>
+<td class="px-lg py-md text-right font-stat-main text-stat-main text-primary">+88</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-lg py-md flex items-center gap-md">
+<span class="font-stat-main text-stat-main text-on-surface-variant">3</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Boston Red Sox</span>
+</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">69</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">58</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">.543</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">13.0</td>
+<td class="px-md py-md text-center font-stat-main text-stat-main text-on-surface">W2</td>
+<td class="px-lg py-md text-right font-stat-main text-stat-main text-primary">+12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- FAB Tooltip Logic -->
+<div class="fixed bottom-lg right-lg z-50">
+<button class="w-14 h-14 bg-primary text-on-primary-container rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all glow-teal">
+<span class="material-symbols-outlined text-2xl" data-icon="sports_baseball">sports_baseball</span>
+</button>
+</div>
+<!-- Micro-interaction script -->
+<script>
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                // Subtle interaction logic if needed
+            });
+        });
+
+        // Simple visibility observer for glass cards
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-4');
+            observer.observe(card);
+        });
+    </script>
+</body></html>
