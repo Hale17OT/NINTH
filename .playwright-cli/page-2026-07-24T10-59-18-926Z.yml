@@ -1,0 +1,1289 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: NINTH
+          - generic [ref=e10]: BASEBALL / DECISION LAB
+      - navigation [ref=e11]:
+        - link "Games" [ref=e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=e70] [cursor=pointer]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: DISPLAY / 09
+          - generic [ref=e73]: DAY
+    - generic [ref=e78]:
+      - generic [ref=e79]: TODAY
+      - link "COL 0 — 0 MIL Scheduled" [ref=e81] [cursor=pointer]:
+        - /url: /games/823759
+        - generic [ref=e82]: COL
+        - emphasis [ref=e83]: "0"
+        - generic [ref=e84]: —
+        - emphasis [ref=e85]: "0"
+        - generic [ref=e86]: MIL
+        - generic [ref=e87]: Scheduled
+      - link "KC 0 — 0 DET Scheduled" [ref=e88] [cursor=pointer]:
+        - /url: /games/824248
+        - generic [ref=e89]: KC
+        - emphasis [ref=e90]: "0"
+        - generic [ref=e91]: —
+        - emphasis [ref=e92]: "0"
+        - generic [ref=e93]: DET
+        - generic [ref=e94]: Scheduled
+      - link "CHC 0 — 0 PIT Scheduled" [ref=e95] [cursor=pointer]:
+        - /url: /games/823352
+        - generic [ref=e96]: CHC
+        - emphasis [ref=e97]: "0"
+        - generic [ref=e98]: —
+        - emphasis [ref=e99]: "0"
+        - generic [ref=e100]: PIT
+        - generic [ref=e101]: Scheduled
+      - link "AZ 0 — 0 WSH Scheduled" [ref=e102] [cursor=pointer]:
+        - /url: /games/822707
+        - generic [ref=e103]: AZ
+        - emphasis [ref=e104]: "0"
+        - generic [ref=e105]: —
+        - emphasis [ref=e106]: "0"
+        - generic [ref=e107]: WSH
+        - generic [ref=e108]: Scheduled
+      - generic [ref=e109]: OFFICIAL FEEDS CONNECTED
+  - main [ref=e111]:
+    - generic [ref=e113]:
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - text: NINTH / MODEL LAB
+          - heading "Know what the model knows." [level=1] [ref=e116]: Know what themodel knows.
+          - paragraph [ref=e117]: A transparent view of training data, real out-of-sample results, confidence tiers, and the stricter recent-season audit.
+        - generic [ref=e118]:
+          - generic [ref=e131]: WALK-FORWARD ACCURACY
+          - strong [ref=e132]: 57.2%
+          - generic [ref=e133]: 2022–2026 · 11,202 picks
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - generic [ref=e140]: TRAINING GAMES
+          - strong [ref=e141]: 19,365
+        - generic [ref=e142]:
+          - generic [ref=e146]: RECENT OUTER TEST
+          - strong [ref=e147]: 56.4%
+        - generic [ref=e148]:
+          - generic [ref=e161]: QUALIFIED ACCURACY
+          - strong [ref=e162]: 63.5%
+        - generic [ref=e163]:
+          - generic [ref=e176]: BRIER SCORE
+          - strong [ref=e177]: "0.242"
+      - generic [ref=e178]:
+        - generic [ref=e179]:
+          - generic [ref=e180]:
+            - text: TOTAL RUNS MODEL · V3
+            - heading "A full threshold forecast, audited without market prices." [level=2] [ref=e181]
+            - paragraph [ref=e182]: The totals model forecasts six run thresholds, selects its architecture on older rolling-origin folds, and reserves 2025–2026 as the final temporal audit.
+          - strong [ref=e183]:
+            - text: 0.12%
+            - generic [ref=e184]: BRIER IMPROVEMENT VS PRIOR MODEL
+        - generic [ref=e185]:
+          - article [ref=e186]:
+            - generic [ref=e187]: UNSEEN BRIER
+            - generic [ref=e188]: "0.22392"
+            - generic [ref=e189]: Prior production 0.22418
+          - article [ref=e190]:
+            - generic [ref=e191]: SELECTED-LINE ACCURACY
+            - generic [ref=e192]: 68.5%
+            - generic [ref=e193]: 3,929 unseen games
+          - article [ref=e194]:
+            - generic [ref=e195]: SELECTED-LINE BRIER
+            - generic [ref=e196]: "0.21401"
+            - generic [ref=e197]: Mean probability 69.1%
+          - article [ref=e198]:
+            - generic [ref=e199]: TRAINING GAMES
+            - generic [ref=e200]: 19,365
+            - generic [ref=e201]: Through 2026-07-20
+        - generic [ref=e202]:
+          - generic [ref=e203]:
+            - generic [ref=e204]: OVER / UNDER 6.5
+            - generic [ref=e205]: "0.21516"
+          - generic [ref=e206]:
+            - generic [ref=e207]: OVER / UNDER 7.5
+            - generic [ref=e208]: "0.24258"
+          - generic [ref=e209]:
+            - generic [ref=e210]: OVER / UNDER 8.5
+            - generic [ref=e211]: "0.24619"
+          - generic [ref=e212]:
+            - generic [ref=e213]: OVER / UNDER 9.5
+            - generic [ref=e214]: "0.23518"
+          - generic [ref=e215]:
+            - generic [ref=e216]: OVER / UNDER 10.5
+            - generic [ref=e217]: "0.21734"
+          - generic [ref=e218]:
+            - generic [ref=e219]: OVER / UNDER 11.5
+            - generic [ref=e220]: "0.18708"
+        - paragraph [ref=e221]: "A 68.5% selected-line hit rate is not a profitability claim: the model chooses its own run threshold and intentionally has no sportsbook line or price. Mixed-card confidence remains an independence estimate until a separate joint calibration passes its promotion gate."
+      - generic [ref=e222]:
+        - generic [ref=e223]:
+          - generic [ref=e224]:
+            - text: PLAYER PROP MODELS · V1
+            - heading "Every threshold earns its probability." [level=2] [ref=e225]
+            - paragraph [ref=e226]: Official player-game box scores are replayed chronologically. Models train through 2023, calibrate on 2024, and report the untouched 2025–26 Brier result shown below.
+          - strong [ref=e227]:
+            - text: 4.03%
+            - generic [ref=e228]: MEAN BRIER SKILL VS LINE CLIMATOLOGY
+        - generic [ref=e229]:
+          - article [ref=e230]:
+            - generic [ref=e231]:
+              - generic [ref=e232]: BATTER
+              - generic [ref=e233]: hits
+            - generic [ref=e234]:
+              - generic [ref=e235]: UNSEEN BRIER
+              - generic [ref=e236]: "0.14435"
+            - generic [ref=e237]:
+              - generic [ref=e238]: BASELINE
+              - generic [ref=e239]: "0.14782"
+            - generic [ref=e240]:
+              - generic [ref=e241]: BRIER SKILL
+              - generic [ref=e242]: 2.34%
+            - generic [ref=e243]:
+              - generic [ref=e244]: 60%+ COVERAGE / HIT
+              - generic [ref=e245]: 82.5% / 83.5%
+          - article [ref=e246]:
+            - generic [ref=e247]:
+              - generic [ref=e248]: BATTER
+              - generic [ref=e249]: total bases
+            - generic [ref=e250]:
+              - generic [ref=e251]: UNSEEN BRIER
+              - generic [ref=e252]: "0.17937"
+            - generic [ref=e253]:
+              - generic [ref=e254]: BASELINE
+              - generic [ref=e255]: "0.18354"
+            - generic [ref=e256]:
+              - generic [ref=e257]: BRIER SKILL
+              - generic [ref=e258]: 2.27%
+            - generic [ref=e259]:
+              - generic [ref=e260]: 60%+ COVERAGE / HIT
+              - generic [ref=e261]: 81.0% / 77.8%
+          - article [ref=e262]:
+            - generic [ref=e263]:
+              - generic [ref=e264]: BATTER
+              - generic [ref=e265]: home runs
+            - generic [ref=e266]:
+              - generic [ref=e267]: UNSEEN BRIER
+              - generic [ref=e268]: "0.05082"
+            - generic [ref=e269]:
+              - generic [ref=e270]: BASELINE
+              - generic [ref=e271]: "0.05178"
+            - generic [ref=e272]:
+              - generic [ref=e273]: BRIER SKILL
+              - generic [ref=e274]: 1.86%
+            - generic [ref=e275]:
+              - generic [ref=e276]: 60%+ COVERAGE / HIT
+              - generic [ref=e277]: 100.0% / 94.2%
+          - article [ref=e278]:
+            - generic [ref=e279]:
+              - generic [ref=e280]: BATTER
+              - generic [ref=e281]: runs
+            - generic [ref=e282]:
+              - generic [ref=e283]: UNSEEN BRIER
+              - generic [ref=e284]: "0.14570"
+            - generic [ref=e285]:
+              - generic [ref=e286]: BASELINE
+              - generic [ref=e287]: "0.14883"
+            - generic [ref=e288]:
+              - generic [ref=e289]: BRIER SKILL
+              - generic [ref=e290]: 2.10%
+            - generic [ref=e291]:
+              - generic [ref=e292]: 60%+ COVERAGE / HIT
+              - generic [ref=e293]: 87.5% / 82.0%
+          - article [ref=e294]:
+            - generic [ref=e295]:
+              - generic [ref=e296]: BATTER
+              - generic [ref=e297]: rbi
+            - generic [ref=e298]:
+              - generic [ref=e299]: UNSEEN BRIER
+              - generic [ref=e300]: "0.10601"
+            - generic [ref=e301]:
+              - generic [ref=e302]: BASELINE
+              - generic [ref=e303]: "0.10733"
+            - generic [ref=e304]:
+              - generic [ref=e305]: BRIER SKILL
+              - generic [ref=e306]: 1.23%
+            - generic [ref=e307]:
+              - generic [ref=e308]: 60%+ COVERAGE / HIT
+              - generic [ref=e309]: 99.7% / 86.4%
+          - article [ref=e310]:
+            - generic [ref=e311]:
+              - generic [ref=e312]: BATTER
+              - generic [ref=e313]: walks
+            - generic [ref=e314]:
+              - generic [ref=e315]: UNSEEN BRIER
+              - generic [ref=e316]: "0.11639"
+            - generic [ref=e317]:
+              - generic [ref=e318]: BASELINE
+              - generic [ref=e319]: "0.12018"
+            - generic [ref=e320]:
+              - generic [ref=e321]: BRIER SKILL
+              - generic [ref=e322]: 3.15%
+            - generic [ref=e323]:
+              - generic [ref=e324]: 60%+ COVERAGE / HIT
+              - generic [ref=e325]: 97.6% / 84.9%
+          - article [ref=e326]:
+            - generic [ref=e327]:
+              - generic [ref=e328]: BATTER
+              - generic [ref=e329]: strikeouts
+            - generic [ref=e330]:
+              - generic [ref=e331]: UNSEEN BRIER
+              - generic [ref=e332]: "0.14067"
+            - generic [ref=e333]:
+              - generic [ref=e334]: BASELINE
+              - generic [ref=e335]: "0.14698"
+            - generic [ref=e336]:
+              - generic [ref=e337]: BRIER SKILL
+              - generic [ref=e338]: 4.29%
+            - generic [ref=e339]:
+              - generic [ref=e340]: 60%+ COVERAGE / HIT
+              - generic [ref=e341]: 83.8% / 83.8%
+          - article [ref=e342]:
+            - generic [ref=e343]:
+              - generic [ref=e344]: BATTER
+              - generic [ref=e345]: doubles
+            - generic [ref=e346]:
+              - generic [ref=e347]: UNSEEN BRIER
+              - generic [ref=e348]: "0.06728"
+            - generic [ref=e349]:
+              - generic [ref=e350]: BASELINE
+              - generic [ref=e351]: "0.06759"
+            - generic [ref=e352]:
+              - generic [ref=e353]: BRIER SKILL
+              - generic [ref=e354]: 0.45%
+            - generic [ref=e355]:
+              - generic [ref=e356]: 60%+ COVERAGE / HIT
+              - generic [ref=e357]: 100.0% / 92.2%
+          - article [ref=e358]:
+            - generic [ref=e359]:
+              - generic [ref=e360]: BATTER
+              - generic [ref=e361]: stolen bases
+            - generic [ref=e362]:
+              - generic [ref=e363]: UNSEEN BRIER
+              - generic [ref=e364]: "0.03038"
+            - generic [ref=e365]:
+              - generic [ref=e366]: BASELINE
+              - generic [ref=e367]: "0.03161"
+            - generic [ref=e368]:
+              - generic [ref=e369]: BRIER SKILL
+              - generic [ref=e370]: 3.89%
+            - generic [ref=e371]:
+              - generic [ref=e372]: 60%+ COVERAGE / HIT
+              - generic [ref=e373]: 100.0% / 96.7%
+          - article [ref=e374]:
+            - generic [ref=e375]:
+              - generic [ref=e376]: PITCHER
+              - generic [ref=e377]: strikeouts
+            - generic [ref=e378]:
+              - generic [ref=e379]: UNSEEN BRIER
+              - generic [ref=e380]: "0.14376"
+            - generic [ref=e381]:
+              - generic [ref=e382]: BASELINE
+              - generic [ref=e383]: "0.15797"
+            - generic [ref=e384]:
+              - generic [ref=e385]: BRIER SKILL
+              - generic [ref=e386]: 8.99%
+            - generic [ref=e387]:
+              - generic [ref=e388]: 60%+ COVERAGE / HIT
+              - generic [ref=e389]: 84.9% / 83.5%
+          - article [ref=e390]:
+            - generic [ref=e391]:
+              - generic [ref=e392]: PITCHER
+              - generic [ref=e393]: outs
+            - generic [ref=e394]:
+              - generic [ref=e395]: UNSEEN BRIER
+              - generic [ref=e396]: "0.15819"
+            - generic [ref=e397]:
+              - generic [ref=e398]: BASELINE
+              - generic [ref=e399]: "0.17380"
+            - generic [ref=e400]:
+              - generic [ref=e401]: BRIER SKILL
+              - generic [ref=e402]: 8.98%
+            - generic [ref=e403]:
+              - generic [ref=e404]: 60%+ COVERAGE / HIT
+              - generic [ref=e405]: 84.6% / 81.2%
+          - article [ref=e406]:
+            - generic [ref=e407]:
+              - generic [ref=e408]: PITCHER
+              - generic [ref=e409]: walks
+            - generic [ref=e410]:
+              - generic [ref=e411]: UNSEEN BRIER
+              - generic [ref=e412]: "0.13668"
+            - generic [ref=e413]:
+              - generic [ref=e414]: BASELINE
+              - generic [ref=e415]: "0.14065"
+            - generic [ref=e416]:
+              - generic [ref=e417]: BRIER SKILL
+              - generic [ref=e418]: 2.82%
+            - generic [ref=e419]:
+              - generic [ref=e420]: 60%+ COVERAGE / HIT
+              - generic [ref=e421]: 85.5% / 84.7%
+          - article [ref=e422]:
+            - generic [ref=e423]:
+              - generic [ref=e424]: PITCHER
+              - generic [ref=e425]: hits allowed
+            - generic [ref=e426]:
+              - generic [ref=e427]: UNSEEN BRIER
+              - generic [ref=e428]: "0.15609"
+            - generic [ref=e429]:
+              - generic [ref=e430]: BASELINE
+              - generic [ref=e431]: "0.16308"
+            - generic [ref=e432]:
+              - generic [ref=e433]: BRIER SKILL
+              - generic [ref=e434]: 4.28%
+            - generic [ref=e435]:
+              - generic [ref=e436]: 60%+ COVERAGE / HIT
+              - generic [ref=e437]: 88.1% / 80.5%
+          - article [ref=e438]:
+            - generic [ref=e439]:
+              - generic [ref=e440]: PITCHER
+              - generic [ref=e441]: earned runs
+            - generic [ref=e442]:
+              - generic [ref=e443]: UNSEEN BRIER
+              - generic [ref=e444]: "0.16887"
+            - generic [ref=e445]:
+              - generic [ref=e446]: BASELINE
+              - generic [ref=e447]: "0.17208"
+            - generic [ref=e448]:
+              - generic [ref=e449]: BRIER SKILL
+              - generic [ref=e450]: 1.87%
+            - generic [ref=e451]:
+              - generic [ref=e452]: 60%+ COVERAGE / HIT
+              - generic [ref=e453]: 83.9% / 79.3%
+          - article [ref=e454]:
+            - generic [ref=e455]:
+              - generic [ref=e456]: PITCHER
+              - generic [ref=e457]: home runs allowed
+            - generic [ref=e458]:
+              - generic [ref=e459]: UNSEEN BRIER
+              - generic [ref=e460]: "0.10810"
+            - generic [ref=e461]:
+              - generic [ref=e462]: BASELINE
+              - generic [ref=e463]: "0.10916"
+            - generic [ref=e464]:
+              - generic [ref=e465]: BRIER SKILL
+              - generic [ref=e466]: 0.96%
+            - generic [ref=e467]:
+              - generic [ref=e468]: 60%+ COVERAGE / HIT
+              - generic [ref=e469]: 76.8% / 92.1%
+          - article [ref=e470]:
+            - generic [ref=e471]:
+              - generic [ref=e472]: PITCHER
+              - generic [ref=e473]: pitches
+            - generic [ref=e474]:
+              - generic [ref=e475]: UNSEEN BRIER
+              - generic [ref=e476]: "0.10933"
+            - generic [ref=e477]:
+              - generic [ref=e478]: BASELINE
+              - generic [ref=e479]: "0.12857"
+            - generic [ref=e480]:
+              - generic [ref=e481]: BRIER SKILL
+              - generic [ref=e482]: 14.97%
+            - generic [ref=e483]:
+              - generic [ref=e484]: 60%+ COVERAGE / HIT
+              - generic [ref=e485]: 92.4% / 87.2%
+        - paragraph [ref=e486]: Low raw Brier scores for rare outcomes such as home runs and steals are not compared directly with high-frequency props. Brier skill measures each model against its own line-specific baseline; negative skill is a warning, not hidden.
+      - generic [ref=e487]:
+        - article [ref=e488]:
+          - generic [ref=e489]:
+            - text: SELECTIVITY CURVE
+            - heading "Confidence earns its name." [level=2] [ref=e490]
+            - paragraph [ref=e491]: Accuracy rises when the model is allowed to pass on weak matchups. Coverage shows how rarely each threshold occurs.
+          - generic [ref=e492]:
+            - generic [ref=e493]:
+              - generic [ref=e494]: 55%+
+              - generic [ref=e495]: displayed win probability
+            - strong [ref=e496]: 60.4%
+            - generic [ref=e499]: 6,744 games / 60.2% coverage
+          - generic [ref=e500]:
+            - generic [ref=e501]:
+              - generic [ref=e502]: 60%+
+              - generic [ref=e503]: displayed win probability
+            - strong [ref=e504]: 63.5%
+            - generic [ref=e507]: 3,337 games / 29.8% coverage
+          - generic [ref=e508]:
+            - generic [ref=e509]:
+              - generic [ref=e510]: 65%+
+              - generic [ref=e511]: displayed win probability
+            - strong [ref=e512]: 68.3%
+            - generic [ref=e515]: 1,281 games / 11.4% coverage
+          - generic [ref=e516]:
+            - generic [ref=e517]:
+              - generic [ref=e518]: 70%+
+              - generic [ref=e519]: displayed win probability
+            - strong [ref=e520]: 76.0%
+            - generic [ref=e523]: 329 games / 2.9% coverage
+          - generic [ref=e524]:
+            - generic [ref=e525]:
+              - generic [ref=e526]: 75%+
+              - generic [ref=e527]: displayed win probability
+            - strong [ref=e528]: 76.5%
+            - generic [ref=e531]: 34 games / 0.3% coverage
+        - complementary [ref=e532]:
+          - text: ALL DEPLOYED SIGNALS
+          - heading "What moves a projection." [level=2] [ref=e533]
+          - paragraph [ref=e534]: 38 model features grouped below. The matchup page shows only the strongest contributors for that specific game.
+          - generic [ref=e535]:
+            - generic [ref=e536]: "01"
+            - generic [ref=e537]:
+              - generic [ref=e538]:
+                - generic [ref=e539]: Team baseline
+                - emphasis [ref=e540]: 3 SIGNALS
+              - paragraph [ref=e541]: Long-horizon quality and whether the record is supported by runs scored and allowed.
+              - generic [ref=e542]:
+                - generic [ref=e543]: Elo rating
+                - generic [ref=e544]: Season win percentage
+                - generic [ref=e545]: Pythagorean expected record
+          - generic [ref=e546]:
+            - generic [ref=e547]: "02"
+            - generic [ref=e548]:
+              - generic [ref=e549]:
+                - generic [ref=e550]: Recent results
+                - emphasis [ref=e551]: 5 SIGNALS
+              - paragraph [ref=e552]: Several windows prevent one hot or cold week from dominating the forecast.
+              - generic [ref=e553]:
+                - generic [ref=e554]: Last 5 win rate
+                - generic [ref=e555]: Last 10 win rate
+                - generic [ref=e556]: Last 20 win rate
+                - generic [ref=e557]: Last 10 run margin
+                - generic [ref=e558]: Last 20 run margin
+          - generic [ref=e559]:
+            - generic [ref=e560]: "03"
+            - generic [ref=e561]:
+              - generic [ref=e562]:
+                - generic [ref=e563]: Rolling production
+                - emphasis [ref=e564]: 2 SIGNALS
+              - paragraph [ref=e565]: Current offensive output and run prevention, measured before the matchup.
+              - generic [ref=e566]:
+                - generic [ref=e567]: Rolling runs scored
+                - generic [ref=e568]: Rolling runs allowed
+          - generic [ref=e569]:
+            - generic [ref=e570]: "04"
+            - generic [ref=e571]:
+              - generic [ref=e572]:
+                - generic [ref=e573]: Schedule and venue
+                - emphasis [ref=e574]: 2 SIGNALS
+              - paragraph [ref=e575]: Situational performance without using sportsbook or market information.
+              - generic [ref=e576]:
+                - generic [ref=e577]: Home/road split
+                - generic [ref=e578]: Team rest difference
+          - generic [ref=e579]:
+            - generic [ref=e580]: "05"
+            - generic [ref=e581]:
+              - generic [ref=e582]:
+                - generic [ref=e583]: Starter fundamentals
+                - emphasis [ref=e584]: 4 SIGNALS
+              - paragraph [ref=e585]: Traditional starter quality, track record and readiness.
+              - generic [ref=e586]:
+                - generic [ref=e587]: Starter Elo
+                - generic [ref=e588]: Starter rest
+                - generic [ref=e589]: Starter ERA
+                - generic [ref=e590]: Starter WHIP
+          - generic [ref=e591]:
+            - generic [ref=e592]: "06"
+            - generic [ref=e593]:
+              - generic [ref=e594]:
+                - generic [ref=e595]: Starter Statcast
+                - emphasis [ref=e596]: 8 SIGNALS
+              - paragraph [ref=e597]: Leakage-safe pitch and contact quality from prior starts only.
+              - generic [ref=e598]:
+                - generic [ref=e599]: Expected wOBA allowed
+                - generic [ref=e600]: Hard-hit suppression
+                - generic [ref=e601]: Barrel suppression
+                - generic [ref=e602]: Whiff rate
+                - generic [ref=e603]: Strikeout-minus-walk rate
+                - generic [ref=e604]: Velocity profile
+                - generic [ref=e605]: Sample reliability
+                - generic [ref=e606]: Prior-start history depth
+          - generic [ref=e607]:
+            - generic [ref=e608]: "07"
+            - generic [ref=e609]:
+              - generic [ref=e610]:
+                - generic [ref=e611]: Lineup and bullpen
+                - emphasis [ref=e612]: 2 SIGNALS
+              - paragraph [ref=e613]: Confirmed or projected personnel plus recent relief workload.
+              - generic [ref=e614]:
+                - generic [ref=e615]: Lineup OPS composition
+                - generic [ref=e616]: Bullpen pitches · prior 3 days
+          - generic [ref=e617]:
+            - generic [ref=e618]: "08"
+            - generic [ref=e619]:
+              - generic [ref=e620]:
+                - generic [ref=e621]: Game environment
+                - emphasis [ref=e622]: 2 SIGNALS
+              - paragraph [ref=e623]: Official venue forecast at expected game time.
+              - generic [ref=e624]:
+                - generic [ref=e625]: Temperature
+                - generic [ref=e626]: Wind speed
+          - generic [ref=e627]:
+            - generic [ref=e628]: "09"
+            - generic [ref=e629]:
+              - generic [ref=e630]:
+                - generic [ref=e631]: Input reliability
+                - emphasis [ref=e632]: 1 SIGNALS
+              - paragraph [ref=e633]: Tells the model how much official matchup context is actually available.
+              - generic [ref=e634]: Live context availability
+      - generic [ref=e636]:
+        - generic [ref=e637]:
+          - generic [ref=e638]:
+            - text: OUT-OF-FOLD PARLAY RESULTS
+            - heading "How often every leg actually hit." [level=2] [ref=e639]
+            - paragraph [ref=e640]: Each card takes that day's highest-probability model picks. A card counts as a hit only when every selected leg won. These are historical baseball-only results, not sportsbook returns.
+          - generic [ref=e641]: 2022–2026 WALK-FORWARD
+        - generic [ref=e642]:
+          - article [ref=e643]:
+            - generic [ref=e644]:
+              - generic [ref=e645]: 2 LEG
+              - generic [ref=e646]: 345 / 839 cards
+            - strong [ref=e647]: 41.1%
+            - generic [ref=e650]:
+              - generic [ref=e651]: 2025–26
+              - generic [ref=e652]: 40.3%
+              - generic [ref=e653]: 119 / 295
+          - article [ref=e654]:
+            - generic [ref=e655]:
+              - generic [ref=e656]: 3 LEG
+              - generic [ref=e657]: 216 / 838 cards
+            - strong [ref=e658]: 25.8%
+            - generic [ref=e661]:
+              - generic [ref=e662]: 2025–26
+              - generic [ref=e663]: 24.8%
+              - generic [ref=e664]: 73 / 295
+          - article [ref=e665]:
+            - generic [ref=e666]:
+              - generic [ref=e667]: 4 LEG
+              - generic [ref=e668]: 141 / 834 cards
+            - strong [ref=e669]: 16.9%
+            - generic [ref=e672]:
+              - generic [ref=e673]: 2025–26
+              - generic [ref=e674]: 14.4%
+              - generic [ref=e675]: 42 / 292
+          - article [ref=e676]:
+            - generic [ref=e677]:
+              - generic [ref=e678]: 5 LEG
+              - generic [ref=e679]: 74 / 827 cards
+            - strong [ref=e680]: 8.9%
+            - generic [ref=e683]:
+              - generic [ref=e684]: 2025–26
+              - generic [ref=e685]: 6.5%
+              - generic [ref=e686]: 19 / 291
+          - article [ref=e687]:
+            - generic [ref=e688]:
+              - generic [ref=e689]: 6 LEG
+              - generic [ref=e690]: 50 / 819 cards
+            - strong [ref=e691]: 6.1%
+            - generic [ref=e694]:
+              - generic [ref=e695]: 2025–26
+              - generic [ref=e696]: 3.8%
+              - generic [ref=e697]: 11 / 288
+          - article [ref=e698]:
+            - generic [ref=e699]:
+              - generic [ref=e700]: 7 LEG
+              - generic [ref=e701]: 23 / 804 cards
+            - strong [ref=e702]: 2.9%
+            - generic [ref=e705]:
+              - generic [ref=e706]: 2025–26
+              - generic [ref=e707]: 2.1%
+              - generic [ref=e708]: 6 / 282
+          - article [ref=e709]:
+            - generic [ref=e710]:
+              - generic [ref=e711]: 8 LEG
+              - generic [ref=e712]: 12 / 788 cards
+            - strong [ref=e713]: 1.5%
+            - generic [ref=e716]:
+              - generic [ref=e717]: 2025–26
+              - generic [ref=e718]: 1.4%
+              - generic [ref=e719]: 4 / 277
+        - paragraph [ref=e720]: The thin range beneath each percentage is the observed hit indicator; sample counts matter more as parlays get longer and successful cards become rare.
+      - generic [ref=e721]:
+        - generic [ref=e722]:
+          - generic [ref=e723]:
+            - text: DAILY MODEL AUDIT
+            - heading "How did NINTH do that day?" [level=2] [ref=e724]
+            - paragraph [ref=e725]: Choose any MLB date to review every eligible locked forecast, the official winner, and the complete daily hit rate.
+          - generic [ref=e726]:
+            - generic [ref=e727]:
+              - generic [ref=e728]: Evaluation date
+              - button "Jul 24, 2026" [ref=e729] [cursor=pointer]
+            - generic [ref=e735]:
+              - generic [ref=e736]: JULY 24, 2026
+              - strong [ref=e737]: —
+              - generic [ref=e738]: 0 correct · 0 missed · 0 evaluated
+        - generic [ref=e739]: No eligible finished predictions were found for July 24, 2026.
+      - generic [ref=e740]:
+        - generic [ref=e741]:
+          - generic [ref=e742]:
+            - text: LIVE DEPLOYMENT RECORD
+            - heading "Finished predictions." [level=2] [ref=e743]
+            - paragraph [ref=e744]: Only projections archived before first pitch are eligible. Every result is joined to the official MLB final and cannot be rewritten afterward.
+          - generic [ref=e745]:
+            - generic [ref=e746]: RUNNING ACCURACY
+            - strong [ref=e747]: 54.6%
+            - generic [ref=e748]: 53 correct / 97 evaluated
+        - generic [ref=e749]:
+          - link "Jul 23 Kansas City Royals logo Kansas City Royals 3–4 Detroit Tigers Detroit Tigers logo LOCKED MODEL PICK Detroit Tigers · 65.5% Snapshot 5:58 PM EDT CORRECT" [ref=e750] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e751]: Jul 23
+            - generic [ref=e752]:
+              - generic [ref=e753]:
+                - img "Kansas City Royals logo" [ref=e755]
+                - generic [ref=e756]: Kansas City Royals
+              - strong [ref=e757]: 3–4
+              - generic [ref=e758]:
+                - generic [ref=e759]: Detroit Tigers
+                - img "Detroit Tigers logo" [ref=e761]
+            - generic [ref=e762]:
+              - generic [ref=e763]: LOCKED MODEL PICK
+              - generic [ref=e764]: Detroit Tigers · 65.5%
+              - generic [ref=e765]: Snapshot 5:58 PM EDT
+            - emphasis [ref=e766]: CORRECT
+          - link "Jul 23 Arizona Diamondbacks logo Arizona Diamondbacks 10–6 St. Louis Cardinals St. Louis Cardinals logo LOCKED MODEL PICK Arizona Diamondbacks · 50.3% Snapshot 4:40 PM EDT CORRECT" [ref=e767] [cursor=pointer]:
+            - /url: /games/823042
+            - time [ref=e768]: Jul 23
+            - generic [ref=e769]:
+              - generic [ref=e770]:
+                - img "Arizona Diamondbacks logo" [ref=e772]
+                - generic [ref=e773]: Arizona Diamondbacks
+              - strong [ref=e774]: 10–6
+              - generic [ref=e775]:
+                - generic [ref=e776]: St. Louis Cardinals
+                - img "St. Louis Cardinals logo" [ref=e778]
+            - generic [ref=e779]:
+              - generic [ref=e780]: LOCKED MODEL PICK
+              - generic [ref=e781]: Arizona Diamondbacks · 50.3%
+              - generic [ref=e782]: Snapshot 4:40 PM EDT
+            - emphasis [ref=e783]: CORRECT
+          - link "Jul 23 Tampa Bay Rays logo Tampa Bay Rays 1–3 Toronto Blue Jays Toronto Blue Jays logo LOCKED MODEL PICK Toronto Blue Jays · 53.1% Snapshot 1:42 PM EDT CORRECT" [ref=e784] [cursor=pointer]:
+            - /url: /games/822785
+            - time [ref=e785]: Jul 23
+            - generic [ref=e786]:
+              - generic [ref=e787]:
+                - img "Tampa Bay Rays logo" [ref=e789]
+                - generic [ref=e790]: Tampa Bay Rays
+              - strong [ref=e791]: 1–3
+              - generic [ref=e792]:
+                - generic [ref=e793]: Toronto Blue Jays
+                - img "Toronto Blue Jays logo" [ref=e795]
+            - generic [ref=e796]:
+              - generic [ref=e797]: LOCKED MODEL PICK
+              - generic [ref=e798]: Toronto Blue Jays · 53.1%
+              - generic [ref=e799]: Snapshot 1:42 PM EDT
+            - emphasis [ref=e800]: CORRECT
+          - link "Jul 23 Minnesota Twins logo Minnesota Twins 3–1 Cleveland Guardians Cleveland Guardians logo LOCKED MODEL PICK Cleveland Guardians · 58.5% Snapshot 12:38 PM EDT MISSED" [ref=e801] [cursor=pointer]:
+            - /url: /games/824406
+            - time [ref=e802]: Jul 23
+            - generic [ref=e803]:
+              - generic [ref=e804]:
+                - img "Minnesota Twins logo" [ref=e806]
+                - generic [ref=e807]: Minnesota Twins
+              - strong [ref=e808]: 3–1
+              - generic [ref=e809]:
+                - generic [ref=e810]: Cleveland Guardians
+                - img "Cleveland Guardians logo" [ref=e812]
+            - generic [ref=e813]:
+              - generic [ref=e814]: LOCKED MODEL PICK
+              - generic [ref=e815]: Cleveland Guardians · 58.5%
+              - generic [ref=e816]: Snapshot 12:38 PM EDT
+            - emphasis [ref=e817]: MISSED
+          - link "Jul 23 San Diego Padres logo San Diego Padres 5–6 Atlanta Braves Atlanta Braves logo LOCKED MODEL PICK Atlanta Braves · 62.7% Snapshot 11:46 AM EDT CORRECT" [ref=e818] [cursor=pointer]:
+            - /url: /games/824893
+            - time [ref=e819]: Jul 23
+            - generic [ref=e820]:
+              - generic [ref=e821]:
+                - img "San Diego Padres logo" [ref=e823]
+                - generic [ref=e824]: San Diego Padres
+              - strong [ref=e825]: 5–6
+              - generic [ref=e826]:
+                - generic [ref=e827]: Atlanta Braves
+                - img "Atlanta Braves logo" [ref=e829]
+            - generic [ref=e830]:
+              - generic [ref=e831]: LOCKED MODEL PICK
+              - generic [ref=e832]: Atlanta Braves · 62.7%
+              - generic [ref=e833]: Snapshot 11:46 AM EDT
+            - emphasis [ref=e834]: CORRECT
+          - link "Jul 22 Detroit Tigers logo Detroit Tigers 5–1 Chicago Cubs Chicago Cubs logo LOCKED MODEL PICK Chicago Cubs · 54.3% Snapshot 1:00 PM EDT MISSED" [ref=e835] [cursor=pointer]:
+            - /url: /games/824650
+            - time [ref=e836]: Jul 22
+            - generic [ref=e837]:
+              - generic [ref=e838]:
+                - img "Detroit Tigers logo" [ref=e840]
+                - generic [ref=e841]: Detroit Tigers
+              - strong [ref=e842]: 5–1
+              - generic [ref=e843]:
+                - generic [ref=e844]: Chicago Cubs
+                - img "Chicago Cubs logo" [ref=e846]
+            - generic [ref=e847]:
+              - generic [ref=e848]: LOCKED MODEL PICK
+              - generic [ref=e849]: Chicago Cubs · 54.3%
+              - generic [ref=e850]: Snapshot 1:00 PM EDT
+            - emphasis [ref=e851]: MISSED
+          - link "Jul 22 Miami Marlins logo Miami Marlins 2–5 Houston Astros Houston Astros logo LOCKED MODEL PICK Miami Marlins · 50.4% Snapshot 2:41 PM EDT MISSED" [ref=e852] [cursor=pointer]:
+            - /url: /games/824166
+            - time [ref=e853]: Jul 22
+            - generic [ref=e854]:
+              - generic [ref=e855]:
+                - img "Miami Marlins logo" [ref=e857]
+                - generic [ref=e858]: Miami Marlins
+              - strong [ref=e859]: 2–5
+              - generic [ref=e860]:
+                - generic [ref=e861]: Houston Astros
+                - img "Houston Astros logo" [ref=e863]
+            - generic [ref=e864]:
+              - generic [ref=e865]: LOCKED MODEL PICK
+              - generic [ref=e866]: Miami Marlins · 50.4%
+              - generic [ref=e867]: Snapshot 2:41 PM EDT
+            - emphasis [ref=e868]: MISSED
+          - link "Jul 22 Chicago White Sox logo Chicago White Sox 4–2 Texas Rangers Texas Rangers logo LOCKED MODEL PICK Chicago White Sox · 50.2% Snapshot 2:50 PM EDT CORRECT" [ref=e869] [cursor=pointer]:
+            - /url: /games/822873
+            - time [ref=e870]: Jul 22
+            - generic [ref=e871]:
+              - generic [ref=e872]:
+                - img "Chicago White Sox logo" [ref=e874]
+                - generic [ref=e875]: Chicago White Sox
+              - strong [ref=e876]: 4–2
+              - generic [ref=e877]:
+                - generic [ref=e878]: Texas Rangers
+                - img "Texas Rangers logo" [ref=e880]
+            - generic [ref=e881]:
+              - generic [ref=e882]: LOCKED MODEL PICK
+              - generic [ref=e883]: Chicago White Sox · 50.2%
+              - generic [ref=e884]: Snapshot 2:50 PM EDT
+            - emphasis [ref=e885]: CORRECT
+          - link "Jul 22 San Diego Padres logo San Diego Padres 6–7 Atlanta Braves Atlanta Braves logo LOCKED MODEL PICK Atlanta Braves · 53.6% Snapshot 2:50 PM EDT CORRECT" [ref=e886] [cursor=pointer]:
+            - /url: /games/824896
+            - time [ref=e887]: Jul 22
+            - generic [ref=e888]:
+              - generic [ref=e889]:
+                - img "San Diego Padres logo" [ref=e891]
+                - generic [ref=e892]: San Diego Padres
+              - strong [ref=e893]: 6–7
+              - generic [ref=e894]:
+                - generic [ref=e895]: Atlanta Braves
+                - img "Atlanta Braves logo" [ref=e897]
+            - generic [ref=e898]:
+              - generic [ref=e899]: LOCKED MODEL PICK
+              - generic [ref=e900]: Atlanta Braves · 53.6%
+              - generic [ref=e901]: Snapshot 2:50 PM EDT
+            - emphasis [ref=e902]: CORRECT
+          - link "Jul 22 Baltimore Orioles logo Baltimore Orioles 5–1 Boston Red Sox Boston Red Sox logo LOCKED MODEL PICK Boston Red Sox · 55.3% Snapshot 1:01 PM EDT MISSED" [ref=e903] [cursor=pointer]:
+            - /url: /games/824732
+            - time [ref=e904]: Jul 22
+            - generic [ref=e905]:
+              - generic [ref=e906]:
+                - img "Baltimore Orioles logo" [ref=e908]
+                - generic [ref=e909]: Baltimore Orioles
+              - strong [ref=e910]: 5–1
+              - generic [ref=e911]:
+                - generic [ref=e912]: Boston Red Sox
+                - img "Boston Red Sox logo" [ref=e914]
+            - generic [ref=e915]:
+              - generic [ref=e916]: LOCKED MODEL PICK
+              - generic [ref=e917]: Boston Red Sox · 55.3%
+              - generic [ref=e918]: Snapshot 1:01 PM EDT
+            - emphasis [ref=e919]: MISSED
+        - navigation "Completed prediction pages" [ref=e920]:
+          - button "Previous results page" [disabled] [ref=e921]
+          - button "1" [ref=e924] [cursor=pointer]
+          - button "2" [ref=e925] [cursor=pointer]
+          - button "3" [ref=e926] [cursor=pointer]
+          - button "4" [ref=e927] [cursor=pointer]
+          - button "5" [ref=e928] [cursor=pointer]
+          - button "6" [ref=e929] [cursor=pointer]
+          - button "7" [ref=e930] [cursor=pointer]
+          - button "Next results page" [ref=e931] [cursor=pointer]
+        - generic [ref=e934]: Last archived projection at or before scheduled first pitch · refreshes every 60 seconds
+      - generic [ref=e935]:
+        - generic [ref=e936]:
+          - generic [ref=e937]:
+            - text: DAILY TOTAL-RUNS AUDIT
+            - heading "How did the run model do that day?" [level=2] [ref=e938]
+            - paragraph [ref=e939]: Every result uses the last archived Over/Under recommendation before first pitch and the official combined score.
+          - generic [ref=e940]:
+            - generic [ref=e941]:
+              - generic [ref=e942]: Totals evaluation date
+              - button "Jul 24, 2026" [ref=e943] [cursor=pointer]
+            - generic [ref=e949]:
+              - generic [ref=e950]: JULY 24, 2026
+              - strong [ref=e951]: —
+              - generic [ref=e952]: 0 correct · 0 missed · Brier —
+        - generic [ref=e953]: No eligible locked total-runs predictions were found for July 24, 2026.
+      - generic [ref=e954]:
+        - generic [ref=e955]:
+          - generic [ref=e956]:
+            - text: LIVE TOTAL-RUNS RECORD
+            - heading "Finished Over/Under predictions." [level=2] [ref=e957]
+            - paragraph [ref=e958]: This is deployment performance, separate from the training audit. The probability is scored against the model-selected line.
+          - generic [ref=e959]:
+            - generic [ref=e960]: RUNNING HIT RATE
+            - strong [ref=e961]: 65.7%
+            - generic [ref=e962]: 23 / 35 · Brier 0.232
+        - generic [ref=e963]:
+          - link "Jul 23 Kansas City Royals logo Kansas City Royals 3–4 Detroit Tigers Detroit Tigers logo LOCKED RUN PICK OVER 7 · 62.0% Final total 7 · Snapshot 5:58 PM EDT MISSED" [ref=e964] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e965]: Jul 23
+            - generic [ref=e966]:
+              - generic [ref=e967]:
+                - img "Kansas City Royals logo" [ref=e969]
+                - generic [ref=e970]: Kansas City Royals
+              - strong [ref=e971]: 3–4
+              - generic [ref=e972]:
+                - generic [ref=e973]: Detroit Tigers
+                - img "Detroit Tigers logo" [ref=e975]
+            - generic [ref=e976]:
+              - generic [ref=e977]: LOCKED RUN PICK
+              - generic [ref=e978]: OVER 7 · 62.0%
+              - generic [ref=e979]: Final total 7 · Snapshot 5:58 PM EDT
+            - emphasis [ref=e980]: MISSED
+          - link "Jul 23 Arizona Diamondbacks logo Arizona Diamondbacks 10–6 St. Louis Cardinals St. Louis Cardinals logo LOCKED RUN PICK OVER 6 · 70.0% Final total 16 · Snapshot 4:40 PM EDT CORRECT" [ref=e981] [cursor=pointer]:
+            - /url: /games/823042
+            - time [ref=e982]: Jul 23
+            - generic [ref=e983]:
+              - generic [ref=e984]:
+                - img "Arizona Diamondbacks logo" [ref=e986]
+                - generic [ref=e987]: Arizona Diamondbacks
+              - strong [ref=e988]: 10–6
+              - generic [ref=e989]:
+                - generic [ref=e990]: St. Louis Cardinals
+                - img "St. Louis Cardinals logo" [ref=e992]
+            - generic [ref=e993]:
+              - generic [ref=e994]: LOCKED RUN PICK
+              - generic [ref=e995]: OVER 6 · 70.0%
+              - generic [ref=e996]: Final total 16 · Snapshot 4:40 PM EDT
+            - emphasis [ref=e997]: CORRECT
+          - link "Jul 23 Tampa Bay Rays logo Tampa Bay Rays 1–3 Toronto Blue Jays Toronto Blue Jays logo LOCKED RUN PICK UNDER 9.5 · 63.1% Final total 4 · Snapshot 1:42 PM EDT CORRECT" [ref=e998] [cursor=pointer]:
+            - /url: /games/822785
+            - time [ref=e999]: Jul 23
+            - generic [ref=e1000]:
+              - generic [ref=e1001]:
+                - img "Tampa Bay Rays logo" [ref=e1003]
+                - generic [ref=e1004]: Tampa Bay Rays
+              - strong [ref=e1005]: 1–3
+              - generic [ref=e1006]:
+                - generic [ref=e1007]: Toronto Blue Jays
+                - img "Toronto Blue Jays logo" [ref=e1009]
+            - generic [ref=e1010]:
+              - generic [ref=e1011]: LOCKED RUN PICK
+              - generic [ref=e1012]: UNDER 9.5 · 63.1%
+              - generic [ref=e1013]: Final total 4 · Snapshot 1:42 PM EDT
+            - emphasis [ref=e1014]: CORRECT
+          - link "Jul 23 Minnesota Twins logo Minnesota Twins 3–1 Cleveland Guardians Cleveland Guardians logo LOCKED RUN PICK OVER 6 · 66.3% Final total 4 · Snapshot 12:38 PM EDT MISSED" [ref=e1015] [cursor=pointer]:
+            - /url: /games/824406
+            - time [ref=e1016]: Jul 23
+            - generic [ref=e1017]:
+              - generic [ref=e1018]:
+                - img "Minnesota Twins logo" [ref=e1020]
+                - generic [ref=e1021]: Minnesota Twins
+              - strong [ref=e1022]: 3–1
+              - generic [ref=e1023]:
+                - generic [ref=e1024]: Cleveland Guardians
+                - img "Cleveland Guardians logo" [ref=e1026]
+            - generic [ref=e1027]:
+              - generic [ref=e1028]: LOCKED RUN PICK
+              - generic [ref=e1029]: OVER 6 · 66.3%
+              - generic [ref=e1030]: Final total 4 · Snapshot 12:38 PM EDT
+            - emphasis [ref=e1031]: MISSED
+          - link "Jul 23 San Diego Padres logo San Diego Padres 5–6 Atlanta Braves Atlanta Braves logo LOCKED RUN PICK OVER 7 · 68.5% Final total 11 · Snapshot 11:46 AM EDT CORRECT" [ref=e1032] [cursor=pointer]:
+            - /url: /games/824893
+            - time [ref=e1033]: Jul 23
+            - generic [ref=e1034]:
+              - generic [ref=e1035]:
+                - img "San Diego Padres logo" [ref=e1037]
+                - generic [ref=e1038]: San Diego Padres
+              - strong [ref=e1039]: 5–6
+              - generic [ref=e1040]:
+                - generic [ref=e1041]: Atlanta Braves
+                - img "Atlanta Braves logo" [ref=e1043]
+            - generic [ref=e1044]:
+              - generic [ref=e1045]: LOCKED RUN PICK
+              - generic [ref=e1046]: OVER 7 · 68.5%
+              - generic [ref=e1047]: Final total 11 · Snapshot 11:46 AM EDT
+            - emphasis [ref=e1048]: CORRECT
+          - link "Jul 22 Detroit Tigers logo Detroit Tigers 5–1 Chicago Cubs Chicago Cubs logo LOCKED RUN PICK OVER 7.5 · 67.5% Final total 6 · Snapshot 1:00 PM EDT MISSED" [ref=e1049] [cursor=pointer]:
+            - /url: /games/824650
+            - time [ref=e1050]: Jul 22
+            - generic [ref=e1051]:
+              - generic [ref=e1052]:
+                - img "Detroit Tigers logo" [ref=e1054]
+                - generic [ref=e1055]: Detroit Tigers
+              - strong [ref=e1056]: 5–1
+              - generic [ref=e1057]:
+                - generic [ref=e1058]: Chicago Cubs
+                - img "Chicago Cubs logo" [ref=e1060]
+            - generic [ref=e1061]:
+              - generic [ref=e1062]: LOCKED RUN PICK
+              - generic [ref=e1063]: OVER 7.5 · 67.5%
+              - generic [ref=e1064]: Final total 6 · Snapshot 1:00 PM EDT
+            - emphasis [ref=e1065]: MISSED
+          - link "Jul 22 Miami Marlins logo Miami Marlins 2–5 Houston Astros Houston Astros logo LOCKED RUN PICK OVER 7.5 · 74.0% Final total 7 · Snapshot 2:41 PM EDT MISSED" [ref=e1066] [cursor=pointer]:
+            - /url: /games/824166
+            - time [ref=e1067]: Jul 22
+            - generic [ref=e1068]:
+              - generic [ref=e1069]:
+                - img "Miami Marlins logo" [ref=e1071]
+                - generic [ref=e1072]: Miami Marlins
+              - strong [ref=e1073]: 2–5
+              - generic [ref=e1074]:
+                - generic [ref=e1075]: Houston Astros
+                - img "Houston Astros logo" [ref=e1077]
+            - generic [ref=e1078]:
+              - generic [ref=e1079]: LOCKED RUN PICK
+              - generic [ref=e1080]: OVER 7.5 · 74.0%
+              - generic [ref=e1081]: Final total 7 · Snapshot 2:41 PM EDT
+            - emphasis [ref=e1082]: MISSED
+          - link "Jul 22 Chicago White Sox logo Chicago White Sox 4–2 Texas Rangers Texas Rangers logo LOCKED RUN PICK OVER 7 · 73.4% Final total 6 · Snapshot 2:50 PM EDT MISSED" [ref=e1083] [cursor=pointer]:
+            - /url: /games/822873
+            - time [ref=e1084]: Jul 22
+            - generic [ref=e1085]:
+              - generic [ref=e1086]:
+                - img "Chicago White Sox logo" [ref=e1088]
+                - generic [ref=e1089]: Chicago White Sox
+              - strong [ref=e1090]: 4–2
+              - generic [ref=e1091]:
+                - generic [ref=e1092]: Texas Rangers
+                - img "Texas Rangers logo" [ref=e1094]
+            - generic [ref=e1095]:
+              - generic [ref=e1096]: LOCKED RUN PICK
+              - generic [ref=e1097]: OVER 7 · 73.4%
+              - generic [ref=e1098]: Final total 6 · Snapshot 2:50 PM EDT
+            - emphasis [ref=e1099]: MISSED
+          - link "Jul 22 San Diego Padres logo San Diego Padres 6–7 Atlanta Braves Atlanta Braves logo LOCKED RUN PICK OVER 7 · 73.6% Final total 13 · Snapshot 2:50 PM EDT CORRECT" [ref=e1100] [cursor=pointer]:
+            - /url: /games/824896
+            - time [ref=e1101]: Jul 22
+            - generic [ref=e1102]:
+              - generic [ref=e1103]:
+                - img "San Diego Padres logo" [ref=e1105]
+                - generic [ref=e1106]: San Diego Padres
+              - strong [ref=e1107]: 6–7
+              - generic [ref=e1108]:
+                - generic [ref=e1109]: Atlanta Braves
+                - img "Atlanta Braves logo" [ref=e1111]
+            - generic [ref=e1112]:
+              - generic [ref=e1113]: LOCKED RUN PICK
+              - generic [ref=e1114]: OVER 7 · 73.6%
+              - generic [ref=e1115]: Final total 13 · Snapshot 2:50 PM EDT
+            - emphasis [ref=e1116]: CORRECT
+          - link "Jul 22 Baltimore Orioles logo Baltimore Orioles 5–1 Boston Red Sox Boston Red Sox logo LOCKED RUN PICK UNDER 10.5 · 65.1% Final total 6 · Snapshot 1:01 PM EDT CORRECT" [ref=e1117] [cursor=pointer]:
+            - /url: /games/824732
+            - time [ref=e1118]: Jul 22
+            - generic [ref=e1119]:
+              - generic [ref=e1120]:
+                - img "Baltimore Orioles logo" [ref=e1122]
+                - generic [ref=e1123]: Baltimore Orioles
+              - strong [ref=e1124]: 5–1
+              - generic [ref=e1125]:
+                - generic [ref=e1126]: Boston Red Sox
+                - img "Boston Red Sox logo" [ref=e1128]
+            - generic [ref=e1129]:
+              - generic [ref=e1130]: LOCKED RUN PICK
+              - generic [ref=e1131]: UNDER 10.5 · 65.1%
+              - generic [ref=e1132]: Final total 6 · Snapshot 1:01 PM EDT
+            - emphasis [ref=e1133]: CORRECT
+        - navigation "Completed totals prediction pages" [ref=e1134]:
+          - button [disabled] [ref=e1135]
+          - button "1" [ref=e1138] [cursor=pointer]
+          - button "2" [ref=e1139] [cursor=pointer]
+          - button "3" [ref=e1140] [cursor=pointer]
+          - button "4" [ref=e1141] [cursor=pointer]
+          - button [ref=e1142] [cursor=pointer]
+        - generic [ref=e1145]: Last archived projection at or before scheduled first pitch · refreshes every 60 seconds
+      - generic [ref=e1146]:
+        - generic [ref=e1147]:
+          - generic [ref=e1148]:
+            - text: DAILY PLAYER-PROP AUDIT
+            - heading "How did the player models do that day?" [level=2] [ref=e1149]
+            - paragraph [ref=e1150]: Each result is the final displayed recommendation locked before first pitch. Players who did not participate and exact-line pushes are voided.
+          - generic [ref=e1151]:
+            - generic [ref=e1152]:
+              - generic [ref=e1153]: Player props evaluation date
+              - button "Jul 24, 2026" [ref=e1154] [cursor=pointer]
+            - generic [ref=e1160]:
+              - generic [ref=e1161]: Prop statistics
+              - button "All 16 selected 16" [expanded] [active] [ref=e1162] [cursor=pointer]:
+                - generic [ref=e1163]: All 16 selected
+                - generic [ref=e1164]: "16"
+              - generic [ref=e1381]:
+                - generic [ref=e1382]:
+                  - button "SELECT ALL" [ref=e1383] [cursor=pointer]
+                  - button "CLEAR" [ref=e1384] [cursor=pointer]
+                - listbox [ref=e1385]:
+                  - option "Batter · hits Training audit and deployed results" [selected] [ref=e1386] [cursor=pointer]:
+                    - generic [ref=e1387]:
+                      - generic [ref=e1388]: Batter · hits
+                      - generic [ref=e1389]: Training audit and deployed results
+                  - option "Batter · total bases Training audit and deployed results" [selected] [ref=e1393] [cursor=pointer]:
+                    - generic [ref=e1394]:
+                      - generic [ref=e1395]: Batter · total bases
+                      - generic [ref=e1396]: Training audit and deployed results
+                  - option "Batter · home runs Training audit and deployed results" [selected] [ref=e1400] [cursor=pointer]:
+                    - generic [ref=e1401]:
+                      - generic [ref=e1402]: Batter · home runs
+                      - generic [ref=e1403]: Training audit and deployed results
+                  - option "Batter · runs Training audit and deployed results" [selected] [ref=e1407] [cursor=pointer]:
+                    - generic [ref=e1408]:
+                      - generic [ref=e1409]: Batter · runs
+                      - generic [ref=e1410]: Training audit and deployed results
+                  - option "Batter · rbi Training audit and deployed results" [selected] [ref=e1414] [cursor=pointer]:
+                    - generic [ref=e1415]:
+                      - generic [ref=e1416]: Batter · rbi
+                      - generic [ref=e1417]: Training audit and deployed results
+                  - option "Batter · walks Training audit and deployed results" [selected] [ref=e1421] [cursor=pointer]:
+                    - generic [ref=e1422]:
+                      - generic [ref=e1423]: Batter · walks
+                      - generic [ref=e1424]: Training audit and deployed results
+                  - option "Batter · strikeouts Training audit and deployed results" [selected] [ref=e1428] [cursor=pointer]:
+                    - generic [ref=e1429]:
+                      - generic [ref=e1430]: Batter · strikeouts
+                      - generic [ref=e1431]: Training audit and deployed results
+                  - option "Batter · doubles Training audit and deployed results" [selected] [ref=e1435] [cursor=pointer]:
+                    - generic [ref=e1436]:
+                      - generic [ref=e1437]: Batter · doubles
+                      - generic [ref=e1438]: Training audit and deployed results
+                  - option "Batter · stolen bases Training audit and deployed results" [selected] [ref=e1442] [cursor=pointer]:
+                    - generic [ref=e1443]:
+                      - generic [ref=e1444]: Batter · stolen bases
+                      - generic [ref=e1445]: Training audit and deployed results
+                  - option "Pitcher · strikeouts Training audit and deployed results" [selected] [ref=e1449] [cursor=pointer]:
+                    - generic [ref=e1450]:
+                      - generic [ref=e1451]: Pitcher · strikeouts
+                      - generic [ref=e1452]: Training audit and deployed results
+                  - option "Pitcher · outs Training audit and deployed results" [selected] [ref=e1456] [cursor=pointer]:
+                    - generic [ref=e1457]:
+                      - generic [ref=e1458]: Pitcher · outs
+                      - generic [ref=e1459]: Training audit and deployed results
+                  - option "Pitcher · walks Training audit and deployed results" [selected] [ref=e1463] [cursor=pointer]:
+                    - generic [ref=e1464]:
+                      - generic [ref=e1465]: Pitcher · walks
+                      - generic [ref=e1466]: Training audit and deployed results
+                  - option "Pitcher · hits allowed Training audit and deployed results" [selected] [ref=e1470] [cursor=pointer]:
+                    - generic [ref=e1471]:
+                      - generic [ref=e1472]: Pitcher · hits allowed
+                      - generic [ref=e1473]: Training audit and deployed results
+                  - option "Pitcher · earned runs Training audit and deployed results" [selected] [ref=e1477] [cursor=pointer]:
+                    - generic [ref=e1478]:
+                      - generic [ref=e1479]: Pitcher · earned runs
+                      - generic [ref=e1480]: Training audit and deployed results
+                  - option "Pitcher · home runs allowed Training audit and deployed results" [selected] [ref=e1484] [cursor=pointer]:
+                    - generic [ref=e1485]:
+                      - generic [ref=e1486]: Pitcher · home runs allowed
+                      - generic [ref=e1487]: Training audit and deployed results
+                  - option "Pitcher · pitches Training audit and deployed results" [selected] [ref=e1491] [cursor=pointer]:
+                    - generic [ref=e1492]:
+                      - generic [ref=e1493]: Pitcher · pitches
+                      - generic [ref=e1494]: Training audit and deployed results
+            - generic [ref=e1167]:
+              - generic [ref=e1168]: JULY 24, 2026
+              - strong [ref=e1169]: —
+              - generic [ref=e1170]: 0 correct · 0 missed · Brier —
+        - generic [ref=e1171]: No settled pregame player-prop recommendations were found for July 24, 2026.
+      - generic [ref=e1172]:
+        - generic [ref=e1173]:
+          - generic [ref=e1174]:
+            - text: LIVE PLAYER-PROP RECORD
+            - heading "Finished player-prop predictions." [level=2] [ref=e1175]
+            - paragraph [ref=e1176]: This deployment audit is separate from the 2025–26 training backtest above. Only exact recommendations archived before first pitch are scored.
+          - generic [ref=e1177]:
+            - generic [ref=e1178]:
+              - generic [ref=e1179]: Prop statistics
+              - button "All 16 selected 16" [ref=e1180] [cursor=pointer]:
+                - generic [ref=e1181]: All 16 selected
+                - generic [ref=e1182]: "16"
+            - generic [ref=e1185]:
+              - generic [ref=e1186]: RUNNING HIT RATE
+              - strong [ref=e1187]: 59.0%
+              - generic [ref=e1188]: 59 / 100 · Brier 0.220
+        - generic [ref=e1189]:
+          - article [ref=e1190]:
+            - generic [ref=e1191]: BATTER · HITS
+            - generic [ref=e1192]: 50.0%
+            - generic [ref=e1193]: 17 / 34 · Brier 0.237
+          - article [ref=e1194]:
+            - generic [ref=e1195]: BATTER · HOME RUNS
+            - generic [ref=e1196]: 87.5%
+            - generic [ref=e1197]: 14 / 16 · Brier 0.118
+          - article [ref=e1198]:
+            - generic [ref=e1199]: BATTER · RUNS
+            - generic [ref=e1200]: 52.9%
+            - generic [ref=e1201]: 18 / 34 · Brier 0.250
+          - article [ref=e1202]:
+            - generic [ref=e1203]: PITCHER · HITS ALLOWED
+            - generic [ref=e1204]: 100.0%
+            - generic [ref=e1205]: 4 / 4 · Brier 0.188
+          - article [ref=e1206]:
+            - generic [ref=e1207]: PITCHER · PITCHING OUTS
+            - generic [ref=e1208]: 50.0%
+            - generic [ref=e1209]: 2 / 4 · Brier 0.230
+          - article [ref=e1210]:
+            - generic [ref=e1211]: PITCHER · STRIKEOUTS
+            - generic [ref=e1212]: 50.0%
+            - generic [ref=e1213]: 2 / 4 · Brier 0.232
+          - article [ref=e1214]:
+            - generic [ref=e1215]: PITCHER · WALKS
+            - generic [ref=e1216]: 50.0%
+            - generic [ref=e1217]: 2 / 4 · Brier 0.248
+        - generic [ref=e1218]:
+          - link "Jul 23 Andrew Velazquez headshot Andrew Velazquez Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 97.7% Official result 0 Home runs · Snapshot 5:14 PM EDT CORRECT" [ref=e1219] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1220]: Jul 23
+            - generic [ref=e1221]:
+              - img "Andrew Velazquez headshot" [ref=e1224]
+              - generic [ref=e1225]:
+                - generic [ref=e1226]: Andrew Velazquez
+                - generic [ref=e1227]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1228]:
+              - generic [ref=e1229]: LOCKED HOME RUNS
+              - generic [ref=e1230]: UNDER 0.5 · 97.7%
+              - generic [ref=e1231]: Official result 0 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1232]: CORRECT
+          - link "Jul 23 Josh Rojas headshot Josh Rojas Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 94.5% Official result 0 Home runs · Snapshot 5:14 PM EDT CORRECT" [ref=e1233] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1234]: Jul 23
+            - generic [ref=e1235]:
+              - img "Josh Rojas headshot" [ref=e1238]
+              - generic [ref=e1239]:
+                - generic [ref=e1240]: Josh Rojas
+                - generic [ref=e1241]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1242]:
+              - generic [ref=e1243]: LOCKED HOME RUNS
+              - generic [ref=e1244]: UNDER 0.5 · 94.5%
+              - generic [ref=e1245]: Official result 0 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1246]: CORRECT
+          - link "Jul 23 Michael Massey headshot Michael Massey Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 92.9% Official result 0 Home runs · Snapshot 5:14 PM EDT CORRECT" [ref=e1247] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1248]: Jul 23
+            - generic [ref=e1249]:
+              - img "Michael Massey headshot" [ref=e1252]
+              - generic [ref=e1253]:
+                - generic [ref=e1254]: Michael Massey
+                - generic [ref=e1255]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1256]:
+              - generic [ref=e1257]: LOCKED HOME RUNS
+              - generic [ref=e1258]: UNDER 0.5 · 92.9%
+              - generic [ref=e1259]: Official result 0 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1260]: CORRECT
+          - link "Jul 23 Zach McKinstry headshot Zach McKinstry Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 91.4% Official result 0 Home runs · Snapshot 5:14 PM EDT CORRECT" [ref=e1261] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1262]: Jul 23
+            - generic [ref=e1263]:
+              - img "Zach McKinstry headshot" [ref=e1266]
+              - generic [ref=e1267]:
+                - generic [ref=e1268]: Zach McKinstry
+                - generic [ref=e1269]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1270]:
+              - generic [ref=e1271]: LOCKED HOME RUNS
+              - generic [ref=e1272]: UNDER 0.5 · 91.4%
+              - generic [ref=e1273]: Official result 0 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1274]: CORRECT
+          - link "Jul 23 Isaac Collins headshot Isaac Collins Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 91.4% Official result 1 Home runs · Snapshot 5:14 PM EDT MISSED" [ref=e1275] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1276]: Jul 23
+            - generic [ref=e1277]:
+              - img "Isaac Collins headshot" [ref=e1280]
+              - generic [ref=e1281]:
+                - generic [ref=e1282]: Isaac Collins
+                - generic [ref=e1283]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1284]:
+              - generic [ref=e1285]: LOCKED HOME RUNS
+              - generic [ref=e1286]: UNDER 0.5 · 91.4%
+              - generic [ref=e1287]: Official result 1 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1288]: MISSED
+          - link "Jul 23 James Outman headshot James Outman Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 90.8% Official result 1 Home runs · Snapshot 5:14 PM EDT MISSED" [ref=e1289] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1290]: Jul 23
+            - generic [ref=e1291]:
+              - img "James Outman headshot" [ref=e1294]
+              - generic [ref=e1295]:
+                - generic [ref=e1296]: James Outman
+                - generic [ref=e1297]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1298]:
+              - generic [ref=e1299]: LOCKED HOME RUNS
+              - generic [ref=e1300]: UNDER 0.5 · 90.8%
+              - generic [ref=e1301]: Official result 1 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1302]: MISSED
+          - link "Jul 23 Colt Keith headshot Colt Keith Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 90.8% Official result 0 Home runs · Snapshot 5:14 PM EDT CORRECT" [ref=e1303] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1304]: Jul 23
+            - generic [ref=e1305]:
+              - img "Colt Keith headshot" [ref=e1308]
+              - generic [ref=e1309]:
+                - generic [ref=e1310]: Colt Keith
+                - generic [ref=e1311]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1312]:
+              - generic [ref=e1313]: LOCKED HOME RUNS
+              - generic [ref=e1314]: UNDER 0.5 · 90.8%
+              - generic [ref=e1315]: Official result 0 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1316]: CORRECT
+          - link "Jul 23 Gleyber Torres headshot Gleyber Torres Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 89.0% Official result 0 Home runs · Snapshot 5:14 PM EDT CORRECT" [ref=e1317] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1318]: Jul 23
+            - generic [ref=e1319]:
+              - img "Gleyber Torres headshot" [ref=e1322]
+              - generic [ref=e1323]:
+                - generic [ref=e1324]: Gleyber Torres
+                - generic [ref=e1325]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1326]:
+              - generic [ref=e1327]: LOCKED HOME RUNS
+              - generic [ref=e1328]: UNDER 0.5 · 89.0%
+              - generic [ref=e1329]: Official result 0 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1330]: CORRECT
+          - link "Jul 23 Lane Thomas headshot Lane Thomas Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 87.2% Official result 0 Home runs · Snapshot 5:14 PM EDT CORRECT" [ref=e1331] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1332]: Jul 23
+            - generic [ref=e1333]:
+              - img "Lane Thomas headshot" [ref=e1336]
+              - generic [ref=e1337]:
+                - generic [ref=e1338]: Lane Thomas
+                - generic [ref=e1339]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1340]:
+              - generic [ref=e1341]: LOCKED HOME RUNS
+              - generic [ref=e1342]: UNDER 0.5 · 87.2%
+              - generic [ref=e1343]: Official result 0 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1344]: CORRECT
+          - link "Jul 23 Vinnie Pasquantino headshot Vinnie Pasquantino Kansas City Royals AT Detroit Tigers LOCKED HOME RUNS UNDER 0.5 · 87.2% Official result 0 Home runs · Snapshot 5:14 PM EDT CORRECT" [ref=e1345] [cursor=pointer]:
+            - /url: /games/824247
+            - time [ref=e1346]: Jul 23
+            - generic [ref=e1347]:
+              - img "Vinnie Pasquantino headshot" [ref=e1350]
+              - generic [ref=e1351]:
+                - generic [ref=e1352]: Vinnie Pasquantino
+                - generic [ref=e1353]: Kansas City Royals AT Detroit Tigers
+            - generic [ref=e1354]:
+              - generic [ref=e1355]: LOCKED HOME RUNS
+              - generic [ref=e1356]: UNDER 0.5 · 87.2%
+              - generic [ref=e1357]: Official result 0 Home runs · Snapshot 5:14 PM EDT
+            - emphasis [ref=e1358]: CORRECT
+        - navigation "Completed player-prop prediction pages" [ref=e1359]:
+          - button [disabled] [ref=e1360]
+          - button "1" [ref=e1363] [cursor=pointer]
+          - button "2" [ref=e1364] [cursor=pointer]
+          - button "3" [ref=e1365] [cursor=pointer]
+          - button "4" [ref=e1366] [cursor=pointer]
+          - button "5" [ref=e1367] [cursor=pointer]
+          - button "6" [ref=e1368] [cursor=pointer]
+          - button "7" [ref=e1369] [cursor=pointer]
+          - button [ref=e1370] [cursor=pointer]
+        - generic [ref=e1373]: Last archived displayed player-prop recommendation at or before scheduled first pitch · refreshes every 60 seconds
+      - generic [ref=e1374]:
+        - text: V4 / CALIBRATED BLEND
+        - heading "Probability quality comes first." [level=2] [ref=e1375]
+        - paragraph [ref=e1376]: V4 combines the stable capped-run-margin signal with a conservative nonlinear challenger and shrinks measured overconfidence. Recent and live deployment audits remain visible because this is decision support, not a guarantee.
+        - link "BASEBALL SAVANT SOURCE" [ref=e1377] [cursor=pointer]:
+          - /url: https://baseballsavant.mlb.com/en/statcast_search

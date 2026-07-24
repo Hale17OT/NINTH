@@ -5,6 +5,10 @@ import AnimatedNumber from '../ui/AnimatedNumber.vue'
 
 const props = defineProps({ game: { type: Object, required: true }, refreshing: Boolean })
 const projection = computed(() => props.game?.projection)
+const displayedProbabilities = computed(() => {
+  const away = Math.round(Math.max(0, Math.min(1, Number(projection.value?.away_win_probability || 0))) * 1000) / 10
+  return { away, home: Number((100 - away).toFixed(1)) }
+})
 const isFinal = computed(() => /final|completed|game over/i.test(props.game?.status || ''))
 const probability = value => `${Math.round(Number(value || 0) * 100)}%`
 const projectedTeam = computed(() => projection.value?.projected_side === 'home' ? props.game.home : props.game.away)
@@ -33,9 +37,9 @@ const liveStateLabel = computed(() => liveState.value ? `${liveState.value.half}
         <strong v-if="actualSide" :class="pickCorrect ? 'correct' : 'missed'">{{ pickCorrect ? 'MODEL PICK CORRECT' : 'MODEL PICK MISSED' }}</strong>
       </div>
       <div class="probabilities">
-        <div class="team"><TeamLogo :team="game.away" :size="48"/><span><small>{{ game.away.abbr }} {{ isFinal ? 'FORECAST' : 'WIN' }}</small><strong class="mono"><AnimatedNumber :value="projection.away_win_probability*100" suffix="%"/></strong></span></div>
+        <div class="team"><TeamLogo :team="game.away" :size="48"/><span><small>{{ game.away.abbr }} {{ isFinal ? 'FORECAST' : 'WIN' }}</small><strong class="mono"><AnimatedNumber :value="displayedProbabilities.away" :decimals="1" suffix="%"/></strong></span></div>
         <div class="pick"><small>{{ isFinal ? 'ORIGINAL MODEL PICK' : 'PROJECTED SIDE' }}</small><b>{{ projectedTeam.name }}</b><span>{{ isFinal ? 'Archived forecast · before the result' : projection.projection_phase === 'live' ? 'Pregame model + official game state' : 'Market-free moneyline forecast' }}</span></div>
-        <div class="team home"><span><small>{{ game.home.abbr }} {{ isFinal ? 'FORECAST' : 'WIN' }}</small><strong class="mono"><AnimatedNumber :value="projection.home_win_probability*100" suffix="%"/></strong></span><TeamLogo :team="game.home" :size="48"/></div>
+        <div class="team home"><span><small>{{ game.home.abbr }} {{ isFinal ? 'FORECAST' : 'WIN' }}</small><strong class="mono"><AnimatedNumber :value="displayedProbabilities.home" :decimals="1" suffix="%"/></strong></span><TeamLogo :team="game.home" :size="48"/></div>
       </div>
       <div class="probability-bar"><i :style="{width: probability(projection.away_win_probability)}"></i><i :style="{width: probability(projection.home_win_probability)}"></i></div>
 

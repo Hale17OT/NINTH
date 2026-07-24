@@ -1,0 +1,131 @@
+- generic [ref=e6]:
+  - banner [ref=e8]:
+    - link [ref=e10] [cursor=pointer]:
+      - /url: /en
+      - img "MelBet" [ref=e11]
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - list [ref=e14]:
+          - listitem [ref=e15]
+        - list [ref=e23]:
+          - listitem [ref=e24]:
+            - link "YouTube" [ref=e25] [cursor=pointer]:
+              - /url: https://www.youtube.com/channel/UCM6TzBsbcF_8v0VUETRxNkw
+          - listitem [ref=e29]:
+            - link "Telegram" [ref=e30] [cursor=pointer]:
+              - /url: https://t.me/melbetethiopiatg
+      - generic [ref=e34]:
+        - link "Become a payment agent" [ref=e35] [cursor=pointer]:
+          - /url: https://melbetagents.com/
+        - link "Registration" [ref=e40] [cursor=pointer]:
+          - /url: /en/registration
+        - button [disabled] [ref=e44]
+    - generic [ref=e52]:
+      - list [ref=e53]:
+        - listitem [ref=e54]:
+          - link "Sports" [ref=e55] [cursor=pointer]:
+            - /url: /en/line
+        - listitem [ref=e60]:
+          - link "Live" [ref=e61] [cursor=pointer]:
+            - /url: /en/live
+        - listitem [ref=e66]:
+          - link "Fast Games" [ref=e67] [cursor=pointer]:
+            - /url: /en/games
+        - listitem [ref=e72]:
+          - link "Casino" [ref=e73] [cursor=pointer]:
+            - /url: /en/slots
+        - listitem [ref=e78]:
+          - button "More" [ref=e79]
+      - link "Terms and Conditions" [ref=e84] [cursor=pointer]:
+        - /url: /en/information/rules
+  - generic [ref=e93]:
+    - complementary "Side panel" [ref=e95]:
+      - button "Collapse/Expand" [ref=e96]:
+        - generic [ref=e97]: Collapse block
+      - navigation:
+        - list
+      - generic [ref=e103]:
+        - link "Statistics" [ref=e104] [cursor=pointer]:
+          - /url: /en/statistic
+        - link "Results" [ref=e107] [cursor=pointer]:
+          - /url: /en/results
+    - main [ref=e111]:
+      - list [ref=e216]:
+        - listitem [ref=e217]:
+          - generic [ref=e218]:
+            - link "USA. MLB" [ref=e224] [cursor=pointer]:
+              - /url: /en/line/baseball/166775-usa-mlb
+            - generic:
+              - link:
+                - /url: /en/line/baseball/166775-usa-mlb
+          - list [ref=e231]:
+            - listitem [ref=e232]:
+              - generic [ref=e233]: 23 July
+            - listitem [ref=e234]:
+              - generic [ref=e235]:
+                - generic [ref=e236]:
+                  - generic [ref=e237]:
+                    - button "Pin" [ref=e238]
+                    - button "Add to favorites" [ref=e242]
+                  - link "Cleveland Guardians Minnesota Twins" [ref=e246] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb/353369844-cleveland-guardians-minnesota-twins
+                    - generic [ref=e249]:
+                      - generic [ref=e250]: Cleveland Guardians
+                      - generic [ref=e253]: Minnesota Twins
+                - button "Show sub-games" [ref=e257]
+              - button [ref=e261]
+            - listitem [ref=e264]:
+              - generic [ref=e265]:
+                - generic [ref=e266]:
+                  - generic [ref=e267]:
+                    - button "Pin" [ref=e268]
+                    - button "Add to favorites" [ref=e272]
+                  - link "Toronto Blue Jays Tampa Bay Rays" [ref=e276] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb/353370148-toronto-blue-jays-tampa-bay-rays
+                    - generic [ref=e279]:
+                      - generic [ref=e280]: Toronto Blue Jays
+                      - generic [ref=e283]: Tampa Bay Rays
+                - button "Show sub-games" [ref=e287]
+              - button [ref=e291]
+            - listitem [ref=e294]:
+              - generic [ref=e295]: 24 July
+            - listitem [ref=e296]:
+              - generic [ref=e297]:
+                - generic [ref=e298]:
+                  - generic [ref=e299]:
+                    - button "Pin" [ref=e300]
+                    - button "Add to favorites" [ref=e304]
+                  - link "St.Louis Cardinals Arizona Diamondbacks" [ref=e308] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb/353369242-stlouis-cardinals-arizona-diamondbacks
+                    - generic [ref=e311]:
+                      - generic [ref=e312]: St.Louis Cardinals
+                      - generic [ref=e315]: Arizona Diamondbacks
+                - button "Show sub-games" [ref=e319]
+              - button [ref=e323]
+            - listitem [ref=e326]:
+              - generic [ref=e327]:
+                - generic [ref=e328]:
+                  - generic [ref=e329]:
+                    - button "Pin" [ref=e330]
+                    - button "Add to favorites" [ref=e334]
+                  - link "Detroit Tigers Kansas City Royals" [ref=e338] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb/353369234-detroit-tigers-kansas-city-royals
+                    - generic [ref=e341]:
+                      - generic [ref=e342]: Detroit Tigers
+                      - generic [ref=e345]: Kansas City Royals
+                - button "Show sub-games" [ref=e349]
+              - button [ref=e353]
+    - complementary [ref=e357]:
+      - button "Collapse/Expand" [ref=e358]:
+        - generic [ref=e359]: Collapse block
+      - list [ref=e380]:
+        - listitem [ref=e381]
+        - listitem [ref=e382]
+        - listitem [ref=e383]:
+          - paragraph
+          - paragraph
+        - listitem [ref=e384]
+        - listitem
+  - generic:
+    - generic:
+      - contentinfo

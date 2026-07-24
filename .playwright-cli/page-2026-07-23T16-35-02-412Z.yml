@@ -1,0 +1,130 @@
+- generic [ref=f2e6]:
+  - banner [ref=f2e8]:
+    - link [ref=f2e10] [cursor=pointer]:
+      - /url: /en
+      - img "MelBet" [ref=f2e11]
+    - generic [ref=f2e12]:
+      - generic [ref=f2e13]:
+        - list [ref=f2e14]:
+          - listitem [ref=f2e15]
+        - list [ref=f2e23]:
+          - listitem [ref=f2e24]:
+            - link "YouTube" [ref=f2e25] [cursor=pointer]:
+              - /url: https://www.youtube.com/channel/UCM6TzBsbcF_8v0VUETRxNkw
+          - listitem [ref=f2e29]:
+            - link "Telegram" [ref=f2e30] [cursor=pointer]:
+              - /url: https://t.me/melbetethiopiatg
+      - generic [ref=f2e34]:
+        - link "Become a payment agent" [ref=f2e35] [cursor=pointer]:
+          - /url: https://melbetagents.com/
+        - link "Registration" [ref=f2e40] [cursor=pointer]:
+          - /url: /en/registration
+        - button [disabled] [ref=f2e44]
+    - generic [ref=f2e53]:
+      - list [ref=f2e54]:
+        - listitem [ref=f2e55]:
+          - link "Sports" [ref=f2e56] [cursor=pointer]:
+            - /url: /en/line
+        - listitem [ref=f2e61]:
+          - link "Live" [ref=f2e62] [cursor=pointer]:
+            - /url: /en/live
+        - listitem [ref=f2e67]:
+          - link "Fast Games" [ref=f2e68] [cursor=pointer]:
+            - /url: /en/games
+        - listitem [ref=f2e73]:
+          - link "Casino" [ref=f2e74] [cursor=pointer]:
+            - /url: /en/slots
+        - listitem [ref=f2e79]:
+          - button "More" [ref=f2e80] [cursor=pointer]
+      - link "Terms and Conditions" [ref=f2e85] [cursor=pointer]:
+        - /url: /en/information/rules
+  - generic [ref=f2e94]:
+    - complementary "Side panel" [ref=f2e96]:
+      - button "Collapse/Expand" [ref=f2e97] [cursor=pointer]:
+        - generic [ref=f2e98]: Collapse block
+      - navigation [ref=f2e102]:
+        - list [ref=f2e103]
+      - generic [ref=f2e177]:
+        - link "Statistics" [ref=f2e178] [cursor=pointer]:
+          - /url: /en/statistic
+        - link "Results" [ref=f2e181] [cursor=pointer]:
+          - /url: /en/results
+    - main [ref=f2e185]:
+      - list [ref=f2e295]:
+        - listitem [ref=f2e296]:
+          - generic [ref=f2e297]:
+            - link "USA. MLB" [ref=f2e303] [cursor=pointer]:
+              - /url: /en/line/baseball/166775-usa-mlb
+            - generic [ref=f2e311]:
+              - link:
+                - /url: /en/line/baseball/166775-usa-mlb
+          - list [ref=f2e312]:
+            - listitem [ref=f2e313]:
+              - generic [ref=f2e314]: 23 July
+            - listitem [ref=f2e315]:
+              - generic [ref=f2e316]:
+                - generic [ref=f2e317]:
+                  - generic [ref=f2e318]:
+                    - button "Pin" [ref=f2e319] [cursor=pointer]
+                    - button "Add to favorites" [ref=f2e323] [cursor=pointer]
+                  - link "Cleveland Guardians Minnesota Twins" [ref=f2e327] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb/353369844-cleveland-guardians-minnesota-twins
+                    - generic [ref=f2e330]:
+                      - generic [ref=f2e331]: Cleveland Guardians
+                      - generic [ref=f2e334]: Minnesota Twins
+                - button "Show sub-games" [ref=f2e338] [cursor=pointer]
+              - button [ref=f2e345] [cursor=pointer]
+            - listitem [ref=f2e347]:
+              - generic [ref=f2e348]:
+                - generic [ref=f2e349]:
+                  - generic [ref=f2e350]:
+                    - button "Pin" [ref=f2e351] [cursor=pointer]
+                    - button "Add to favorites" [ref=f2e355] [cursor=pointer]
+                  - link "Toronto Blue Jays Tampa Bay Rays" [ref=f2e359] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb/353370148-toronto-blue-jays-tampa-bay-rays
+                    - generic [ref=f2e362]:
+                      - generic [ref=f2e363]: Toronto Blue Jays
+                      - generic [ref=f2e366]: Tampa Bay Rays
+                - button "Show sub-games" [ref=f2e370] [cursor=pointer]
+              - button [ref=f2e377] [cursor=pointer]
+            - listitem [ref=f2e379]:
+              - generic [ref=f2e380]: 24 July
+            - listitem [ref=f2e381]:
+              - generic [ref=f2e382]:
+                - generic [ref=f2e383]:
+                  - generic [ref=f2e384]:
+                    - button "Pin" [ref=f2e385] [cursor=pointer]
+                    - button "Add to favorites" [ref=f2e389] [cursor=pointer]
+                  - link "St.Louis Cardinals Arizona Diamondbacks" [ref=f2e393] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb/353369242-stlouis-cardinals-arizona-diamondbacks
+                    - generic [ref=f2e396]:
+                      - generic [ref=f2e397]: St.Louis Cardinals
+                      - generic [ref=f2e400]: Arizona Diamondbacks
+                - button "Show sub-games" [ref=f2e404] [cursor=pointer]
+              - button [ref=f2e411] [cursor=pointer]
+            - listitem [ref=f2e413]:
+              - generic [ref=f2e414]:
+                - generic [ref=f2e415]:
+                  - generic [ref=f2e416]:
+                    - button "Pin" [ref=f2e417] [cursor=pointer]
+                    - button "Add to favorites" [ref=f2e421] [cursor=pointer]
+                  - link "Detroit Tigers Kansas City Royals" [ref=f2e425] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb/353369234-detroit-tigers-kansas-city-royals
+                    - generic [ref=f2e428]:
+                      - generic [ref=f2e429]: Detroit Tigers
+                      - generic [ref=f2e432]: Kansas City Royals
+                - button "Show sub-games" [ref=f2e436] [cursor=pointer]
+              - button [ref=f2e443] [cursor=pointer]
+    - complementary [ref=f2e446]:
+      - button "Collapse/Expand" [ref=f2e447] [cursor=pointer]:
+        - generic [ref=f2e448]: Collapse block
+      - list [ref=f2e469]:
+        - listitem [ref=f2e470]
+        - listitem [ref=f2e471]
+        - listitem [ref=f2e472]:
+          - paragraph [ref=f2e473]
+          - paragraph [ref=f2e474]
+        - listitem [ref=f2e475]
+        - listitem
+  - generic [ref=f2e477]:
+    - contentinfo

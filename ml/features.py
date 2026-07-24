@@ -11,7 +11,11 @@ FEATURE_NAMES = [
     'rest_days_difference', 'starter_elo_difference', 'starter_rest_difference',
     'starter_era_difference', 'starter_whip_difference', 'lineup_ops_difference',
     'bullpen_3day_pitches_difference', 'temperature_f', 'wind_speed_mph',
-    'context_available'
+    'context_available', 'prior_season_win_pct_difference',
+    'prior_season_pythagorean_difference', 'prior_season_run_margin_difference',
+    'shrunk_current_win_pct_difference', 'shrunk_current_pythagorean_difference',
+    'shrunk_current_run_margin_difference', 'season_progress',
+    'early_prior_strength_interaction', 'mature_current_strength_interaction'
 ]
 
 def _new_team():
@@ -19,7 +23,7 @@ def _new_team():
             'home_games':0,'home_wins':0,'away_games':0,'away_wins':0,
             'results':deque(maxlen=30),'margins':deque(maxlen=30),
             'runs_for':deque(maxlen=30),'runs_allowed':deque(maxlen=30),
-            'last_date':None,'bullpen':deque(maxlen=5)}
+            'last_date':None,'bullpen':deque(maxlen=5),'previous_season':{}}
 
 def fresh_state():
     return {'teams':defaultdict(_new_team),'pitchers':{}}
@@ -59,6 +63,11 @@ def _pythagorean(team):
     if not scored and not allowed: return .5
     exponent=1.83; return scored**exponent/max(1e-9,scored**exponent+allowed**exponent)
 
+def _season_strength(value):
+    games=float(value.get('games',0));wins=float(value.get('wins',0));scored=float(value.get('runs_for_total',0));allowed=float(value.get('runs_allowed_total',0))
+    win=(wins+10)/(games+20);exponent=1.83;pyth=(scored+90)**exponent/((scored+90)**exponent+(allowed+90)**exponent);margin=(scored-allowed)/(games+20)
+    return win,pyth,margin
+
 def matchup_features(state, home_id, away_id, game_date, context=None):
     home,away=_team(state,home_id),_team(state,away_id); context=context or {}
     hc,ac=context.get('home',{}),context.get('away',{}); weather=context.get('weather',{})
@@ -67,6 +76,8 @@ def matchup_features(state, home_id, away_id, game_date, context=None):
     away_split=away['away_wins']/away['away_games'] if away['away_games'] else .5
     hp,ap=_pitcher(state,hc.get('starter_id')),_pitcher(state,ac.get('starter_id'))
     home_bullpen=float(hc.get('bullpen_recent_pitches',_bullpen(home,game_date))); away_bullpen=float(ac.get('bullpen_recent_pitches',_bullpen(away,game_date)))
+    home_prior,away_prior=_season_strength(home.get('previous_season',{})),_season_strength(away.get('previous_season',{}))
+    home_current,away_current=_season_strength(home),_season_strength(away);progress=min(1.0,min(home['games'],away['games'])/80.0)
     return [
         (home['elo']+35)-away['elo'], _rate(home['results'],5)-_rate(away['results'],5),
         _rate(home['results'],10)-_rate(away['results'],10), _rate(home['results'],20)-_rate(away['results'],20),
@@ -78,7 +89,10 @@ def matchup_features(state, home_id, away_id, game_date, context=None):
         float(ac.get('starter_era',4.5))-float(hc.get('starter_era',4.5)),
         float(ac.get('starter_whip',1.35))-float(hc.get('starter_whip',1.35)),
         float(hc.get('lineup_ops',.710))-float(ac.get('lineup_ops',.710)), away_bullpen-home_bullpen,
-        float(weather.get('temperature',65)), float(weather.get('wind_speed',0)), float(context.get('context_available',0))
+        float(weather.get('temperature',65)), float(weather.get('wind_speed',0)), float(context.get('context_available',0)),
+        home_prior[0]-away_prior[0],home_prior[1]-away_prior[1],home_prior[2]-away_prior[2],
+        home_current[0]-away_current[0],home_current[1]-away_current[1],home_current[2]-away_current[2],progress,
+        (1-progress)*(home_prior[1]-away_prior[1]),progress*(home_current[1]-away_current[1])
     ]
 
 def apply_result(state, game, context=None):
@@ -100,6 +114,7 @@ def apply_result(state, game, context=None):
 
 def reset_season_records(state):
     for team in state['teams'].values():
+        team['previous_season']={key:team.get(key,0) for key in ('games','wins','runs_for_total','runs_allowed_total')}
         for key in ('games','wins','runs_for_total','runs_allowed_total','home_games','home_wins','away_games','away_wins'):team[key]=0
 
 def serializable_state(state):

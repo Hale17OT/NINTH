@@ -18,6 +18,7 @@ The model estimates which team is more likely to win outright. Sportsbook prices
 - [Prediction model](#prediction-model)
 - [Projection lifecycle](#projection-lifecycle)
 - [Slip Builder](#slip-builder)
+- [MelBet browser helper](#melbet-browser-helper)
 - [PDF slip tracking](#pdf-slip-tracking)
 - [Persistence and multi-user readiness](#persistence-and-multi-user-readiness)
 - [Performance and reliability](#performance-and-reliability)
@@ -41,9 +42,11 @@ NINTH currently provides:
 - All 30 team pages with current records and complete active rosters grouped into rotation, bullpen, starting lineup, and bench roles.
 - An active-player directory and individual player profiles with official headshots and season statistics.
 - Global search across teams, players, and nearby games.
-- A daily or multi-day moneyline Slip Builder with adjustable leg counts and combined confidence estimates.
+- A daily or multi-day builder with Moneyline, Totals, and Mixed modes, adjustable leg counts, current listed thresholds, and market-aware all-correct estimates.
+- A dedicated Player Props builder with game-first selection, pitcher/batter filters, prop-type multi-select, Over/Under/Both recommendations, and calibrated probabilities.
+- An optional unpacked Chrome/Edge helper that revalidates and transfers exact Moneyline, Totals, Mixed, and Player Props cards without entering a stake or submitting a wager.
 - Personal PDF slip import, matching, result tracking, alerts, pagination, and chronological archives.
-- A Model Lab exposing walk-forward evaluation, selective accuracy, feature groups, and completed forward predictions.
+- A Model Lab exposing walk-forward evaluation, selective accuracy, feature groups, parlay hit rates, and dated/paginated completed records for all three model families.
 - Light and dark themes, responsive layouts, custom selects and calendars, loading states, empty states, and recoverable provider errors.
 
 No placeholder games, simulated prices, fake players, or mock projections are intentionally displayed. Missing provider data is represented as pending, unavailable, or unconfirmed.
@@ -60,8 +63,11 @@ flowchart LR
     E --> W[Open-Meteo]
     P --> M[MLB StatsAPI]
     P --> B[Baseball Savant datasets]
+    P --> L[MelBet listed-line feed]
     P --> A[Model artifacts]
     P --> S[Local slip and snapshot files]
+    V -. optional validated handoff .-> H[Chrome or Edge helper]
+    H --> L
 ```
 
 ### Service responsibilities
@@ -94,6 +100,7 @@ The Vite development server proxies `/api` to Express. Express then communicates
 - Requests
 - NumPy
 - scikit-learn
+- LightGBM
 - Joblib
 - pypdf
 
@@ -101,8 +108,8 @@ The Vite development server proxies `/api` to Express. Express then communicates
 
 - Leakage-safe chronological feature construction
 - Walk-forward season evaluation
-- Capped run-margin regression followed by probability calibration
-- Isotonic confidence calibration
+- Calibrated moneyline, total-runs distribution, and player-prop threshold models
+- LightGBM, negative-binomial/Poisson count distributions, and monotone probability calibration
 - Prior-start Baseball Savant/Statcast starter aggregates
 - Candidate-versus-incumbent promotion gates
 
@@ -115,6 +122,7 @@ The Vite development server proxies `/api` to Express. Express then communicates
 | Game-time forecasts | [Open-Meteo](https://open-meteo.com/) | Loaded progressively and cached; historical endpoint is used for older games |
 | Pitch-level starter history | [Baseball Savant](https://baseballsavant.mlb.com/) | Collected as compact prior-game aggregates; raw pitch downloads are discarded |
 | Optional sportsbook adapter | [The Odds API](https://the-odds-api.com/) | Not used by the production model; no simulated odds are shown without a key |
+| Currently listed builder markets | MelBet line feed | Event IDs, totals thresholds, and player-prop thresholds try `mel-bet.et` first and automatically retry through `melbet-322491.top`; prices are discarded |
 
 The health endpoint includes `syntheticData: false` so provider status can be audited directly.
 
@@ -184,6 +192,8 @@ The Node process reads `.env` from the project root through `dotenv`. The Python
 | `NINTH_LIVE_REFRESH_SECONDS` | `10` | Background live reassessment interval; minimum 5 seconds |
 | `NINTH_GAME_DISCOVERY_SECONDS` | `30` | How often the monitor discovers upcoming/live games |
 | `NINTH_PREGAME_MONITOR_HOURS` | `24` | Pregame monitoring horizon |
+| `NINTH_PLAYER_PROP_REFRESH_SECONDS` | `60` | Refresh and archive the current listed player-prop board independently of the UI; minimum 60 seconds |
+| `NINTH_SLIP_TIMEZONE_OFFSET_HOURS` | `3` | Time-zone offset used to interpret printed slip timestamps |
 | `NINTH_MAINTENANCE_ENABLED` | `1` | Enable guarded model/data maintenance checks |
 | `NINTH_MAINTENANCE_CHECK_SECONDS` | `3600` | Maintenance check interval; minimum 900 seconds |
 | `NINTH_ENRICH_WORKERS` | `6` | Worker count for scheduled context enrichment |
@@ -206,6 +216,8 @@ NINTH_PREGAME_REFRESH_SECONDS=60
 NINTH_LIVE_REFRESH_SECONDS=10
 NINTH_GAME_DISCOVERY_SECONDS=30
 NINTH_PREGAME_MONITOR_HOURS=24
+NINTH_PLAYER_PROP_REFRESH_SECONDS=60
+NINTH_SLIP_TIMEZONE_OFFSET_HOURS=3
 
 NINTH_MAINTENANCE_ENABLED=1
 NINTH_MAINTENANCE_CHECK_SECONDS=3600
@@ -244,8 +256,21 @@ python ml/enrich.py --start-season 2018 --end-season 2026 --workers 12
 # Collect resumable Baseball Savant starter aggregates
 python ml/statcast_collect.py --start 2018-03-01 --end 2026-07-14
 
-# Train and evaluate V3
+# Train and evaluate the moneyline model
 python -m ml.train_v3
+
+# Train and audit the promoted total-runs distribution model
+python -m ml.train_totals_v3
+
+# Collect official player outcomes (resumable), then train prop models
+python ml/collect_player_boxscores.py --workers 12
+python -m ml.train_player_props
+
+# Rebuild market-specific daily and multi-day card calibration
+python -m ml.calibrate_market_slips
+
+# Re-run the guarded moneyline-v5 research comparison
+python -m ml.tune_moneyline_v5
 
 # Run the guarded maintenance workflow once
 python -m ml.maintenance --once
@@ -265,13 +290,14 @@ Large collection jobs are resumable where manifests are available. Review provid
 | `/live` | All games currently live |
 | `/live/:id` | Live game center |
 | `/games/:id` | Matchup analysis |
-| `/builder` | Daily and multi-day Slip Builder |
+| `/builder` | Daily and multi-day Moneyline, Totals, and Mixed builder |
+| `/props-builder` | Daily and multi-day Player Props builder |
 | `/standings` | Overall, AL, NL and divisional standings |
 | `/teams` | Team directory |
 | `/teams/:id` | Team room and active roster |
 | `/players` | Active-player directory |
 | `/players/:id` | Player profile |
-| `/model` | Model evaluation and prediction ledger |
+| `/model` | Moneyline, totals, and player-prop evaluation with daily/overall ledgers |
 | `/slips` | Imported personal slips |
 | `/search?q=...` | Full search results |
 
@@ -287,13 +313,15 @@ All public application endpoints are mounted under `/api` on the Express service
 |---|---|---|
 | `GET` | `/api/health` | Service, provider, maintenance and projection-monitor status |
 | `GET` | `/api/dashboard` | Home slate, featured matchup, metrics and standings leaders |
-| `GET` | `/api/model` | Current model report and completed prediction ledger |
+| `GET` | `/api/model` | Current moneyline, totals, and player-prop model reports |
+| `GET` | `/api/model/results?market=moneyline|totals|player_props&date=YYYY-MM-DD&page=N&page_size=N&prop_types=...` | Dated and paginated completed-prediction ledger; player props support a comma-separated type filter |
 
 ### Games and projections
 
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/projection-board?start_date=YYYY-MM-DD&days=N` | Upcoming projection board; `days` is capped at 14 |
+| `GET` | `/api/player-props?start_date=YYYY-MM-DD&days=N&refresh=1` | Calibrated batter and starter prop board; `days` is capped at 7 and `refresh=1` requests a current listed-line refresh |
 | `GET` | `/api/games/today?date=YYYY-MM-DD` | Games for a date |
 | `GET` | `/api/games/live?date=YYYY-MM-DD` | Live games for a date |
 | `GET` | `/api/games/completed?date=YYYY-MM-DD` | Completed games for a date |
@@ -334,7 +362,7 @@ P(home team wins)
 P(away team wins) = 1 - P(home team wins)
 ```
 
-It predicts the straight-up winner only. Run lines, totals, sportsbook prices, public betting percentages, and implied probabilities are excluded.
+The moneyline artifact predicts the straight-up winner. A separate totals artifact forecasts game-run thresholds. Sportsbook prices, public betting percentages, and implied probabilities are excluded from both models.
 
 ### Current artifact
 
@@ -342,23 +370,61 @@ The local artifact at the time this README was generated reports:
 
 | Metric | Value |
 |---|---:|
-| Model | `v3_capped_margin_base_plus_long_starter_statcast` |
-| Status | Practical provisional promotion |
-| Deployment training games | 19,304 |
-| Trained through | 2026-07-12 |
-| Walk-forward games | 11,141 |
-| Walk-forward accuracy | 57.31% |
-| Walk-forward Brier score | 0.24237 |
-| Qualified accuracy | 62.30% |
-| Qualified coverage | 33.27% |
-| Recent 2024–2026 outer accuracy | 56.52% |
-| Recent outer Brier score | 0.24395 |
+| Model | `v5_prior_strength_calibrated_margin_histogram_blend` |
+| Status | Promoted |
+| Deployment training games | 19,365 |
+| Trained through | 2026-07-20 |
+| Walk-forward games | 11,202 |
+| Walk-forward accuracy | 57.24% |
+| Walk-forward Brier score | 0.24197 |
+| Qualified accuracy | 63.47% |
+| Qualified coverage | 29.79% |
+| Recent 2024–2026 outer accuracy | 56.41% |
+| Recent outer Brier score | 0.24357 |
 
 These values belong to the current local `report.json`; they will change after a promoted retrain. They are historical evaluation results, not promised future accuracy.
 
+Version 5 retains the conservative margin/nonlinear blend and adds explicit prior-season win, run-margin and Pythagorean strength. Prior-year strength is weighted most heavily early, then current-season strength takes over as games accumulate. The 2025–2026 temporal audit recorded a 0.24371 Brier score over 3,929 games versus 0.24425 for the prior artifact. This is a real forward-audit gain, but it does not meet the aspirational sub-0.240 target; future completed games remain the next untouched confirmation.
+
+### Total-runs distribution model
+
+`ml/train_totals.py` builds a separate `totals.joblib`; it never alters the moneyline artifact. The model forecasts `P(total runs > line)` for 6.5 through 11.5 and recommends from the practical 7.5–10.5 decision range. Its inputs include the rolling MLB run environment, both offenses and defenses, recent game totals and volatility, learned venue scoring, starters, submitted lineups, prior-three-day bullpen workload, rest, weather, and seasonality.
+
+Selectable sportsbook thresholds are query inputs, not training features. NINTH can score a supplied grid such as `7, 7.5, 8, 8.5, 9, 9.5, 10` from the same market-free run distribution while discarding prices and implied probabilities. Half-run lines have only over/under outcomes; integer lines expose separate over, under and push probabilities. The builder's per-game run-line control lets the user mirror an actually available line without allowing sportsbook prices to alter the expected-runs model.
+
+The training audit compares direct classifiers with Poisson and negative-binomial distributions, then calibrates the count mean into monotone threshold probabilities. Architecture selection uses rolling-origin 2022–2024 results; 2025–2026 remains unseen until the final audit. Production totals v3 recorded a 0.22392 mean unseen Brier score versus 0.22418 for the previous artifact. That is a modest improvement, not a profitability claim, because the system has no price or payout input.
+
+### Player-prop probability models
+
+`ml/train_player_props.py` replays official player box scores chronologically and trains separate batter and starting-pitcher threshold models. Batter targets include hits, total bases, home runs, runs, RBIs, walks, strikeouts, doubles and stolen bases. Pitcher targets include strikeouts, outs, walks, hits allowed, earned runs, home runs allowed and pitches thrown.
+
+Each model combines empirical-Bayes player form, recent and season opportunity volume, opponent tendencies, projected or confirmed batting order, probable starter history, and prior-game Statcast xwOBA, hard-hit, barrel, whiff and exit-velocity signals. Direct LightGBM threshold probabilities are blended with a Poisson or overdispersed negative-binomial count distribution, then sigmoid or isotonic calibration is selected on 2024 only. The final report is reserved for 2025-2026 and includes Brier skill against a line-specific climatology baseline so sparse outcomes cannot look strong merely by predicting the under.
+
+The Player Lab recommends at most one prop per game. This avoids presenting correlated same-game legs as independent. Its displayed card confidence is the product of calibrated leg probabilities after sample-history shrinkage; it is not a sportsbook-return or profitability estimate.
+
+Historical bullpen features are rebuilt from games preceding the prediction. The current game's final reliever usage is explicitly excluded, even though it exists in archived box scores.
+
+### July 2026 tuning audit
+
+The next moneyline research stage is data-first rather than a wider hyperparameter search: point-in-time confirmed-lineup batter xwOBA and quality-of-contact aggregation, defensive run value, explicit travel distance and time-zone change, reliever-level availability, and pitcher workload or velocity movement. Candidates must use nested rolling-origin selection, report Brier calibration and refinement separately, and beat v4 in both aggregate and season-by-season forward tests before promotion. This keeps potentially useful player-form signals from becoming a new overfitting route.
+
+Moneyline tuning also tested beta calibration, categorical team/personnel effects, score-distribution forecasts, confirmed-lineup Statcast, bullpen quality and constrained ensembles. Those candidates either regressed later seasons or could not be reproduced from live inputs. Explicit prior-season strength was the exception: it improved the later audit and became v5. The requested sub-0.240 audit target was not reached and is not claimed.
+
+The totals cycle tested game-varying dispersion, beta calibration, isotonic distribution maps, direct threshold models and rolling Statcast contact quality. Production v3 uses only components reproducible from live inputs: a negative-binomial count distribution, monotone mean calibration, direct thresholds and prior-season run strength. Its 2025–2026 mean Brier is 0.22392. More aggressive Statcast variants remain shadow-only because their historical gain cannot yet be reproduced by the live feature path.
+
+### Model Lab records
+
+The Model Lab separates the performance of each prediction family instead of combining unlike targets:
+
+- **Moneyline:** original archived pregame pick, probability, actual winner, correct/incorrect result, daily summary, overall record, and 2-8 leg card hit rates.
+- **Totals:** archived listed line and Over/Under recommendation, final runs, push handling, daily summary, and paginated overall record.
+- **Player Props:** exact archived player, prop, side, and line, official outcome, Brier score, daily and overall records, pagination, and a multi-select filter for one or more prop types.
+
+Each ledger has its own date selector. Results come only from snapshots created before the event; opening the Model Lab or a builder is not required to create the current archive. The player-prop monitor refreshes every 60 seconds by default, and the main projection monitor reassesses pregame games every 60 seconds and live games every 10 seconds.
+
 ### Feature groups
 
-The deployed artifact contains 29 market-free features:
+The deployed moneyline artifact contains 38 market-free features:
 
 **Team strength and form**
 
@@ -406,7 +472,7 @@ The matchup UI shows the four strongest material contributors. The model page li
 
 ### Promotion safeguards
 
-Maintenance trains into a candidate directory and promotes only if all gates pass:
+Maintenance trains both artifacts into a candidate directory. Each model promotes independently only if its own gates pass. Moneyline gates include:
 
 - New completed games are present.
 - Walk-forward accuracy is at least 57%.
@@ -416,6 +482,8 @@ Maintenance trains into a candidate directory and promotes only if all gates pas
 - Recent Brier score remains within the allowed stability margin.
 
 A failed candidate is deleted and cannot replace the incumbent artifact. This is intended to reduce overfitting and accidental degradation.
+
+Totals promotion separately requires new completed games, positive unseen Brier skill versus climatology, no material regression in the locked 2025–2026 Brier audit, and an acceptable selected-line Brier score.
 
 ## Projection lifecycle
 
@@ -480,21 +548,51 @@ The builder is market-free and supports:
 - Daily mode.
 - Multi-day range selection up to 14 days.
 - Adjustable targets from 2 to 10 legs.
-- Manual home or away moneyline selections.
-- Recommended cards built from the highest projected probabilities.
+- Moneyline, total-runs, and mixed model modes.
+- Manual home/away moneyline or higher/lower selections at the model-selected total.
+- Recommended cards built from the highest projected eligible probability.
+- Exactly one selection per game; moneyline and total cannot coexist for one matchup.
 - A combined all-correct estimate.
 - Input-completeness adjustments.
 - Historical calibration only where a validation cell passed its promotion gate.
+- Current MelBet event IDs and listed totals thresholds, with prices discarded before inference.
 
-The raw joint probability is the product of the selected leg probabilities. NINTH then reduces each leg's distance from 50% when official inputs are missing. A historical calibrator is applied only to eligible model-following cards in a validated range; unsupported or rejected cells remain labeled input-adjusted.
+The raw joint probability is the product of the selected leg probabilities; probabilities are never added. NINTH then reduces each leg's distance from 50% when that leg's official model inputs are missing. Moneyline, totals and mixed cards each use a separate chronological card calibration. An adjustment is applied only when the exact market, daily/multi-day horizon and 2-8 leg cell improved Brier score on the 2025-2026 forward audit and passed separate-season stability checks. Rejected or sparse cells retain the multiplicative model estimate.
+
+`python -m ml.calibrate_market_slips` regenerates `ml/artifacts/market_slip_calibration.json` from rolling-origin out-of-fold game probabilities. Automatic model maintenance regenerates this artifact after training, so a totals leg is evaluated with the totals model and a mixed card preserves the actual market selected for every game.
 
 Backtest calibration currently targets 2–8 leg cards. Nine- and ten-leg cards are displayed as extended, input-adjusted estimates.
 
 Builder selections and settings are stored in browser `localStorage`. The saved draft expires after 15 minutes without visiting the builder. Opening a matchup from the builder preserves the draft and provides context-aware return navigation.
 
+The separate Player Props builder uses the same Daily/Multi-day controls and target-leg behavior. It shows games first, then opens an in-page player market panel. Users can filter prop families, restrict automatic recommendations to Over, Under, or Both, and select only exact thresholds currently present in the listed-line feed. The target is capped by the eligible games because NINTH permits at most one recommended player-prop leg per game.
+
+## MelBet browser helper
+
+`melbet-helper/` contains the optional **NINTH MelBet Helper v0.7.2**, an unpacked Manifest V3 extension for Chrome and Edge. It supports Moneyline, Totals, Mixed, and Player Props cards.
+
+To install it locally:
+
+1. Open `chrome://extensions` or `edge://extensions`.
+2. Enable **Developer mode**.
+3. Choose **Load unpacked** and select the repository's `melbet-helper` folder.
+4. Build a card in NINTH, open **Send to MelBet**, and choose **Autofill all**.
+5. Keep the MelBet tab visible while canvas-rendered totals or player props are being selected.
+
+The transfer strategy depends on the market:
+
+- **Moneyline:** batches selections on the single MLB board, matches the exact event ID, both team names, and `W1`/`W2`, and confirms MelBet's selected-button state before advancing.
+- **Totals:** opens each event and matches only `Regular time -> Total`, the exact Over/Under side, and the exact paired threshold.
+- **Mixed:** completes the batched moneylines first, then visits the required totals events.
+- **Player Props:** matches the event, player, prop family, side, and threshold, isolates the market with MelBet's search, and validates the visible canvas click point.
+
+The helper tries `mel-bet.et` first and keeps the same session on `melbet-322491.top` if the primary market fails to render. It checks the signed-in state before each selection and performs one recovery refresh when MelBet initially forgets the session. Failed confirmations use a guarded retry of up to three attempts; before retrying, the helper checks whether the delayed click already added the leg so it cannot toggle a successful selection back off. Debugger-driven canvas operations have hard timeouts, while moneylines use normal DOM controls.
+
+Handoffs expire after 15 minutes and live only in `chrome.storage.session`. Reload the unpacked extension after pulling helper changes; it refreshes open local NINTH and active handoff tabs so the bridge is reinjected. The helper never reads credentials, enters a stake, presses a confirmation control, or submits a wager. Always review the resulting betslip manually. The bundled manifest connects to NINTH on `localhost` and `127.0.0.1`; add the deployed NINTH origin to `manifest.json` before using it from a VPS-hosted frontend. See `melbet-helper/README.md` for the full safety contract.
+
 ## PDF slip tracking
 
-The current parser supports text-based MelBet-style MLB moneyline PDFs containing `W1` or `W2` selections.
+The current parser supports text-based MelBet-style MLB moneyline PDFs containing `W1` or `W2` selections and full-game `Total Over (line)` / `Total Under (line)` selections. Moneyline and totals legs may coexist in one PDF. Total legs settle from the official combined final score, with an exact integer-line result recorded as void.
 
 Import behavior:
 
@@ -503,6 +601,8 @@ Import behavior:
 - Encrypted, damaged, unsupported, and non-PDF files return explicit errors.
 - Slip number, printed timestamp, stake, overall odds, potential return and individual legs are extracted when present.
 - Teams are matched to official MLB games.
+- Printed date/time and scheduled start time are used to distinguish consecutive-day matchups and doubleheaders.
+- A postponed ticketed game is voided instead of being silently moved to a later replacement game.
 - Active selections receive projection and circumstance alerts.
 - Active slips open by default; completed slips remain collapsed.
 - Slips are sorted newest first and paginated six per page.
@@ -520,11 +620,14 @@ This repository currently uses filesystem persistence:
 | Completed training games | `ml/data/games.jsonl` |
 | Historical contexts | `ml/data/contexts*.jsonl` |
 | Statcast aggregates and manifests | `ml/data/statcast_*.jsonl`, `ml/data/*_days.txt` |
-| Projection snapshots | `ml/data/projection_snapshots.jsonl` |
+| Pregame/live moneyline and totals snapshots | `ml/data/projection_snapshots.jsonl` |
+| Exact player-prop recommendation snapshots | `ml/data/player_prop_projection_snapshots.jsonl` |
+| Observed MelBet totals-line snapshots | `ml/data/melbet_totals_snapshots.jsonl` |
 | Imported slips | `ml/data/slips.json` |
-| Production model | `ml/artifacts/moneyline.joblib` |
-| Model report and maintenance state | `ml/artifacts/*.json` |
-| Builder draft | Browser `localStorage` |
+| Production models | `ml/artifacts/moneyline.joblib`, `totals.joblib`, `player_props.joblib` |
+| Reports, card calibration, and maintenance state | `ml/artifacts/report.json`, `totals_report.json`, `player_props_report.json`, `market_slip_calibration.json`, `maintenance_state.json` |
+| Builder drafts | Browser `localStorage`, with a 15-minute inactivity expiry |
+| Helper handoff | `chrome.storage.session`, with a 15-minute expiry |
 
 There is currently no application database, user account system, session management, or per-user data isolation.
 
@@ -550,6 +653,8 @@ Several paths are intentionally progressive:
 
 - The schedule returns official games first and merges cached Open-Meteo forecasts afterward.
 - Projection boards return real baseline predictions first and enrich nearby matchups with starters, lineups, bullpens and weather in the background.
+- MelBet listed-line requests use a primary/proxy fallback and short-lived caches; prices are discarded.
+- The player-prop archive refreshes in the background, so opening the builder is not required to record the day's exact recommendations.
 - Pitcher profiles and recent team form are cached.
 - Team and player directory requests are cached by the server adapter.
 - Duplicate browser GET requests share one in-flight promise.
@@ -580,13 +685,26 @@ npm run build
 python -m unittest stats-service/test_projection_integrity.py -v
 ```
 
-The integrity suite verifies that:
+The 30-test integrity suite currently verifies:
 
 - Final games use the last valid snapshot recorded before first pitch.
 - A final status never creates a new prediction snapshot.
+- Pregame total forecasts lock before first pitch, while live totals condition on runs and remaining innings.
 - Input-coverage changes are archived even when probability does not move.
 - Official live score, inning and base/out state move live projections.
 - Live snapshots are explicitly separated from pregame snapshots.
+- Open-Meteo rate limits fall back to cooldown/stale-cache behavior instead of breaking projections.
+- Slip refreshes are backgrounded and deduplicated.
+- Consecutive-day games, doubleheaders, postponed games, total settlement, and integer pushes resolve correctly.
+- Completed moneyline, totals, and player-prop ledgers filter, score, and paginate independently.
+- MelBet primary/proxy fallbacks discard prices and preserve exact event, group, side, and line matching.
+- Player-prop results void non-participants and never score an unlisted prop or threshold.
+
+Additional focused model/parser tests:
+
+```powershell
+python -m unittest ml.test_player_props ml.test_totals ml.test_slips -v
+```
 
 ### Syntax checks
 
@@ -642,6 +760,11 @@ Transfer or train the required model artifacts after deployment:
 ```text
 ml/artifacts/moneyline.joblib
 ml/artifacts/report.json
+ml/artifacts/totals.joblib
+ml/artifacts/totals_report.json
+ml/artifacts/player_props.joblib
+ml/artifacts/player_props_report.json
+ml/artifacts/market_slip_calibration.json
 ml/artifacts/maintenance_state.json
 ```
 
@@ -735,12 +858,17 @@ Diamond_MLB_Analytics/
 
 The `stitch_diamond_intel_analytics/` directory contains earlier visual references and is not part of the runtime application.
 
+Notable additions since the initial release include `melbet-helper/`; `src/components/builder/`; `src/views/PlayerPropsBuilderView.vue`; `src/components/ui/CustomMultiSelect.vue`; the totals feature/model/prediction/training modules; the player-prop collection, feature, prediction, and training modules; market-card calibration; and focused moneyline, totals, props, and slip research/test scripts under `ml/`.
+
 Generated logs, temporary images, `node_modules/`, `dist/`, ML data, and model artifacts should not be committed.
 
 ## Known limitations
 
 - This is currently a single-user application with no database or authentication.
 - The supported slip parser is specific to text-based MelBet-style PDFs.
+- MelBet exposes only a short current market window and can change or remove listed lines at any time.
+- The optional helper depends on MelBet's current DOM/canvas layout. Exact validation deliberately stops the handoff when that layout or a line changes.
+- The helper requires a visible MelBet tab, a restored signed-in session, and a locally loaded unpacked extension; it never completes a wager.
 - Confirmed lineups generally arrive close to first pitch, so early projections intentionally have lower input coverage.
 - Probable pitchers remain labeled predicted until they match the submitted official game roster.
 - Bullpen workload depends on official box-score availability.
@@ -749,6 +877,7 @@ Generated logs, temporary images, `node_modules/`, `dist/`, ML data, and model a
 - Weather forecasts can change and may remain pending when venue coordinates or provider responses are unavailable.
 - The explanation system uses one-feature counterfactuals; nonlinear interactions can produce non-intuitive individual effects.
 - Live probability adjustment requires continued forward validation and is not included in pregame accuracy.
+- Player-prop history is limited to outcomes reproducible from official MLB box scores and the supported listed prop families.
 - An odds-provider adapter exists, but sportsbook information is not required and is excluded from the trained model.
 - A 57–62% historical evaluation result still implies many incorrect individual predictions.
 
@@ -802,8 +931,12 @@ Confirm that it:
 - Is under 9 MB.
 - Contains selectable text.
 - Is not encrypted.
-- Contains recognizable MLB moneyline rows with `W1` or `W2`.
+- Contains recognizable MLB moneyline rows with `W1`/`W2` and/or full-game `Total Over (line)` / `Total Under (line)` rows.
 - Uses the supported MelBet-style layout.
+
+### The MelBet helper is not detected or stalls
+
+Open the browser's extensions page, reload **NINTH MelBet Helper**, and refresh the NINTH tab. Keep the active MelBet event visible while totals or player props are processed. Confirm that MelBet shows the signed-in account state; the helper performs one recovery reload but stops if Registration/Login remains visible. If the primary site does not render, allow the automatic proxy fallback. A changed event, market, side, or threshold is a safe stop and must be rebuilt from current lines in NINTH.
 
 ### Weather remains pending
 

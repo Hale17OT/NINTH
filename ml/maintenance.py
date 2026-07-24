@@ -13,6 +13,8 @@ DATA = ROOT / "ml" / "data" / "games.jsonl"
 ARTIFACTS = ROOT / "ml" / "artifacts"
 REPORT = ARTIFACTS / "report.json"
 MODEL = ARTIFACTS / "moneyline.joblib"
+TOTALS_REPORT = ARTIFACTS / "totals_report.json"
+TOTALS_MODEL = ARTIFACTS / "totals.joblib"
 STATE = ARTIFACTS / "maintenance_state.json"
 LOCK = ARTIFACTS / ".maintenance.lock"
 CANDIDATE = ARTIFACTS / "candidate"
@@ -47,9 +49,20 @@ def promotion_checks(candidate, incumbent):
         "new_completed_games": int(candidate.get("deployment_training_games", 0)) > int(incumbent.get("deployment_training_games", 0)),
         "walk_forward_accuracy": metric(candidate, "walk_forward", "accuracy") >= 0.57,
         "qualified_accuracy": float(candidate.get("qualified_accuracy") or 0) >= 0.60,
-        "walk_forward_brier": metric(candidate, "walk_forward", "brier_score", 1) <= metric(incumbent, "walk_forward", "brier_score", 1) + 0.0005,
+        "walk_forward_brier": metric(candidate, "walk_forward", "brier_score", 1) <= metric(incumbent, "walk_forward", "brier_score", 1),
         "recent_accuracy_stability": metric(candidate, "recent_outer", "accuracy") >= metric(incumbent, "recent_outer", "accuracy") - 0.005,
-        "recent_brier_stability": metric(candidate, "recent_outer", "brier_score", 1) <= metric(incumbent, "recent_outer", "brier_score", 1) + 0.001,
+        "recent_brier_stability": metric(candidate, "recent_outer", "brier_score", 1) <= metric(incumbent, "recent_outer", "brier_score", 1) + 0.00025,
+    }
+
+
+def totals_promotion_checks(candidate, incumbent):
+    candidate_brier = metric(candidate, "unseen_2025_2026", "mean_brier", 1)
+    incumbent_brier = metric(incumbent, "unseen_2025_2026", "mean_brier", 1)
+    return {
+        "new_completed_games": int(candidate.get("training_games", 0)) > int(incumbent.get("training_games", 0)),
+        "positive_unseen_brier_skill": float(candidate.get("unseen_brier_skill") or 0) > 0,
+        "unseen_brier_improvement": candidate_brier <= incumbent_brier,
+        "selected_line_brier": metric(candidate, "unseen_recommended", "brier_score", 1) <= metric(incumbent, "unseen_recommended", "brier_score", 1),
     }
 
 
@@ -85,16 +98,31 @@ def maintain(force=False, dry_run=False):
         CANDIDATE.mkdir(parents=True)
         env = os.environ.copy(); env["NINTH_ARTIFACT_DIR"] = str(CANDIDATE)
         run([sys.executable, "-m", "ml.train_v3"], env=env)
+        run([sys.executable, "-m", "ml.train_totals"], env=env)
+        run([sys.executable, "-m", "ml.calibrate_market_slips"], env=env)
         candidate = read_json(CANDIDATE / "report.json", {})
+        totals_candidate = read_json(CANDIDATE / "totals_report.json", {})
         checks = promotion_checks(candidate, incumbent)
+        totals_checks = totals_promotion_checks(totals_candidate, read_json(TOTALS_REPORT, {}))
         result["promotion_checks"] = checks
+        result["totals_promotion_checks"] = totals_checks
+        promoted = []
         if all(checks.values()):
             os.replace(CANDIDATE / "moneyline.joblib", MODEL)
             os.replace(CANDIDATE / "report.json", REPORT)
+            promoted.append("moneyline")
+        if all(totals_checks.values()):
+            os.replace(CANDIDATE / "totals.joblib", TOTALS_MODEL)
+            os.replace(CANDIDATE / "totals_report.json", TOTALS_REPORT)
+            promoted.append("totals")
+        if promoted:
+            if (CANDIDATE / "market_slip_calibration.json").exists():
+                os.replace(CANDIDATE / "market_slip_calibration.json", ARTIFACTS / "market_slip_calibration.json")
             state["last_promotion_at"] = datetime.now(timezone.utc).isoformat()
             result["status"] = "promoted"
+            result["promoted_models"] = promoted
         else:
-            result["status"] = "candidate_rejected"
+            result["status"] = "candidates_rejected"
         shutil.rmtree(CANDIDATE, ignore_errors=True)
 
     state.update({"last_sync_date": today, "last_run_at": datetime.now(timezone.utc).isoformat(), "last_result": result})

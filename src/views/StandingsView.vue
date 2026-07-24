@@ -2,10 +2,12 @@
 import { computed, onMounted, ref } from 'vue'
 import { api } from '../services/api'
 import TeamLogo from '../components/team/TeamLogo.vue'
+import LoadError from '../components/ui/LoadError.vue'
 
-const teams=ref([]),loading=ref(true),scope=ref('overall')
+const teams=ref([]),loading=ref(true),error=ref(''),scope=ref('overall')
 const scopes=[['overall','Overall'],['al','American League'],['nl','National League'],['divisions','By division']]
-onMounted(async()=>{try{teams.value=await api.teams()}finally{loading.value=false}})
+const load=async()=>{loading.value=true;error.value='';try{teams.value=await api.teams()}catch(caught){error.value=caught?.message||'Official standings could not be loaded.'}finally{loading.value=false}}
+onMounted(load)
 const ranked=computed(()=>{const values=[...teams.value].filter(team=>scope.value==='al'?team.league==='American League':scope.value==='nl'?team.league==='National League':true).sort((a,b)=>Number(b.pct)-Number(a.pct)||b.run_differential-a.run_differential);const leader=values[0];return values.map((team,index)=>({...team,games_back:index?((((Number(leader.wins)-Number(team.wins))+(Number(team.losses)-Number(leader.losses)))/2)||'—'):'—'}))})
 const divisions=computed(()=>Object.entries(teams.value.reduce((groups,team)=>{(groups[team.division]??=[]).push(team);return groups},{})).sort(([a],[b])=>a.localeCompare(b)).map(([name,items])=>[name,[...items].sort((a,b)=>Number(b.pct)-Number(a.pct))]))
 </script>

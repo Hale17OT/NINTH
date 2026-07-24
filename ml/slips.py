@@ -1,14 +1,23 @@
-import base64, binascii, hashlib, io, json, re
+import base64, binascii, hashlib, io, json, os, re, threading
 from datetime import datetime
 from pathlib import Path
 from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
 STORE = ROOT / "ml" / "data" / "slips.json"
+_STORE_LOCK = threading.RLock()
 ROW = re.compile(
     r"(?P<datetime>\d{2}/\d{2}(?:/\d{2,4})?\s+\d{2}:\d{2})\s+"
     r"(?P<code>\d{5,})\s*:\s*Baseball\.?\s*(?:USA\.?\s*)?(?:MLB\.?\s*)?"
-    r"(?P<event>.*?)\s+(?P<selection>W[12])\s+(?P<odds>\d+(?:\.\d+)?)",
+    r"(?P<event>(?:(?!\d{2}/\d{2}(?:/\d{2,4})?\s+\d{2}:\d{2})[\s\S])*?)\s+"
+    r"(?P<selection>W[12])\s+(?P<odds>\d+(?:\.\d+)?)",
+    re.I | re.S,
+)
+TOTAL_ROW = re.compile(
+    r"(?P<datetime>\d{2}/\d{2}(?:/\d{2,4})?\s+\d{2}:\d{2})\s+"
+    r"(?P<code>\d{5,})\s*:\s*Baseball\.?\s*(?:USA\.?\s*)?(?:MLB\.?\s*)?"
+    r"(?P<event>.*?)\s+Total\s+(?P<side>Over|Under)\s*\(\s*(?P<line>\d+(?:\.\d+)?)\s*\)\s+"
+    r"(?P<odds>\d+(?:\.\d+)?)",
     re.I | re.S,
 )
 
@@ -31,6 +40,58 @@ def placed_at_iso(placed_at, fallback=None, year=None):
         except ValueError:
             pass
     return fallback
+
+
+def _scheduled_datetime(value, year):
+    has_year = value.count("/") == 2
+    year_token = value.split()[0].split("/")[-1] if has_year else ""
+    date_format = "%d/%m/%Y %H:%M" if len(year_token) == 4 else "%d/%m/%y %H:%M" if has_year else "%d/%m %H:%M %Y"
+    return datetime.strptime(value if has_year else f"{value} {year}", date_format)
+
+
+def _teams(event):
+    return [part.strip() for part in re.split(r"\s+(?:-|–|—|vs\.?|v\.?)\s+", event, maxsplit=1, flags=re.I)]
+
+
+def parse_selection_text(text, year):
+    """Parse supported MelBet MLB rows while preserving their PDF order."""
+    parsed = []
+    for match in ROW.finditer(text):
+        row = {key: " ".join(value.split()) for key, value in match.groupdict().items()}
+        teams = _teams(row["event"])
+        if len(teams) != 2:
+            continue
+        try:
+            scheduled = _scheduled_datetime(row["datetime"], year)
+        except ValueError:
+            continue
+        parsed.append((match.start(), {
+            "event_code": row["code"], "scheduled_local": scheduled.isoformat(),
+            "team_1": teams[0], "team_2": teams[1], "market": "moneyline", "selection": row["selection"],
+            "selected_team": teams[0] if row["selection"].upper() == "W1" else teams[1],
+            "slip_odds": float(row["odds"]), "game_id": None, "status": "unmatched",
+            "outcome": "pending", "alerts": [],
+        }))
+    for match in TOTAL_ROW.finditer(text):
+        row = {key: " ".join(value.split()) for key, value in match.groupdict().items()}
+        teams = _teams(row["event"])
+        if len(teams) != 2:
+            continue
+        try:
+            scheduled = _scheduled_datetime(row["datetime"], year)
+        except ValueError:
+            continue
+        side, line = row["side"].lower(), float(row["line"])
+        line_label = f"{line:g}"
+        parsed.append((match.start(), {
+            "event_code": row["code"], "scheduled_local": scheduled.isoformat(),
+            "team_1": teams[0], "team_2": teams[1], "market": "totals",
+            "selection": f"Total {side.title()} ({line_label})", "total_side": side, "total_line": line,
+            "selected_team": f"{side.title()} {line_label} total runs",
+            "slip_odds": float(row["odds"]), "game_id": None, "status": "unmatched",
+            "outcome": "pending", "alerts": [],
+        }))
+    return [selection for _, selection in sorted(parsed, key=lambda item: item[0])]
 
 
 def parse_pdf(encoded, filename="slip.pdf"):
@@ -68,13 +129,33 @@ def parse_pdf(encoded, filename="slip.pdf"):
             continue
         selections.append({
             "event_code": row["code"], "scheduled_local": parsed_date.isoformat(),
-            "team_1": teams[0], "team_2": teams[1], "selection": row["selection"],
+            "team_1": teams[0], "team_2": teams[1], "market": "moneyline", "selection": row["selection"],
             "selected_team": teams[0] if row["selection"].upper() == "W1" else teams[1],
             "slip_odds": float(row["odds"]), "game_id": None, "status": "unmatched",
             "outcome": "pending", "alerts": [],
         })
+    for match in TOTAL_ROW.finditer(text):
+        row = {key: " ".join(value.split()) for key, value in match.groupdict().items()}
+        teams = _teams(row["event"])
+        if len(teams) != 2:
+            continue
+        try:
+            parsed_date = _scheduled_datetime(row["datetime"], year)
+        except ValueError:
+            continue
+        side, line = row["side"].lower(), float(row["line"])
+        line_label = f"{line:g}"
+        selections.append({
+            "event_code": row["code"], "scheduled_local": parsed_date.isoformat(),
+            "team_1": teams[0], "team_2": teams[1], "market": "totals",
+            "selection": f"Total {side.title()} ({line_label})", "total_side": side, "total_line": line,
+            "selected_team": f"{side.title()} {line_label} total runs",
+            "slip_odds": float(row["odds"]), "game_id": None, "status": "unmatched",
+            "outcome": "pending", "alerts": [],
+        })
+    selections.sort(key=lambda item: (item["scheduled_local"], item["event_code"]))
     if not selections:
-        raise ValueError("No MLB moneyline selections (W1/W2) were recognized. This slip layout may differ from the supported MelBet PDF format.")
+        raise ValueError("No MLB moneyline (W1/W2) or full-game total selections were recognized. This slip layout may differ from the supported MelBet PDF format.")
 
     slip_match = re.search(r"Bet slip\s*(?:No\.?|#|№)?\s*(\d+)", text, re.I) or re.search(r"(\d{10,})", text)
     slip_id = slip_match.group(1) if slip_match else hashlib.sha1(payload).hexdigest()[:12]
@@ -96,18 +177,23 @@ def parse_pdf(encoded, filename="slip.pdf"):
 
 
 def load_slips():
-    if not STORE.exists():
-        return []
-    return json.loads(STORE.read_text(encoding="utf-8"))
+    with _STORE_LOCK:
+        if not STORE.exists():
+            return []
+        return json.loads(STORE.read_text(encoding="utf-8"))
 
 
 def save_slip(slip):
-    slips = [item for item in load_slips() if item["id"] != slip["id"]]
-    slips.insert(0, slip)
-    STORE.parent.mkdir(parents=True, exist_ok=True)
-    STORE.write_text(json.dumps(slips, indent=2), encoding="utf-8")
+    with _STORE_LOCK:
+        slips = [item for item in load_slips() if item["id"] != slip["id"]]
+        slips.insert(0, slip)
+        STORE.parent.mkdir(parents=True, exist_ok=True)
+        temporary = STORE.with_suffix(".json.tmp")
+        temporary.write_text(json.dumps(slips, indent=2), encoding="utf-8")
+        os.replace(temporary, STORE)
     return slip
 
 
 def normalize_team(value):
+    value = re.sub(r"\bgame\s*[12]\b", "", value, flags=re.I)
     return re.sub(r"[^a-z0-9]", "", value.lower().replace("st.", "saint"))

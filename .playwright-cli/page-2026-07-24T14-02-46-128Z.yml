@@ -1,0 +1,368 @@
+- generic [ref=f12e6]:
+  - banner [ref=f12e8]:
+    - link [ref=f12e10] [cursor=pointer]:
+      - /url: /en
+      - img "MelBet" [ref=f12e11]
+    - generic [ref=f12e12]:
+      - generic [ref=f12e13]:
+        - list [ref=f12e14]:
+          - listitem [ref=f12e15]
+        - list [ref=f12e23]:
+          - listitem [ref=f12e24]:
+            - link "YouTube" [ref=f12e25] [cursor=pointer]:
+              - /url: https://www.youtube.com/channel/UCM6TzBsbcF_8v0VUETRxNkw
+          - listitem [ref=f12e29]:
+            - link "Telegram" [ref=f12e30] [cursor=pointer]:
+              - /url: https://t.me/melbetethiopiatg
+      - generic [ref=f12e34]:
+        - link "Become a payment agent" [ref=f12e35] [cursor=pointer]:
+          - /url: https://melbetagents.com/
+        - link "Registration" [ref=f12e40] [cursor=pointer]:
+          - /url: /en/registration
+        - button [disabled] [ref=f12e44]
+    - generic [ref=f12e53]:
+      - list [ref=f12e54]:
+        - listitem [ref=f12e55]:
+          - link "Sports" [ref=f12e56] [cursor=pointer]:
+            - /url: /en/line
+        - listitem [ref=f12e61]:
+          - link "Live" [ref=f12e62] [cursor=pointer]:
+            - /url: /en/live
+        - listitem [ref=f12e67]:
+          - link "Fast Games" [ref=f12e68] [cursor=pointer]:
+            - /url: /en/games
+        - listitem [ref=f12e73]:
+          - link "Casino" [ref=f12e74] [cursor=pointer]:
+            - /url: /en/slots
+        - listitem [ref=f12e79]:
+          - button "More" [ref=f12e80] [cursor=pointer]
+      - link "Terms and Conditions" [ref=f12e85] [cursor=pointer]:
+        - /url: /en/information/rules
+  - generic [ref=f12e94]:
+    - complementary "Side panel" [ref=f12e96]:
+      - navigation [ref=f12e97]:
+        - list [ref=f12e98]
+    - main [ref=f12e150]:
+      - generic [ref=f12e168]:
+        - generic [ref=f12e169] [cursor=pointer]: Players' stats
+        - generic [ref=f12e181]:
+          - list [ref=f12e184]:
+            - listitem [ref=f12e185]:
+              - generic [ref=f12e186] [cursor=pointer]:
+                - generic [ref=f12e187]:
+                  - generic [ref=f12e188]: All markets
+                  - generic [ref=f12e189]: ( 967 )
+                - radio "All markets ( 967 )" [checked] [ref=f12e191]
+          - list [ref=f12e192]:
+            - listitem
+          - button [ref=f12e194] [cursor=pointer]
+        - button "Collapse all" [ref=f12e198] [cursor=pointer]
+    - complementary [ref=f12e218]:
+      - button "Collapse/Expand" [ref=f12e219] [cursor=pointer]:
+        - generic [ref=f12e220]: Collapse block
+      - list [ref=f12e241]:
+        - listitem [ref=f12e242]
+        - listitem [ref=f12e243]
+        - listitem [ref=f12e244]:
+          - paragraph [ref=f12e245]
+          - paragraph [ref=f12e246]
+        - listitem [ref=f12e247]
+        - listitem
+  - generic [ref=f12e249]:
+    - generic [ref=f12e251]:
+      - generic [ref=f12e252]:
+        - checkbox [ref=f12e253] [cursor=pointer]
+        - heading "Bet on St.Louis Cardinals - Cincinnati Reds 25.07.2026 (USA. MLB)" [level=1] [ref=f12e255]
+      - generic [ref=f12e256]:
+        - checkbox [ref=f12e257] [cursor=pointer]
+        - generic [ref=f12e258]:
+          - heading "Melbet Ethiopia Navigation" [level=4] [ref=f12e259]
+          - button "Collapse/Expand" [ref=f12e261] [cursor=pointer]
+        - generic [ref=f12e266]:
+          - generic [ref=f12e267]:
+            - generic [ref=f12e268]:
+              - generic [ref=f12e269]: main
+              - list [ref=f12e270]:
+                - listitem [ref=f12e271]:
+                  - link "Melbet Ethiopia" [ref=f12e272] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en
+                - listitem [ref=f12e273]:
+                  - link "Download Mobile App" [ref=f12e274] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/mobile
+                - listitem [ref=f12e275]:
+                  - link "Login" [ref=f12e276] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/user/login
+                - listitem [ref=f12e277]:
+                  - link "Registration" [ref=f12e278] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/registration
+                - listitem [ref=f12e279]:
+                  - link "Welcome Bonus" [ref=f12e280] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/bonus/rules/1st
+                - listitem [ref=f12e281]:
+                  - link "Online Casino" [ref=f12e282] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/slots
+                - listitem [ref=f12e283]:
+                  - link "Live Casino" [ref=f12e284] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/casino
+                - listitem [ref=f12e285]:
+                  - link "Sports Betting" [ref=f12e286] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/line
+                - listitem [ref=f12e287]:
+                  - link "Live Betting" [ref=f12e288] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/live
+            - generic [ref=f12e289]:
+              - generic [ref=f12e290]: Popular Sports
+              - list [ref=f12e291]:
+                - listitem [ref=f12e292]:
+                  - link "Soccer Betting" [ref=f12e293] [cursor=pointer]:
+                    - /url: /en/line/football
+                - listitem [ref=f12e294]:
+                  - link "Basketball Betting" [ref=f12e295] [cursor=pointer]:
+                    - /url: /en/line/basketball
+                - listitem [ref=f12e296]:
+                  - link "Tennis Betting" [ref=f12e297] [cursor=pointer]:
+                    - /url: /en/line/tennis
+                - listitem [ref=f12e298]:
+                  - link "Cricket Betting" [ref=f12e299] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/line/cricket
+            - generic [ref=f12e300]:
+              - generic [ref=f12e301]: Popular Casino Games
+              - list [ref=f12e302]:
+                - listitem [ref=f12e303]:
+                  - link "Bingo" [ref=f12e304] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/bingo
+                - listitem [ref=f12e305]:
+                  - link "Aviator" [ref=f12e306] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/promotions/aviator-landing
+                - listitem [ref=f12e307]:
+                  - link "Plinko" [ref=f12e308] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/games/plinko
+            - generic [ref=f12e309]:
+              - generic [ref=f12e310]: Legal Information
+              - list [ref=f12e311]:
+                - listitem [ref=f12e312]:
+                  - link "About Us" [ref=f12e313] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/about
+                - listitem [ref=f12e314]:
+                  - link "Contacts" [ref=f12e315] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/contacts
+                - listitem [ref=f12e316]:
+                  - link "How to place a bet" [ref=f12e317] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/howbet
+                - listitem [ref=f12e318]:
+                  - link "Cookies Policy" [ref=f12e319] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/cookies
+                - listitem [ref=f12e320]:
+                  - link "Responsible Gambling" [ref=f12e321] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/promotions/responsible-gambling
+                - listitem [ref=f12e322]:
+                  - link "Terms and Conditions" [ref=f12e323] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/rules/1
+                - listitem [ref=f12e324]:
+                  - link "Privacy Policy" [ref=f12e325] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/rules/privacy_policy
+                - listitem [ref=f12e326]:
+                  - link "Terms of Service" [ref=f12e327] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/rules/terms
+                - listitem [ref=f12e328]:
+                  - link "KYC Policies" [ref=f12e329] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/rules/kyc_policy
+                - listitem [ref=f12e330]:
+                  - link "Privacy & Management of Personal Data" [ref=f12e331] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/information/rules/privacy_and_management_of_personal_data
+            - generic [ref=f12e332]:
+              - generic [ref=f12e333]: Our Partners
+              - list [ref=f12e334]:
+                - listitem [ref=f12e335]:
+                  - link "Andres Iniesta" [ref=f12e336] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/ourpartners/andres-iniesta
+                - listitem [ref=f12e337]:
+                  - link "Kamaru Usman" [ref=f12e338] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/ourpartners/kamaru-usman
+                - listitem [ref=f12e339]:
+                  - link "OG Esports" [ref=f12e340] [cursor=pointer]:
+                    - /url: https://mel-bet.et/en/ourpartners/ogesports
+            - generic [ref=f12e341]:
+              - generic [ref=f12e342]: Line
+              - list [ref=f12e343]:
+                - listitem [ref=f12e344]:
+                  - link "Football" [ref=f12e345] [cursor=pointer]:
+                    - /url: /en/line/football
+                - listitem [ref=f12e346]:
+                  - link "Tennis" [ref=f12e347] [cursor=pointer]:
+                    - /url: /en/line/tennis
+                - listitem [ref=f12e348]:
+                  - link "Basketball" [ref=f12e349] [cursor=pointer]:
+                    - /url: /en/line/basketball
+                - listitem [ref=f12e350]:
+                  - link "Ice Hockey" [ref=f12e351] [cursor=pointer]:
+                    - /url: /en/line/ice-hockey
+                - listitem [ref=f12e352]:
+                  - link "Volleyball" [ref=f12e353] [cursor=pointer]:
+                    - /url: /en/line/volleyball
+                - listitem [ref=f12e354]:
+                  - link "Table Tennis" [ref=f12e355] [cursor=pointer]:
+                    - /url: /en/line/table-tennis
+                - listitem [ref=f12e356]:
+                  - link "Cricket" [ref=f12e357] [cursor=pointer]:
+                    - /url: /en/line/cricket
+                - listitem [ref=f12e358]:
+                  - link "American Football" [ref=f12e359] [cursor=pointer]:
+                    - /url: /en/line/american-football
+                - listitem [ref=f12e360]:
+                  - link "Esports" [ref=f12e361] [cursor=pointer]:
+                    - /url: /en/line/esports
+                - listitem [ref=f12e362]:
+                  - link "Arm Wrestling" [ref=f12e363] [cursor=pointer]:
+                    - /url: /en/line/arm-wrestling
+                - listitem [ref=f12e364]:
+                  - link "Australian Rules" [ref=f12e365] [cursor=pointer]:
+                    - /url: /en/line/australian-rules
+                - listitem [ref=f12e366]:
+                  - link "Badminton" [ref=f12e367] [cursor=pointer]:
+                    - /url: /en/line/badminton
+                - listitem [ref=f12e368]:
+                  - link "Bare-knuckle Boxing" [ref=f12e369] [cursor=pointer]:
+                    - /url: /en/line/bare-knuckle-boxing
+            - list [ref=f12e371]:
+              - listitem [ref=f12e372]:
+                - link "Baseball" [ref=f12e373] [cursor=pointer]:
+                  - /url: /en/line/baseball
+              - listitem [ref=f12e374]:
+                - link "Beach Soccer" [ref=f12e375] [cursor=pointer]:
+                  - /url: /en/line/beach-soccer
+              - listitem [ref=f12e376]:
+                - link "Beach Volleyball" [ref=f12e377] [cursor=pointer]:
+                  - /url: /en/line/beach-volleyball
+              - listitem [ref=f12e378]:
+                - link "Bicycle Racing" [ref=f12e379] [cursor=pointer]:
+                  - /url: /en/line/bicycle-racing
+              - listitem [ref=f12e380]:
+                - link "Billiards" [ref=f12e381] [cursor=pointer]:
+                  - /url: /en/line/billiards
+              - listitem [ref=f12e382]:
+                - link "Boxing" [ref=f12e383] [cursor=pointer]:
+                  - /url: /en/line/boxing
+              - listitem [ref=f12e384]:
+                - link "Chess" [ref=f12e385] [cursor=pointer]:
+                  - /url: /en/line/chess
+              - listitem [ref=f12e386]:
+                - link "Darts" [ref=f12e387] [cursor=pointer]:
+                  - /url: /en/line/darts
+              - listitem [ref=f12e388]:
+                - link "Equestrianism" [ref=f12e389] [cursor=pointer]:
+                  - /url: /en/line/equestrianism
+              - listitem [ref=f12e390]:
+                - link "Fencing" [ref=f12e391] [cursor=pointer]:
+                  - /url: /en/line/fencing
+              - listitem [ref=f12e392]:
+                - link "Field Hockey" [ref=f12e393] [cursor=pointer]:
+                  - /url: /en/line/field-hockey
+              - listitem [ref=f12e394]:
+                - link "Formula 1" [ref=f12e395] [cursor=pointer]:
+                  - /url: /en/line/formula-1
+              - listitem [ref=f12e396]:
+                - link "Futsal" [ref=f12e397] [cursor=pointer]:
+                  - /url: /en/line/futsal
+            - list [ref=f12e399]:
+              - listitem [ref=f12e400]:
+                - link "Gaelic Football" [ref=f12e401] [cursor=pointer]:
+                  - /url: /en/line/gaelic-football
+              - listitem [ref=f12e402]:
+                - link "Games of the Future" [ref=f12e403] [cursor=pointer]:
+                  - /url: /en/line/games-of-the-future
+              - listitem [ref=f12e404]:
+                - link "Golf" [ref=f12e405] [cursor=pointer]:
+                  - /url: /en/line/golf
+              - listitem [ref=f12e406]:
+                - link "Greyhound Racing" [ref=f12e407] [cursor=pointer]:
+                  - /url: /en/line/greyhound-racing
+              - listitem [ref=f12e408]:
+                - link "Gymnastics" [ref=f12e409] [cursor=pointer]:
+                  - /url: /en/line/gymnastics
+              - listitem [ref=f12e410]:
+                - link "Handball" [ref=f12e411] [cursor=pointer]:
+                  - /url: /en/line/handball
+              - listitem [ref=f12e412]:
+                - link "Horse Racing" [ref=f12e413] [cursor=pointer]:
+                  - /url: /en/line/horse-racing
+              - listitem [ref=f12e414]:
+                - link "Hurling" [ref=f12e415] [cursor=pointer]:
+                  - /url: /en/line/hurling
+              - listitem [ref=f12e416]:
+                - link "Lacrosse" [ref=f12e417] [cursor=pointer]:
+                  - /url: /en/line/lacrosse
+              - listitem [ref=f12e418]:
+                - link "Martial Arts" [ref=f12e419] [cursor=pointer]:
+                  - /url: /en/line/martial-arts
+              - listitem [ref=f12e420]:
+                - link "Motorsport" [ref=f12e421] [cursor=pointer]:
+                  - /url: /en/line/motorsport
+              - listitem [ref=f12e422]:
+                - link "Netball" [ref=f12e423] [cursor=pointer]:
+                  - /url: /en/line/netball
+              - listitem [ref=f12e424]:
+                - link "Pesäpallo" [ref=f12e425] [cursor=pointer]:
+                  - /url: /en/line/pespallo
+            - list [ref=f12e427]:
+              - listitem [ref=f12e428]:
+                - link "Pickleball" [ref=f12e429] [cursor=pointer]:
+                  - /url: /en/line/pickleball
+              - listitem [ref=f12e430]:
+                - link "Polybet" [ref=f12e431] [cursor=pointer]:
+                  - /url: /en/line/polybet
+              - listitem [ref=f12e432]:
+                - link "Pro Wrestling" [ref=f12e433] [cursor=pointer]:
+                  - /url: /en/line/pro-wrestling
+              - listitem [ref=f12e434]:
+                - link "Rugby" [ref=f12e435] [cursor=pointer]:
+                  - /url: /en/line/rugby
+              - listitem [ref=f12e436]:
+                - link "Sailing" [ref=f12e437] [cursor=pointer]:
+                  - /url: /en/line/sailing
+              - listitem [ref=f12e438]:
+                - link "Snooker" [ref=f12e439] [cursor=pointer]:
+                  - /url: /en/line/snooker
+              - listitem [ref=f12e440]:
+                - link "Speedway" [ref=f12e441] [cursor=pointer]:
+                  - /url: /en/line/speedway
+              - listitem [ref=f12e442]:
+                - link "Swimming" [ref=f12e443] [cursor=pointer]:
+                  - /url: /en/line/swimming
+              - listitem [ref=f12e444]:
+                - link "Teqball" [ref=f12e445] [cursor=pointer]:
+                  - /url: /en/line/teqball
+              - listitem [ref=f12e446]:
+                - link "Trotting" [ref=f12e447] [cursor=pointer]:
+                  - /url: /en/line/trotting
+              - listitem [ref=f12e448]:
+                - link "UFC" [ref=f12e449] [cursor=pointer]:
+                  - /url: /en/line/ufc
+              - listitem [ref=f12e450]:
+                - link "Water Polo" [ref=f12e451] [cursor=pointer]:
+                  - /url: /en/line/water-polo
+              - listitem [ref=f12e452]:
+                - link "Weightlifting" [ref=f12e453] [cursor=pointer]:
+                  - /url: /en/line/weightlifting
+            - generic [ref=f12e454]:
+              - generic [ref=f12e455]: Baseball Line
+              - list [ref=f12e456]:
+                - listitem [ref=f12e457]:
+                  - link "USA. MLB" [ref=f12e458] [cursor=pointer]:
+                    - /url: /en/line/baseball/166775-usa-mlb
+                - listitem [ref=f12e459]:
+                  - link "Baseball World Cup. Women" [ref=f12e460] [cursor=pointer]:
+                    - /url: /en/line/baseball/877597-baseball-world-cup-women
+                - listitem [ref=f12e461]:
+                  - link "Czech Republic. Extraliga" [ref=f12e462] [cursor=pointer]:
+                    - /url: /en/line/baseball/1289147-czech-republic-extraliga
+                - listitem [ref=f12e463]:
+                  - link "KBO. Futures League" [ref=f12e464] [cursor=pointer]:
+                    - /url: /en/line/baseball/2869016-kbo-futures-league
+          - generic [ref=f12e465]:
+            - generic [ref=f12e466]: አማርኛ
+            - list [ref=f12e467]:
+              - listitem [ref=f12e468]:
+                - link "AM - አማርኛ" [ref=f12e469] [cursor=pointer]:
+                  - /url: /aa/line/baseball/166775-usa-mlb/353751010-stlouis-cardinals-cincinnati-reds
+    - contentinfo

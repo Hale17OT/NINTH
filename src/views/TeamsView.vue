@@ -4,8 +4,9 @@ import {Search,ArrowUpRight} from 'lucide-vue-next'
 import {api} from '../services/api'
 import TeamLogo from '../components/team/TeamLogo.vue'
 import LoadingState from '../components/ui/LoadingState.vue'
-const teams=ref([]),query=ref(''),league=ref('all'),loading=ref(true)
-onMounted(async()=>{try{teams.value=await api.teams()}finally{loading.value=false}})
+const teams=ref([]),query=ref(''),league=ref('all'),loading=ref(true),error=ref('')
+const load=async()=>{loading.value=true;error.value='';try{teams.value=await api.teams()}catch(caught){error.value=caught?.message||'The team directory could not be loaded.'}finally{loading.value=false}}
+onMounted(load)
 const filtered=computed(()=>teams.value.filter(team=>(league.value==='all'||team.league?.startsWith(league.value))&&(!query.value||`${team.name} ${team.abbr} ${team.division}`.toLowerCase().includes(query.value.toLowerCase()))).sort((a,b)=>a.name.localeCompare(b.name)))
 const leaders=computed(()=>[...teams.value].sort((a,b)=>Number(b.pct)-Number(a.pct)).slice(0,3))
 </script>

@@ -1,0 +1,80 @@
+- generic [ref=e6]:
+  - banner [ref=e8]:
+    - link [ref=e10] [cursor=pointer]:
+      - /url: /en
+      - img "MelBet" [ref=e11]
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - list [ref=e14]:
+          - listitem [ref=e15]
+        - list [ref=e16]:
+          - listitem [ref=e17]:
+            - link "YouTube" [ref=e18] [cursor=pointer]:
+              - /url: https://www.youtube.com/channel/UCM6TzBsbcF_8v0VUETRxNkw
+          - listitem [ref=e22]:
+            - link "Telegram" [ref=e23] [cursor=pointer]:
+              - /url: https://t.me/melbetethiopiatg
+      - generic [ref=e27]:
+        - link "Become a payment agent" [ref=e28] [cursor=pointer]:
+          - /url: https://melbetagents.com/
+        - link "Registration" [ref=e33] [cursor=pointer]:
+          - /url: /en/registration
+        - button [disabled] [ref=e37]
+    - generic [ref=e38]:
+      - list [ref=e39]:
+        - listitem [ref=e40]:
+          - link "Sports" [ref=e41] [cursor=pointer]:
+            - /url: /en/line
+        - listitem [ref=e46]:
+          - link "Live" [ref=e47] [cursor=pointer]:
+            - /url: /en/live
+        - listitem [ref=e52]:
+          - link "Fast Games" [ref=e53] [cursor=pointer]:
+            - /url: /en/games
+        - listitem [ref=e58]:
+          - link "Casino" [ref=e59] [cursor=pointer]:
+            - /url: /en/slots
+        - listitem [ref=e64]:
+          - button "More" [ref=e65]
+      - link "Terms and Conditions" [ref=e70] [cursor=pointer]:
+        - /url: /en/information/rules
+  - generic [ref=e79]:
+    - complementary "Side panel" [ref=e81]:
+      - button "Collapse/Expand" [ref=e82]:
+        - generic [ref=e83]: Collapse block
+      - navigation [ref=e87]:
+        - list [ref=e88]
+      - generic [ref=e99]:
+        - link "Statistics" [ref=e100] [cursor=pointer]:
+          - /url: /en/statistic
+        - link "Results" [ref=e103] [cursor=pointer]:
+          - /url: /en/results
+    - main [ref=e107]:
+      - generic [ref=e116]:
+        - generic [ref=e117]: Players' stats
+        - generic [ref=e129]:
+          - list [ref=e132]:
+            - listitem [ref=e133]:
+              - generic [ref=e134]:
+                - generic [ref=e135]:
+                  - generic [ref=e136]: All markets
+                  - generic [ref=e137]: "1013"
+                - radio "All markets1013" [checked] [ref=e138]
+          - list [ref=e139]:
+            - listitem [ref=e140]
+          - button [ref=e142]
+        - button "Collapse all" [ref=e145]
+    - complementary [ref=e148]:
+      - button "Collapse/Expand" [ref=e149]:
+        - generic [ref=e150]: Collapse block
+      - list [ref=e158]:
+        - listitem [ref=e159]
+        - listitem [ref=e160]
+        - listitem [ref=e161]:
+          - paragraph
+          - paragraph
+        - listitem [ref=e162]
+        - listitem
+  - generic:
+    - generic:
+      - contentinfo

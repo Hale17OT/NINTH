@@ -12,15 +12,24 @@ import subprocess
 import sys
 import threading
 import time
+import unicodedata
 import statsapi
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ml.predict import context_completeness, load_bundle, predict as model_predict
+from ml.totals_predict import load_bundle as load_totals_bundle, predict as totals_model_predict
+from ml.player_props_predict import load_bundle as load_player_props_bundle, predict_candidates, projected_lineup
 from ml.slips import load_slips, normalize_team as normalize_slip_team, parse_pdf, placed_at_iso, save_slip
 
 PORT = int(os.getenv("MLB_STATS_PORT", "3002"))
+SLIP_TIMEZONE_OFFSET_HOURS = float(os.getenv("NINTH_SLIP_TIMEZONE_OFFSET_HOURS", "3"))
 _detail_cache = {}
 _projection_board_cache = {}
+_board_schedule_cache = {}
+_board_schedule_lock = threading.Lock()
+_baseline_projection_cache = {}
+_baseline_projection_lock = threading.Lock()
+_baseline_projection_pending = set()
 _projection_enrichment_pending = set()
 _projection_enrichment_lock = threading.Lock()
 _summary_cache = {}
@@ -33,16 +42,289 @@ _projection_last_context = {}
 _projection_last_completeness = {}
 _projection_last_game_state = {}
 _projection_recent_alerts = {}
+_totals_projection_last = {}
 _bullpen_cache = {}
 _recent_form_cache = {}
 _pitcher_profile_cache = {}
 _prediction_results_cache = None
+_prediction_results_lock = threading.Lock()
+_weather_cache = {}
+_weather_backoff_until = 0.0
+_weather_locks = {}
+_weather_locks_guard = threading.Lock()
+_melbet_totals_cache = {"updated_at": None, "last_attempt_at": None, "markets": [], "error": None}
+_melbet_totals_lock = threading.Lock()
+_melbet_totals_snapshot_lock = threading.Lock()
+_melbet_totals_snapshot_last = {}
+_melbet_totals_snapshot_loaded = False
+_melbet_player_props_cache = {"updated_at": None, "last_attempt_at": None, "markets": [], "error": None}
+_melbet_player_props_lock = threading.Lock()
+_player_props_bundle = None
+_player_props_bundle_lock = threading.Lock()
+_player_props_board_cache = {}
+_player_props_refreshing = set()
+_player_props_cache_lock = threading.Lock()
+_player_prop_snapshot_lock = threading.Lock()
+_player_prop_snapshot_last = {}
+_player_prop_results_cache = None
+_player_prop_results_lock = threading.Lock()
+_player_prop_boxscore_cache = {}
+_slip_refresh_lock = threading.Lock()
+_slip_refresh_running = False
+_slip_refresh_state = {"running": False, "last_started_at": None, "last_finished_at": None, "last_error": None}
 _detail_locks = {}
 _detail_locks_guard = threading.Lock()
 _projection_monitor = {"running": False, "pregame_seconds": 60, "live_seconds": 10, "last_discovery_at": None, "last_refresh_at": None, "tracked_games": 0, "last_error": None}
+_player_prop_monitor = {
+    "running": False,
+    "refresh_seconds": 60,
+    "last_attempt_at": None,
+    "last_success_at": None,
+    "archived_games": 0,
+    "last_error": None,
+}
 PROJECTION_LOG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ml", "data", "projection_snapshots.jsonl")
 MODEL_REPORT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ml", "artifacts", "report.json")
+TOTALS_REPORT = os.path.join(os.path.dirname(MODEL_REPORT), "totals_report.json")
+MARKET_SLIP_CALIBRATION = os.path.join(os.path.dirname(MODEL_REPORT), "market_slip_calibration.json")
 MAINTENANCE_STATE = os.path.join(os.path.dirname(MODEL_REPORT), "maintenance_state.json")
+MELBET_PRIMARY_BASE = "https://mel-bet.et"
+MELBET_PROXY_BASE = "https://melbet-322491.top"
+MELBET_BASES = (MELBET_PRIMARY_BASE, MELBET_PROXY_BASE)
+MELBET_CHAMP_PATH = "/service-api/LineFeed/GetChampZip"
+MELBET_GAME_PATH = "/service-api/LineFeed/GetGameZip"
+MELBET_MLB_CHAMP_ID = 166775
+PLAYER_PROPS_REPORT = os.path.join(os.path.dirname(MODEL_REPORT), "player_props_report.json")
+PLAYER_PROP_PROJECTION_LOG = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "ml", "data", "player_prop_projection_snapshots.jsonl",
+)
+MELBET_TOTALS_SNAPSHOT_LOG = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "ml", "data", "melbet_totals_snapshots.jsonl",
+)
+
+# MelBet exposes player selections in a linked Player's Stats sub-game. These
+# group identifiers are stable baseball market identifiers; price fields are
+# intentionally never copied into NINTH.
+MELBET_PLAYER_PROP_GROUPS = {
+    10710: "outs", 2891: "strikeouts", 10713: "hits_allowed", 10712: "walks",
+    10466: "home_runs", 11328: "runs", 8527: "hits",
+    10465: "total_bases", 10956: "doubles", 10714: "rbi",
+}
+
+
+def player_props_bundle():
+    global _player_props_bundle
+    if _player_props_bundle is None:
+        with _player_props_bundle_lock:
+            if _player_props_bundle is None:
+                _player_props_bundle = load_player_props_bundle()
+    return _player_props_bundle
+
+
+def _props_game(game, bundle):
+    game_id = int(game.get("game_id") or game.get("gamePk"))
+    feed = statsapi.get("game", {"gamePk": game_id})
+    data = feed.get("gameData", {}); teams = data.get("teams", {})
+    raw_teams = feed.get("liveData", {}).get("boxscore", {}).get("teams", {})
+    probable = data.get("probablePitchers", {})
+    game_date = (data.get("datetime", {}).get("officialDate") or str(game.get("game_date", ""))[:10])
+    season = int(data.get("game", {}).get("season") or game_date[:4])
+    starters = {}
+    for side in ("away", "home"):
+        person = probable.get(side) or {}
+        raw = raw_teams.get(side, {})
+        if not person.get("id") and raw.get("pitchers"):
+            pid = int(raw["pitchers"][0]); player = raw.get("players", {}).get("ID" + str(pid), {})
+            person = player.get("person") or {"id": pid, "fullName": f"Player {pid}"}
+        starters[side] = person
+    candidates = []
+    for side, opponent in (("away", "home"), ("home", "away")):
+        team_id = int(teams.get(side, {}).get("id") or game.get(f"{side}_id"))
+        opponent_id = int(teams.get(opponent, {}).get("id") or game.get(f"{opponent}_id"))
+        starter = starters.get(side) or {}
+        if starter.get("id"):
+            candidate = {
+                "kind": "pitcher", "player_id": int(starter["id"]),
+                "name": starter.get("fullName"), "team_id": team_id, "opponent_id": opponent_id,
+                "home": side == "home", "lineup_slot": 0, "side": side,
+                "role": "Starting pitcher", "lineup_status": "confirmed" if raw_teams.get(side, {}).get("pitchers") else "probable",
+            }
+            candidates.append(candidate)
+        raw = raw_teams.get(side, {}); order = (raw.get("battingOrder") or [])[:9]
+        if order:
+            players = raw.get("players", {})
+            lineup = [{"player_id": int(pid), "lineup_slot": index + 1,
+                       "name": (players.get("ID" + str(pid), {}).get("person") or {}).get("fullName")}
+                      for index, pid in enumerate(order)]
+            lineup_status = "confirmed"
+        else:
+            lineup = projected_lineup(bundle, team_id); lineup_status = "projected"
+        for batter in lineup:
+            candidate = {
+                "kind": "batter", "player_id": int(batter["player_id"]), "name": batter.get("name"),
+                "team_id": team_id, "opponent_id": opponent_id, "home": side == "home",
+                "lineup_slot": batter.get("lineup_slot"), "opponent_starter_id": (starters.get(opponent) or {}).get("id"),
+                "side": side, "role": f"Projected batting order #{batter.get('lineup_slot')}", "lineup_status": lineup_status,
+            }
+            candidates.append(candidate)
+    return {
+        "game_id": game_id, "datetime": data.get("datetime", {}).get("dateTime") or game.get("game_datetime"),
+        "status": data.get("status", {}).get("detailedState") or game.get("status"),
+        "away": normalize_team(teams.get("away", {})), "home": normalize_team(teams.get("home", {})),
+        "_candidates": candidates, "_game_date": game_date, "_season": season,
+    }
+
+
+def player_props_board(start_date, days=1, force=False, defer_refresh=False):
+    days = max(1, min(7, int(days))); key = f"{start_date}:{days}"
+    with _player_props_cache_lock:
+        cached = _player_props_board_cache.get(key)
+        if cached and (not force or defer_refresh):
+            should_refresh = defer_refresh or time.monotonic() - cached[0] >= 60
+            if should_refresh and key not in _player_props_refreshing:
+                _player_props_refreshing.add(key)
+                def refresh():
+                    try: player_props_board(start_date, days, force=True)
+                    finally:
+                        with _player_props_cache_lock: _player_props_refreshing.discard(key)
+                threading.Thread(target=refresh, name=f"player-props-{key}", daemon=True).start()
+            if should_refresh or key in _player_props_refreshing:
+                return {**cached[1], "refresh_in_progress": True, "refresh_seconds": 10}
+            return cached[1]
+    first = datetime.fromisoformat(start_date).date(); last = first + timedelta(days=days - 1)
+    schedule_rows = statsapi.schedule(start_date=first.isoformat(), end_date=last.isoformat(), sportId=1)
+    eligible = [
+        row for row in schedule_rows
+        if not re.search(r"Final|Cancelled|Postponed|In Progress|Live|Warmup", str(row.get("status", "")), re.I)
+    ]
+    bundle = player_props_bundle()
+    with ThreadPoolExecutor(max_workers=min(7, max(2, len(eligible) + 1))) as pool:
+        market_future = pool.submit(melbet_player_prop_markets, force)
+        games = list(pool.map(lambda row: _props_game(row, bundle), eligible))
+    candidate_groups = {}
+    for game in games:
+        key_group = (game.pop("_game_date"), game.pop("_season"))
+        for candidate in game.pop("_candidates"):
+            candidate["_game_id"] = game["game_id"]
+            candidate_groups.setdefault(key_group, []).append(candidate)
+        game["players"] = []
+    games_by_id = {game["game_id"]: game for game in games}
+    for (game_date, season), candidates in candidate_groups.items():
+        for player in predict_candidates(bundle, candidates, game_date, season):
+            game_id = player.pop("_game_id")
+            games_by_id[game_id]["players"].append(player)
+    market_snapshot = market_future.result()
+    for game in games:
+        market = match_melbet_player_props(
+            game.get("home", {}).get("name"), game.get("away", {}).get("name"),
+            game.get("datetime"), market_snapshot,
+        )
+        game["players"] = restrict_player_props_to_available_lines(game.get("players"), market)
+        game["player_line_market"] = market or {
+            "available": False, "source": "MelBet displayed player props",
+            "prices_used": False, "observed_at": market_snapshot.get("updated_at").isoformat() if market_snapshot.get("updated_at") else None,
+        }
+    payload = {
+        "start_date": first.isoformat(), "days": days, "updated_at": datetime.now(timezone.utc).isoformat(),
+        "refresh_seconds": 60, "method": "Market-free calibrated player-game distributions restricted to currently displayed selections",
+        "games": games,
+        "player_prop_line_feed": {
+            "source": "MelBet displayed player props", "prices_used": False,
+            "observed_at": market_snapshot.get("updated_at").isoformat() if market_snapshot.get("updated_at") else None,
+            "listed_games": len(market_snapshot.get("markets", [])), "error": market_snapshot.get("error"),
+        },
+    }
+    record_player_prop_snapshots(games)
+    with _player_props_cache_lock:
+        _player_props_board_cache[key] = (time.monotonic(), payload)
+    return payload
+
+
+def record_player_prop_snapshots(games):
+    """Archive only the exact model recommendations visible before first pitch."""
+    global _player_prop_results_cache
+    recorded_at = datetime.now(timezone.utc).isoformat()
+    rows = []
+    for game in games:
+        if game.get("player_line_market", {}).get("stale"):
+            continue
+        selections = []
+        for player in game.get("players", []):
+            for prop in player.get("props", []):
+                line = prop.get("recommended_line")
+                side = prop.get("recommended_side")
+                threshold = next(
+                    (row for row in prop.get("thresholds", []) if float(row.get("line")) == float(line)),
+                    None,
+                ) if line is not None else None
+                probability = threshold.get(f"{side}_probability") if threshold and side in ("over", "under") else None
+                if probability is None:
+                    continue
+                selections.append({
+                    "player_id": int(player["player_id"]), "player_name": player.get("name"),
+                    "kind": player.get("kind"), "team_id": int(player.get("team_id") or 0),
+                    "prop": prop.get("prop"), "label": prop.get("label"),
+                    "line": float(line), "side": side, "probability": float(probability),
+                })
+        if not selections:
+            continue
+        selections.sort(key=lambda row: (row["player_id"], row["prop"], row["line"], row["side"]))
+        game_id = int(game["game_id"])
+        signature = json.dumps(selections, sort_keys=True, separators=(",", ":"))
+        if _player_prop_snapshot_last.get(game_id) == signature:
+            continue
+        _player_prop_snapshot_last[game_id] = signature
+        rows.append({
+            "game_id": game_id, "recorded_at": recorded_at,
+            "scheduled_start": game.get("datetime"),
+            "game_date": str(game.get("datetime") or "")[:10],
+            "away": game.get("away"), "home": game.get("home"),
+            "selections": selections,
+            "snapshot_rule": "Exact displayed recommendation before first pitch",
+        })
+    if not rows:
+        return
+    with _player_prop_snapshot_lock:
+        os.makedirs(os.path.dirname(PLAYER_PROP_PROJECTION_LOG), exist_ok=True)
+        with open(PLAYER_PROP_PROJECTION_LOG, "a", encoding="utf-8") as handle:
+            for row in rows:
+                handle.write(json.dumps(row, separators=(",", ":")) + "\n")
+    _player_prop_results_cache = None
+
+
+def refresh_player_prop_archive():
+    """Capture today's exact displayed prop recommendations without a UI request."""
+    today = datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=-4))).date().isoformat()
+    _player_prop_monitor["last_attempt_at"] = datetime.now(timezone.utc).isoformat()
+    payload = player_props_board(today, 1, force=True)
+    archived_games = sum(
+        1 for game in payload.get("games", [])
+        if game.get("players") and not game.get("player_line_market", {}).get("stale")
+    )
+    _player_prop_monitor.update({
+        "last_success_at": datetime.now(timezone.utc).isoformat(),
+        "archived_games": archived_games,
+        "last_error": None,
+    })
+    return today, payload
+
+
+def player_prop_archive_loop():
+    """Keep the deployment ledger populated even when the builder is never opened."""
+    interval = max(60, int(os.getenv("NINTH_PLAYER_PROP_REFRESH_SECONDS", "60")))
+    _player_prop_monitor.update({"running": True, "refresh_seconds": interval})
+    while True:
+        started = time.monotonic()
+        try:
+            today, payload = refresh_player_prop_archive()
+            listed = payload.get("player_prop_line_feed", {}).get("listed_games", 0)
+            print(f"[player-props] archived {today} with {listed} listed games", flush=True)
+        except Exception as exc:
+            _player_prop_monitor["last_error"] = str(exc)
+            print(f"[player-props] archive refresh failed: {exc}", flush=True)
+        time.sleep(max(1, interval - (time.monotonic() - started)))
 
 
 def maintenance_status():
@@ -112,31 +394,42 @@ def _game_detail(game_id):
         box_teams = live.get("boxscore", {}).get("teams", {})
         game_time = data.get("datetime", {}).get("dateTime")
         team_ids = [teams.get("away", {}).get("id"), teams.get("home", {}).get("id")]
-        with ThreadPoolExecutor(max_workers=4) as pool:
+        with ThreadPoolExecutor(max_workers=5) as pool:
             away_pitcher = pool.submit(pitcher_profile, probable.get("away"))
             home_pitcher = pool.submit(pitcher_profile, probable.get("home"))
             away_recent = pool.submit(recent_form, team_ids[0], game_time, game_id)
             home_recent = pool.submit(recent_form, team_ids[1], game_time, game_id)
+            totals_market_future = pool.submit(
+                match_melbet_totals,
+                teams.get("home", {}).get("name"), teams.get("away", {}).get("name"), game_time,
+            )
             pitcher_profiles = {"away": away_pitcher.result(), "home": home_pitcher.result()}
             recent_results = [away_recent.result(), home_recent.result()]
+            totals_market = totals_market_future.result()
         context = live_context(feed, pitcher_profiles, team_ids, game_time, game_id)
         status_code = status_data.get("abstractGameState", "Preview")
         if status_code == "Final":
             projection = locked_pregame_projection(game_id, game_time)
+            totals_projection = locked_pregame_totals_projection(game_id, game_time)
         else:
             try:
                 projection = moneyline_projection(team_ids[1], team_ids[0], game_time, context)
+                totals_projection = total_runs_projection(team_ids[1], team_ids[0], game_time, context)
+                totals_projection = restrict_totals_to_available_lines(totals_projection, totals_market)
                 if status_code == "Live":
                     projection = apply_live_game_state(projection, linescore, current_play.get("count", {}))
+                    totals_projection = apply_live_total_state(totals_projection, linescore, current_play.get("count", {}))
             except Exception as exc:
                 projection = {"available": False, "message": f"Projection refresh failed: {exc}"}
-            projection = record_projection(game_id, projection, context, status_code, game_time)
+                totals_projection = {"available": False, "message": f"Totals refresh failed: {exc}"}
+            projection = record_projection(game_id, projection, context, status_code, game_time, totals_projection)
         payload = {
             "game_id": game_id,
             "status": status_data.get("detailedState", "Unknown"),
             "status_code": status_code,
             "context_updated_at": projection.get("snapshot_at") or context.get("updated_at"),
             "projection_refresh_seconds": 10 if status_code == "Live" else 0 if status_code == "Final" else 60,
+            "totals_projection": totals_projection,
             "datetime": data.get("datetime", {}).get("dateTime"),
             "venue": {
                 "id": venue.get("id"),
@@ -426,10 +719,13 @@ def live_context(feed, pitcher_profiles, team_ids, game_datetime, game_id):
     raw_teams = feed.get("liveData", {}).get("boxscore", {}).get("teams", {})
     weather = data.get("weather", {})
     wind_match = re.search(r"(\d+)\s*mph", weather.get("wind", ""), re.I)
-    weather_context = {"temperature": _float(weather.get("temp"), 65), "wind_speed": _float(wind_match.group(1)) if wind_match else 0, "condition": weather.get("condition"), "source": "MLB game feed"}
+    mlb_weather_available = weather.get("temp") is not None
+    weather_context = {"temperature": _float(weather.get("temp"), 65), "wind_speed": _float(wind_match.group(1)) if wind_match else 0, "condition": weather.get("condition") or ("Weather temporarily unavailable" if not mlb_weather_available else None), "source": "MLB game feed" if mlb_weather_available else "Neutral weather fallback", "available": mlb_weather_available}
     if weather.get("temp") is None:
         coords = data.get("venue", {}).get("location", {}).get("defaultCoordinates", {})
-        weather_context = open_meteo_weather(coords.get("latitude"), coords.get("longitude"), game_datetime) or weather_context
+        forecast = open_meteo_weather(coords.get("latitude"), coords.get("longitude"), game_datetime)
+        if forecast:
+            weather_context = forecast
     game_status = data.get("status", {}).get("abstractGameState", "Preview")
     context = {"weather": weather_context, "updated_at": datetime.now(timezone.utc).isoformat()}
     for side, team_id in (("away", team_ids[0]), ("home", team_ids[1])):
@@ -469,21 +765,510 @@ def live_context(feed, pitcher_profiles, team_ids, game_datetime, game_id):
 
 
 def open_meteo_weather(latitude, longitude, game_datetime):
+    """Return cached weather when possible and never fail a baseball request."""
+    global _weather_backoff_until
     if latitude is None or longitude is None or not game_datetime:
         return None
     target = datetime.fromisoformat(game_datetime.replace("Z", "+00:00"))
     day = target.date().isoformat()
     historical = target < datetime.now(timezone.utc) - timedelta(days=5)
-    endpoint = "https://archive-api.open-meteo.com/v1/archive" if historical else "https://api.open-meteo.com/v1/forecast"
-    response = requests.get(endpoint, params={"latitude": latitude, "longitude": longitude, "start_date": day, "end_date": day, "hourly": "temperature_2m,wind_speed_10m,weather_code", "temperature_unit": "fahrenheit", "wind_speed_unit": "mph", "timezone": "UTC"}, timeout=12)
-    response.raise_for_status()
-    hourly = response.json().get("hourly", {})
-    times = hourly.get("time", [])
-    if not times:
+    key = f"{round(float(latitude), 3)}:{round(float(longitude), 3)}:{day}:{target.hour}:{'history' if historical else 'forecast'}"
+    with _weather_locks_guard:
+        request_lock = _weather_locks.setdefault(key, threading.Lock())
+    with request_lock:
+        now_monotonic = time.monotonic()
+        cached = _weather_cache.get(key)
+        cache_seconds = 24 * 60 * 60 if historical else 30 * 60
+        if cached and now_monotonic - cached[0] < cache_seconds:
+            return dict(cached[1])
+        if now_monotonic < _weather_backoff_until:
+            if cached:
+                stale = dict(cached[1]); stale["source"] = f"{stale.get('source', 'Open-Meteo')} · cached during provider cooldown"; return stale
+            return None
+        endpoint = "https://archive-api.open-meteo.com/v1/archive" if historical else "https://api.open-meteo.com/v1/forecast"
+        try:
+            response = requests.get(endpoint, params={"latitude": latitude, "longitude": longitude, "start_date": day, "end_date": day, "hourly": "temperature_2m,wind_speed_10m,weather_code", "temperature_unit": "fahrenheit", "wind_speed_unit": "mph", "timezone": "UTC"}, timeout=12)
+            if response.status_code == 429:
+                try:
+                    retry_seconds = max(60, min(900, int(response.headers.get("Retry-After", "300"))))
+                except (TypeError, ValueError):
+                    retry_seconds = 300
+                _weather_backoff_until = now_monotonic + retry_seconds
+                if cached:
+                    stale = dict(cached[1]); stale["source"] = f"{stale.get('source', 'Open-Meteo')} · cached during rate limit"; return stale
+                return None
+            response.raise_for_status()
+            hourly = response.json().get("hourly", {})
+            times = hourly.get("time", [])
+            if not times:
+                return dict(cached[1]) if cached else None
+            index = min(range(len(times)), key=lambda i: abs(datetime.fromisoformat(times[i]).replace(tzinfo=timezone.utc) - target.astimezone(timezone.utc)))
+            code = hourly.get("weather_code", [None] * len(times))[index]
+            result = {"temperature": _float(hourly.get("temperature_2m", [65] * len(times))[index], 65), "wind_speed": _float(hourly.get("wind_speed_10m", [0] * len(times))[index]), "condition": f"Weather code {code}" if code is not None else None, "source": "Open-Meteo historical weather" if historical else "Open-Meteo forecast", "available": True}
+            _weather_cache[key] = (time.monotonic(), result)
+            return dict(result)
+        except (requests.RequestException, ValueError, TypeError, IndexError, KeyError) as exc:
+            _weather_backoff_until = max(_weather_backoff_until, now_monotonic + 60)
+            if cached:
+                stale = dict(cached[1]); stale["source"] = f"{stale.get('source', 'Open-Meteo')} · cached after provider error"; return stale
+            print(f"[weather] Open-Meteo unavailable; continuing without forecast: {exc}", flush=True)
+            return None
+
+
+def _melbet_event_rows(value):
+    rows = []
+    if isinstance(value, dict):
+        if "T" in value:
+            rows.append(value)
+        else:
+            for child in value.values():
+                rows.extend(_melbet_event_rows(child))
+    elif isinstance(value, list):
+        for child in value:
+            rows.extend(_melbet_event_rows(child))
+    return rows
+
+
+def _normalize_player_market_name(value):
+    value = unicodedata.normalize("NFKD", str(value or ""))
+    value = "".join(char for char in value if not unicodedata.combining(char))
+    return re.sub(r"[^a-z0-9]", "", value.lower())
+
+
+def _melbet_referer(base):
+    return f"{base}/en/line/baseball/{MELBET_MLB_CHAMP_ID}-usa-mlb"
+
+
+def _melbet_value(path, params, usable=None, timeout=(3.0, 8.0)):
+    """Try the official MelBet host first, then its configured proxy.
+
+    A syntactically valid but empty response is treated as unavailable when a
+    market-specific ``usable`` predicate is supplied.
+    """
+    errors = []
+    for base in MELBET_BASES:
+        try:
+            response = requests.get(
+                f"{base}{path}",
+                params=params,
+                headers={"Referer": _melbet_referer(base), "Accept": "application/json"},
+                timeout=timeout,
+            )
+            response.raise_for_status()
+            value = response.json().get("Value", {})
+            if usable is not None and not usable(value):
+                raise ValueError("response contained no usable MLB markets")
+            if isinstance(value, dict):
+                value = dict(value)
+                value["_ninth_melbet_host"] = base
+            return value
+        except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
+            errors.append(f"{base}: {exc}")
+    raise requests.RequestException(" | ".join(errors) or "MelBet feeds unavailable")
+
+
+def _melbet_game_params(game_id):
+    return {
+        "id": int(game_id), "lng": "en", "cfview": 0,
+        "isSubGames": "true", "GroupEvents": "true", "countevents": 250,
+        "partner": 1, "country": 87,
+    }
+
+
+def _melbet_game_payload(game_id, usable=None):
+    return _melbet_value(MELBET_GAME_PATH, _melbet_game_params(game_id), usable=usable)
+
+
+def _melbet_champ_payload():
+    return _melbet_value(
+        MELBET_CHAMP_PATH,
+        {"sport": 5, "champ": MELBET_MLB_CHAMP_ID, "lng": "en", "partner": 1},
+        usable=lambda value: bool(value.get("G")),
+        timeout=(3.0, 7.0),
+    )
+
+
+def _parse_melbet_player_prop_groups(payload):
+    """Return displayed player thresholds by normalized name; discard prices."""
+    players = {}
+    for group in payload.get("GE", []):
+        prop = MELBET_PLAYER_PROP_GROUPS.get(int(group.get("G", 0)))
+        if not prop:
+            continue
+        by_selection = {}
+        for row in _melbet_event_rows(group.get("E", [])):
+            person = row.get("PL") or {}
+            if not person.get("N") or row.get("P") is None:
+                continue
+            name = str(person["N"]); line = float(row["P"])
+            key = (_normalize_player_market_name(name), line)
+            entry = by_selection.setdefault(key, {"name": name, "types": set()})
+            entry["types"].add(int(row.get("T", 0)))
+        for (name_key, line), entry in by_selection.items():
+            # A selectable higher/lower threshold must be present on both sides.
+            if len(entry["types"]) < 2:
+                continue
+            player = players.setdefault(name_key, {"name": entry["name"], "props": {}})
+            player["props"].setdefault(prop, []).append(line)
+    for player in players.values():
+        player["props"] = {prop: sorted(set(lines)) for prop, lines in player["props"].items()}
+    return players
+
+
+def _fetch_melbet_game_player_props(game):
+    def player_subgame(payload):
+        linked = [*payload.get("SG", []), *payload.get("BIG", [])]
+        return next((row for row in linked if "player" in str(row.get("TG", "")).lower() and row.get("CI")), None)
+
+    main = _melbet_game_payload(game["bookmaker_game_id"], usable=lambda payload: player_subgame(payload) is not None)
+    # Regular games expose linked markets through SG, while some grouped and
+    # doubleheader events expose them through BIG. MelBet uses both shapes for
+    # the same "Players' stats" sub-game, so inspect both collections.
+    linked_games = [*main.get("SG", []), *main.get("BIG", [])]
+    subgame = next((row for row in linked_games if "player" in str(row.get("TG", "")).lower() and row.get("CI")), None)
+    props_payload = _melbet_game_payload(
+        subgame["CI"],
+        usable=lambda payload: bool(_parse_melbet_player_prop_groups(payload)),
+    ) if subgame else {}
+    players = _parse_melbet_player_prop_groups(props_payload)
+    source_host = props_payload.get("_ninth_melbet_host") or main.get("_ninth_melbet_host") or game.get("feed_host")
+    return {
+        **game, "player_subgame_id": int(subgame["CI"]) if subgame else None,
+        "players": players, "feed_host": source_host,
+    }
+
+
+def _safe_fetch_melbet_game_player_props(game):
+    try:
+        return _fetch_melbet_game_player_props(game)
+    except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
+        print(f"[melbet-player-props] game {game.get('bookmaker_game_id')} unavailable: {exc}", flush=True)
         return None
-    index = min(range(len(times)), key=lambda i: abs(datetime.fromisoformat(times[i]).replace(tzinfo=timezone.utc) - target.astimezone(timezone.utc)))
-    code = hourly.get("weather_code", [None] * len(times))[index]
-    return {"temperature": _float(hourly.get("temperature_2m", [65] * len(times))[index], 65), "wind_speed": _float(hourly.get("wind_speed_10m", [0] * len(times))[index]), "condition": f"Weather code {code}" if code is not None else None, "source": "Open-Meteo historical weather" if historical else "Open-Meteo forecast"}
+
+
+def melbet_player_prop_markets(force=False):
+    """Return currently displayed MLB player thresholds, never sportsbook prices."""
+    now = datetime.now(timezone.utc)
+    cached_at = _melbet_player_props_cache.get("updated_at")
+    if not force and cached_at and now - cached_at < timedelta(seconds=60):
+        return _melbet_player_props_cache
+    last_attempt = _melbet_player_props_cache.get("last_attempt_at")
+    if not force and _melbet_player_props_cache.get("error") and last_attempt and now - last_attempt < timedelta(minutes=1):
+        return _melbet_player_props_cache
+    with _melbet_player_props_lock:
+        cached_at = _melbet_player_props_cache.get("updated_at")
+        if not force and cached_at and now - cached_at < timedelta(seconds=60):
+            return _melbet_player_props_cache
+        _melbet_player_props_cache["last_attempt_at"] = now
+        try:
+            payload = _melbet_champ_payload()
+            feed_host = payload.get("_ninth_melbet_host")
+            games = [{
+                "bookmaker_game_id": int(row["CI"]),
+                "home_name": row["O1"], "away_name": row["O2"],
+                "starts_at": datetime.fromtimestamp(int(row["S"]), timezone.utc).isoformat(),
+                "game_label": row.get("TG") or None,
+                "feed_host": feed_host,
+            } for row in payload.get("G", []) if row.get("CI") and row.get("O1") and row.get("O2") and row.get("S")]
+            previous_updated_at = _melbet_player_props_cache.get("updated_at")
+            previous_by_id = {
+                int(item["bookmaker_game_id"]): item
+                for item in _melbet_player_props_cache.get("markets", [])
+                if item.get("bookmaker_game_id")
+            }
+            # The line feed becomes unreliable under a larger burst because
+            # each MLB game requires a second request for its player sub-game.
+            with ThreadPoolExecutor(max_workers=min(3, len(games) or 1)) as pool:
+                first_pass = list(pool.map(_safe_fetch_melbet_game_player_props, games))
+            markets_by_id = {
+                item["bookmaker_game_id"]: {
+                    **item, "stale": False, "last_confirmed_at": now.isoformat(),
+                }
+                for item in first_pass
+                if item and item.get("players")
+            }
+            # Keep a recently confirmed exact market through one transient
+            # per-game timeout instead of making the whole builder wait for a
+            # second blocking pass. The browser helper always validates the
+            # exact live line again before clicking it.
+            preserve_previous = (
+                previous_updated_at is not None
+                and now - previous_updated_at <= timedelta(minutes=5)
+            )
+            if preserve_previous:
+                for game in games:
+                    game_id = game["bookmaker_game_id"]
+                    previous = previous_by_id.get(game_id)
+                    if game_id not in markets_by_id and previous and previous.get("players"):
+                        markets_by_id[game_id] = {**previous, "stale": True}
+            markets = list(markets_by_id.values())
+            sources = sorted({item.get("feed_host") for item in markets if item.get("feed_host")})
+            _melbet_player_props_cache.update({"updated_at": now, "markets": markets, "sources": sources, "error": None})
+        except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
+            _melbet_player_props_cache["error"] = str(exc)
+            if not _melbet_player_props_cache.get("markets"):
+                _melbet_player_props_cache["updated_at"] = now
+            print(f"[melbet-player-props] current listings unavailable: {exc}", flush=True)
+    return _melbet_player_props_cache
+
+
+def match_melbet_player_props(home_name, away_name, starts_at, snapshot=None):
+    snapshot = snapshot or melbet_player_prop_markets()
+    target_teams = {normalize_slip_team(home_name), normalize_slip_team(away_name)}
+    try:
+        target_time = datetime.fromisoformat(str(starts_at).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    candidates = []
+    for market in snapshot.get("markets", []):
+        if {normalize_slip_team(market["home_name"]), normalize_slip_team(market["away_name"])} != target_teams:
+            continue
+        market_time = datetime.fromisoformat(market["starts_at"])
+        candidates.append((abs((market_time - target_time).total_seconds()), market))
+    if not candidates:
+        return None
+    distance, market = min(candidates, key=lambda item: item[0])
+    if distance > 3 * 60 * 60:
+        return None
+    return {
+        "available": True, "players": market["players"],
+        "source": "MelBet displayed player props" + (" via proxy" if market.get("feed_host") == MELBET_PROXY_BASE else ""),
+        "feed_host": market.get("feed_host"), "prices_used": False,
+        "observed_at": market.get("last_confirmed_at") or (snapshot.get("updated_at").isoformat() if snapshot.get("updated_at") else None),
+        "stale": bool(market.get("stale")),
+        "bookmaker_game_id": market["bookmaker_game_id"],
+        "player_subgame_id": market.get("player_subgame_id"),
+    }
+
+
+def restrict_player_props_to_available_lines(players, market):
+    if not market or not market.get("players"):
+        return []
+    restricted = []
+    for player in players or []:
+        offered = market["players"].get(_normalize_player_market_name(player.get("name")))
+        if not offered:
+            continue
+        props = []
+        for projection in player.get("props", []):
+            offered_lines = {float(line) for line in offered.get("props", {}).get(projection.get("prop"), [])}
+            thresholds = [row for row in projection.get("thresholds", []) if float(row.get("line", -999)) in offered_lines]
+            if not thresholds:
+                continue
+            best = max(thresholds, key=lambda row: max(float(row.get("over_probability", 0)), float(row.get("under_probability", 0))))
+            side = "over" if float(best.get("over_probability", 0)) >= float(best.get("under_probability", 0)) else "under"
+            props.append({
+                **projection, "thresholds": thresholds, "recommended_line": float(best["line"]),
+                "recommended_side": side, "recommended_probability": float(best[f"{side}_probability"]),
+                "line_market": {"source": market["source"], "prices_used": False, "observed_at": market.get("observed_at")},
+            })
+        if props:
+            value = dict(player); value["props"] = props
+            value["best_projection"] = max(props, key=lambda row: row["recommended_probability"])
+            restricted.append(value)
+    return restricted
+
+
+def _fetch_melbet_game_totals(game):
+    def displayed_lines(payload):
+        group = next((row for row in payload.get("GE", []) if int(row.get("G", 0)) == 17), None)
+        events = _melbet_event_rows((group or {}).get("E", []))
+        over = {
+            float(row["P"]) for row in events
+            if int(row.get("T", 0)) == 9 and row.get("P") is not None
+            and 2 <= float(row["P"]) <= 25
+        }
+        under = {
+            float(row["P"]) for row in events
+            if int(row.get("T", 0)) == 10 and row.get("P") is not None
+            and 2 <= float(row["P"]) <= 25
+        }
+        return sorted(over & under)
+
+    payload = _melbet_game_payload(game["bookmaker_game_id"], usable=lambda value: bool(displayed_lines(value)))
+    lines = displayed_lines(payload)
+    # Only thresholds displayed on both sides survive. Price fields are
+    # deliberately discarded before this data reaches model selection.
+    return {**game, "lines": lines, "feed_host": payload.get("_ninth_melbet_host") or game.get("feed_host")}
+
+
+def _safe_fetch_melbet_game_totals(game):
+    try:
+        return _fetch_melbet_game_totals(game)
+    except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
+        print(f"[melbet-totals] game {game.get('bookmaker_game_id')} unavailable: {exc}", flush=True)
+        return None
+
+
+def record_melbet_totals_snapshots(markets, observed_at):
+    """Archive exact point-in-time line grids without retaining prices."""
+    global _melbet_totals_snapshot_loaded
+    observed = observed_at.isoformat() if isinstance(observed_at, datetime) else str(observed_at)
+    with _melbet_totals_snapshot_lock:
+        if not _melbet_totals_snapshot_loaded:
+            if os.path.exists(MELBET_TOTALS_SNAPSHOT_LOG):
+                with open(MELBET_TOTALS_SNAPSHOT_LOG, encoding="utf-8") as handle:
+                    for line in handle:
+                        try:
+                            saved = json.loads(line)
+                            _melbet_totals_snapshot_last[int(saved["bookmaker_game_id"])] = json.dumps(
+                                sorted(float(value) for value in saved.get("lines", [])),
+                                separators=(",", ":"),
+                            )
+                        except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+                            continue
+            _melbet_totals_snapshot_loaded = True
+        rows = []
+        for market in markets or []:
+            lines = sorted({
+                float(line) for line in market.get("lines", [])
+                if 2 <= float(line) <= 25
+            })
+            names = f"{market.get('away_name', '')} {market.get('home_name', '')}"
+            if not lines or "(runs)" in names.lower():
+                continue
+            event_id = int(market["bookmaker_game_id"])
+            signature = json.dumps(lines, separators=(",", ":"))
+            if _melbet_totals_snapshot_last.get(event_id) == signature:
+                continue
+            _melbet_totals_snapshot_last[event_id] = signature
+            rows.append({
+                "bookmaker_game_id": event_id,
+                "observed_at": observed,
+                "starts_at": market.get("starts_at"),
+                "home_name": market.get("home_name"),
+                "away_name": market.get("away_name"),
+                "lines": lines,
+                "feed_host": market.get("feed_host"),
+                "prices_used": False,
+            })
+        if not rows:
+            return 0
+        os.makedirs(os.path.dirname(MELBET_TOTALS_SNAPSHOT_LOG), exist_ok=True)
+        with open(MELBET_TOTALS_SNAPSHOT_LOG, "a", encoding="utf-8") as handle:
+            for row in rows:
+                handle.write(json.dumps(row, separators=(",", ":")) + "\n")
+    return len(rows)
+
+
+def melbet_totals_markets(force=False):
+    """Return currently displayed full-game MLB totals, never their prices."""
+    now = datetime.now(timezone.utc)
+    cached_at = _melbet_totals_cache.get("updated_at")
+    if not force and cached_at and now - cached_at < timedelta(minutes=2):
+        return _melbet_totals_cache
+    last_attempt = _melbet_totals_cache.get("last_attempt_at")
+    if not force and _melbet_totals_cache.get("error") and last_attempt and now - last_attempt < timedelta(minutes=1):
+        return _melbet_totals_cache
+    with _melbet_totals_lock:
+        cached_at = _melbet_totals_cache.get("updated_at")
+        if not force and cached_at and now - cached_at < timedelta(minutes=2):
+            return _melbet_totals_cache
+        _melbet_totals_cache["last_attempt_at"] = now
+        try:
+            payload = _melbet_champ_payload()
+            feed_host = payload.get("_ninth_melbet_host")
+            games = []
+            for row in payload.get("G", []):
+                if not row.get("CI") or not row.get("O1") or not row.get("O2") or not row.get("S"):
+                    continue
+                if "(runs)" in f"{row.get('O1')} {row.get('O2')}".lower():
+                    continue
+                games.append({
+                    "bookmaker_game_id": int(row["CI"]),
+                    "home_name": row["O1"], "away_name": row["O2"],
+                    "starts_at": datetime.fromtimestamp(int(row["S"]), timezone.utc).isoformat(),
+                    "game_label": row.get("TG") or None, "feed_host": feed_host,
+                })
+            with ThreadPoolExecutor(max_workers=min(6, len(games) or 1)) as pool:
+                fetched = list(pool.map(_safe_fetch_melbet_game_totals, games))
+            # Preserve championship-discovered events even if neither host has
+            # a totals market. Moneyline handoff still needs the event ID.
+            markets = [item if item else {**game, "lines": []} for game, item in zip(games, fetched)]
+            sources = sorted({item.get("feed_host") for item in markets if item.get("feed_host")})
+            _melbet_totals_cache.update({"updated_at": now, "markets": markets, "sources": sources, "error": None})
+            record_melbet_totals_snapshots(markets, now)
+        except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
+            _melbet_totals_cache["error"] = str(exc)
+            if not _melbet_totals_cache.get("markets"):
+                _melbet_totals_cache["updated_at"] = now
+            print(f"[melbet-totals] current lines unavailable: {exc}", flush=True)
+    return _melbet_totals_cache
+
+
+def match_melbet_totals(home_name, away_name, starts_at, snapshot=None):
+    snapshot = snapshot or melbet_totals_markets()
+    target_teams = {normalize_slip_team(home_name), normalize_slip_team(away_name)}
+    try:
+        target_time = datetime.fromisoformat(str(starts_at).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    candidates = []
+    for market in snapshot.get("markets", []):
+        teams = {normalize_slip_team(market["home_name"]), normalize_slip_team(market["away_name"])}
+        if teams != target_teams:
+            continue
+        market_time = datetime.fromisoformat(market["starts_at"])
+        candidates.append((abs((market_time - target_time).total_seconds()), market))
+    if not candidates:
+        return None
+    distance, market = min(candidates, key=lambda item: item[0])
+    if distance > 3 * 60 * 60:
+        return None
+    return {
+        "available": bool(market["lines"]), "lines": market["lines"],
+        "source": "MelBet displayed full-game totals" + (" via proxy" if market.get("feed_host") == MELBET_PROXY_BASE else ""),
+        "feed_host": market.get("feed_host"), "prices_used": False,
+        "observed_at": snapshot.get("updated_at").isoformat() if snapshot.get("updated_at") else None,
+        "bookmaker_game_id": market["bookmaker_game_id"], "game_label": market.get("game_label"),
+    }
+
+
+def restrict_totals_to_available_lines(projection, market):
+    result = dict(projection or {})
+    result["line_market"] = market or {
+        "available": False, "lines": [], "source": "MelBet displayed full-game totals",
+        "prices_used": False, "observed_at": None,
+    }
+    result["selection_available"] = bool(market and market.get("lines"))
+    if not result.get("available") or not result["selection_available"]:
+        return result
+    offered = {float(line) for line in market["lines"]}
+    thresholds = [row for row in result.get("thresholds", []) if float(row.get("line", -999)) in offered]
+    if not thresholds:
+        result["selection_available"] = False
+        return result
+    normalized_thresholds = []
+    for threshold in thresholds:
+        row = dict(threshold)
+        push = max(0.0, min(1.0, float(row.get("push_probability", 0) or 0)))
+        resolved = 1 - push
+        is_integer_line = abs(float(row.get("line", 0)) - round(float(row.get("line", 0)))) < 1e-9
+        if is_integer_line and push > 0 and resolved > 1e-9:
+            row.update({
+                "raw_over_probability": float(row.get("over_probability", 0)),
+                "raw_under_probability": float(row.get("under_probability", 0)),
+                "over_probability": round(float(row.get("over_probability", 0)) / resolved, 4),
+                "under_probability": round(float(row.get("under_probability", 0)) / resolved, 4),
+                "probability_basis": "conditional_on_no_push",
+            })
+        normalized_thresholds.append(row)
+    thresholds = normalized_thresholds
+    candidates = []
+    for row in thresholds:
+        for side in ("over", "under"):
+            candidates.append((float(row.get(f"{side}_probability", 0)), side, float(row["line"])))
+    probability, side, line = max(candidates, key=lambda item: item[0])
+    completeness = float(result.get("input_completeness", 0))
+    adjusted = .5 + (probability - .5) * (.75 + .25 * completeness)
+    result.update({
+        "thresholds": thresholds, "recommended_line": line,
+        "recommended_side": side, "recommended_probability": round(probability, 4),
+        "confidence_score": round(adjusted * 100),
+        "confidence_label": "High" if adjusted >= .72 else "Moderate" if adjusted >= .60 else "Low",
+        "line_selection_rule": "Highest calibrated side probability among currently displayed full-game totals; integer-line chances are conditional on no push; prices excluded",
+    })
+    return result
 
 
 def moneyline_projection(home_id, away_id, game_datetime, context=None):
@@ -513,6 +1298,18 @@ def moneyline_projection(home_id, away_id, game_datetime, context=None):
         _model_history_cache.clear()
         _model_history_cache[cache_key] = sorted(normalized, key=lambda row: (row["date"], row["game_id"]))
     return model_predict(home_id, away_id, game_date.isoformat(), _model_history_cache[cache_key], context)
+
+
+def total_runs_projection(home_id, away_id, game_datetime, context=None):
+    if not home_id or not away_id or not game_datetime:
+        return {"available": False, "message": "Matchup identifiers are incomplete."}
+    game_date = datetime.fromisoformat(game_datetime.replace("Z", "+00:00")).date()
+    end_date = min(game_date - timedelta(days=1), datetime.now(timezone.utc).date() - timedelta(days=1))
+    cache_key = end_date.isoformat()
+    if cache_key not in _model_history_cache:
+        # Populate the shared completed-game history once via the moneyline path.
+        moneyline_projection(home_id, away_id, game_datetime, context)
+    return totals_model_predict(home_id, away_id, game_date.isoformat(), _model_history_cache.get(cache_key, []), context)
 
 
 def apply_live_game_state(projection, linescore, count=None):
@@ -565,15 +1362,89 @@ def apply_live_game_state(projection, linescore, count=None):
     return projection
 
 
+def apply_live_total_state(projection, linescore, count=None):
+    """Condition the pregame run distribution on official live game state."""
+    if not projection.get("available"):
+        return projection
+    teams = linescore.get("teams", {})
+    current_runs = int(_float(teams.get("home", {}).get("runs"))) + int(_float(teams.get("away", {}).get("runs")))
+    inning = max(1, int(_float(linescore.get("currentInning"), 1)))
+    half = str(linescore.get("inningState") or "Top")
+    outs = max(0, min(3, int(_float((count or {}).get("outs")))))
+    completed_halves = max(0.0, (inning - 1) * 2 + (1 if half.lower().startswith("bottom") else 0) + outs / 3)
+    remaining_halves = max(0.0, 18 - completed_halves)
+    progress = min(1.0, completed_halves / 18)
+    pregame_expected = float(projection.get("expected_total_runs") or 9)
+    prior_remaining = pregame_expected * remaining_halves / 18
+    observed_rate = current_runs / max(1.0, completed_halves)
+    pace_remaining = observed_rate * remaining_halves
+    live_weight = min(.55, progress * .65)
+    expected_remaining = max(0.0, (1 - live_weight) * prior_remaining + live_weight * pace_remaining)
+    live_expected = current_runs + expected_remaining
+    variance = max(.2, expected_remaining + .10 * expected_remaining ** 2)
+    sigma = math.sqrt(variance)
+    thresholds = []
+    for row in projection.get("thresholds", []):
+        line = float(row["line"])
+        needed = math.floor(line) + 1 - current_runs
+        is_integer = abs(line - round(line)) < 1e-9
+        if remaining_halves <= 0:
+            over_probability = .999 if current_runs > line else .001
+            under_probability = .999 if current_runs < line else .001
+            push_probability = .998 if is_integer and current_runs == int(line) else 0.0
+        else:
+            z = (needed - .5 - expected_remaining) / sigma
+            over_probability = min(.999, max(.001, .5 * math.erfc(z / math.sqrt(2))))
+            if is_integer:
+                under_cutoff = line - current_runs - .5
+                under_probability = min(.999, max(.001, .5 * (1 + math.erf((under_cutoff - expected_remaining) / (sigma * math.sqrt(2))))))
+                push_probability = max(0.0, 1 - over_probability - under_probability)
+            else:
+                under_probability = 1 - over_probability
+                push_probability = 0.0
+        thresholds.append({"line": line, "over_probability": round(over_probability, 4), "under_probability": round(under_probability, 4), "push_probability": round(push_probability, 4)})
+    decision_lines = set(projection.get("model", {}).get("decision_lines", (7.5, 8.5, 9.5, 10.5)))
+    choices = []
+    for row in thresholds:
+        if row["line"] not in decision_lines:
+            continue
+        is_over = row["over_probability"] >= .5
+        choices.append({"line": row["line"], "side": "over" if is_over else "under", "probability": row["over_probability"] if is_over else row["under_probability"]})
+    recommended = max(choices, key=lambda item: item["probability"]) if choices else None
+    if recommended:
+        projection.update({
+            "pregame_expected_total_runs": pregame_expected,
+            "expected_total_runs": round(live_expected, 1),
+            "prediction_interval_80": [round(max(current_runs, live_expected - 1.282 * sigma), 1), round(live_expected + 1.282 * sigma, 1)],
+            "thresholds": thresholds,
+            "recommended_line": recommended["line"], "recommended_side": recommended["side"],
+            "recommended_probability": round(recommended["probability"], 4),
+            "confidence_score": round(recommended["probability"] * 100),
+            "confidence_label": "High" if recommended["probability"] >= .72 else "Moderate" if recommended["probability"] >= .60 else "Low",
+            "projection_source": "live_run_state", "projection_phase": "live",
+            "live_state": {"inning": inning, "half": half, "outs": outs, "runs_scored": current_runs, "remaining_halves": round(remaining_halves, 2)},
+            "confidence_explanation": "Live total conditions the pregame distribution on official runs, inning and outs. This live layer is forward-audited separately from the displayed pregame Brier score.",
+            "reasons": [{"feature": "live_total_state", "label": "official runs and remaining game", "direction": recommended["side"], "value": current_runs, "impact": 0}] + [reason for reason in projection.get("reasons", []) if reason.get("feature") != "live_total_state"],
+        })
+    return projection
+
+
 def cached_context_projection(game_id):
     cached = _detail_cache.get(int(game_id))
     if not cached:
         return None
-    payload = cached[1]
+    cached_at, payload = cached
     projection = payload.get("projection", {})
     if not projection.get("available"):
         return None
-    return {"projection": projection, "updated_at": payload.get("context_updated_at")}
+    return {
+        "projection": projection,
+        "totals_projection": payload.get("totals_projection", {}),
+        "updated_at": payload.get("context_updated_at"),
+        "cached_at": cached_at.isoformat(),
+        "age_seconds": max(0.0, (datetime.now(timezone.utc) - cached_at).total_seconds()),
+        "status_code": payload.get("status_code", "Preview"),
+    }
 
 
 def enqueue_projection_enrichment(games):
@@ -581,7 +1452,10 @@ def enqueue_projection_enrichment(games):
     with _projection_enrichment_lock:
         for game in games:
             game_id = int(game["game_id"])
-            if game_id not in _projection_enrichment_pending and cached_context_projection(game_id) is None:
+            snapshot = cached_context_projection(game_id)
+            freshness_seconds = 8 if snapshot and snapshot.get("status_code") == "Live" else 45
+            stale = snapshot is None or snapshot.get("age_seconds", freshness_seconds) >= freshness_seconds
+            if game_id not in _projection_enrichment_pending and stale:
                 _projection_enrichment_pending.add(game_id)
                 queued.append(game_id)
     if not queued:
@@ -590,7 +1464,7 @@ def enqueue_projection_enrichment(games):
     def warm():
         def load(game_id):
             try:
-                game_detail(game_id)
+                game_detail(game_id, force=True)
             except Exception as exc:
                 print(f"[projection-warmup] game {game_id} failed: {exc}", flush=True)
             finally:
@@ -601,6 +1475,128 @@ def enqueue_projection_enrichment(games):
         _projection_board_cache.clear()
 
     threading.Thread(target=warm, name="projection-board-warmup", daemon=True).start()
+    return len(queued)
+
+
+def board_schedule(start_date, end_date):
+    """Fetch only the official schedule fields needed by the Builder.
+
+    MLB-StatsAPI's high-level ``schedule`` helper hydrates media, broadcasts,
+    decisions and linescores. That payload is useful on the Games page but made
+    a seven-day Builder slate intermittently exceed both API timeouts. The
+    advanced ``get`` call is still MLB-StatsAPI, with a bounded request and a
+    short stale-if-error cache so navigation never waits indefinitely.
+    """
+    key = f"{start_date}:{end_date}"
+    now = datetime.now(timezone.utc)
+    with _board_schedule_lock:
+        cached = _board_schedule_cache.get(key)
+        if cached and now - cached[0] < timedelta(seconds=55):
+            return cached[1]
+    try:
+        raw = statsapi.get(
+            "schedule",
+            {"startDate": start_date, "endDate": end_date, "sportId": 1},
+            request_kwargs={"timeout": (3.0, 6.0)},
+        )
+        games = []
+        for day in raw.get("dates", []):
+            for game in day.get("games", []):
+                teams = game.get("teams", {})
+                away = teams.get("away", {}).get("team", {})
+                home = teams.get("home", {}).get("team", {})
+                games.append({
+                    "game_id": game.get("gamePk"),
+                    "game_datetime": game.get("gameDate"),
+                    "game_date": day.get("date"),
+                    "status": game.get("status", {}).get("detailedState", "Scheduled"),
+                    "away_name": away.get("name", "Away"),
+                    "home_name": home.get("name", "Home"),
+                    "away_id": away.get("id"),
+                    "home_id": home.get("id"),
+                    "away_score": teams.get("away", {}).get("score"),
+                    "home_score": teams.get("home", {}).get("score"),
+                    "venue_id": game.get("venue", {}).get("id"),
+                    "venue_name": game.get("venue", {}).get("name"),
+                })
+        with _board_schedule_lock:
+            _board_schedule_cache[key] = (now, games)
+        return games
+    except (requests.RequestException, ValueError, TypeError, KeyError):
+        if cached:
+            return cached[1]
+        raise
+
+
+def cached_baseline_projections(game):
+    """Cache context-free model work separately from the short-lived board.
+
+    Personnel enrichment intentionally clears the board every few seconds. The
+    underlying team/date baseline does not change when that happens, so replaying
+    the model state for every game on every poll was wasted work—especially for
+    7–14 day ranges.
+    """
+    key = (
+        int(game["game_id"]),
+        int(game["home_id"]),
+        int(game["away_id"]),
+        str(game["game_datetime"]),
+    )
+    with _baseline_projection_lock:
+        cached = _baseline_projection_cache.get(key)
+    if cached:
+        return cached
+    value = (
+        moneyline_projection(game.get("home_id"), game.get("away_id"), game["game_datetime"]),
+        total_runs_projection(game.get("home_id"), game.get("away_id"), game["game_datetime"]),
+    )
+    with _baseline_projection_lock:
+        _baseline_projection_cache[key] = value
+    return value
+
+
+def peek_baseline_projections(game):
+    key = (
+        int(game["game_id"]),
+        int(game["home_id"]),
+        int(game["away_id"]),
+        str(game["game_datetime"]),
+    )
+    with _baseline_projection_lock:
+        return _baseline_projection_cache.get(key)
+
+
+def enqueue_baseline_projections(games):
+    queued = []
+    with _baseline_projection_lock:
+        for game in games:
+            game_id = int(game["game_id"])
+            key = (
+                game_id,
+                int(game["home_id"]),
+                int(game["away_id"]),
+                str(game["game_datetime"]),
+            )
+            if game_id not in _baseline_projection_pending and key not in _baseline_projection_cache:
+                _baseline_projection_pending.add(game_id)
+                queued.append(game)
+    if not queued:
+        return 0
+
+    def warm():
+        def load(game):
+            try:
+                cached_baseline_projections(game)
+            except Exception as exc:
+                print(f"[baseline-warmup] game {game.get('game_id')} failed: {exc}", flush=True)
+            finally:
+                with _baseline_projection_lock:
+                    _baseline_projection_pending.discard(int(game["game_id"]))
+        with ThreadPoolExecutor(max_workers=min(4, len(queued))) as pool:
+            list(pool.map(load, queued))
+        _projection_board_cache.clear()
+
+    threading.Thread(target=warm, name="baseline-projection-warmup", daemon=True).start()
     return len(queued)
 
 
@@ -617,7 +1613,8 @@ def projection_board(start_date, days=7):
     if cached and datetime.now(timezone.utc) - cached[0] < timedelta(seconds=cached_ttl):
         return cached[1]
     final_day = first_day + timedelta(days=days - 1)
-    raw_games = statsapi.schedule(start_date=first_day.isoformat(), end_date=final_day.isoformat(), sportId=1)
+    raw_games = board_schedule(first_day.isoformat(), final_day.isoformat())
+    totals_market_snapshot = melbet_totals_markets()
     now = datetime.now(timezone.utc)
     context_candidates = []
     for game in raw_games:
@@ -633,8 +1630,10 @@ def projection_board(start_date, days=7):
             context_candidates.append(game)
 
     context_projections = {str(game["game_id"]): snapshot for game in context_candidates if (snapshot := cached_context_projection(game["game_id"]))}
-    enrichment_pending = enqueue_projection_enrichment([game for game in context_candidates if str(game["game_id"]) not in context_projections])
-    games = []
+    # Keep serving the last valid context-aware probability while stale games
+    # refresh in the background. The next short board poll picks up the fresh
+    # snapshot without flashing back to an early baseline.
+    upcoming_games = []
     for game in raw_games:
         if "final" in str(game.get("status", "")).lower() or not game.get("game_datetime"):
             continue
@@ -644,11 +1643,49 @@ def projection_board(start_date, days=7):
             continue
         if starts_at < now - timedelta(minutes=15):
             continue
+        upcoming_games.append(game)
+
+    baselines = {}
+    missing_baselines = [
+        game for game in upcoming_games
+        if not (context_projections.get(str(game["game_id"]), {}).get("projection")
+                and context_projections.get(str(game["game_id"]), {}).get("totals_projection"))
+    ]
+    if missing_baselines:
+        # Produce a useful first screen inside the browser's response budget,
+        # then progressively merge the rest of a large range in the background.
+        foreground = missing_baselines[:5]
+        remainder = missing_baselines[5:]
+        first = foreground.pop(0)
+        baselines[str(first["game_id"])] = cached_baseline_projections(first)
+        if foreground:
+            with ThreadPoolExecutor(max_workers=len(foreground)) as pool:
+                values = pool.map(cached_baseline_projections, foreground)
+                baselines.update({str(game["game_id"]): value for game, value in zip(foreground, values)})
+        baseline_pending = enqueue_baseline_projections(remainder)
+    else:
+        baseline_pending = 0
+
+    for game in upcoming_games:
+        cached = peek_baseline_projections(game)
+        if cached:
+            baselines[str(game["game_id"])] = cached
+
+    games = []
+    for game in upcoming_games:
         # Confirmed starters and lineups normally arrive close to first pitch.
         # Load the official game feed for that window so Builder probabilities
         # use the same context-aware projection shown on the matchup page.
         context_snapshot = context_projections.get(str(game["game_id"]))
-        projection = (context_snapshot or {}).get("projection") or moneyline_projection(game.get("home_id"), game.get("away_id"), game["game_datetime"])
+        baseline_projection, baseline_totals = baselines.get(str(game["game_id"]), (None, None))
+        projection = (context_snapshot or {}).get("projection") or baseline_projection
+        totals_projection = (context_snapshot or {}).get("totals_projection") or baseline_totals
+        if projection is None or totals_projection is None:
+            continue
+        totals_market = match_melbet_totals(
+            game.get("home_name"), game.get("away_name"), game.get("game_datetime"), totals_market_snapshot,
+        )
+        totals_projection = restrict_totals_to_available_lines(totals_projection, totals_market)
         if not projection.get("available"):
             continue
         home_probability = projection["home_win_probability"]
@@ -668,8 +1705,12 @@ def projection_board(start_date, days=7):
             "input_completeness": projection.get("input_completeness", 0),
             "projection_updated_at": (context_snapshot or {}).get("updated_at") or now.isoformat(),
             "projection_basis": "matchup_synced" if context_snapshot else "early_baseline",
+            "totals_projection": totals_projection,
         })
     games.sort(key=lambda item: item["starts_at"])
+    # Start slower official personnel/weather work only after the usable board
+    # has been built, avoiding resource contention on the initial response.
+    enrichment_pending = enqueue_projection_enrichment(context_candidates)
     recommendation = sorted(games, key=lambda item: item["recommended_probability"], reverse=True)[:5] if len(games) >= 5 else []
     try:
         with open(MODEL_REPORT, "r", encoding="utf-8") as handle:
@@ -681,6 +1722,16 @@ def projection_board(start_date, days=7):
         slip_calibration = None
         multiday_slip_calibrations = {}
         multiday_validation_grid = {}
+    try:
+        with open(TOTALS_REPORT, "r", encoding="utf-8") as handle:
+            totals_report = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        totals_report = None
+    try:
+        with open(MARKET_SLIP_CALIBRATION, "r", encoding="utf-8") as handle:
+            market_slip_calibration = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        market_slip_calibration = None
     payload = {
         "generated_at": now.isoformat(), "start_date": first_day.isoformat(), "days": days,
         "games": games, "recommended_game_ids": [item["game_id"] for item in recommendation],
@@ -688,8 +1739,18 @@ def projection_board(start_date, days=7):
         "slip_calibration": slip_calibration,
         "multiday_slip_calibrations": multiday_slip_calibrations,
         "multiday_validation_grid": multiday_validation_grid,
-        "market_inputs": False, "refresh_seconds": 3 if enrichment_pending else 60,
-        "enrichment_pending": enrichment_pending,
+        "totals_model": totals_report,
+        "market_slip_calibration": market_slip_calibration,
+        "market_inputs": False, "refresh_seconds": 3 if enrichment_pending or baseline_pending else 15,
+        "enrichment_pending": enrichment_pending + baseline_pending,
+        "projection_pending": baseline_pending,
+        "scheduled_games": len(upcoming_games),
+        "totals_line_feed": {
+            "source": "MelBet displayed full-game totals", "prices_used": False,
+            "observed_at": totals_market_snapshot.get("updated_at").isoformat() if totals_market_snapshot.get("updated_at") else None,
+            "listed_games": len(totals_market_snapshot.get("markets", [])),
+            "error": totals_market_snapshot.get("error"),
+        },
     }
     _projection_board_cache[cache_key] = (datetime.now(timezone.utc), payload)
     return payload
@@ -790,7 +1851,21 @@ def locked_pregame_projection(game_id, game_datetime):
     return projection
 
 
-def record_projection(game_id, projection, context=None, status_code="Preview", scheduled_start=None):
+def locked_pregame_totals_projection(game_id, game_datetime):
+    snapshot = last_pregame_snapshot(game_id, game_datetime)
+    stored = (snapshot or {}).get("totals_projection")
+    if not stored:
+        return {"available": False, "message": "No totals forecast was archived before scheduled first pitch."}
+    projection = dict(stored)
+    projection.update({
+        "available": True, "snapshot_at": snapshot["recorded_at"],
+        "projection_source": "pregame_locked", "projection_phase": "pregame",
+        "model": load_totals_bundle()["report"],
+    })
+    return projection
+
+
+def record_projection(game_id, projection, context=None, status_code="Preview", scheduled_start=None, totals_projection=None):
     if not projection.get("available"):
         return projection
     if status_code not in ("Preview", "Live"):
@@ -813,68 +1888,344 @@ def record_projection(game_id, projection, context=None, status_code="Preview", 
     game_state = projection.get("game_state")
     game_state_signature = json.dumps(game_state, sort_keys=True) if game_state else None
     game_state_changed = game_state_signature is not None and game_state_signature != _projection_last_game_state.get(str(game_id))
-    if previous is None or movement["changed"] or coverage_changed or game_state_changed or new_alerts:
+    totals_summary = None
+    totals_changed = False
+    if totals_projection and totals_projection.get("available"):
+        total_keys = ("expected_total_runs", "prediction_interval_80", "recommended_line", "recommended_side", "recommended_probability", "confidence_score", "confidence_label", "input_completeness", "confidence_explanation", "thresholds", "reasons", "market_inputs", "selection_available", "line_market", "line_selection_rule")
+        totals_summary = {key: totals_projection.get(key) for key in total_keys}
+        previous_total = _totals_projection_last.get(str(game_id))
+        totals_changed = previous_total is None or previous_total.get("recommended_line") != totals_summary.get("recommended_line") or previous_total.get("recommended_side") != totals_summary.get("recommended_side") or abs(float(previous_total.get("recommended_probability", 0)) - float(totals_summary.get("recommended_probability", 0))) >= .005
+    if previous is None or movement["changed"] or coverage_changed or game_state_changed or new_alerts or totals_changed:
         os.makedirs(os.path.dirname(PROJECTION_LOG), exist_ok=True)
         audit_keys = ("confidence_score", "confidence_label", "input_completeness", "confidence_explanation", "historical_tier", "market_inputs", "projection_source", "projection_phase", "game_state", "pregame_home_win_probability", "pregame_away_win_probability")
-        snapshot = {"game_id": int(game_id), "recorded_at": datetime.now(timezone.utc).isoformat(), "scheduled_start": scheduled_start, "phase": "live" if status_code == "Live" else "pregame", "home_win_probability": current, "away_win_probability": projection["away_win_probability"], "reasons": projection.get("reasons", []), "context": context, "circumstance_alerts": new_alerts, "projection": {key: projection.get(key) for key in audit_keys}}
+        snapshot = {"game_id": int(game_id), "recorded_at": datetime.now(timezone.utc).isoformat(), "scheduled_start": scheduled_start, "phase": "live" if status_code == "Live" else "pregame", "home_win_probability": current, "away_win_probability": projection["away_win_probability"], "reasons": projection.get("reasons", []), "context": context, "circumstance_alerts": new_alerts, "projection": {key: projection.get(key) for key in audit_keys}, "totals_projection": totals_summary}
         with open(PROJECTION_LOG, "a", encoding="utf-8") as handle:
             handle.write(json.dumps(snapshot) + "\n")
     _projection_last[str(game_id)] = current
     if context:_projection_last_context[str(game_id)] = context
     _projection_last_completeness[str(game_id)] = coverage
+    if totals_summary:
+        _totals_projection_last[str(game_id)] = totals_summary
     if game_state_signature is not None:
         _projection_last_game_state[str(game_id)] = game_state_signature
     return projection
 
 
-def completed_prediction_results(limit=50):
-    """Score the last pre-first-pitch snapshot against official final results."""
+def prediction_results_page(results, target_date=None, page=1, page_size=10, updated_at=None, market="moneyline"):
+    """Filter and paginate scored forecasts without changing their audit totals."""
+    if market == "totals":
+        results = [{**row, "correct": row["total_correct"]} for row in results if row.get("totals_eligible")]
+    if target_date:
+        results = [row for row in results if row.get("game_date") == target_date]
+    ranked = sorted(
+        results,
+        key=lambda row: float(row.get("total_probability", .5)) if market == "totals" else max(float(row.get("home_win_probability", .5)), float(row.get("away_win_probability", .5))),
+        reverse=True,
+    )
+    daily_parlays = []
+    if target_date:
+        for legs in range(2, min(8, len(ranked)) + 1):
+            selections = ranked[:legs]
+            correct_legs = sum(1 for row in selections if row["correct"])
+            daily_parlays.append({
+                "legs": legs, "correct_legs": correct_legs,
+                "leg_accuracy": correct_legs / legs, "all_correct": correct_legs == legs,
+                "game_ids": [row["game_id"] for row in selections],
+            })
+    page_size = max(1, min(int(page_size or 10), 50))
+    total = len(results)
+    total_pages = max(1, math.ceil(total / page_size))
+    page = max(1, min(int(page or 1), total_pages))
+    start = (page - 1) * page_size
+    games = results[start:start + page_size]
+    correct = sum(1 for row in results if row["correct"])
+    brier = None
+    if market == "totals" and results:
+        brier = sum((float(row["total_probability"]) - int(row["total_correct"])) ** 2 for row in results) / len(results)
+    return {
+        "games": games, "evaluated": total, "correct": correct,
+        "accuracy": correct / total if total else None, "date": target_date,
+        "market": market, "brier_score": brier,
+        "daily_parlays": daily_parlays,
+        "page": page, "page_size": page_size, "total_pages": total_pages,
+        "updated_at": updated_at or datetime.now(timezone.utc).isoformat(),
+        "snapshot_rule": "Last archived projection at or before scheduled first pitch",
+    }
+
+
+PLAYER_PROP_OUTCOME_FIELDS = {
+    "batter": {
+        "hits": "hits", "total_bases": "totalBases", "home_runs": "homeRuns",
+        "runs": "runs", "rbi": "rbi", "walks": "baseOnBalls",
+        "strikeouts": "strikeOuts", "doubles": "doubles", "stolen_bases": "stolenBases",
+    },
+    "pitcher": {
+        "strikeouts": "strikeOuts", "outs": "outs", "walks": "baseOnBalls",
+        "hits_allowed": "hits", "earned_runs": "earnedRuns",
+        "home_runs_allowed": "homeRuns", "pitches": "pitchesThrown",
+    },
+}
+
+
+def load_player_prop_snapshots():
+    snapshots = {}
+    if not os.path.exists(PLAYER_PROP_PROJECTION_LOG):
+        return snapshots
+    with _player_prop_snapshot_lock:
+        with open(PLAYER_PROP_PROJECTION_LOG, encoding="utf-8") as handle:
+            for line in handle:
+                try:
+                    row = json.loads(line)
+                    row["_recorded_at"] = datetime.fromisoformat(row["recorded_at"].replace("Z", "+00:00"))
+                    snapshots.setdefault(int(row["game_id"]), []).append(row)
+                except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+                    continue
+    for rows in snapshots.values():
+        rows.sort(key=lambda row: row["_recorded_at"])
+    return snapshots
+
+
+def _player_prop_boxscore(game_id):
+    game_id = int(game_id)
+    if game_id not in _player_prop_boxscore_cache:
+        feed = statsapi.get("game", {"gamePk": game_id})
+        _player_prop_boxscore_cache[game_id] = feed.get("liveData", {}).get("boxscore", {}).get("teams", {})
+    return _player_prop_boxscore_cache[game_id]
+
+
+def _player_prop_actual(boxscore, selection):
+    player = None
+    player_key = f"ID{int(selection['player_id'])}"
+    for side in ("away", "home"):
+        candidate = (boxscore.get(side, {}).get("players", {}) or {}).get(player_key)
+        if candidate:
+            player = candidate
+            break
+    if not player:
+        return None
+    kind = selection.get("kind")
+    stats = (player.get("stats") or {}).get("batting" if kind == "batter" else "pitching") or {}
+    participation = stats.get("plateAppearances") if kind == "batter" else stats.get("battersFaced")
+    if int(participation or 0) <= 0:
+        return None
+    field = PLAYER_PROP_OUTCOME_FIELDS.get(kind, {}).get(selection.get("prop"))
+    if not field:
+        return None
+    try:
+        return float(stats.get(field) or 0)
+    except (TypeError, ValueError):
+        return None
+
+
+def player_prop_results_page(
+    results, target_date=None, page=1, page_size=10, updated_at=None,
+    prop_types=None,
+):
+    if prop_types is not None:
+        wanted = {str(value).lower() for value in prop_types}
+        results = [
+            row for row in results
+            if f"{row.get('kind')}:{row.get('prop')}".lower() in wanted
+        ]
+    if target_date:
+        results = [row for row in results if row.get("game_date") == target_date]
+    ranked = sorted(
+        results,
+        key=lambda row: (row.get("starts_at") or "", float(row.get("probability") or .5)),
+        reverse=True,
+    )
+    evaluated = len(ranked)
+    correct = sum(1 for row in ranked if row["correct"])
+    brier = (
+        sum((float(row["probability"]) - int(row["correct"])) ** 2 for row in ranked) / evaluated
+        if evaluated else None
+    )
+    breakdown = []
+    for kind, prop in sorted({
+        (row.get("kind") or "player", row["prop"]) for row in ranked
+    }):
+        rows = [
+            row for row in ranked
+            if (row.get("kind") or "player") == kind and row["prop"] == prop
+        ]
+        prop_correct = sum(1 for row in rows if row["correct"])
+        breakdown.append({
+            "kind": kind, "prop": prop, "prop_type": f"{kind}:{prop}",
+            "label": rows[0].get("label") or prop.replace("_", " ").title(),
+            "evaluated": len(rows), "correct": prop_correct,
+            "accuracy": prop_correct / len(rows),
+            "brier_score": sum((float(row["probability"]) - int(row["correct"])) ** 2 for row in rows) / len(rows),
+        })
+    page_size = max(1, min(int(page_size or 10), 100))
+    total_pages = max(1, math.ceil(evaluated / page_size))
+    page = max(1, min(int(page or 1), total_pages))
+    start = (page - 1) * page_size
+    return {
+        "games": ranked[start:start + page_size],
+        "evaluated": evaluated, "correct": correct,
+        "accuracy": correct / evaluated if evaluated else None,
+        "brier_score": brier, "prop_breakdown": breakdown,
+        "prop_types": sorted(prop_types) if prop_types is not None else None,
+        "date": target_date, "market": "player_props",
+        "page": page, "page_size": page_size, "total_pages": total_pages,
+        "updated_at": updated_at or datetime.now(timezone.utc).isoformat(),
+        "snapshot_rule": "Last archived displayed player-prop recommendation at or before scheduled first pitch",
+    }
+
+
+def _completed_player_prop_results(
+    target_date=None, page=1, page_size=10, prop_types=None,
+):
+    global _player_prop_results_cache
+    now = datetime.now(timezone.utc)
+    if _player_prop_results_cache and now - _player_prop_results_cache[0] < timedelta(minutes=5):
+        results, updated_at = _player_prop_results_cache[1], _player_prop_results_cache[0].isoformat()
+    else:
+        snapshots = load_player_prop_snapshots()
+        results = []
+        if snapshots:
+            earliest = min(row["_recorded_at"].date() for rows in snapshots.values() for row in rows)
+            games = statsapi.schedule(start_date=earliest.isoformat(), end_date=now.date().isoformat(), sportId=1)
+            for game in games:
+                game_id = int(game.get("game_id") or 0)
+                if game_id not in snapshots or "final" not in str(game.get("status", "")).lower():
+                    continue
+                try:
+                    starts_at = datetime.fromisoformat(game["game_datetime"].replace("Z", "+00:00"))
+                except (KeyError, TypeError, ValueError):
+                    continue
+                eligible = [row for row in snapshots[game_id] if row["_recorded_at"] <= starts_at]
+                if not eligible:
+                    continue
+                snapshot = max(eligible, key=lambda row: row["_recorded_at"])
+                try:
+                    boxscore = _player_prop_boxscore(game_id)
+                except (requests.RequestException, ValueError, KeyError):
+                    continue
+                home = {"id": int(game["home_id"]), "name": game.get("home_name")}
+                away = {"id": int(game["away_id"]), "name": game.get("away_name")}
+                for selection in snapshot.get("selections", []):
+                    actual = _player_prop_actual(boxscore, selection)
+                    line = float(selection["line"])
+                    if actual is None or actual == line:
+                        continue
+                    side = selection["side"]
+                    correct = (actual > line) == (side == "over")
+                    results.append({
+                        **selection, "game_id": game_id,
+                        "game_date": game.get("game_date") or starts_at.date().isoformat(),
+                        "starts_at": game.get("game_datetime"), "snapshot_at": snapshot["recorded_at"],
+                        "home": home, "away": away,
+                        "home_score": int(game.get("home_score") or 0),
+                        "away_score": int(game.get("away_score") or 0),
+                        "actual": actual, "correct": correct,
+                    })
+        results.sort(key=lambda row: (row["starts_at"] or "", row["probability"]), reverse=True)
+        _player_prop_results_cache = (now, results)
+        updated_at = now.isoformat()
+    return player_prop_results_page(
+        results, target_date, page, page_size, updated_at, prop_types,
+    )
+
+
+def _completed_prediction_results(target_date=None, page=1, page_size=10, market="moneyline"):
+    """Score archived pre-first-pitch forecasts, then filter and paginate them."""
     global _prediction_results_cache
     now = datetime.now(timezone.utc)
     if _prediction_results_cache and now - _prediction_results_cache[0] < timedelta(minutes=5):
-        return _prediction_results_cache[1]
-    snapshots = load_projection_snapshots()
-    if not snapshots:
-        payload = {"games": [], "evaluated": 0, "correct": 0, "accuracy": None, "updated_at": now.isoformat()}
-        _prediction_results_cache = (now, payload)
-        return payload
+        results, updated_at = _prediction_results_cache[1], _prediction_results_cache[0].isoformat()
+    else:
+        snapshots = load_projection_snapshots()
+        results = []
+        if snapshots:
+            earliest = min(row["_recorded_at"].date() for rows in snapshots.values() for row in rows)
+            games = statsapi.schedule(start_date=earliest.isoformat(), end_date=now.date().isoformat(), sportId=1)
+            for game in games:
+                game_id = int(game.get("game_id") or 0)
+                if game_id not in snapshots or "final" not in str(game.get("status", "")).lower():
+                    continue
+                if game.get("home_score") is None or game.get("away_score") is None or int(game["home_score"]) == int(game["away_score"]):
+                    continue
+                try:
+                    starts_at = datetime.fromisoformat(game["game_datetime"].replace("Z", "+00:00"))
+                except (KeyError, TypeError, ValueError):
+                    continue
+                eligible = [row for row in snapshots[game_id] if row["_recorded_at"] <= starts_at and row.get("phase") != "live"]
+                if not eligible:
+                    continue
+                snapshot = max(eligible, key=lambda row: row["_recorded_at"])
+                home_probability = float(snapshot["home_win_probability"])
+                projected_side = "home" if home_probability >= .5 else "away"
+                actual_side = "home" if int(game["home_score"]) > int(game["away_score"]) else "away"
+                correct = projected_side == actual_side
+                home = {"id": int(game["home_id"]), "name": game.get("home_name")}
+                away = {"id": int(game["away_id"]), "name": game.get("away_name")}
+                total_projection = snapshot.get("totals_projection") or {}
+                total_line = total_projection.get("recommended_line")
+                total_side = total_projection.get("recommended_side")
+                total_probability = total_projection.get("recommended_probability")
+                total_runs = int(game["home_score"]) + int(game["away_score"])
+                totals_eligible = total_line is not None and total_side in ("over", "under") and total_probability is not None
+                total_correct = bool((total_runs > float(total_line)) == (total_side == "over")) if totals_eligible else None
+                results.append({
+                    "game_id": game_id, "game_date": game.get("game_date") or starts_at.date().isoformat(),
+                    "starts_at": game.get("game_datetime"), "snapshot_at": snapshot["recorded_at"],
+                    "home": home, "away": away, "home_score": int(game["home_score"]), "away_score": int(game["away_score"]),
+                    "home_win_probability": home_probability, "away_win_probability": float(snapshot["away_win_probability"]),
+                    "projected_side": projected_side, "projected_team": (home if projected_side == "home" else away),
+                    "winner_side": actual_side, "winner": (home if actual_side == "home" else away), "correct": correct,
+                    "totals_eligible": totals_eligible, "total_runs": total_runs, "total_line": total_line,
+                    "total_side": total_side, "total_probability": total_probability, "total_correct": total_correct,
+                })
+        results.sort(key=lambda row: row["starts_at"] or "", reverse=True)
+        _prediction_results_cache = (now, results)
+        updated_at = now.isoformat()
+    return prediction_results_page(results, target_date, page, page_size, updated_at, market)
 
-    earliest = min(row["_recorded_at"].date() for rows in snapshots.values() for row in rows)
-    games = statsapi.schedule(start_date=earliest.isoformat(), end_date=now.date().isoformat(), sportId=1)
-    results = []
+
+def completed_prediction_results(
+    target_date=None, page=1, page_size=10, market="moneyline", prop_types=None,
+):
+    if market == "player_props":
+        with _player_prop_results_lock:
+            return _completed_player_prop_results(
+                target_date, page, page_size, prop_types,
+            )
+    with _prediction_results_lock:
+        return _completed_prediction_results(target_date, page, page_size, market)
+
+
+def void_game_status(status):
+    normalized = str(status or "").strip().lower()
+    return "postponed" in normalized or "cancelled" in normalized or "canceled" in normalized
+
+
+def match_slip_game(selection, games):
+    """Match a slip leg by teams and scheduled time, including doubleheaders."""
+    wanted = {normalize_slip_team(selection["team_1"]), normalize_slip_team(selection["team_2"])}
+    scheduled = datetime.fromisoformat(selection["scheduled_local"])
+    candidates = []
     for game in games:
-        game_id = int(game.get("game_id") or 0)
-        if game_id not in snapshots or "final" not in str(game.get("status", "")).lower():
+        teams = {normalize_slip_team(game.get("away_name", "")), normalize_slip_team(game.get("home_name", ""))}
+        if teams != wanted or not game.get("game_datetime"):
             continue
-        if game.get("home_score") is None or game.get("away_score") is None or int(game["home_score"]) == int(game["away_score"]):
-            continue
+        # Once MLB identifies the originally ticketed game as postponed or
+        # cancelled, do not silently move the leg to a replacement game in the
+        # same series. The non-played game is terminal for slip tracking.
+        if selection.get("game_id") and int(game.get("game_id") or 0) == int(selection["game_id"]) and void_game_status(game.get("status")):
+            return game
         try:
-            starts_at = datetime.fromisoformat(game["game_datetime"].replace("Z", "+00:00"))
-        except (KeyError, TypeError, ValueError):
+            starts_utc = datetime.fromisoformat(game["game_datetime"].replace("Z", "+00:00"))
+            starts_on_slip_clock = starts_utc.astimezone(timezone.utc).replace(tzinfo=None) + timedelta(hours=SLIP_TIMEZONE_OFFSET_HOURS)
+            candidates.append((abs((starts_on_slip_clock - scheduled).total_seconds()), game))
+        except (TypeError, ValueError):
             continue
-        eligible = [row for row in snapshots[game_id] if row["_recorded_at"] <= starts_at and row.get("phase") != "live"]
-        if not eligible:
-            continue
-        snapshot = max(eligible, key=lambda row: row["_recorded_at"])
-        home_probability = float(snapshot["home_win_probability"])
-        projected_side = "home" if home_probability >= .5 else "away"
-        actual_side = "home" if int(game["home_score"]) > int(game["away_score"]) else "away"
-        correct = projected_side == actual_side
-        home = {"id": int(game["home_id"]), "name": game.get("home_name")}
-        away = {"id": int(game["away_id"]), "name": game.get("away_name")}
-        results.append({
-            "game_id": game_id, "starts_at": game.get("game_datetime"), "snapshot_at": snapshot["recorded_at"],
-            "home": home, "away": away, "home_score": int(game["home_score"]), "away_score": int(game["away_score"]),
-            "home_win_probability": home_probability, "away_win_probability": float(snapshot["away_win_probability"]),
-            "projected_side": projected_side, "projected_team": (home if projected_side == "home" else away),
-            "winner_side": actual_side, "winner": (home if actual_side == "home" else away), "correct": correct,
-        })
-    results.sort(key=lambda row: row["starts_at"] or "", reverse=True)
-    results = results[:max(1, min(int(limit or 50), 100))]
-    correct = sum(1 for row in results if row["correct"])
-    payload = {"games": results, "evaluated": len(results), "correct": correct, "accuracy": correct / len(results) if results else None, "updated_at": now.isoformat(), "snapshot_rule": "Last archived projection at or before scheduled first pitch"}
-    _prediction_results_cache = (now, payload)
-    return payload
+    if not candidates:
+        return None
+    distance, game = min(candidates, key=lambda item: item[0])
+    # A team pair alone is unsafe during a series. Eight hours accommodates
+    # provider time discrepancies without crossing into the next day's game.
+    return game if distance <= 8 * 60 * 60 else None
 
 
 def enrich_slip(slip):
@@ -883,29 +2234,52 @@ def enrich_slip(slip):
     dates = [datetime.fromisoformat(item["scheduled_local"]).date() for item in slip["selections"]]
     games = statsapi.schedule(start_date=(min(dates) - timedelta(days=1)).isoformat(), end_date=(max(dates) + timedelta(days=1)).isoformat(), sportId=1)
     for selection in slip["selections"]:
-        wanted = {normalize_slip_team(selection["team_1"]), normalize_slip_team(selection["team_2"])}
-        game = next((item for item in games if {normalize_slip_team(item.get("away_name", "")), normalize_slip_team(item.get("home_name", ""))} == wanted), None)
+        game = match_slip_game(selection, games)
         if not game:
+            selection.update({"game_id": None, "status": "unmatched", "away_score": None, "home_score": None, "outcome": "pending", "alerts": []})
             continue
         selection.update({"game_id": int(game["game_id"]), "status": game.get("status", "Unknown"), "away_team": game.get("away_name"), "home_team": game.get("home_name"), "away_score": game.get("away_score"), "home_score": game.get("home_score")})
-        if "Final" in game.get("status", ""):
-            selected_home = normalize_slip_team(selection["selected_team"]) == normalize_slip_team(game.get("home_name", ""))
-            selected_score = game.get("home_score") if selected_home else game.get("away_score")
-            other_score = game.get("away_score") if selected_home else game.get("home_score")
-            selection["outcome"] = "won" if selected_score > other_score else "lost"
-        else:
-            previous = selection.get("selected_probability")
-            projection = game_detail(game["game_id"]).get("projection", {})
-            if projection.get("available"):
+        if void_game_status(game.get("status")):
+            selection.update({"outcome": "void", "alerts": []})
+        elif "Final" in game.get("status", ""):
+            if selection.get("market") == "totals":
+                final_total = int(game.get("home_score") or 0) + int(game.get("away_score") or 0)
+                line, side = float(selection["total_line"]), selection["total_side"]
+                selection["final_total_runs"] = final_total
+                if abs(final_total - line) < 1e-9:
+                    selection["outcome"] = "void"
+                else:
+                    selection["outcome"] = "won" if (side == "over" and final_total > line) or (side == "under" and final_total < line) else "lost"
+            else:
                 selected_home = normalize_slip_team(selection["selected_team"]) == normalize_slip_team(game.get("home_name", ""))
-                current = projection["home_win_probability"] if selected_home else projection["away_win_probability"]
+                selected_score = game.get("home_score") if selected_home else game.get("away_score")
+                other_score = game.get("away_score") if selected_home else game.get("home_score")
+                selection["outcome"] = "won" if selected_score > other_score else "lost"
+        else:
+            # Repair a leg that was previously attached to a completed game
+            # from another day in the same series.
+            selection["outcome"] = "pending"
+            previous = selection.get("selected_probability")
+            detail = game_detail(game["game_id"])
+            projection = detail.get("totals_projection", {}) if selection.get("market") == "totals" else detail.get("projection", {})
+            if projection.get("available"):
+                if selection.get("market") == "totals":
+                    threshold = next((row for row in projection.get("thresholds", []) if float(row.get("line", -1)) == float(selection["total_line"])), None)
+                    if threshold is None:
+                        continue
+                    current = float(threshold[f"{selection['total_side']}_probability"])
+                else:
+                    selected_home = normalize_slip_team(selection["selected_team"]) == normalize_slip_team(game.get("home_name", ""))
+                    current = projection["home_win_probability"] if selected_home else projection["away_win_probability"]
                 selection["selected_probability"] = current
                 selection["model_confidence"] = projection.get("confidence_score")
                 selection["confidence_label"] = projection.get("confidence_label")
                 alerts = []
-                if current < 0.5: alerts.append({"level": "warning", "message": f"Model now favors the opponent ({current:.1%} selected-team probability)."})
+                if current < 0.5:
+                    message = f"Model now places this total side below 50% ({current:.1%})." if selection.get("market") == "totals" else f"Model now favors the opponent ({current:.1%} selected-team probability)."
+                    alerts.append({"level": "warning", "message": message})
                 if previous is not None and previous - current >= 0.05: alerts.append({"level": "critical", "message": f"Projection fell {(previous-current):.1%} since the prior check."})
-                alerts.extend(projection.get("circumstance_alerts", []))
+                alerts.extend(detail.get("projection", {}).get("circumstance_alerts", []))
                 selection["alerts"] = alerts
     slip["last_checked_at"] = datetime.now(timezone.utc).isoformat()
     selection_year = datetime.fromisoformat(slip["selections"][0]["scheduled_local"]).year
@@ -922,6 +2296,43 @@ def enrich_slip(slip):
         for item in slip["selections"]
     )
     return slip
+
+
+def slip_snapshot():
+    """Return persisted slips without waiting on MLB reconciliation."""
+    slips = load_slips()
+    slips.sort(key=lambda item: item.get("placed_at_iso") or item.get("imported_at") or "", reverse=True)
+    return slips
+
+
+def queue_slip_refresh():
+    """Reconcile active slips once in the background, deduplicating page polls."""
+    global _slip_refresh_running
+    with _slip_refresh_lock:
+        if _slip_refresh_running:
+            return False
+        _slip_refresh_running = True
+        _slip_refresh_state.update({"running": True, "last_started_at": datetime.now(timezone.utc).isoformat(), "last_error": None})
+
+    def refresh():
+        global _slip_refresh_running
+        try:
+            for item in slip_snapshot():
+                completed = item.get("active") is False and all(selection.get("outcome") != "pending" for selection in item.get("selections", []))
+                if completed:
+                    continue
+                try:
+                    save_slip(enrich_slip(item))
+                except Exception as exc:
+                    _slip_refresh_state["last_error"] = str(exc)
+                    print(f"[slips] background refresh failed for {item.get('id')}: {exc}", flush=True)
+        finally:
+            with _slip_refresh_lock:
+                _slip_refresh_running = False
+                _slip_refresh_state.update({"running": False, "last_finished_at": datetime.now(timezone.utc).isoformat()})
+
+    threading.Thread(target=refresh, name="slip-refresh", daemon=True).start()
+    return True
 
 
 def schedule(date):
@@ -983,16 +2394,45 @@ class Handler(BaseHTTPRequestHandler):
         query = parse_qs(parsed.query)
         try:
             if parsed.path == "/health":
-                self.send_json({"status": "ok", "provider": "MLB-StatsAPI", "version": statsapi.__version__, "maintenance": maintenance_status(), "projection_monitor": _projection_monitor})
+                self.send_json({
+                    "status": "ok", "provider": "MLB-StatsAPI", "version": statsapi.__version__,
+                    "maintenance": maintenance_status(), "projection_monitor": _projection_monitor,
+                    "player_prop_monitor": _player_prop_monitor,
+                })
             elif parsed.path == "/model":
                 with open(MODEL_REPORT, "r", encoding="utf-8") as handle:
                     report = json.load(handle)
+                try:
+                    with open(TOTALS_REPORT, "r", encoding="utf-8") as handle:
+                        report["totals_model"] = json.load(handle)
+                except (OSError, json.JSONDecodeError):
+                    report["totals_model"] = None
+                try:
+                    with open(PLAYER_PROPS_REPORT, "r", encoding="utf-8") as handle:
+                        report["player_props_model"] = json.load(handle)
+                except (OSError, json.JSONDecodeError):
+                    report["player_props_model"] = None
                 report["maintenance"] = maintenance_status()
-                report["completed_predictions"] = completed_prediction_results()
                 self.send_json(report)
+            elif parsed.path == "/model/results":
+                prop_types = None
+                if "prop_types" in query:
+                    prop_types = [
+                        value for item in query.get("prop_types", [])
+                        for value in str(item).split(",") if str(value).strip()
+                    ]
+                self.send_json(completed_prediction_results(
+                    query.get("date", [None])[0], query.get("page", [1])[0],
+                    query.get("page_size", [10])[0],
+                    query.get("market", ["moneyline"])[0], prop_types,
+                ))
             elif parsed.path == "/projection-board":
                 start_date = query.get("start_date", [datetime.now(timezone.utc).date().isoformat()])[0]
                 self.send_json(projection_board(start_date, query.get("days", [7])[0]))
+            elif parsed.path == "/player-props":
+                start_date = query.get("start_date", [datetime.now(timezone.utc).date().isoformat()])[0]
+                refresh = str(query.get("refresh", [""])[0]).lower() in {"1", "true", "yes"}
+                self.send_json(player_props_board(start_date, query.get("days", [1])[0], defer_refresh=refresh))
             elif parsed.path == "/games":
                 date = query.get("date", [datetime.now(timezone.utc).date().isoformat()])[0]
                 self.send_json(schedule(date))
@@ -1011,12 +2451,8 @@ class Handler(BaseHTTPRequestHandler):
             elif parsed.path.startswith("/players/"):
                 self.send_json(player_detail(parsed.path.rsplit("/", 1)[-1]))
             elif parsed.path == "/slips":
-                slips = [
-                    item if item.get("active") is False and all(selection.get("outcome") != "pending" for selection in item.get("selections", [])) else enrich_slip(item)
-                    for item in load_slips()
-                ]
-                for slip in slips: save_slip(slip)
-                slips.sort(key=lambda item: item.get("placed_at_iso") or item.get("imported_at") or "", reverse=True)
+                slips = slip_snapshot()
+                queue_slip_refresh()
                 self.send_json(slips)
             else:
                 self.send_json({"error": "Not found"}, 404)
@@ -1029,8 +2465,9 @@ class Handler(BaseHTTPRequestHandler):
             length = int(self.headers.get("Content-Length", "0"))
             payload = json.loads(self.rfile.read(length).decode("utf-8"))
             if parsed.path == "/slips/import":
-                slip = enrich_slip(parse_pdf(payload["data"], payload.get("filename", "slip.pdf")))
-                self.send_json(save_slip(slip), 201)
+                slip = save_slip(parse_pdf(payload["data"], payload.get("filename", "slip.pdf")))
+                queue_slip_refresh()
+                self.send_json(slip, 201)
             else:
                 self.send_json({"error": "Not found"}, 404)
         except Exception as exc:
@@ -1093,17 +2530,23 @@ def projection_refresh_loop():
             with ThreadPoolExecutor(max_workers=min(4, len(due_ids))) as pool:
                 results = list(pool.map(refresh, due_ids))
             refreshed_at = datetime.now(timezone.utc)
+            refreshed_any = False
             for game_id, status_code, error in results:
                 if error:
                     next_due[game_id] = time.monotonic() + 15
                     _projection_monitor["last_error"] = f"Game {game_id}: {error}"
                     continue
                 is_live = status_code == "Live"
+                refreshed_any = True
                 if game_id in tracked:
                     tracked[game_id]["is_live"] = is_live
                     tracked[game_id]["status"] = status_code
                 next_due[game_id] = time.monotonic() + (live_seconds if is_live else pregame_seconds)
                 _projection_monitor.update({"last_refresh_at": refreshed_at.isoformat(), "last_game_id": game_id, "last_error": None})
+            if refreshed_any:
+                # Builder requests are inexpensive cached reads, but must see
+                # newly reassessed matchup projections on their next poll.
+                _projection_board_cache.clear()
         time.sleep(1)
 
 
@@ -1130,5 +2573,6 @@ def maintenance_loop():
 if __name__ == "__main__":
     threading.Thread(target=projection_refresh_loop, name="projection-refresh", daemon=True).start()
     threading.Thread(target=maintenance_loop, name="model-maintenance", daemon=True).start()
+    threading.Thread(target=player_prop_archive_loop, name="player-props-archive", daemon=True).start()
     print(f"MLB Stats provider listening on {PORT}")
     ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()

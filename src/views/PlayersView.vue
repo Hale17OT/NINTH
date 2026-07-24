@@ -3,8 +3,9 @@ import {computed,onMounted,ref,watch} from 'vue'
 import {Search,ArrowUpRight} from 'lucide-vue-next'
 import {api} from '../services/api'
 import PlayerHeadshot from '../components/player/PlayerHeadshot.vue';import TeamLogo from '../components/team/TeamLogo.vue';import CustomSelect from '../components/ui/CustomSelect.vue';import LoadingState from '../components/ui/LoadingState.vue'
-const players=ref([]),query=ref(''),position=ref('all'),team=ref('all'),limit=ref(48),loading=ref(true)
-onMounted(async()=>{try{players.value=await api.players()}finally{loading.value=false}})
+const players=ref([]),query=ref(''),position=ref('all'),team=ref('all'),limit=ref(48),loading=ref(true),error=ref('')
+const load=async()=>{loading.value=true;error.value='';try{players.value=await api.players()}catch(caught){error.value=caught?.message||'The player directory could not be loaded.'}finally{loading.value=false}}
+onMounted(load)
 watch([query,position,team],()=>limit.value=48)
 const teams=computed(()=>[...new Map(players.value.map(p=>[p.team_id,{id:p.team_id,name:p.team_name,abbr:p.team_abbr}])).values()].sort((a,b)=>a.name.localeCompare(b.name)))
 const teamOptions=computed(()=>[{value:'all',label:'All 30 teams',meta:'MLB'},...teams.value.map(item=>({value:String(item.id),label:item.name,meta:item.abbr}))])

@@ -16,3 +16,11 @@ class ProbabilityBlend:
 class FeatureSubsetModel:
     def __init__(self, model, indices):self.model=model;self.indices=list(indices)
     def predict_proba(self, X):return self.model.predict_proba(np.asarray(X)[:,self.indices])
+
+class CenteredProbabilityShrink:
+    """Pull binary probabilities toward 50% without changing their ranking."""
+    def __init__(self, model, factor):self.model=model;self.factor=float(factor)
+    def predict_proba(self, X):
+        probability=np.asarray(self.model.predict_proba(X),dtype=float)[:,1]
+        adjusted=np.clip(.5+self.factor*(probability-.5),.001,.999)
+        return np.column_stack([1-adjusted,adjusted])

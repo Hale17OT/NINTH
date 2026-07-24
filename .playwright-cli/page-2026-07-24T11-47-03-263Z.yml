@@ -1,0 +1,467 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: NINTH
+          - generic [ref=e10]: BASEBALL / DECISION LAB
+      - navigation [ref=e11]:
+        - link "Games" [ref=e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=e70] [cursor=pointer]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: DISPLAY / 09
+          - generic [ref=e73]: DAY
+    - generic [ref=e78]:
+      - generic [ref=e79]: TODAY
+      - link "COL 0 — 0 MIL Scheduled" [ref=e420] [cursor=pointer]:
+        - /url: /games/823759
+        - generic [ref=e421]: COL
+        - emphasis [ref=e422]: "0"
+        - generic [ref=e423]: —
+        - emphasis [ref=e424]: "0"
+        - generic [ref=e425]: MIL
+        - generic [ref=e426]: Scheduled
+      - link "KC 0 — 0 DET Scheduled" [ref=e427] [cursor=pointer]:
+        - /url: /games/824248
+        - generic [ref=e428]: KC
+        - emphasis [ref=e429]: "0"
+        - generic [ref=e430]: —
+        - emphasis [ref=e431]: "0"
+        - generic [ref=e432]: DET
+        - generic [ref=e433]: Scheduled
+      - link "CHC 0 — 0 PIT Scheduled" [ref=e434] [cursor=pointer]:
+        - /url: /games/823352
+        - generic [ref=e435]: CHC
+        - emphasis [ref=e436]: "0"
+        - generic [ref=e437]: —
+        - emphasis [ref=e438]: "0"
+        - generic [ref=e439]: PIT
+        - generic [ref=e440]: Scheduled
+      - link "AZ 0 — 0 WSH Scheduled" [ref=e441] [cursor=pointer]:
+        - /url: /games/822707
+        - generic [ref=e442]: AZ
+        - emphasis [ref=e443]: "0"
+        - generic [ref=e444]: —
+        - emphasis [ref=e445]: "0"
+        - generic [ref=e446]: WSH
+        - generic [ref=e447]: Scheduled
+      - generic [ref=e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=e84]:
+    - generic [ref=e86]:
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - text: NINTH / PLAYER LAB
+          - heading "Build from the player up." [level=1] [ref=e89]
+          - paragraph [ref=e90]: Start with a matchup, inspect its available player markets, then add only the legs you want to the card.
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - generic [ref=e93]: MODEL
+            - generic [ref=e94]:
+              - link "MONEYLINE" [ref=e95] [cursor=pointer]:
+                - /url: /builder?market=moneyline
+              - link "TOTALS" [ref=e96] [cursor=pointer]:
+                - /url: /builder?market=totals
+              - link "MIXED" [ref=e97] [cursor=pointer]:
+                - /url: /builder?market=combined
+              - link "PLAYER PROPS" [ref=e98] [cursor=pointer]:
+                - /url: /props-builder
+          - generic [ref=e99]:
+            - generic [ref=e100]:
+              - generic [ref=e101]: SLATE
+              - generic [ref=e102]:
+                - button "DAILY" [ref=e103] [cursor=pointer]
+                - button "MULTI-DAY" [ref=e104] [cursor=pointer]
+            - generic [ref=e105]:
+              - generic [ref=e106]: Game date
+              - button "Jul 24, 2026" [ref=e107] [cursor=pointer]
+            - generic [ref=e113]:
+              - generic [ref=e114]: Target legs
+              - button "5 legs One player prop per game" [ref=e115] [cursor=pointer]:
+                - generic [ref=e116]: 5 legs
+                - generic [ref=e117]: One player prop per game
+            - generic [ref=e120]:
+              - generic [ref=e121]: DATA
+              - button "REFRESH" [ref=e122] [cursor=pointer]
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - generic [ref=e130]: Included player props
+              - button "All 8 selected 8" [ref=e131] [cursor=pointer]:
+                - generic [ref=e132]: All 8 selected
+                - generic [ref=e133]: "8"
+            - generic [ref=e136]:
+              - generic [ref=e137]: BUILD DIRECTION
+              - group "Automatic player prop build direction" [ref=e138]:
+                - button "BOTH" [ref=e139] [cursor=pointer]
+                - button "OVER" [pressed] [ref=e140] [cursor=pointer]
+                - button "UNDER" [ref=e141] [cursor=pointer]
+      - generic [ref=e142]:
+        - generic [ref=e144]:
+          - strong [ref=e145]: "16.3"
+          - text: "%"
+        - generic [ref=e146]:
+          - text: SAMPLE-SIZE ADJUSTED SLIP CONFIDENCE
+          - heading "STRONG FOR A MULTI-LEG SLIP" [level=2] [ref=e449]
+          - paragraph [ref=e148]: Estimated chance that every selected prop lands. Short player histories are pulled toward 50%, and recommended cards use one prop per game to limit hidden same-game correlation.
+          - generic [ref=e149]: MODEL PROBABILITY, NOT A GUARANTEE
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - generic [ref=e152]: LEGS
+            - generic [ref=e153]: 5 / 5
+          - generic [ref=e154]:
+            - generic [ref=e155]: ADJUSTED
+            - generic [ref=e156]: 16.3%
+          - generic [ref=e157]:
+            - generic [ref=e158]: RAW PRODUCT
+            - generic [ref=e159]: 16.3%
+          - generic [ref=e160]:
+            - generic [ref=e161]: TYPICAL LEG
+            - generic [ref=e162]: 69.6%
+        - generic [ref=e163]:
+          - button "BUILD BEST 5 OVER" [active] [ref=e448] [cursor=pointer]
+          - button "SEND TO MELBET" [ref=e167] [cursor=pointer]
+          - button "CLEAR" [ref=e171] [cursor=pointer]
+      - generic [ref=e450]:
+        - generic [ref=e451]:
+          - generic [ref=e452]:
+            - text: YOUR PLAYER PROP CARD
+            - heading "5 selected legs" [level=2] [ref=e453]
+          - generic [ref=e454]: Tap a card to edit its market or line.
+        - generic [ref=e455]:
+          - article [ref=e456] [cursor=pointer]:
+            - button "Remove leg" [ref=e457]
+            - generic [ref=e461]:
+              - img "Brandon Marsh headshot" [ref=e464]
+              - generic [ref=e465]:
+                - generic [ref=e466]: BATTER · PROJECTED
+                - generic [ref=e467]: Brandon Marsh
+                - emphasis [ref=e468]: New York Yankees at Philadelphia Phillies
+            - generic [ref=e469]:
+              - generic [ref=e470]:
+                - generic [ref=e471]: OVER 0.5
+                - generic [ref=e472]: Hits
+              - generic [ref=e473]:
+                - generic [ref=e474]: NINTH MODEL CHANCE
+                - strong [ref=e475]: 70.6%
+            - generic [ref=e476]:
+              - text: LAST 10 AVG 0.6
+              - generic [ref=e477]: High confidence · 71/100
+          - article [ref=e478] [cursor=pointer]:
+            - button "Remove leg" [ref=e479]
+            - generic [ref=e483]:
+              - img "Bo Bichette headshot" [ref=e486]
+              - generic [ref=e487]:
+                - generic [ref=e488]: BATTER · PROJECTED
+                - generic [ref=e489]: Bo Bichette
+                - emphasis [ref=e490]: Los Angeles Dodgers at New York Mets
+            - generic [ref=e491]:
+              - generic [ref=e492]:
+                - generic [ref=e493]: OVER 0.5
+                - generic [ref=e494]: Hits
+              - generic [ref=e495]:
+                - generic [ref=e496]: NINTH MODEL CHANCE
+                - strong [ref=e497]: 70.6%
+            - generic [ref=e498]:
+              - text: LAST 10 AVG 0.8
+              - generic [ref=e499]: High confidence · 71/100
+          - article [ref=e500] [cursor=pointer]:
+            - button "Remove leg" [ref=e501]
+            - generic [ref=e505]:
+              - img "Josh Naylor headshot" [ref=e508]
+              - generic [ref=e509]:
+                - generic [ref=e510]: BATTER · PROJECTED
+                - generic [ref=e511]: Josh Naylor
+                - emphasis [ref=e512]: Seattle Mariners at Texas Rangers
+            - generic [ref=e513]:
+              - generic [ref=e514]:
+                - generic [ref=e515]: OVER 0.5
+                - generic [ref=e516]: Hits
+              - generic [ref=e517]:
+                - generic [ref=e518]: NINTH MODEL CHANCE
+                - strong [ref=e519]: 70.6%
+            - generic [ref=e520]:
+              - text: LAST 10 AVG 1
+              - generic [ref=e521]: High confidence · 71/100
+          - article [ref=e522] [cursor=pointer]:
+            - button "Remove leg" [ref=e523]
+            - generic [ref=e527]:
+              - img "Chase DeLauter headshot" [ref=e530]
+              - generic [ref=e531]:
+                - generic [ref=e532]: BATTER · PROJECTED
+                - generic [ref=e533]: Chase DeLauter
+                - emphasis [ref=e534]: Cleveland Guardians at Tampa Bay Rays
+            - generic [ref=e535]:
+              - generic [ref=e536]:
+                - generic [ref=e537]: OVER 0.5
+                - generic [ref=e538]: Hits
+              - generic [ref=e539]:
+                - generic [ref=e540]: NINTH MODEL CHANCE
+                - strong [ref=e541]: 68.2%
+            - generic [ref=e542]:
+              - text: LAST 10 AVG 1.5
+              - generic [ref=e543]: High confidence · 68/100
+          - article [ref=e544] [cursor=pointer]:
+            - button "Remove leg" [ref=e545]
+            - generic [ref=e549]:
+              - img "Tarik Skubal headshot" [ref=e552]
+              - generic [ref=e553]:
+                - generic [ref=e554]: PITCHER · PROBABLE
+                - generic [ref=e555]: Tarik Skubal
+                - emphasis [ref=e556]: Kansas City Royals at Detroit Tigers
+            - generic [ref=e557]:
+              - generic [ref=e558]:
+                - generic [ref=e559]: OVER 0.5
+                - generic [ref=e560]: Walks
+              - generic [ref=e561]:
+                - generic [ref=e562]: NINTH MODEL CHANCE
+                - strong [ref=e563]: 68.0%
+            - generic [ref=e564]:
+              - text: LAST 10 AVG 0.7
+              - generic [ref=e565]: High confidence · 68/100
+      - generic [ref=e175]:
+        - generic [ref=e176]: 15 GAMES · FRIDAY, JULY 24 · 15 WITH CURRENT PLAYER MARKETS · AUTO 60S
+        - paragraph [ref=e178]: Only players, prop types and thresholds currently displayed by MelBet are selectable. Prices are discarded before the model scores the lines.
+      - generic [ref=e179]:
+        - button "4:10 PM EDT Colorado Rockies logo Colorado Rockies AWAY AT Milwaukee Brewers HOME Milwaukee Brewers logo VIEW 17 MATCHING PLAYERS →" [ref=e180] [cursor=pointer]:
+          - generic [ref=e181]: 4:10 PM EDT
+          - generic [ref=e182]:
+            - img "Colorado Rockies logo" [ref=e184]
+            - generic [ref=e185]:
+              - generic [ref=e186]: Colorado Rockies
+              - generic [ref=e187]: AWAY
+          - generic [ref=e188]: AT
+          - generic [ref=e189]:
+            - generic [ref=e190]:
+              - generic [ref=e191]: Milwaukee Brewers
+              - generic [ref=e192]: HOME
+            - img "Milwaukee Brewers logo" [ref=e194]
+          - generic [ref=e195]: VIEW 17 MATCHING PLAYERS →
+        - button "6:40 PM EDT Kansas City Royals logo Kansas City Royals AWAY AT Detroit Tigers HOME Detroit Tigers logo Tarik Skubal OVER 0.5 Walks EDIT PLAYER PROP" [ref=e566] [cursor=pointer]:
+          - generic [ref=e197]: 6:40 PM EDT
+          - generic [ref=e198]:
+            - img "Kansas City Royals logo" [ref=e200]
+            - generic [ref=e201]:
+              - generic [ref=e202]: Kansas City Royals
+              - generic [ref=e203]: AWAY
+          - generic [ref=e204]: AT
+          - generic [ref=e205]:
+            - generic [ref=e206]:
+              - generic [ref=e207]: Detroit Tigers
+              - generic [ref=e208]: HOME
+            - img "Detroit Tigers logo" [ref=e210]
+          - generic [ref=e570]:
+            - generic [ref=e571]: Tarik Skubal
+            - generic [ref=e572]: OVER 0.5 Walks
+          - generic [ref=e211]: EDIT PLAYER PROP
+        - button "6:40 PM EDT Chicago Cubs logo Chicago Cubs AWAY AT Pittsburgh Pirates HOME Pittsburgh Pirates logo VIEW 16 MATCHING PLAYERS →" [ref=e212] [cursor=pointer]:
+          - generic [ref=e213]: 6:40 PM EDT
+          - generic [ref=e214]:
+            - img "Chicago Cubs logo" [ref=e216]
+            - generic [ref=e217]:
+              - generic [ref=e218]: Chicago Cubs
+              - generic [ref=e219]: AWAY
+          - generic [ref=e220]: AT
+          - generic [ref=e221]:
+            - generic [ref=e222]:
+              - generic [ref=e223]: Pittsburgh Pirates
+              - generic [ref=e224]: HOME
+            - img "Pittsburgh Pirates logo" [ref=e226]
+          - generic [ref=e227]: VIEW 16 MATCHING PLAYERS →
+        - button "6:45 PM EDT Arizona Diamondbacks logo Arizona Diamondbacks AWAY AT Washington Nationals HOME Washington Nationals logo VIEW 15 MATCHING PLAYERS →" [ref=e228] [cursor=pointer]:
+          - generic [ref=e229]: 6:45 PM EDT
+          - generic [ref=e230]:
+            - img "Arizona Diamondbacks logo" [ref=e232]
+            - generic [ref=e233]:
+              - generic [ref=e234]: Arizona Diamondbacks
+              - generic [ref=e235]: AWAY
+          - generic [ref=e236]: AT
+          - generic [ref=e237]:
+            - generic [ref=e238]:
+              - generic [ref=e239]: Washington Nationals
+              - generic [ref=e240]: HOME
+            - img "Washington Nationals logo" [ref=e242]
+          - generic [ref=e243]: VIEW 15 MATCHING PLAYERS →
+        - button "6:45 PM EDT New York Yankees logo New York Yankees AWAY AT Philadelphia Phillies HOME Philadelphia Phillies logo Brandon Marsh OVER 0.5 Hits EDIT PLAYER PROP" [ref=e573] [cursor=pointer]:
+          - generic [ref=e245]: 6:45 PM EDT
+          - generic [ref=e246]:
+            - img "New York Yankees logo" [ref=e248]
+            - generic [ref=e249]:
+              - generic [ref=e250]: New York Yankees
+              - generic [ref=e251]: AWAY
+          - generic [ref=e252]: AT
+          - generic [ref=e253]:
+            - generic [ref=e254]:
+              - generic [ref=e255]: Philadelphia Phillies
+              - generic [ref=e256]: HOME
+            - img "Philadelphia Phillies logo" [ref=e258]
+          - generic [ref=e577]:
+            - generic [ref=e578]: Brandon Marsh
+            - generic [ref=e579]: OVER 0.5 Hits
+          - generic [ref=e259]: EDIT PLAYER PROP
+        - button "7:05 PM EDT Atlanta Braves logo Atlanta Braves AWAY AT Baltimore Orioles HOME Baltimore Orioles logo VIEW 14 MATCHING PLAYERS →" [ref=e260] [cursor=pointer]:
+          - generic [ref=e261]: 7:05 PM EDT
+          - generic [ref=e262]:
+            - img "Atlanta Braves logo" [ref=e264]
+            - generic [ref=e265]:
+              - generic [ref=e266]: Atlanta Braves
+              - generic [ref=e267]: AWAY
+          - generic [ref=e268]: AT
+          - generic [ref=e269]:
+            - generic [ref=e270]:
+              - generic [ref=e271]: Baltimore Orioles
+              - generic [ref=e272]: HOME
+            - img "Baltimore Orioles logo" [ref=e274]
+          - generic [ref=e275]: VIEW 14 MATCHING PLAYERS →
+        - button "7:10 PM EDT Los Angeles Dodgers logo Los Angeles Dodgers AWAY AT New York Mets HOME New York Mets logo Bo Bichette OVER 0.5 Hits EDIT PLAYER PROP" [ref=e580] [cursor=pointer]:
+          - generic [ref=e277]: 7:10 PM EDT
+          - generic [ref=e278]:
+            - img "Los Angeles Dodgers logo" [ref=e280]
+            - generic [ref=e281]:
+              - generic [ref=e282]: Los Angeles Dodgers
+              - generic [ref=e283]: AWAY
+          - generic [ref=e284]: AT
+          - generic [ref=e285]:
+            - generic [ref=e286]:
+              - generic [ref=e287]: New York Mets
+              - generic [ref=e288]: HOME
+            - img "New York Mets logo" [ref=e290]
+          - generic [ref=e584]:
+            - generic [ref=e585]: Bo Bichette
+            - generic [ref=e586]: OVER 0.5 Hits
+          - generic [ref=e291]: EDIT PLAYER PROP
+        - button "7:10 PM EDT Cleveland Guardians logo Cleveland Guardians AWAY AT Tampa Bay Rays HOME Tampa Bay Rays logo Chase DeLauter OVER 0.5 Hits EDIT PLAYER PROP" [ref=e587] [cursor=pointer]:
+          - generic [ref=e293]: 7:10 PM EDT
+          - generic [ref=e294]:
+            - img "Cleveland Guardians logo" [ref=e296]
+            - generic [ref=e297]:
+              - generic [ref=e298]: Cleveland Guardians
+              - generic [ref=e299]: AWAY
+          - generic [ref=e300]: AT
+          - generic [ref=e301]:
+            - generic [ref=e302]:
+              - generic [ref=e303]: Tampa Bay Rays
+              - generic [ref=e304]: HOME
+            - img "Tampa Bay Rays logo" [ref=e306]
+          - generic [ref=e591]:
+            - generic [ref=e592]: Chase DeLauter
+            - generic [ref=e593]: OVER 0.5 Hits
+          - generic [ref=e307]: EDIT PLAYER PROP
+        - button "7:10 PM EDT San Diego Padres logo San Diego Padres AWAY AT Miami Marlins HOME Miami Marlins logo VIEW 12 MATCHING PLAYERS →" [ref=e308] [cursor=pointer]:
+          - generic [ref=e309]: 7:10 PM EDT
+          - generic [ref=e310]:
+            - img "San Diego Padres logo" [ref=e312]
+            - generic [ref=e313]:
+              - generic [ref=e314]: San Diego Padres
+              - generic [ref=e315]: AWAY
+          - generic [ref=e316]: AT
+          - generic [ref=e317]:
+            - generic [ref=e318]:
+              - generic [ref=e319]: Miami Marlins
+              - generic [ref=e320]: HOME
+            - img "Miami Marlins logo" [ref=e322]
+          - generic [ref=e323]: VIEW 12 MATCHING PLAYERS →
+        - button "7:15 PM EDT Toronto Blue Jays logo Toronto Blue Jays AWAY AT Boston Red Sox HOME Boston Red Sox logo VIEW 16 MATCHING PLAYERS →" [ref=e324] [cursor=pointer]:
+          - generic [ref=e325]: 7:15 PM EDT
+          - generic [ref=e326]:
+            - img "Toronto Blue Jays logo" [ref=e328]
+            - generic [ref=e329]:
+              - generic [ref=e330]: Toronto Blue Jays
+              - generic [ref=e331]: AWAY
+          - generic [ref=e332]: AT
+          - generic [ref=e333]:
+            - generic [ref=e334]:
+              - generic [ref=e335]: Boston Red Sox
+              - generic [ref=e336]: HOME
+            - img "Boston Red Sox logo" [ref=e338]
+          - generic [ref=e339]: VIEW 16 MATCHING PLAYERS →
+        - button "7:40 PM EDT Houston Astros logo Houston Astros AWAY AT Chicago White Sox HOME Chicago White Sox logo VIEW 15 MATCHING PLAYERS →" [ref=e340] [cursor=pointer]:
+          - generic [ref=e341]: 7:40 PM EDT
+          - generic [ref=e342]:
+            - img "Houston Astros logo" [ref=e344]
+            - generic [ref=e345]:
+              - generic [ref=e346]: Houston Astros
+              - generic [ref=e347]: AWAY
+          - generic [ref=e348]: AT
+          - generic [ref=e349]:
+            - generic [ref=e350]:
+              - generic [ref=e351]: Chicago White Sox
+              - generic [ref=e352]: HOME
+            - img "Chicago White Sox logo" [ref=e354]
+          - generic [ref=e355]: VIEW 15 MATCHING PLAYERS →
+        - button "8:05 PM EDT Seattle Mariners logo Seattle Mariners AWAY AT Texas Rangers HOME Texas Rangers logo Josh Naylor OVER 0.5 Hits EDIT PLAYER PROP" [ref=e594] [cursor=pointer]:
+          - generic [ref=e357]: 8:05 PM EDT
+          - generic [ref=e358]:
+            - img "Seattle Mariners logo" [ref=e360]
+            - generic [ref=e361]:
+              - generic [ref=e362]: Seattle Mariners
+              - generic [ref=e363]: AWAY
+          - generic [ref=e364]: AT
+          - generic [ref=e365]:
+            - generic [ref=e366]:
+              - generic [ref=e367]: Texas Rangers
+              - generic [ref=e368]: HOME
+            - img "Texas Rangers logo" [ref=e370]
+          - generic [ref=e598]:
+            - generic [ref=e599]: Josh Naylor
+            - generic [ref=e600]: OVER 0.5 Hits
+          - generic [ref=e371]: EDIT PLAYER PROP
+        - button "8:10 PM EDT Athletics logo Athletics AWAY AT Minnesota Twins HOME Minnesota Twins logo VIEW 14 MATCHING PLAYERS →" [ref=e372] [cursor=pointer]:
+          - generic [ref=e373]: 8:10 PM EDT
+          - generic [ref=e374]:
+            - img "Athletics logo" [ref=e376]
+            - generic [ref=e377]:
+              - generic [ref=e378]: Athletics
+              - generic [ref=e379]: AWAY
+          - generic [ref=e380]: AT
+          - generic [ref=e381]:
+            - generic [ref=e382]:
+              - generic [ref=e383]: Minnesota Twins
+              - generic [ref=e384]: HOME
+            - img "Minnesota Twins logo" [ref=e386]
+          - generic [ref=e387]: VIEW 14 MATCHING PLAYERS →
+        - button "8:15 PM EDT Cincinnati Reds logo Cincinnati Reds AWAY AT St. Louis Cardinals HOME St. Louis Cardinals logo VIEW 16 MATCHING PLAYERS →" [ref=e388] [cursor=pointer]:
+          - generic [ref=e389]: 8:15 PM EDT
+          - generic [ref=e390]:
+            - img "Cincinnati Reds logo" [ref=e392]
+            - generic [ref=e393]:
+              - generic [ref=e394]: Cincinnati Reds
+              - generic [ref=e395]: AWAY
+          - generic [ref=e396]: AT
+          - generic [ref=e397]:
+            - generic [ref=e398]:
+              - generic [ref=e399]: St. Louis Cardinals
+              - generic [ref=e400]: HOME
+            - img "St. Louis Cardinals logo" [ref=e402]
+          - generic [ref=e403]: VIEW 16 MATCHING PLAYERS →
+        - button "10:15 PM EDT Los Angeles Angels logo Los Angeles Angels AWAY AT San Francisco Giants HOME San Francisco Giants logo VIEW 16 MATCHING PLAYERS →" [ref=e404] [cursor=pointer]:
+          - generic [ref=e405]: 10:15 PM EDT
+          - generic [ref=e406]:
+            - img "Los Angeles Angels logo" [ref=e408]
+            - generic [ref=e409]:
+              - generic [ref=e410]: Los Angeles Angels
+              - generic [ref=e411]: AWAY
+          - generic [ref=e412]: AT
+          - generic [ref=e413]:
+            - generic [ref=e414]:
+              - generic [ref=e415]: San Francisco Giants
+              - generic [ref=e416]: HOME
+            - img "San Francisco Giants logo" [ref=e418]
+          - generic [ref=e419]: VIEW 16 MATCHING PLAYERS →

@@ -26,7 +26,8 @@ def context_completeness(context):
     home,away=context.get('home',{}),context.get('away',{});weather=context.get('weather',{})
     starters_present=bool(home.get('starter_id') and away.get('starter_id'));starters_confirmed=home.get('starter_status')=='confirmed' and away.get('starter_status')=='confirmed'
     bullpen_present='bullpen_recent_pitches' in home and 'bullpen_recent_pitches' in away;bullpen_confirmed=home.get('bullpen_status')=='confirmed' and away.get('bullpen_status')=='confirmed'
-    return .15*float(starters_present)+.10*float(starters_confirmed)+.30*float(bool(home.get('lineup_confirmed') and away.get('lineup_confirmed')))+.15*float(bullpen_present)+.10*float(bullpen_confirmed)+.20*float(weather.get('temperature') is not None)
+    weather_available=weather.get('available',weather.get('temperature') is not None)
+    return .15*float(starters_present)+.10*float(starters_confirmed)+.30*float(bool(home.get('lineup_confirmed') and away.get('lineup_confirmed')))+.15*float(bullpen_present)+.10*float(bullpen_confirmed)+.20*float(weather_available)
 
 def predict(home_id, away_id, game_date, current_season_games=None, context=None, current_season_contexts=None):
     if not available(): return {"available": False, "message": "The local model has not been trained yet."}
@@ -52,7 +53,7 @@ def predict(home_id, away_id, game_date, current_season_games=None, context=None
         neutral = row.copy(); neutral[0, index] = NEUTRAL.get(feature_names[index],0.0)
         contributions.append(probability - float(bundle["model"].predict_proba(neutral)[0, 1]))
     ranked = sorted(zip(feature_names, values, contributions), key=lambda item: abs(item[2]), reverse=True)
-    reasons = [{"feature": name, "label": LABELS[name], "direction": "home" if contribution > 0 else "away", "value": round(float(value), 3), "impact": round(float(contribution), 3)} for name, value, contribution in ranked[:4] if abs(contribution) >= 0.01]
+    reasons = [{"feature": name, "label": LABELS.get(name, name.replace("_", " ")), "direction": "home" if contribution > 0 else "away", "value": round(float(value), 3), "impact": round(float(contribution), 3)} for name, value, contribution in ranked[:4] if abs(contribution) >= 0.01]
     completeness=context_completeness(context);base_confidence=float(bundle['confidence_model'].predict([abs(probability-.5)])[0]);confidence=.5+(base_confidence-.5)*(.7+.3*completeness);selected_probability=max(probability,1-probability)
     tiers=[tier for tier in bundle['report'].get('selective_accuracy',[]) if selected_probability>=tier['minimum_probability']];historical_tier=tiers[-1] if tiers else None
     return {"available": True, "home_win_probability": round(probability, 4), "away_win_probability": round(1-probability, 4), "projected_side": "home" if probability >= 0.5 else "away", "confidence_score":round(confidence*100),"confidence_label":"High" if confidence>=.70 else "Moderate" if confidence>=.60 else "Low","input_completeness":round(completeness,2),"confidence_explanation":"Expected straight-up hit rate for similarly decisive walk-forward predictions, reduced when live inputs are incomplete.","historical_tier":historical_tier,"reasons": reasons, "model": bundle["report"], "market_inputs": False}
