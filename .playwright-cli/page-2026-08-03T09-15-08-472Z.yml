@@ -1,0 +1,28 @@
+- generic [ref=f15e3]:
+  - banner [ref=f15e4]:
+    - generic [ref=f15e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f15e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f15e7]
+        - generic [ref=f15e8]:
+          - generic [ref=f15e9]: NINTH
+          - generic [ref=f15e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f15e11] [cursor=pointer]:
+        - generic [ref=f15e12]: DAY
+      - button "Search" [ref=f15e18] [cursor=pointer]
+      - button "Menu" [ref=f15e22] [cursor=pointer]
+    - generic [ref=f15e24]:
+      - generic [ref=f15e25]: TODAY
+      - generic [ref=f15e27]: Official scoreboard syncing
+  - main [ref=f15e28]
+  - generic [ref=f15e30]:
+    - link "Games" [ref=f15e31] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f15e35] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f15e43] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f15e46] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f15e54] [cursor=pointer]:
+      - /url: /teams

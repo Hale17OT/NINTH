@@ -1,0 +1,92 @@
+- generic [ref=f4e3]:
+  - complementary [ref=f4e4]:
+    - link "NINTH all sports" [ref=f4e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f4e6]
+      - generic [ref=f4e7]: NINTH
+    - navigation "Sport workspaces" [ref=f4e8]:
+      - link "MLB" [ref=f4e9] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f4e13] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f4e18] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f4e22] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f4e29] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f4e34] [cursor=pointer]:
+      - generic [ref=f4e35]: D
+      - generic [ref=f4e36]: MODE
+  - generic [ref=f4e37]:
+    - banner [ref=f4e38]:
+      - generic [ref=f4e39]:
+        - button "Choose sport" [ref=f4e40] [cursor=pointer]
+        - link "NINTH logo NINTH" [ref=f4e42] [cursor=pointer]:
+          - /url: /
+          - img "NINTH logo" [ref=f4e43]
+          - generic [ref=f4e44]: NINTH
+        - button "Open workspace navigation" [ref=f4e45] [cursor=pointer]
+    - main [ref=f4e47]:
+      - generic [ref=f4e49]:
+        - generic [ref=f4e50]:
+          - generic [ref=f4e51]:
+            - text: VALORANT + CS2 / NINTH RESEARCH LAB
+            - heading "Esports intelligence." [level=1] [ref=f4e52]: Esportsintelligence.
+            - paragraph [ref=f4e53]: Map-native Valorant and CS2 intelligence joined by one roster, veto and series lab.
+            - generic [ref=f4e54]: SHADOW FOUNDATION · NOT YET PRODUCTION ELIGIBLE
+          - complementary [ref=f4e56]:
+            - generic [ref=f4e63]: MODEL STATE
+            - generic [ref=f4e64]: Evidence before exposure.
+            - paragraph [ref=f4e65]: No selection enters the all-sports builder until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.
+        - generic [ref=f4e66]:
+          - generic [ref=f4e67]: Valorant
+          - generic [ref=f4e68]: Counter-Strike 2
+        - generic [ref=f4e69]:
+          - article [ref=f4e70]:
+            - generic [ref=f4e71]:
+              - generic [ref=f4e72]: VAL
+              - generic [ref=f4e73]: VCT International + Challengers
+            - heading "Valorant" [level=2] [ref=f4e74]
+            - paragraph [ref=f4e75]: Patch-aware map ratings, agent-role strength, side splits and veto simulation.
+            - generic [ref=f4e76]:
+              - generic [ref=f4e77]: Riot–GRID / PandaScore
+              - emphasis [ref=f4e78]: SEPARATE MODEL LEDGER
+          - article [ref=f4e79]:
+            - generic [ref=f4e80]:
+              - generic [ref=f4e81]: CS2
+              - generic [ref=f4e82]: Tier-one + tier-two circuits
+            - heading "Counter-Strike 2" [level=2] [ref=f4e83]
+            - paragraph [ref=f4e84]: Map pools, economy conversion, opening duels, LAN context and veto simulation.
+            - generic [ref=f4e85]:
+              - generic [ref=f4e86]: GRID Open Access / PandaScore
+              - emphasis [ref=f4e87]: SEPARATE MODEL LEDGER
+        - generic [ref=f4e88]:
+          - generic [ref=f4e89]:
+            - text: SPORT-NATIVE ARCHITECTURE
+            - heading "Built around how esports is actually played." [level=2] [ref=f4e90]
+          - generic [ref=f4e91]:
+            - article [ref=f4e92]:
+              - generic [ref=f4e93]: "01"
+              - heading "Map engine" [level=3] [ref=f4e96]
+              - paragraph [ref=f4e97]: Separate Valorant and CS2 map ratings, opponent adjustment and time decay
+            - article [ref=f4e98]:
+              - generic [ref=f4e99]: "02"
+              - heading "Series layer" [level=3] [ref=f4e102]
+              - paragraph [ref=f4e103]: Roster continuity, role stability, context and conditional pick-ban trees
+            - article [ref=f4e104]:
+              - generic [ref=f4e105]: "03"
+              - heading "Markets" [level=3] [ref=f4e108]
+              - paragraph [ref=f4e109]: Match winner, map winner, handicaps and totals derived per discipline
+        - generic [ref=f4e110]:
+          - generic [ref=f4e116]:
+            - generic [ref=f4e117]: PRODUCTION CONTRACT
+            - generic [ref=f4e118]: Locked before it is trusted.
+          - list [ref=f4e119]:
+            - listitem [ref=f4e120]: Expanding-window, season-separated validation
+            - listitem [ref=f4e124]: Brier, log loss, calibration error and Wilson bounds
+            - listitem [ref=f4e128]: Immutable pre-event prediction ledger and live shadow period
+        - generic [ref=f4e132]:
+          - generic [ref=f4e133]: /ESPORTS
+          - link "ALL-SPORTS BUILDER" [ref=f4e134] [cursor=pointer]:
+            - /url: /build

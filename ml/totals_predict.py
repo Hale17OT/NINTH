@@ -9,6 +9,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from ml.predict import context_completeness
+from ml.lineup_talent import TOTAL_FEATURE_NAMES as LINEUP_TALENT_FEATURE_NAMES, totals_features as lineup_talent_features
+from ml.pitching_availability import features as pitching_features, hydrate_state as hydrate_pitching_state
 from ml.totals_features import apply_totals_result, hydrate_totals_state, reset_totals_season, totals_features
 
 ARTIFACT = ROOT / "ml" / "artifacts" / "totals.joblib"
@@ -33,6 +35,23 @@ LABELS = {
     "month_sin": "seasonal run environment", "month_cos": "seasonal run environment",
     "context_available": "official matchup input coverage",
 }
+LABELS.update(dict(zip(LINEUP_TALENT_FEATURE_NAMES, (
+    "combined multi-season lineup quality", "combined multi-season lineup power",
+    "combined multi-season lineup discipline", "lineup talent history depth",
+))))
+
+
+def neutralize_missing_lineup_talent(values, context, reference):
+    """Shrink unavailable projected-lineup features to the training reference."""
+    context = context or {}
+    counts = [len(list((context.get(side) or {}).get("lineup_ids") or [])[:9]) for side in ("home", "away")]
+    coverage = min(counts) / 9
+    if not reference or len(reference) != len(values):
+        return list(values)
+    return [
+        coverage * float(value) + (1 - coverage) * float(neutral)
+        for value, neutral in zip(values, reference)
+    ]
 
 
 def available():
@@ -57,6 +76,21 @@ def predict(home_id, away_id, game_date, current_season_games=None, context=None
         if not cutoff or game["date"] > cutoff:
             apply_totals_result(state, game, None)
     values = totals_features(state, home_id, away_id, game_date, context)
+    if int(bundle.get("model_version", 1)) >= 4:
+        lineup_start = len(values)
+        lineup_values = lineup_talent_features(
+            deepcopy(bundle.get("lineup_talent_state", {"season": None, "players": {}})),
+            context,
+        )
+        reference = list(bundle.get("feature_reference") or [])
+        lineup_reference = reference[lineup_start:lineup_start + len(lineup_values)]
+        values += neutralize_missing_lineup_talent(lineup_values, context, lineup_reference)
+    if int(bundle.get("model_version", 1)) >= 5:
+        pitching_state = hydrate_pitching_state(bundle.get("pitching_availability_state"))
+        synthetic_game = {
+            "home_id": home_id, "away_id": away_id, "date": game_date,
+        }
+        values += pitching_features(pitching_state, synthetic_game, context)[1]
     # V2 appends team-specific columns while preserving the original 21-column
     # prefix, so an older promoted artifact remains safe during shadow tuning.
     values = values[:len(bundle.get("features", values))]

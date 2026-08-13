@@ -10,14 +10,17 @@
     "dev:stats": "python stats-service/app.py",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "concurrently -k \"python stats-service/app.py\" \"node server/src/server.js\""
+    "start": "concurrently -k \"python stats-service/app.py\" \"node server/src/server.js\"",
+    "audit:multisport": "python -m ml.multisport.backfill",
+    "backfill:multisport": "python -m ml.multisport.backfill --refresh-sources"
   },
   "dependencies": {
-    "@vitejs/plugin-vue": "latest",
     "chart.js": "^4.4.7",
+    "cheerio": "^1.1.2",
     "cors": "^2.8.5",
     "dotenv": "^17.4.2",
     "express": "^4.21.2",
+    "hyparquet": "^1.28.1",
     "lucide-vue-next": "^0.468.0",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
@@ -25,9 +28,11 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.1.2",
-    "postcss": "^8.4.49",
+    "nanoid": "^3.3.18",
+    "postcss": "^8.5.25",
     "tailwindcss": "^3.4.17",
     "vite": "^6.0.5"
   }

@@ -1,0 +1,390 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f1e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f1e7]
+        - generic [ref=f1e8]:
+          - generic [ref=f1e9]: NINTH
+          - generic [ref=f1e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f1e11]:
+        - link "Games" [ref=f1e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f1e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f1e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f1e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f1e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f1e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f1e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f1e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f1e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f1e70] [cursor=pointer]:
+        - generic [ref=f1e71]:
+          - generic [ref=f1e72]: DISPLAY / 09
+          - generic [ref=f1e73]: DAY
+    - generic [ref=f1e78]:
+      - generic [ref=f1e79]: TODAY
+      - link "WSH 0 — 0 PHI Scheduled" [ref=f1e192] [cursor=pointer]:
+        - /url: /games/823431
+        - generic [ref=f1e193]: WSH
+        - emphasis [ref=f1e194]: "0"
+        - generic [ref=f1e195]: —
+        - emphasis [ref=f1e196]: "0"
+        - generic [ref=f1e197]: PHI
+        - generic [ref=f1e198]: Scheduled
+      - link "STL 0 — 0 NYY Scheduled" [ref=f1e199] [cursor=pointer]:
+        - /url: /games/823520
+        - generic [ref=f1e200]: STL
+        - emphasis [ref=f1e201]: "0"
+        - generic [ref=f1e202]: —
+        - emphasis [ref=f1e203]: "0"
+        - generic [ref=f1e204]: NYY
+        - generic [ref=f1e205]: Scheduled
+      - link "PIT 0 — 0 MIL Scheduled" [ref=f1e206] [cursor=pointer]:
+        - /url: /games/823757
+        - generic [ref=f1e207]: PIT
+        - emphasis [ref=f1e208]: "0"
+        - generic [ref=f1e209]: —
+        - emphasis [ref=f1e210]: "0"
+        - generic [ref=f1e211]: MIL
+        - generic [ref=f1e212]: Scheduled
+      - link "LAD 0 — 0 CHC Scheduled" [ref=f1e213] [cursor=pointer]:
+        - /url: /games/824647
+        - generic [ref=f1e214]: LAD
+        - emphasis [ref=f1e215]: "0"
+        - generic [ref=f1e216]: —
+        - emphasis [ref=f1e217]: "0"
+        - generic [ref=f1e218]: CHC
+        - generic [ref=f1e219]: Scheduled
+      - generic [ref=f1e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f1e84]:
+    - generic [ref=f1e86]:
+      - generic [ref=f1e87]:
+        - generic [ref=f1e88]:
+          - text: NINTH / PLAYER LAB
+          - heading "Build from the player up." [level=1] [ref=f1e89]
+          - paragraph [ref=f1e90]: Start with a matchup, inspect its available player markets, then add only the legs you want to the card.
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]:
+            - generic [ref=f1e93]: MODEL
+            - generic [ref=f1e94]:
+              - link "MONEYLINE" [ref=f1e95] [cursor=pointer]:
+                - /url: /builder?market=moneyline
+              - link "TOTALS" [ref=f1e96] [cursor=pointer]:
+                - /url: /builder?market=totals
+              - link "MIXED" [ref=f1e97] [cursor=pointer]:
+                - /url: /builder?market=combined
+              - link "PLAYER PROPS" [ref=f1e98] [cursor=pointer]:
+                - /url: /props-builder
+          - generic [ref=f1e99]:
+            - generic [ref=f1e100]:
+              - generic [ref=f1e101]: SLATE
+              - generic [ref=f1e102]:
+                - button "DAILY" [ref=f1e103] [cursor=pointer]
+                - button "MULTI-DAY" [ref=f1e104] [cursor=pointer]
+            - generic [ref=f1e105]:
+              - generic [ref=f1e106]: Game date
+              - button "Aug 3, 2026" [ref=f1e107] [cursor=pointer]
+            - generic [ref=f1e113]:
+              - generic [ref=f1e114]: Target legs
+              - button "5 legs" [ref=f1e115] [cursor=pointer]
+            - generic [ref=f1e119]:
+              - generic [ref=f1e120]: Minimum MelBet odds
+              - button "1.50+" [ref=f1e121] [cursor=pointer]
+            - generic [ref=f1e125]:
+              - generic [ref=f1e126]: DATA
+              - button "REFRESH" [ref=f1e127] [cursor=pointer]
+          - generic [ref=f1e133]:
+            - generic [ref=f1e134]:
+              - generic [ref=f1e135]: Included player props
+              - button "All 7 selected 7" [ref=f1e220] [cursor=pointer]:
+                - generic [ref=f1e137]: All 7 selected
+                - generic [ref=f1e138]: "7"
+            - generic [ref=f1e141]:
+              - generic [ref=f1e142]: BUILD DIRECTION
+              - group "Automatic player prop build direction" [ref=f1e143]:
+                - button "BOTH" [pressed] [ref=f1e144] [cursor=pointer]
+                - button "OVER" [ref=f1e145] [cursor=pointer]
+                - button "UNDER" [ref=f1e146] [cursor=pointer]
+      - generic [ref=f1e147]:
+        - generic [ref=f1e149]:
+          - strong [ref=f1e150]: "28.2"
+          - text: "%"
+        - generic [ref=f1e151]:
+          - text: SAMPLE-SIZE ADJUSTED SLIP CONFIDENCE
+          - heading "STRONG FOR A MULTI-LEG SLIP" [level=2] [ref=f1e354]
+          - paragraph [ref=f1e153]: Estimated chance that every selected prop lands. Short player histories are pulled toward 50%, and recommended cards use one prop per game at an audited 65% minimum to limit weak legs and hidden same-game correlation.
+          - generic [ref=f1e154]: MODEL PROBABILITY, NOT A GUARANTEE
+        - generic [ref=f1e155]:
+          - generic [ref=f1e156]:
+            - generic [ref=f1e157]: LEGS
+            - generic [ref=f1e158]: 5 / 5
+          - generic [ref=f1e159]:
+            - generic [ref=f1e160]: ADJUSTED
+            - generic [ref=f1e161]: 28.2%
+          - generic [ref=f1e162]:
+            - generic [ref=f1e163]: RAW PRODUCT
+            - generic [ref=f1e164]: 28.3%
+          - generic [ref=f1e165]:
+            - generic [ref=f1e166]: TYPICAL LEG
+            - generic [ref=f1e167]: 77.7%
+        - generic [ref=f1e168]:
+          - button "BUILD BEST 5" [active] [ref=f1e169] [cursor=pointer]
+          - button "SEND TO MELBET" [ref=f1e172] [cursor=pointer]
+          - button "CLEAR" [ref=f1e176] [cursor=pointer]
+      - generic [ref=f1e355]:
+        - generic [ref=f1e356]:
+          - generic [ref=f1e357]:
+            - text: YOUR PLAYER PROP CARD
+            - heading "5 selected legs" [level=2] [ref=f1e358]
+          - generic [ref=f1e359]: Tap a card to edit its market or line.
+        - generic [ref=f1e360]:
+          - article [ref=f1e361] [cursor=pointer]:
+            - button "Remove leg" [ref=f1e362]
+            - generic [ref=f1e366]:
+              - img "Junior Caminero headshot" [ref=f1e369]
+              - generic [ref=f1e370]:
+                - generic [ref=f1e371]: BATTER · PROJECTED
+                - generic [ref=f1e372]: Junior Caminero
+                - emphasis [ref=f1e373]: Tampa Bay Rays at Colorado Rockies
+            - generic [ref=f1e374]:
+              - generic [ref=f1e375]:
+                - generic [ref=f1e376]: Junior Caminero Under (1.5)
+                - generic [ref=f1e377]: Batters. Total Hits · @ 1.714
+              - generic [ref=f1e378]:
+                - generic [ref=f1e379]: NINTH MODEL CHANCE
+                - strong [ref=f1e380]: 90.9%
+            - button "Replace Junior Caminero Hits with Ian Seymour Pitching outs" [ref=f1e381]:
+              - generic [ref=f1e387]:
+                - generic [ref=f1e388]: USE NEXT PROP THAT MISSED THE CUT
+                - generic [ref=f1e389]: Ian Seymour · UNDER 15.5 Pitching outs · 86.5% · @ 1.556
+            - generic [ref=f1e390]:
+              - text: LAST 10 AVG 1.2
+              - generic [ref=f1e391]: High confidence · 70/100
+          - article [ref=f1e392] [cursor=pointer]:
+            - button "Remove leg" [ref=f1e393]
+            - generic [ref=f1e397]:
+              - img "Mookie Betts headshot" [ref=f1e400]
+              - generic [ref=f1e401]:
+                - generic [ref=f1e402]: BATTER · PROJECTED
+                - generic [ref=f1e403]: Mookie Betts
+                - emphasis [ref=f1e404]: Los Angeles Dodgers at Chicago Cubs
+            - generic [ref=f1e405]:
+              - generic [ref=f1e406]:
+                - generic [ref=f1e407]: Mookie Betts Under (0.5)
+                - generic [ref=f1e408]: Batters. Total Runs · @ 1.588
+              - generic [ref=f1e409]:
+                - generic [ref=f1e410]: NINTH MODEL CHANCE
+                - strong [ref=f1e411]: 80.3%
+            - button "Replace Mookie Betts Runs with Gabriel Moreno Runs" [ref=f1e412]:
+              - generic [ref=f1e418]:
+                - generic [ref=f1e419]: USE NEXT PROP THAT MISSED THE CUT
+                - generic [ref=f1e420]: Gabriel Moreno · UNDER 0.5 Runs · 72.6% · @ 1.571
+            - generic [ref=f1e421]:
+              - text: LAST 10 AVG 0.5
+              - generic [ref=f1e422]: High confidence · 80/100
+          - article [ref=f1e423] [cursor=pointer]:
+            - button "Remove leg" [ref=f1e424]
+            - generic [ref=f1e428]:
+              - img "Kyle Schwarber headshot" [ref=f1e431]
+              - generic [ref=f1e432]:
+                - generic [ref=f1e433]: BATTER · PROJECTED
+                - generic [ref=f1e434]: Kyle Schwarber
+                - emphasis [ref=f1e435]: Washington Nationals at Philadelphia Phillies
+            - generic [ref=f1e436]:
+              - generic [ref=f1e437]:
+                - generic [ref=f1e438]: Kyle Schwarber Under (0.5)
+                - generic [ref=f1e439]: Batters. Total Runs · @ 2
+              - generic [ref=f1e440]:
+                - generic [ref=f1e441]: NINTH MODEL CHANCE
+                - strong [ref=f1e442]: 73.6%
+            - button "Replace Kyle Schwarber Runs with Gabriel Moreno Runs" [ref=f1e443]:
+              - generic [ref=f1e449]:
+                - generic [ref=f1e450]: USE NEXT PROP THAT MISSED THE CUT
+                - generic [ref=f1e451]: Gabriel Moreno · UNDER 0.5 Runs · 72.6% · @ 1.571
+            - generic [ref=f1e452]:
+              - text: LAST 10 AVG 0.6
+              - generic [ref=f1e453]: High confidence · 74/100
+          - article [ref=f1e454] [cursor=pointer]:
+            - button "Remove leg" [ref=f1e455]
+            - generic [ref=f1e459]:
+              - img "Alec Burleson headshot" [ref=f1e462]
+              - generic [ref=f1e463]:
+                - generic [ref=f1e464]: BATTER · PROJECTED
+                - generic [ref=f1e465]: Alec Burleson
+                - emphasis [ref=f1e466]: St. Louis Cardinals at New York Yankees
+            - generic [ref=f1e467]:
+              - generic [ref=f1e468]:
+                - generic [ref=f1e469]: Alec Burleson Under (0.5)
+                - generic [ref=f1e470]: Batters. Total Runs · @ 1.5
+              - generic [ref=f1e471]:
+                - generic [ref=f1e472]: NINTH MODEL CHANCE
+                - strong [ref=f1e473]: 72.6%
+            - button "Replace Alec Burleson Runs with Gabriel Moreno Runs" [ref=f1e474]:
+              - generic [ref=f1e480]:
+                - generic [ref=f1e481]: USE NEXT PROP THAT MISSED THE CUT
+                - generic [ref=f1e482]: Gabriel Moreno · UNDER 0.5 Runs · 72.6% · @ 1.571
+            - generic [ref=f1e483]:
+              - text: LAST 10 AVG 0.5
+              - generic [ref=f1e484]: High confidence · 73/100
+          - article [ref=f1e485] [cursor=pointer]:
+            - button "Remove leg" [ref=f1e486]
+            - generic [ref=f1e490]:
+              - img "Brice Turang headshot" [ref=f1e493]
+              - generic [ref=f1e494]:
+                - generic [ref=f1e495]: BATTER · PROJECTED
+                - generic [ref=f1e496]: Brice Turang
+                - emphasis [ref=f1e497]: Pittsburgh Pirates at Milwaukee Brewers
+            - generic [ref=f1e498]:
+              - generic [ref=f1e499]:
+                - generic [ref=f1e500]: Brice Turang Under (0.5)
+                - generic [ref=f1e501]: Batters. Total Runs · @ 1.833
+              - generic [ref=f1e502]:
+                - generic [ref=f1e503]: NINTH MODEL CHANCE
+                - strong [ref=f1e504]: 72.6%
+            - button "Replace Brice Turang Runs with Gabriel Moreno Runs" [ref=f1e505]:
+              - generic [ref=f1e511]:
+                - generic [ref=f1e512]: USE NEXT PROP THAT MISSED THE CUT
+                - generic [ref=f1e513]: Gabriel Moreno · UNDER 0.5 Runs · 72.6% · @ 1.571
+            - generic [ref=f1e514]:
+              - text: LAST 10 AVG 0.5
+              - generic [ref=f1e515]: High confidence · 73/100
+      - generic [ref=f1e221]:
+        - generic [ref=f1e222]: 8 GAMES · MONDAY, AUGUST 3 · 8 WITH CURRENT PLAYER MARKETS · MINIMUM @ 1.50 · AUTO 60S
+        - paragraph [ref=f1e224]: MelBet decimal odds are displayed and used only as a selection floor. They never enter or modify the player-prop models.
+      - generic [ref=f1e225]:
+        - button "6:40 PM EDT Washington Nationals logo Washington Nationals AWAY AT Philadelphia Phillies HOME Philadelphia Phillies logo Kyle Schwarber UNDER 0.5 Runs EDIT PLAYER PROP" [ref=f1e516] [cursor=pointer]:
+          - generic [ref=f1e227]: 6:40 PM EDT
+          - generic [ref=f1e228]:
+            - img "Washington Nationals logo" [ref=f1e230]
+            - generic [ref=f1e231]:
+              - generic [ref=f1e232]: Washington Nationals
+              - generic [ref=f1e233]: AWAY
+          - generic [ref=f1e234]: AT
+          - generic [ref=f1e235]:
+            - generic [ref=f1e236]:
+              - generic [ref=f1e237]: Philadelphia Phillies
+              - generic [ref=f1e238]: HOME
+            - img "Philadelphia Phillies logo" [ref=f1e240]
+          - generic [ref=f1e520]:
+            - generic [ref=f1e521]: Kyle Schwarber
+            - generic [ref=f1e522]: UNDER 0.5 Runs
+          - generic [ref=f1e241]: EDIT PLAYER PROP
+        - button "7:05 PM EDT St. Louis Cardinals logo St. Louis Cardinals AWAY AT New York Yankees HOME New York Yankees logo Alec Burleson UNDER 0.5 Runs EDIT PLAYER PROP" [ref=f1e523] [cursor=pointer]:
+          - generic [ref=f1e243]: 7:05 PM EDT
+          - generic [ref=f1e244]:
+            - img "St. Louis Cardinals logo" [ref=f1e246]
+            - generic [ref=f1e247]:
+              - generic [ref=f1e248]: St. Louis Cardinals
+              - generic [ref=f1e249]: AWAY
+          - generic [ref=f1e250]: AT
+          - generic [ref=f1e251]:
+            - generic [ref=f1e252]:
+              - generic [ref=f1e253]: New York Yankees
+              - generic [ref=f1e254]: HOME
+            - img "New York Yankees logo" [ref=f1e256]
+          - generic [ref=f1e527]:
+            - generic [ref=f1e528]: Alec Burleson
+            - generic [ref=f1e529]: UNDER 0.5 Runs
+          - generic [ref=f1e257]: EDIT PLAYER PROP
+        - button "7:40 PM EDT Pittsburgh Pirates logo Pittsburgh Pirates AWAY AT Milwaukee Brewers HOME Milwaukee Brewers logo Brice Turang UNDER 0.5 Runs EDIT PLAYER PROP" [ref=f1e530] [cursor=pointer]:
+          - generic [ref=f1e259]: 7:40 PM EDT
+          - generic [ref=f1e260]:
+            - img "Pittsburgh Pirates logo" [ref=f1e262]
+            - generic [ref=f1e263]:
+              - generic [ref=f1e264]: Pittsburgh Pirates
+              - generic [ref=f1e265]: AWAY
+          - generic [ref=f1e266]: AT
+          - generic [ref=f1e267]:
+            - generic [ref=f1e268]:
+              - generic [ref=f1e269]: Milwaukee Brewers
+              - generic [ref=f1e270]: HOME
+            - img "Milwaukee Brewers logo" [ref=f1e272]
+          - generic [ref=f1e534]:
+            - generic [ref=f1e535]: Brice Turang
+            - generic [ref=f1e536]: UNDER 0.5 Runs
+          - generic [ref=f1e273]: EDIT PLAYER PROP
+        - button "8:05 PM EDT Los Angeles Dodgers logo Los Angeles Dodgers AWAY AT Chicago Cubs HOME Chicago Cubs logo Mookie Betts UNDER 0.5 Runs EDIT PLAYER PROP" [ref=f1e537] [cursor=pointer]:
+          - generic [ref=f1e275]: 8:05 PM EDT
+          - generic [ref=f1e276]:
+            - img "Los Angeles Dodgers logo" [ref=f1e278]
+            - generic [ref=f1e279]:
+              - generic [ref=f1e280]: Los Angeles Dodgers
+              - generic [ref=f1e281]: AWAY
+          - generic [ref=f1e282]: AT
+          - generic [ref=f1e283]:
+            - generic [ref=f1e284]:
+              - generic [ref=f1e285]: Chicago Cubs
+              - generic [ref=f1e286]: HOME
+            - img "Chicago Cubs logo" [ref=f1e288]
+          - generic [ref=f1e541]:
+            - generic [ref=f1e542]: Mookie Betts
+            - generic [ref=f1e543]: UNDER 0.5 Runs
+          - generic [ref=f1e289]: EDIT PLAYER PROP
+        - button "8:05 PM EDT San Francisco Giants logo San Francisco Giants AWAY AT Texas Rangers HOME Texas Rangers logo VIEW 12 MATCHING PLAYERS →" [ref=f1e290] [cursor=pointer]:
+          - generic [ref=f1e291]: 8:05 PM EDT
+          - generic [ref=f1e292]:
+            - img "San Francisco Giants logo" [ref=f1e294]
+            - generic [ref=f1e295]:
+              - generic [ref=f1e296]: San Francisco Giants
+              - generic [ref=f1e297]: AWAY
+          - generic [ref=f1e298]: AT
+          - generic [ref=f1e299]:
+            - generic [ref=f1e300]:
+              - generic [ref=f1e301]: Texas Rangers
+              - generic [ref=f1e302]: HOME
+            - img "Texas Rangers logo" [ref=f1e304]
+          - generic [ref=f1e305]: VIEW 12 MATCHING PLAYERS →
+        - button "8:10 PM EDT Toronto Blue Jays logo Toronto Blue Jays AWAY AT Houston Astros HOME Houston Astros logo VIEW 15 MATCHING PLAYERS →" [ref=f1e306] [cursor=pointer]:
+          - generic [ref=f1e307]: 8:10 PM EDT
+          - generic [ref=f1e308]:
+            - img "Toronto Blue Jays logo" [ref=f1e310]
+            - generic [ref=f1e311]:
+              - generic [ref=f1e312]: Toronto Blue Jays
+              - generic [ref=f1e313]: AWAY
+          - generic [ref=f1e314]: AT
+          - generic [ref=f1e315]:
+            - generic [ref=f1e316]:
+              - generic [ref=f1e317]: Houston Astros
+              - generic [ref=f1e318]: HOME
+            - img "Houston Astros logo" [ref=f1e320]
+          - generic [ref=f1e321]: VIEW 15 MATCHING PLAYERS →
+        - button "8:40 PM EDT Tampa Bay Rays logo Tampa Bay Rays AWAY AT Colorado Rockies HOME Colorado Rockies logo Junior Caminero UNDER 1.5 Hits EDIT PLAYER PROP" [ref=f1e544] [cursor=pointer]:
+          - generic [ref=f1e323]: 8:40 PM EDT
+          - generic [ref=f1e324]:
+            - img "Tampa Bay Rays logo" [ref=f1e326]
+            - generic [ref=f1e327]:
+              - generic [ref=f1e328]: Tampa Bay Rays
+              - generic [ref=f1e329]: AWAY
+          - generic [ref=f1e330]: AT
+          - generic [ref=f1e331]:
+            - generic [ref=f1e332]:
+              - generic [ref=f1e333]: Colorado Rockies
+              - generic [ref=f1e334]: HOME
+            - img "Colorado Rockies logo" [ref=f1e336]
+          - generic [ref=f1e548]:
+            - generic [ref=f1e549]: Junior Caminero
+            - generic [ref=f1e550]: UNDER 1.5 Hits
+          - generic [ref=f1e337]: EDIT PLAYER PROP
+        - button "9:40 PM EDT San Diego Padres logo San Diego Padres AWAY AT Arizona Diamondbacks HOME Arizona Diamondbacks logo VIEW 17 MATCHING PLAYERS →" [ref=f1e338] [cursor=pointer]:
+          - generic [ref=f1e339]: 9:40 PM EDT
+          - generic [ref=f1e340]:
+            - img "San Diego Padres logo" [ref=f1e342]
+            - generic [ref=f1e343]:
+              - generic [ref=f1e344]: San Diego Padres
+              - generic [ref=f1e345]: AWAY
+          - generic [ref=f1e346]: AT
+          - generic [ref=f1e347]:
+            - generic [ref=f1e348]:
+              - generic [ref=f1e349]: Arizona Diamondbacks
+              - generic [ref=f1e350]: HOME
+            - img "Arizona Diamondbacks logo" [ref=f1e352]
+          - generic [ref=f1e353]: VIEW 17 MATCHING PLAYERS →

@@ -1,0 +1,33 @@
+- generic [ref=f20e3]:
+  - banner [ref=f20e4]:
+    - generic [ref=f20e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f20e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f20e7]
+        - generic [ref=f20e8]:
+          - generic [ref=f20e9]: NINTH
+          - generic [ref=f20e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f20e11] [cursor=pointer]:
+        - generic [ref=f20e12]: DAY
+      - button "Search" [ref=f20e18] [cursor=pointer]
+      - button "Menu" [ref=f20e22] [cursor=pointer]
+    - generic [ref=f20e24]:
+      - generic [ref=f20e25]: TODAY
+      - generic [ref=f20e27]: Official scoreboard syncing
+  - main [ref=f20e28]:
+    - status [ref=f20e30]:
+      - generic [ref=f20e31]: "N"
+      - generic [ref=f20e35]:
+        - strong [ref=f20e36]: Building today’s read
+        - generic [ref=f20e37]: Loading the official slate, standings, weather and model brief.
+  - generic [ref=f20e42]:
+    - link "Games" [ref=f20e43] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f20e47] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f20e55] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f20e58] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f20e66] [cursor=pointer]:
+      - /url: /teams

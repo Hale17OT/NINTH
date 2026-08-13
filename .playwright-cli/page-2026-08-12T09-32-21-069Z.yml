@@ -1,0 +1,82 @@
+- generic [ref=f1e3]:
+  - complementary [ref=f1e4]:
+    - link "NINTH all sports" [ref=f1e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f1e6]
+    - navigation "Sport workspaces" [ref=f1e7]:
+      - link "MLB" [ref=f1e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f1e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f1e18] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f1e22] [cursor=pointer]:
+        - /url: /basketball
+      - link "VAL" [ref=f1e29] [cursor=pointer]:
+        - /url: /valorant
+      - link "CS2" [ref=f1e33] [cursor=pointer]:
+        - /url: /cs2
+    - button "Use dark theme" [ref=f1e37] [cursor=pointer]:
+      - generic [ref=f1e38]: D
+      - generic [ref=f1e39]: MODE
+  - generic [ref=f1e40]:
+    - banner [ref=f1e41]:
+      - generic [ref=f1e42]:
+        - generic [ref=f1e43]:
+          - generic [ref=f1e44]: TOP FIVE LEAGUES
+          - generic [ref=f1e45]: Football
+          - emphasis [ref=f1e46]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f1e47]:
+          - link "Overview" [ref=f1e48] [cursor=pointer]:
+            - /url: /football
+          - link "Model lab" [ref=f1e49] [cursor=pointer]:
+            - /url: /football/models
+          - link "Data sources" [ref=f1e50] [cursor=pointer]:
+            - /url: /football/data
+    - main [ref=f1e51]:
+      - generic [ref=f1e53]:
+        - generic [ref=f1e54]:
+          - generic [ref=f1e55]:
+            - text: TOP FIVE LEAGUES / NINTH RESEARCH LAB
+            - heading "Football intelligence." [level=1] [ref=f1e56]: Footballintelligence.
+            - paragraph [ref=f1e57]: Scoreline distributions, xG-adjusted team strength and lineup-aware markets.
+            - generic [ref=f1e58]: SHADOW FOUNDATION · NOT YET PRODUCTION ELIGIBLE
+          - complementary [ref=f1e60]:
+            - generic [ref=f1e67]: MODEL STATE
+            - generic [ref=f1e68]: Evidence before exposure.
+            - paragraph [ref=f1e69]: No selection enters Build Best until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.
+        - generic [ref=f1e70]:
+          - generic [ref=f1e71]: Premier League
+          - generic [ref=f1e72]: La Liga
+          - generic [ref=f1e73]: Bundesliga
+          - generic [ref=f1e74]: Serie A
+          - generic [ref=f1e75]: Ligue 1
+        - generic [ref=f1e76]:
+          - generic [ref=f1e77]:
+            - text: SPORT-NATIVE ARCHITECTURE
+            - heading "Built around how football is actually played." [level=2] [ref=f1e78]
+          - generic [ref=f1e79]:
+            - article [ref=f1e80]:
+              - generic [ref=f1e81]: "01"
+              - heading "Score engine" [level=3] [ref=f1e84]
+              - paragraph [ref=f1e85]: Time-decayed Dixon–Coles and bivariate Poisson score matrix
+            - article [ref=f1e86]:
+              - generic [ref=f1e87]: "02"
+              - heading "Context layer" [level=3] [ref=f1e90]
+              - paragraph [ref=f1e91]: xG, xGA, shot quality, rest, travel, lineup strength and league priors
+            - article [ref=f1e92]:
+              - generic [ref=f1e93]: "03"
+              - heading "Markets" [level=3] [ref=f1e96]
+              - paragraph [ref=f1e97]: 1X2, draw-no-bet, totals, both teams to score and exact-score distribution
+        - generic [ref=f1e98]:
+          - generic [ref=f1e104]:
+            - generic [ref=f1e105]: PRODUCTION CONTRACT
+            - generic [ref=f1e106]: Locked before it is trusted.
+          - list [ref=f1e107]:
+            - listitem [ref=f1e108]: Expanding-window, season-separated validation
+            - listitem [ref=f1e112]: Brier, log loss, calibration error and Wilson bounds
+            - listitem [ref=f1e116]: Immutable pre-event prediction ledger and live shadow period
+        - generic [ref=f1e120]:
+          - generic [ref=f1e121]: /FOOTBALL
+          - link "ALL SPORTS" [ref=f1e122] [cursor=pointer]:
+            - /url: /

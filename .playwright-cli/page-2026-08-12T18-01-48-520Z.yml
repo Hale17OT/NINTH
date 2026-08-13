@@ -1,0 +1,863 @@
+- generic [ref=f4e3]:
+  - complementary [ref=f4e4]:
+    - link "NINTH all sports" [ref=f4e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f4e6]
+    - navigation "Sport workspaces" [ref=f4e7]:
+      - link "MLB" [ref=f4e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f4e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f4e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f4e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f4e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f4e33] [cursor=pointer]:
+      - generic [ref=f4e34]: D
+      - generic [ref=f4e35]: MODE
+  - generic [ref=f4e36]:
+    - banner [ref=f4e37]:
+      - generic [ref=f4e38]:
+        - generic [ref=f4e39]:
+          - generic [ref=f4e40]: VALORANT + CS2 + LOL
+          - generic [ref=f4e41]: Esports
+          - emphasis [ref=f4e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f4e43]:
+          - link "Overview" [ref=f4e44] [cursor=pointer]:
+            - /url: /esports
+          - link "Leagues" [ref=f4e45] [cursor=pointer]:
+            - /url: /esports/leagues
+          - link "Games" [ref=f4e46] [cursor=pointer]:
+            - /url: /esports/games
+          - link "Teams" [ref=f4e47] [cursor=pointer]:
+            - /url: /esports/teams
+          - link "Players" [ref=f4e48] [cursor=pointer]:
+            - /url: /esports/players
+          - link "Models" [ref=f4e49] [cursor=pointer]:
+            - /url: /esports/models
+          - link "Data" [ref=f4e50] [cursor=pointer]:
+            - /url: /esports/data
+    - main [ref=f4e51]:
+      - generic [ref=f4e53]:
+        - generic [ref=f4e54]:
+          - generic [ref=f4e55]:
+            - text: ESP / PLAYERS
+            - heading "Players." [level=1] [ref=f4e56]
+          - paragraph [ref=f4e57]: Live presentation data for Esports, separated from model training and stamped with its source coverage.
+          - generic [ref=f4e58]: 05/03
+        - generic [ref=f4e59]:
+          - generic [ref=f4e60]:
+            - textbox "300 RESULTS" [ref=f4e64]:
+              - /placeholder: Find a player
+            - generic [ref=f4e65]: 300 RESULTS
+          - combobox [ref=f4e66]:
+            - option "All competitions" [selected]
+            - option "Valorant"
+            - option "Counter-Strike 2"
+            - option "League of Legends"
+          - combobox [ref=f4e67]:
+            - option "Valorant + CS2 + LoL" [selected]
+            - option "Valorant"
+            - option "Counter-Strike 2"
+            - option "League of Legends"
+        - generic [ref=f4e68]:
+          - article [ref=f4e69]:
+            - generic [ref=f4e70]: "01"
+            - generic [ref=f4e71]: Map-adjusted impact
+            - generic [ref=f4e72]: OPERATIONAL DATA FIELD
+          - article [ref=f4e73]:
+            - generic [ref=f4e74]: "02"
+            - generic [ref=f4e75]: Opening-duel value
+            - generic [ref=f4e76]: OPERATIONAL DATA FIELD
+          - article [ref=f4e77]:
+            - generic [ref=f4e78]: "03"
+            - generic [ref=f4e79]: Role stability
+            - generic [ref=f4e80]: OPERATIONAL DATA FIELD
+          - article [ref=f4e81]:
+            - generic [ref=f4e82]: "04"
+            - generic [ref=f4e83]: Roster availability
+            - generic [ref=f4e84]: OPERATIONAL DATA FIELD
+        - generic [ref=f4e85]:
+          - generic [ref=f4e86]:
+            - generic [ref=f4e87]: PLAYERS INDEX
+            - generic [ref=f4e88]: SOURCE / Liquipedia MediaWiki API + CS API supplement
+            - emphasis [ref=f4e89]: 300 LIVE ROWS
+          - generic [ref=f4e90]:
+            - article [ref=f4e91]:
+              - generic [ref=f4e92]: "1"
+              - generic [ref=f4e94]: Active competitive pool
+              - heading "10K" [level=2] [ref=f4e95]
+              - paragraph [ref=f4e96]: Player · —
+              - generic [ref=f4e97]:
+                - generic [ref=f4e98]: ACTIVE ROSTER
+                - emphasis [ref=f4e99]: Valorant
+            - article [ref=f4e100]:
+              - generic [ref=f4e101]: "1"
+              - generic [ref=f4e103]: Active competitive pool
+              - heading "10X" [level=2] [ref=f4e104]
+              - paragraph [ref=f4e105]: Player · —
+              - generic [ref=f4e106]:
+                - generic [ref=f4e107]: ACTIVE ROSTER
+                - emphasis [ref=f4e108]: Valorant
+            - article [ref=f4e109]:
+              - generic [ref=f4e110]: "1"
+              - generic [ref=f4e112]: Active competitive pool
+              - heading "123" [level=2] [ref=f4e113]
+              - paragraph [ref=f4e114]: Player · —
+              - generic [ref=f4e115]:
+                - generic [ref=f4e116]: ACTIVE ROSTER
+                - emphasis [ref=f4e117]: Valorant
+            - article [ref=f4e118]:
+              - generic [ref=f4e119]: "1"
+              - generic [ref=f4e121]: Active competitive pool
+              - heading "13lue" [level=2] [ref=f4e122]
+              - paragraph [ref=f4e123]: Player · —
+              - generic [ref=f4e124]:
+                - generic [ref=f4e125]: ACTIVE ROSTER
+                - emphasis [ref=f4e126]: Valorant
+            - article [ref=f4e127]:
+              - generic [ref=f4e128]: "1"
+              - generic [ref=f4e130]: Active competitive pool
+              - heading "16Chops" [level=2] [ref=f4e131]
+              - paragraph [ref=f4e132]: Player · —
+              - generic [ref=f4e133]:
+                - generic [ref=f4e134]: ACTIVE ROSTER
+                - emphasis [ref=f4e135]: Valorant
+            - article [ref=f4e136]:
+              - generic [ref=f4e137]: "1"
+              - generic [ref=f4e139]: Active competitive pool
+              - heading "1ce2k" [level=2] [ref=f4e140]
+              - paragraph [ref=f4e141]: Player · —
+              - generic [ref=f4e142]:
+                - generic [ref=f4e143]: ACTIVE ROSTER
+                - emphasis [ref=f4e144]: Valorant
+            - article [ref=f4e145]:
+              - generic [ref=f4e146]: "1"
+              - generic [ref=f4e148]: Active competitive pool
+              - heading "1hp" [level=2] [ref=f4e149]
+              - paragraph [ref=f4e150]: Player · —
+              - generic [ref=f4e151]:
+                - generic [ref=f4e152]: ACTIVE ROSTER
+                - emphasis [ref=f4e153]: Valorant
+            - article [ref=f4e154]:
+              - generic [ref=f4e155]: "1"
+              - generic [ref=f4e157]: Active competitive pool
+              - heading "1kuzohh" [level=2] [ref=f4e158]
+              - paragraph [ref=f4e159]: Player · —
+              - generic [ref=f4e160]:
+                - generic [ref=f4e161]: ACTIVE ROSTER
+                - emphasis [ref=f4e162]: Valorant
+            - article [ref=f4e163]:
+              - generic [ref=f4e164]: "1"
+              - generic [ref=f4e166]: Active competitive pool
+              - heading "1TaPGoD" [level=2] [ref=f4e167]
+              - paragraph [ref=f4e168]: Player · —
+              - generic [ref=f4e169]:
+                - generic [ref=f4e170]: ACTIVE ROSTER
+                - emphasis [ref=f4e171]: Valorant
+            - article [ref=f4e172]:
+              - generic [ref=f4e173]: "1"
+              - generic [ref=f4e175]: Active competitive pool
+              - heading "1ukey" [level=2] [ref=f4e176]
+              - paragraph [ref=f4e177]: Player · —
+              - generic [ref=f4e178]:
+                - generic [ref=f4e179]: ACTIVE ROSTER
+                - emphasis [ref=f4e180]: Valorant
+            - article [ref=f4e181]:
+              - generic [ref=f4e182]: "2"
+              - generic [ref=f4e184]: Active competitive pool
+              - heading "2ez4Ploy" [level=2] [ref=f4e185]
+              - paragraph [ref=f4e186]: Player · —
+              - generic [ref=f4e187]:
+                - generic [ref=f4e188]: ACTIVE ROSTER
+                - emphasis [ref=f4e189]: Valorant
+            - article [ref=f4e190]:
+              - generic [ref=f4e191]: "2"
+              - generic [ref=f4e193]: Active competitive pool
+              - heading "2GE" [level=2] [ref=f4e194]
+              - paragraph [ref=f4e195]: Player · —
+              - generic [ref=f4e196]:
+                - generic [ref=f4e197]: ACTIVE ROSTER
+                - emphasis [ref=f4e198]: Valorant
+            - article [ref=f4e199]:
+              - generic [ref=f4e200]: "3"
+              - generic [ref=f4e202]: Active competitive pool
+              - heading "332" [level=2] [ref=f4e203]
+              - paragraph [ref=f4e204]: Player · —
+              - generic [ref=f4e205]:
+                - generic [ref=f4e206]: ACTIVE ROSTER
+                - emphasis [ref=f4e207]: Valorant
+            - article [ref=f4e208]:
+              - generic [ref=f4e209]: "3"
+              - generic [ref=f4e211]: Active competitive pool
+              - heading "3nable" [level=2] [ref=f4e212]
+              - paragraph [ref=f4e213]: Player · —
+              - generic [ref=f4e214]:
+                - generic [ref=f4e215]: ACTIVE ROSTER
+                - emphasis [ref=f4e216]: Valorant
+            - article [ref=f4e217]:
+              - generic [ref=f4e218]: "4"
+              - generic [ref=f4e220]: Active competitive pool
+              - heading "4Gruch" [level=2] [ref=f4e221]
+              - paragraph [ref=f4e222]: Player · —
+              - generic [ref=f4e223]:
+                - generic [ref=f4e224]: ACTIVE ROSTER
+                - emphasis [ref=f4e225]: Valorant
+            - article [ref=f4e226]:
+              - generic [ref=f4e227]: "4"
+              - generic [ref=f4e229]: Active competitive pool
+              - heading "4pack" [level=2] [ref=f4e230]
+              - paragraph [ref=f4e231]: Player · —
+              - generic [ref=f4e232]:
+                - generic [ref=f4e233]: ACTIVE ROSTER
+                - emphasis [ref=f4e234]: Valorant
+            - article [ref=f4e235]:
+              - generic [ref=f4e236]: "4"
+              - generic [ref=f4e238]: Active competitive pool
+              - heading "4qu1la" [level=2] [ref=f4e239]
+              - paragraph [ref=f4e240]: Player · —
+              - generic [ref=f4e241]:
+                - generic [ref=f4e242]: ACTIVE ROSTER
+                - emphasis [ref=f4e243]: Valorant
+            - article [ref=f4e244]:
+              - generic [ref=f4e245]: "5"
+              - generic [ref=f4e247]: Active competitive pool
+              - heading "5CM" [level=2] [ref=f4e248]
+              - paragraph [ref=f4e249]: Player · —
+              - generic [ref=f4e250]:
+                - generic [ref=f4e251]: ACTIVE ROSTER
+                - emphasis [ref=f4e252]: Valorant
+            - article [ref=f4e253]:
+              - generic [ref=f4e254]: "6"
+              - generic [ref=f4e256]: Active competitive pool
+              - heading "6clarity" [level=2] [ref=f4e257]
+              - paragraph [ref=f4e258]: Player · —
+              - generic [ref=f4e259]:
+                - generic [ref=f4e260]: ACTIVE ROSTER
+                - emphasis [ref=f4e261]: Valorant
+            - article [ref=f4e262]:
+              - generic [ref=f4e263]: "6"
+              - generic [ref=f4e265]: Active competitive pool
+              - heading "6ix" [level=2] [ref=f4e266]
+              - paragraph [ref=f4e267]: Player · —
+              - generic [ref=f4e268]:
+                - generic [ref=f4e269]: ACTIVE ROSTER
+                - emphasis [ref=f4e270]: Valorant
+            - article [ref=f4e271]:
+              - generic [ref=f4e272]: "6"
+              - generic [ref=f4e274]: Active competitive pool
+              - heading "6sonya" [level=2] [ref=f4e275]
+              - paragraph [ref=f4e276]: Player · —
+              - generic [ref=f4e277]:
+                - generic [ref=f4e278]: ACTIVE ROSTER
+                - emphasis [ref=f4e279]: Valorant
+            - article [ref=f4e280]:
+              - generic [ref=f4e281]: "7"
+              - generic [ref=f4e283]: Active competitive pool
+              - heading "77even" [level=2] [ref=f4e284]
+              - paragraph [ref=f4e285]: Player · —
+              - generic [ref=f4e286]:
+                - generic [ref=f4e287]: ACTIVE ROSTER
+                - emphasis [ref=f4e288]: Valorant
+            - article [ref=f4e289]:
+              - generic [ref=f4e290]: "7"
+              - generic [ref=f4e292]: Active competitive pool
+              - heading "7er" [level=2] [ref=f4e293]
+              - paragraph [ref=f4e294]: Player · —
+              - generic [ref=f4e295]:
+                - generic [ref=f4e296]: ACTIVE ROSTER
+                - emphasis [ref=f4e297]: Valorant
+            - article [ref=f4e298]:
+              - generic [ref=f4e299]: "7"
+              - generic [ref=f4e301]: Active competitive pool
+              - heading "7ssk7" [level=2] [ref=f4e302]
+              - paragraph [ref=f4e303]: Player · —
+              - generic [ref=f4e304]:
+                - generic [ref=f4e305]: ACTIVE ROSTER
+                - emphasis [ref=f4e306]: Valorant
+            - article [ref=f4e307]:
+              - generic [ref=f4e308]: "7"
+              - generic [ref=f4e310]: Active competitive pool
+              - heading "7wYy" [level=2] [ref=f4e311]
+              - paragraph [ref=f4e312]: Player · —
+              - generic [ref=f4e313]:
+                - generic [ref=f4e314]: ACTIVE ROSTER
+                - emphasis [ref=f4e315]: Valorant
+            - article [ref=f4e316]:
+              - generic [ref=f4e317]: "9"
+              - generic [ref=f4e319]: Active competitive pool
+              - heading "9ondoss" [level=2] [ref=f4e320]
+              - paragraph [ref=f4e321]: Player · —
+              - generic [ref=f4e322]:
+                - generic [ref=f4e323]: ACTIVE ROSTER
+                - emphasis [ref=f4e324]: Valorant
+            - article [ref=f4e325]:
+              - generic [ref=f4e326]: A
+              - generic [ref=f4e328]: Active competitive pool
+              - heading "A1mly" [level=2] [ref=f4e329]
+              - paragraph [ref=f4e330]: Player · —
+              - generic [ref=f4e331]:
+                - generic [ref=f4e332]: ACTIVE ROSTER
+                - emphasis [ref=f4e333]: Valorant
+            - article [ref=f4e334]:
+              - generic [ref=f4e335]: A
+              - generic [ref=f4e337]: Active competitive pool
+              - heading "A77" [level=2] [ref=f4e338]
+              - paragraph [ref=f4e339]: Player · —
+              - generic [ref=f4e340]:
+                - generic [ref=f4e341]: ACTIVE ROSTER
+                - emphasis [ref=f4e342]: Valorant
+            - article [ref=f4e343]:
+              - generic [ref=f4e344]: A
+              - generic [ref=f4e346]: Active competitive pool
+              - heading "AAAAY" [level=2] [ref=f4e347]
+              - paragraph [ref=f4e348]: Player · —
+              - generic [ref=f4e349]:
+                - generic [ref=f4e350]: ACTIVE ROSTER
+                - emphasis [ref=f4e351]: Valorant
+            - article [ref=f4e352]:
+              - generic [ref=f4e353]: A
+              - generic [ref=f4e355]: Active competitive pool
+              - heading "Aace" [level=2] [ref=f4e356]
+              - paragraph [ref=f4e357]: Player · —
+              - generic [ref=f4e358]:
+                - generic [ref=f4e359]: ACTIVE ROSTER
+                - emphasis [ref=f4e360]: Valorant
+            - article [ref=f4e361]:
+              - generic [ref=f4e362]: A
+              - generic [ref=f4e364]: Active competitive pool
+              - heading "ABATMAN" [level=2] [ref=f4e365]
+              - paragraph [ref=f4e366]: Player · —
+              - generic [ref=f4e367]:
+                - generic [ref=f4e368]: ACTIVE ROSTER
+                - emphasis [ref=f4e369]: Valorant
+            - article [ref=f4e370]:
+              - generic [ref=f4e371]: A
+              - generic [ref=f4e373]: Active competitive pool
+              - heading "AbleJ" [level=2] [ref=f4e374]
+              - paragraph [ref=f4e375]: Player · —
+              - generic [ref=f4e376]:
+                - generic [ref=f4e377]: ACTIVE ROSTER
+                - emphasis [ref=f4e378]: Valorant
+            - article [ref=f4e379]:
+              - generic [ref=f4e380]: A
+              - generic [ref=f4e382]: Active competitive pool
+              - heading "Abo" [level=2] [ref=f4e383]
+              - paragraph [ref=f4e384]: Player · —
+              - generic [ref=f4e385]:
+                - generic [ref=f4e386]: ACTIVE ROSTER
+                - emphasis [ref=f4e387]: Valorant
+            - article [ref=f4e388]:
+              - generic [ref=f4e389]: A
+              - generic [ref=f4e391]: Active competitive pool
+              - heading "AbruX" [level=2] [ref=f4e392]
+              - paragraph [ref=f4e393]: Player · —
+              - generic [ref=f4e394]:
+                - generic [ref=f4e395]: ACTIVE ROSTER
+                - emphasis [ref=f4e396]: Valorant
+            - article [ref=f4e397]:
+              - generic [ref=f4e398]: A
+              - generic [ref=f4e400]: Active competitive pool
+              - heading "Absol" [level=2] [ref=f4e401]
+              - paragraph [ref=f4e402]: Player · —
+              - generic [ref=f4e403]:
+                - generic [ref=f4e404]: ACTIVE ROSTER
+                - emphasis [ref=f4e405]: Valorant
+            - article [ref=f4e406]:
+              - generic [ref=f4e407]: A
+              - generic [ref=f4e409]: Active competitive pool
+              - heading "AC" [level=2] [ref=f4e410]
+              - paragraph [ref=f4e411]: Player · —
+              - generic [ref=f4e412]:
+                - generic [ref=f4e413]: ACTIVE ROSTER
+                - emphasis [ref=f4e414]: Valorant
+            - article [ref=f4e415]:
+              - generic [ref=f4e416]: A
+              - generic [ref=f4e418]: Active competitive pool
+              - heading "Ace" [level=2] [ref=f4e419]
+              - paragraph [ref=f4e420]: Player · —
+              - generic [ref=f4e421]:
+                - generic [ref=f4e422]: ACTIVE ROSTER
+                - emphasis [ref=f4e423]: Valorant
+            - article [ref=f4e424]:
+              - generic [ref=f4e425]: A
+              - generic [ref=f4e427]: Active competitive pool
+              - heading "ACE" [level=2] [ref=f4e428]
+              - paragraph [ref=f4e429]: Player · —
+              - generic [ref=f4e430]:
+                - generic [ref=f4e431]: ACTIVE ROSTER
+                - emphasis [ref=f4e432]: Valorant
+            - article [ref=f4e433]:
+              - generic [ref=f4e434]: A
+              - generic [ref=f4e436]: Active competitive pool
+              - heading "Acerola" [level=2] [ref=f4e437]
+              - paragraph [ref=f4e438]: Player · —
+              - generic [ref=f4e439]:
+                - generic [ref=f4e440]: ACTIVE ROSTER
+                - emphasis [ref=f4e441]: Valorant
+            - article [ref=f4e442]:
+              - generic [ref=f4e443]: A
+              - generic [ref=f4e445]: Active competitive pool
+              - heading "Acetics" [level=2] [ref=f4e446]
+              - paragraph [ref=f4e447]: Player · —
+              - generic [ref=f4e448]:
+                - generic [ref=f4e449]: ACTIVE ROSTER
+                - emphasis [ref=f4e450]: Valorant
+            - article [ref=f4e451]:
+              - generic [ref=f4e452]: A
+              - generic [ref=f4e454]: Active competitive pool
+              - heading "Ache" [level=2] [ref=f4e455]
+              - paragraph [ref=f4e456]: Player · —
+              - generic [ref=f4e457]:
+                - generic [ref=f4e458]: ACTIVE ROSTER
+                - emphasis [ref=f4e459]: Valorant
+            - article [ref=f4e460]:
+              - generic [ref=f4e461]: A
+              - generic [ref=f4e463]: Active competitive pool
+              - heading "ACHRF" [level=2] [ref=f4e464]
+              - paragraph [ref=f4e465]: Player · —
+              - generic [ref=f4e466]:
+                - generic [ref=f4e467]: ACTIVE ROSTER
+                - emphasis [ref=f4e468]: Valorant
+            - article [ref=f4e469]:
+              - generic [ref=f4e470]: A
+              - generic [ref=f4e472]: Active competitive pool
+              - heading "Aclx" [level=2] [ref=f4e473]
+              - paragraph [ref=f4e474]: Player · —
+              - generic [ref=f4e475]:
+                - generic [ref=f4e476]: ACTIVE ROSTER
+                - emphasis [ref=f4e477]: Valorant
+            - article [ref=f4e478]:
+              - generic [ref=f4e479]: A
+              - generic [ref=f4e481]: Active competitive pool
+              - heading "AcMe" [level=2] [ref=f4e482]
+              - paragraph [ref=f4e483]: Player · —
+              - generic [ref=f4e484]:
+                - generic [ref=f4e485]: ACTIVE ROSTER
+                - emphasis [ref=f4e486]: Valorant
+            - article [ref=f4e487]:
+              - generic [ref=f4e488]: A
+              - generic [ref=f4e490]: Active competitive pool
+              - heading "Acopo" [level=2] [ref=f4e491]
+              - paragraph [ref=f4e492]: Player · —
+              - generic [ref=f4e493]:
+                - generic [ref=f4e494]: ACTIVE ROSTER
+                - emphasis [ref=f4e495]: Valorant
+            - article [ref=f4e496]:
+              - generic [ref=f4e497]: A
+              - generic [ref=f4e499]: Active competitive pool
+              - heading "Acrian" [level=2] [ref=f4e500]
+              - paragraph [ref=f4e501]: Player · —
+              - generic [ref=f4e502]:
+                - generic [ref=f4e503]: ACTIVE ROSTER
+                - emphasis [ref=f4e504]: Valorant
+            - article [ref=f4e505]:
+              - generic [ref=f4e506]: A
+              - generic [ref=f4e508]: Active competitive pool
+              - heading "ACTiV" [level=2] [ref=f4e509]
+              - paragraph [ref=f4e510]: Player · —
+              - generic [ref=f4e511]:
+                - generic [ref=f4e512]: ACTIVE ROSTER
+                - emphasis [ref=f4e513]: Valorant
+            - article [ref=f4e514]:
+              - generic [ref=f4e515]: A
+              - generic [ref=f4e517]: Active competitive pool
+              - heading "Add3r" [level=2] [ref=f4e518]
+              - paragraph [ref=f4e519]: Player · —
+              - generic [ref=f4e520]:
+                - generic [ref=f4e521]: ACTIVE ROSTER
+                - emphasis [ref=f4e522]: Valorant
+            - article [ref=f4e523]:
+              - generic [ref=f4e524]: A
+              - generic [ref=f4e526]: Active competitive pool
+              - heading "Addi" [level=2] [ref=f4e527]
+              - paragraph [ref=f4e528]: Player · —
+              - generic [ref=f4e529]:
+                - generic [ref=f4e530]: ACTIVE ROSTER
+                - emphasis [ref=f4e531]: Valorant
+            - article [ref=f4e532]:
+              - generic [ref=f4e533]: A
+              - generic [ref=f4e535]: Active competitive pool
+              - heading "Addicted" [level=2] [ref=f4e536]
+              - paragraph [ref=f4e537]: Player · —
+              - generic [ref=f4e538]:
+                - generic [ref=f4e539]: ACTIVE ROSTER
+                - emphasis [ref=f4e540]: Valorant
+            - article [ref=f4e541]:
+              - generic [ref=f4e542]: A
+              - generic [ref=f4e544]: Active competitive pool
+              - heading "Ade" [level=2] [ref=f4e545]
+              - paragraph [ref=f4e546]: Player · —
+              - generic [ref=f4e547]:
+                - generic [ref=f4e548]: ACTIVE ROSTER
+                - emphasis [ref=f4e549]: Valorant
+            - article [ref=f4e550]:
+              - generic [ref=f4e551]: A
+              - generic [ref=f4e553]: Active competitive pool
+              - heading "Adelano" [level=2] [ref=f4e554]
+              - paragraph [ref=f4e555]: Player · —
+              - generic [ref=f4e556]:
+                - generic [ref=f4e557]: ACTIVE ROSTER
+                - emphasis [ref=f4e558]: Valorant
+            - article [ref=f4e559]:
+              - generic [ref=f4e560]: A
+              - generic [ref=f4e562]: Active competitive pool
+              - heading "Adenina" [level=2] [ref=f4e563]
+              - paragraph [ref=f4e564]: Player · —
+              - generic [ref=f4e565]:
+                - generic [ref=f4e566]: ACTIVE ROSTER
+                - emphasis [ref=f4e567]: Valorant
+            - article [ref=f4e568]:
+              - generic [ref=f4e569]: A
+              - generic [ref=f4e571]: Active competitive pool
+              - heading "Adm1k" [level=2] [ref=f4e572]
+              - paragraph [ref=f4e573]: Player · —
+              - generic [ref=f4e574]:
+                - generic [ref=f4e575]: ACTIVE ROSTER
+                - emphasis [ref=f4e576]: Valorant
+            - article [ref=f4e577]:
+              - generic [ref=f4e578]: A
+              - generic [ref=f4e580]: Active competitive pool
+              - heading "Adora" [level=2] [ref=f4e581]
+              - paragraph [ref=f4e582]: Player · —
+              - generic [ref=f4e583]:
+                - generic [ref=f4e584]: ACTIVE ROSTER
+                - emphasis [ref=f4e585]: Valorant
+            - article [ref=f4e586]:
+              - generic [ref=f4e587]: A
+              - generic [ref=f4e589]: Active competitive pool
+              - heading "Adrian" [level=2] [ref=f4e590]
+              - paragraph [ref=f4e591]: Player · —
+              - generic [ref=f4e592]:
+                - generic [ref=f4e593]: ACTIVE ROSTER
+                - emphasis [ref=f4e594]: Valorant
+            - article [ref=f4e595]:
+              - generic [ref=f4e596]: A
+              - generic [ref=f4e598]: Active competitive pool
+              - heading "Adrnking" [level=2] [ref=f4e599]
+              - paragraph [ref=f4e600]: Player · —
+              - generic [ref=f4e601]:
+                - generic [ref=f4e602]: ACTIVE ROSTER
+                - emphasis [ref=f4e603]: Valorant
+            - article [ref=f4e604]:
+              - generic [ref=f4e605]: A
+              - generic [ref=f4e607]: Active competitive pool
+              - heading "Aduka" [level=2] [ref=f4e608]
+              - paragraph [ref=f4e609]: Player · —
+              - generic [ref=f4e610]:
+                - generic [ref=f4e611]: ACTIVE ROSTER
+                - emphasis [ref=f4e612]: Valorant
+            - article [ref=f4e613]:
+              - generic [ref=f4e614]: A
+              - generic [ref=f4e616]: Active competitive pool
+              - heading "Aeonyx" [level=2] [ref=f4e617]
+              - paragraph [ref=f4e618]: Player · —
+              - generic [ref=f4e619]:
+                - generic [ref=f4e620]: ACTIVE ROSTER
+                - emphasis [ref=f4e621]: Valorant
+            - article [ref=f4e622]:
+              - generic [ref=f4e623]: A
+              - generic [ref=f4e625]: Active competitive pool
+              - heading "AFoxx" [level=2] [ref=f4e626]
+              - paragraph [ref=f4e627]: Player · —
+              - generic [ref=f4e628]:
+                - generic [ref=f4e629]: ACTIVE ROSTER
+                - emphasis [ref=f4e630]: Valorant
+            - article [ref=f4e631]:
+              - generic [ref=f4e632]: A
+              - generic [ref=f4e634]: Active competitive pool
+              - heading "AhMab" [level=2] [ref=f4e635]
+              - paragraph [ref=f4e636]: Player · —
+              - generic [ref=f4e637]:
+                - generic [ref=f4e638]: ACTIVE ROSTER
+                - emphasis [ref=f4e639]: Valorant
+            - article [ref=f4e640]:
+              - generic [ref=f4e641]: A
+              - generic [ref=f4e643]: Active competitive pool
+              - heading "AhriCasts" [level=2] [ref=f4e644]
+              - paragraph [ref=f4e645]: Player · —
+              - generic [ref=f4e646]:
+                - generic [ref=f4e647]: ACTIVE ROSTER
+                - emphasis [ref=f4e648]: Valorant
+            - article [ref=f4e649]:
+              - generic [ref=f4e650]: A
+              - generic [ref=f4e652]: Active competitive pool
+              - heading "Aidan" [level=2] [ref=f4e653]
+              - paragraph [ref=f4e654]: Player · —
+              - generic [ref=f4e655]:
+                - generic [ref=f4e656]: ACTIVE ROSTER
+                - emphasis [ref=f4e657]: Valorant
+            - article [ref=f4e658]:
+              - generic [ref=f4e659]: A
+              - generic [ref=f4e661]: Active competitive pool
+              - heading "Aika" [level=2] [ref=f4e662]
+              - paragraph [ref=f4e663]: Player · —
+              - generic [ref=f4e664]:
+                - generic [ref=f4e665]: ACTIVE ROSTER
+                - emphasis [ref=f4e666]: Valorant
+            - article [ref=f4e667]:
+              - generic [ref=f4e668]: A
+              - generic [ref=f4e670]: Active competitive pool
+              - heading "Aiko" [level=2] [ref=f4e671]
+              - paragraph [ref=f4e672]: Player · —
+              - generic [ref=f4e673]:
+                - generic [ref=f4e674]: ACTIVE ROSTER
+                - emphasis [ref=f4e675]: Valorant
+            - article [ref=f4e676]:
+              - generic [ref=f4e677]: A
+              - generic [ref=f4e679]: Active competitive pool
+              - heading "AIMBOTz" [level=2] [ref=f4e680]
+              - paragraph [ref=f4e681]: Player · —
+              - generic [ref=f4e682]:
+                - generic [ref=f4e683]: ACTIVE ROSTER
+                - emphasis [ref=f4e684]: Valorant
+            - article [ref=f4e685]:
+              - generic [ref=f4e686]: A
+              - generic [ref=f4e688]: Active competitive pool
+              - heading "Aimhunterr" [level=2] [ref=f4e689]
+              - paragraph [ref=f4e690]: Player · —
+              - generic [ref=f4e691]:
+                - generic [ref=f4e692]: ACTIVE ROSTER
+                - emphasis [ref=f4e693]: Valorant
+            - article [ref=f4e694]:
+              - generic [ref=f4e695]: A
+              - generic [ref=f4e697]: Active competitive pool
+              - heading "AjMERiTO" [level=2] [ref=f4e698]
+              - paragraph [ref=f4e699]: Player · —
+              - generic [ref=f4e700]:
+                - generic [ref=f4e701]: ACTIVE ROSTER
+                - emphasis [ref=f4e702]: Valorant
+            - article [ref=f4e703]:
+              - generic [ref=f4e704]: A
+              - generic [ref=f4e706]: Active competitive pool
+              - heading "Akai" [level=2] [ref=f4e707]
+              - paragraph [ref=f4e708]: Player · —
+              - generic [ref=f4e709]:
+                - generic [ref=f4e710]: ACTIVE ROSTER
+                - emphasis [ref=f4e711]: Valorant
+            - article [ref=f4e712]:
+              - generic [ref=f4e713]: A
+              - generic [ref=f4e715]: Active competitive pool
+              - heading "AkaL4CE" [level=2] [ref=f4e716]
+              - paragraph [ref=f4e717]: Player · —
+              - generic [ref=f4e718]:
+                - generic [ref=f4e719]: ACTIVE ROSTER
+                - emphasis [ref=f4e720]: Valorant
+            - article [ref=f4e721]:
+              - generic [ref=f4e722]: A
+              - generic [ref=f4e724]: Active competitive pool
+              - heading "Akame" [level=2] [ref=f4e725]
+              - paragraph [ref=f4e726]: Player · —
+              - generic [ref=f4e727]:
+                - generic [ref=f4e728]: ACTIVE ROSTER
+                - emphasis [ref=f4e729]: Valorant
+            - article [ref=f4e730]:
+              - generic [ref=f4e731]: A(
+              - generic [ref=f4e733]: Active competitive pool
+              - heading "Akame (Singaporean player)" [level=2] [ref=f4e734]
+              - paragraph [ref=f4e735]: Player · —
+              - generic [ref=f4e736]:
+                - generic [ref=f4e737]: ACTIVE ROSTER
+                - emphasis [ref=f4e738]: Valorant
+            - article [ref=f4e739]:
+              - generic [ref=f4e740]: A
+              - generic [ref=f4e742]: Active competitive pool
+              - heading "Akashi" [level=2] [ref=f4e743]
+              - paragraph [ref=f4e744]: Player · —
+              - generic [ref=f4e745]:
+                - generic [ref=f4e746]: ACTIVE ROSTER
+                - emphasis [ref=f4e747]: Valorant
+            - article [ref=f4e748]:
+              - generic [ref=f4e749]: A
+              - generic [ref=f4e751]: Active competitive pool
+              - heading "Akeman" [level=2] [ref=f4e752]
+              - paragraph [ref=f4e753]: Player · —
+              - generic [ref=f4e754]:
+                - generic [ref=f4e755]: ACTIVE ROSTER
+                - emphasis [ref=f4e756]: Valorant
+            - article [ref=f4e757]:
+              - generic [ref=f4e758]: A
+              - generic [ref=f4e760]: Active competitive pool
+              - heading "Akemy" [level=2] [ref=f4e761]
+              - paragraph [ref=f4e762]: Player · —
+              - generic [ref=f4e763]:
+                - generic [ref=f4e764]: ACTIVE ROSTER
+                - emphasis [ref=f4e765]: Valorant
+            - article [ref=f4e766]:
+              - generic [ref=f4e767]: A
+              - generic [ref=f4e769]: Active competitive pool
+              - heading "Akio" [level=2] [ref=f4e770]
+              - paragraph [ref=f4e771]: Player · —
+              - generic [ref=f4e772]:
+                - generic [ref=f4e773]: ACTIVE ROSTER
+                - emphasis [ref=f4e774]: Valorant
+            - article [ref=f4e775]:
+              - generic [ref=f4e776]: A
+              - generic [ref=f4e778]: Active competitive pool
+              - heading "Akita" [level=2] [ref=f4e779]
+              - paragraph [ref=f4e780]: Player · —
+              - generic [ref=f4e781]:
+                - generic [ref=f4e782]: ACTIVE ROSTER
+                - emphasis [ref=f4e783]: Valorant
+            - article [ref=f4e784]:
+              - generic [ref=f4e785]: A
+              - generic [ref=f4e787]: Active competitive pool
+              - heading "AKm" [level=2] [ref=f4e788]
+              - paragraph [ref=f4e789]: Player · —
+              - generic [ref=f4e790]:
+                - generic [ref=f4e791]: ACTIVE ROSTER
+                - emphasis [ref=f4e792]: Valorant
+            - article [ref=f4e793]:
+              - generic [ref=f4e794]: A
+              - generic [ref=f4e796]: Active competitive pool
+              - heading "Akula" [level=2] [ref=f4e797]
+              - paragraph [ref=f4e798]: Player · —
+              - generic [ref=f4e799]:
+                - generic [ref=f4e800]: ACTIVE ROSTER
+                - emphasis [ref=f4e801]: Valorant
+            - article [ref=f4e802]:
+              - generic [ref=f4e803]: A
+              - generic [ref=f4e805]: Active competitive pool
+              - heading "AKUMAAAAA" [level=2] [ref=f4e806]
+              - paragraph [ref=f4e807]: Player · —
+              - generic [ref=f4e808]:
+                - generic [ref=f4e809]: ACTIVE ROSTER
+                - emphasis [ref=f4e810]: Valorant
+            - article [ref=f4e811]:
+              - generic [ref=f4e812]: A
+              - generic [ref=f4e814]: Active competitive pool
+              - heading "Akz" [level=2] [ref=f4e815]
+              - paragraph [ref=f4e816]: Player · —
+              - generic [ref=f4e817]:
+                - generic [ref=f4e818]: ACTIVE ROSTER
+                - emphasis [ref=f4e819]: Valorant
+            - article [ref=f4e820]:
+              - generic [ref=f4e821]: A
+              - generic [ref=f4e823]: Active competitive pool
+              - heading "Al0rante" [level=2] [ref=f4e824]
+              - paragraph [ref=f4e825]: Player · —
+              - generic [ref=f4e826]:
+                - generic [ref=f4e827]: ACTIVE ROSTER
+                - emphasis [ref=f4e828]: Valorant
+            - article [ref=f4e829]:
+              - generic [ref=f4e830]: A
+              - generic [ref=f4e832]: Active competitive pool
+              - heading "Al1en" [level=2] [ref=f4e833]
+              - paragraph [ref=f4e834]: Player · —
+              - generic [ref=f4e835]:
+                - generic [ref=f4e836]: ACTIVE ROSTER
+                - emphasis [ref=f4e837]: Valorant
+            - article [ref=f4e838]:
+              - generic [ref=f4e839]: A
+              - generic [ref=f4e841]: Active competitive pool
+              - heading "AL7B" [level=2] [ref=f4e842]
+              - paragraph [ref=f4e843]: Player · —
+              - generic [ref=f4e844]:
+                - generic [ref=f4e845]: ACTIVE ROSTER
+                - emphasis [ref=f4e846]: Valorant
+            - article [ref=f4e847]:
+              - generic [ref=f4e848]: A
+              - generic [ref=f4e850]: Active competitive pool
+              - heading "Alain" [level=2] [ref=f4e851]
+              - paragraph [ref=f4e852]: Player · —
+              - generic [ref=f4e853]:
+                - generic [ref=f4e854]: ACTIVE ROSTER
+                - emphasis [ref=f4e855]: Valorant
+            - article [ref=f4e856]:
+              - generic [ref=f4e857]: A
+              - generic [ref=f4e859]: Active competitive pool
+              - heading "Alannah" [level=2] [ref=f4e860]
+              - paragraph [ref=f4e861]: Player · —
+              - generic [ref=f4e862]:
+                - generic [ref=f4e863]: ACTIVE ROSTER
+                - emphasis [ref=f4e864]: Valorant
+            - article [ref=f4e865]:
+              - generic [ref=f4e866]: A
+              - generic [ref=f4e868]: Active competitive pool
+              - heading "Alannn" [level=2] [ref=f4e869]
+              - paragraph [ref=f4e870]: Player · —
+              - generic [ref=f4e871]:
+                - generic [ref=f4e872]: ACTIVE ROSTER
+                - emphasis [ref=f4e873]: Valorant
+            - article [ref=f4e874]:
+              - generic [ref=f4e875]: A
+              - generic [ref=f4e877]: Active competitive pool
+              - heading "Albus" [level=2] [ref=f4e878]
+              - paragraph [ref=f4e879]: Player · —
+              - generic [ref=f4e880]:
+                - generic [ref=f4e881]: ACTIVE ROSTER
+                - emphasis [ref=f4e882]: Valorant
+            - article [ref=f4e883]:
+              - generic [ref=f4e884]: A
+              - generic [ref=f4e886]: Active competitive pool
+              - heading "Alca" [level=2] [ref=f4e887]
+              - paragraph [ref=f4e888]: Player · —
+              - generic [ref=f4e889]:
+                - generic [ref=f4e890]: ACTIVE ROSTER
+                - emphasis [ref=f4e891]: Valorant
+            - article [ref=f4e892]:
+              - generic [ref=f4e893]: A
+              - generic [ref=f4e895]: Active competitive pool
+              - heading "AlDBoOR" [level=2] [ref=f4e896]
+              - paragraph [ref=f4e897]: Player · —
+              - generic [ref=f4e898]:
+                - generic [ref=f4e899]: ACTIVE ROSTER
+                - emphasis [ref=f4e900]: Valorant
+            - article [ref=f4e901]:
+              - generic [ref=f4e902]: A
+              - generic [ref=f4e904]: Active competitive pool
+              - heading "Ale" [level=2] [ref=f4e905]
+              - paragraph [ref=f4e906]: Player · —
+              - generic [ref=f4e907]:
+                - generic [ref=f4e908]: ACTIVE ROSTER
+                - emphasis [ref=f4e909]: Valorant
+            - article [ref=f4e910]:
+              - generic [ref=f4e911]: A
+              - generic [ref=f4e913]: Active competitive pool
+              - heading "Alejo" [level=2] [ref=f4e914]
+              - paragraph [ref=f4e915]: Player · —
+              - generic [ref=f4e916]:
+                - generic [ref=f4e917]: ACTIVE ROSTER
+                - emphasis [ref=f4e918]: Valorant
+            - article [ref=f4e919]:
+              - generic [ref=f4e920]: A
+              - generic [ref=f4e922]: Active competitive pool
+              - heading "Aleko" [level=2] [ref=f4e923]
+              - paragraph [ref=f4e924]: Player · —
+              - generic [ref=f4e925]:
+                - generic [ref=f4e926]: ACTIVE ROSTER
+                - emphasis [ref=f4e927]: Valorant
+            - article [ref=f4e928]:
+              - generic [ref=f4e929]: A
+              - generic [ref=f4e931]: Active competitive pool
+              - heading "ALEKSANDAR" [level=2] [ref=f4e932]
+              - paragraph [ref=f4e933]: Player · —
+              - generic [ref=f4e934]:
+                - generic [ref=f4e935]: ACTIVE ROSTER
+                - emphasis [ref=f4e936]: Valorant
+            - article [ref=f4e937]:
+              - generic [ref=f4e938]: A
+              - generic [ref=f4e940]: Active competitive pool
+              - heading "ALerT" [level=2] [ref=f4e941]
+              - paragraph [ref=f4e942]: Player · —
+              - generic [ref=f4e943]:
+                - generic [ref=f4e944]: ACTIVE ROSTER
+                - emphasis [ref=f4e945]: Valorant
+            - article [ref=f4e946]:
+              - generic [ref=f4e947]: A
+              - generic [ref=f4e949]: Active competitive pool
+              - heading "Alessia" [level=2] [ref=f4e950]
+              - paragraph [ref=f4e951]: Player · —
+              - generic [ref=f4e952]:
+                - generic [ref=f4e953]: ACTIVE ROSTER
+                - emphasis [ref=f4e954]: Valorant
+          - button "SHOW 96 MORE 204 REMAINING" [ref=f4e955] [cursor=pointer]:
+            - text: SHOW 96 MORE
+            - generic [ref=f4e956]: 204 REMAINING
+        - generic [ref=f4e957]:
+          - generic [ref=f4e962]:
+            - text: Keyless Valorant, CS2 and League of Legends schedules, results, teams, players and shadow forecasts
+            - paragraph [ref=f4e963]: Forecasts are live shadow outputs and remain builder-locked until the chronological audit gate passes.
+          - emphasis [ref=f4e964]: 8/12/2026, 9:01:48 PM

@@ -1,0 +1,79 @@
+- generic [ref=f6e3]:
+  - complementary [ref=f6e4]:
+    - link "NINTH all sports" [ref=f6e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f6e6]
+      - generic [ref=f6e7]: NINTH
+    - navigation "Sport workspaces" [ref=f6e8]:
+      - link "MLB" [ref=f6e9] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f6e13] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f6e18] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f6e22] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f6e29] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f6e34] [cursor=pointer]:
+      - generic [ref=f6e35]: D
+      - generic [ref=f6e36]: MODE
+  - generic [ref=f6e37]:
+    - banner [ref=f6e38]:
+      - generic [ref=f6e39]:
+        - button "Choose sport" [ref=f6e40] [cursor=pointer]
+        - link "NINTH logo NINTH" [ref=f6e42] [cursor=pointer]:
+          - /url: /
+          - img "NINTH logo" [ref=f6e43]
+          - generic [ref=f6e44]: NINTH
+        - button "Open workspace navigation" [ref=f6e45] [cursor=pointer]
+    - main [ref=f6e47]:
+      - generic [ref=f6e49]:
+        - generic [ref=f6e50]:
+          - generic [ref=f6e51]:
+            - text: ESP / GAMES
+            - heading "Games." [level=1] [ref=f6e52]
+          - paragraph [ref=f6e53]: The series layer is already separated from model output. It becomes populated only from timestamped, source-audited observations.
+        - generic [ref=f6e54]:
+          - generic [ref=f6e55]:
+            - textbox "FEED PENDING" [disabled] [ref=f6e59]:
+              - /placeholder: Find a series
+            - generic [ref=f6e60]: FEED PENDING
+          - combobox [ref=f6e61]:
+            - option "All competitions" [selected]
+            - option "Valorant"
+            - option "Counter-Strike 2"
+          - combobox [ref=f6e62]:
+            - option "Valorant + CS2" [selected]
+            - option "Valorant"
+            - option "Counter-Strike 2"
+        - generic [ref=f6e63]:
+          - article [ref=f6e64]:
+            - generic [ref=f6e65]: "01"
+            - generic [ref=f6e66]: Series and event tier
+            - generic [ref=f6e67]: POINT-IN-TIME FIELD GROUP
+          - article [ref=f6e68]:
+            - generic [ref=f6e69]: "02"
+            - generic [ref=f6e70]: Conditional map tree
+            - generic [ref=f6e71]: POINT-IN-TIME FIELD GROUP
+          - article [ref=f6e72]:
+            - generic [ref=f6e73]: "03"
+            - generic [ref=f6e74]: Match / map markets
+            - generic [ref=f6e75]: POINT-IN-TIME FIELD GROUP
+          - article [ref=f6e76]:
+            - generic [ref=f6e77]: "04"
+            - generic [ref=f6e78]: Pick-ban state
+            - generic [ref=f6e79]: POINT-IN-TIME FIELD GROUP
+        - generic [ref=f6e80]:
+          - generic [ref=f6e81]:
+            - generic [ref=f6e82]: GAMES INDEX
+            - emphasis [ref=f6e83]: 0 AUDITED ROWS
+          - generic [ref=f6e84]:
+            - generic [ref=f6e87]: DATA CONTRACT READY
+            - heading "No games are published yet." [level=2] [ref=f6e88]
+            - paragraph [ref=f6e89]: The interface is complete, but NINTH will not invent series records. Connect and backfill the approved feed; raw observations will appear here before any model is allowed to train.
+            - link "OPEN DATA LINEAGE" [ref=f6e90] [cursor=pointer]:
+              - /url: /esports/data
+        - generic [ref=f6e98]:
+          - text: Why this is intentionally empty
+          - paragraph [ref=f6e99]: Research workspaces must distinguish “the product surface exists” from “production evidence exists.” That keeps sample counts, identities and model readiness honest.

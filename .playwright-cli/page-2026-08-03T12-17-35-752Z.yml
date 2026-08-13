@@ -1,0 +1,367 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: NINTH
+          - generic [ref=e10]: BASEBALL / DECISION LAB
+      - navigation [ref=e11]:
+        - link "Games" [ref=e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [active] [ref=e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=e70] [cursor=pointer]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: DISPLAY / 09
+          - generic [ref=e73]: DAY
+    - generic [ref=e78]:
+      - generic [ref=e79]: TODAY
+      - link "WSH 0 — 0 PHI Scheduled" [ref=e98] [cursor=pointer]:
+        - /url: /games/823431
+        - generic [ref=e99]: WSH
+        - emphasis [ref=e100]: "0"
+        - generic [ref=e101]: —
+        - emphasis [ref=e102]: "0"
+        - generic [ref=e103]: PHI
+        - generic [ref=e104]: Scheduled
+      - link "STL 0 — 0 NYY Scheduled" [ref=e105] [cursor=pointer]:
+        - /url: /games/823520
+        - generic [ref=e106]: STL
+        - emphasis [ref=e107]: "0"
+        - generic [ref=e108]: —
+        - emphasis [ref=e109]: "0"
+        - generic [ref=e110]: NYY
+        - generic [ref=e111]: Scheduled
+      - link "PIT 0 — 0 MIL Scheduled" [ref=e112] [cursor=pointer]:
+        - /url: /games/823757
+        - generic [ref=e113]: PIT
+        - emphasis [ref=e114]: "0"
+        - generic [ref=e115]: —
+        - emphasis [ref=e116]: "0"
+        - generic [ref=e117]: MIL
+        - generic [ref=e118]: Scheduled
+      - link "LAD 0 — 0 CHC Scheduled" [ref=e119] [cursor=pointer]:
+        - /url: /games/824647
+        - generic [ref=e120]: LAD
+        - emphasis [ref=e121]: "0"
+        - generic [ref=e122]: —
+        - emphasis [ref=e123]: "0"
+        - generic [ref=e124]: CHC
+        - generic [ref=e125]: Scheduled
+      - generic [ref=e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=e84]:
+    - generic [ref=e371]:
+      - generic [ref=e372]:
+        - generic [ref=e373]:
+          - text: NINTH / SLIP LAB
+          - heading [level=1] [ref=e374]:
+            - text: Build today's card.
+            - emphasis [ref=e375]: See the real risk.
+          - paragraph [ref=e376]: Build moneyline, total-runs, or mixed cards from market-free probabilities. Mixed mode chooses the stronger model per matchup while enforcing one selection per game.
+        - generic [ref=e377]:
+          - generic [ref=e378]:
+            - generic [ref=e379]: MODEL
+            - generic [ref=e380]:
+              - link "MONEYLINE" [ref=e381] [cursor=pointer]:
+                - /url: /builder?market=moneyline
+              - link "TOTALS" [ref=e382] [cursor=pointer]:
+                - /url: /builder?market=totals
+              - link "MIXED" [ref=e383] [cursor=pointer]:
+                - /url: /builder?market=combined
+              - link "PLAYER PROPS" [ref=e384] [cursor=pointer]:
+                - /url: /props-builder
+          - generic [ref=e385]:
+            - generic [ref=e386]:
+              - generic [ref=e387]: SLATE
+              - generic [ref=e388]:
+                - button "DAILY" [ref=e389] [cursor=pointer]
+                - button "MULTI-DAY" [ref=e390] [cursor=pointer]
+            - generic [ref=e391]:
+              - generic [ref=e392]: Game date
+              - button "Aug 3, 2026" [ref=e393] [cursor=pointer]
+            - generic [ref=e399]:
+              - generic [ref=e400]: Target legs
+              - button "5 legs" [ref=e401] [cursor=pointer]
+            - generic [ref=e405]:
+              - generic [ref=e406]: Minimum MelBet odds
+              - button "1.50+" [ref=e407] [cursor=pointer]
+            - generic [ref=e411]:
+              - generic [ref=e412]: DATA
+              - button "REFRESH" [ref=e413] [cursor=pointer]
+      - generic [ref=e419]:
+        - generic [ref=e421]:
+          - strong [ref=e422]: "0.0"
+          - text: "%"
+        - generic [ref=e423]:
+          - text: MULTIPLICATIVE MODEL SLIP CONFIDENCE
+          - heading "ADD LEGS TO SCORE" [level=2] [ref=e424]
+          - paragraph [ref=e425]: Estimated chance that all 0 legs win. Leg probabilities are multiplied—never added—and each uses its own moneyline or total-runs model plus official-input coverage.
+        - generic [ref=e426]:
+          - generic [ref=e427]:
+            - generic [ref=e428]: LEGS / TARGET
+            - generic [ref=e429]: 0 / 5
+          - generic [ref=e430]:
+            - generic [ref=e431]: MODEL PRODUCT
+            - generic [ref=e432]: 0.0%
+          - generic [ref=e433]:
+            - generic [ref=e434]: RAW PRODUCT
+            - generic [ref=e435]: 0.0%
+          - generic [ref=e436]:
+            - generic [ref=e437]: TYPICAL LEG
+            - generic [ref=e438]: 0.0%
+        - generic [ref=e439]:
+          - button "BUILD BEST 5" [ref=e440] [cursor=pointer]
+          - button "SEND TO MELBET" [disabled] [ref=e443]
+          - button "CLEAR" [disabled] [ref=e447]
+      - generic [ref=e451]:
+        - generic [ref=e452]: BOARD READY · ENRICHING 1 MATCHUPS
+        - paragraph [ref=e454]: Baseline projections are usable now. Confirmed lineups, starters, bullpen workload and weather are merging automatically without blocking the board.
+      - generic [ref=e455]:
+        - generic [ref=e456]: 8 UPCOMING GAMES · MONDAY, AUGUST 3 · AUTO 3S
+        - paragraph [ref=e458]: “Best 5” selects exactly 5 highest-probability games that satisfy minimum MelBet decimal odds of 1.50. Odds only control eligibility and never enter either model.
+      - generic [ref=e459]:
+        - generic [ref=e460]:
+          - generic [ref=e461]: SLATE DAY
+          - heading "Monday, August 3" [level=2] [ref=e462]
+          - generic [ref=e463]: 8 GAMES
+        - generic [ref=e464]:
+          - article [ref=e465]:
+            - generic [ref=e466]:
+              - generic [ref=e467]: 6:40 PM EDT
+              - link "OPEN MATCHUP" [ref=e468] [cursor=pointer]:
+                - /url: /games/823431?from=builder
+            - generic [ref=e469]: MONEYLINE
+            - button "Washington Nationals logo AWAY MONEYLINE Washington Nationals 45.9% MELBET @ 2.31" [ref=e470] [cursor=pointer]:
+              - img "Washington Nationals logo" [ref=e472]
+              - generic [ref=e473]:
+                - generic [ref=e474]: AWAY MONEYLINE
+                - generic [ref=e475]: Washington Nationals
+              - strong [ref=e476]:
+                - text: 45.9%
+                - generic [ref=e477]: MELBET @ 2.31
+            - generic [ref=e480]: VS
+            - button "Philadelphia Phillies logo HOME MONEYLINE Philadelphia Phillies 54.1% MELBET @ 1.702" [ref=e481] [cursor=pointer]:
+              - img "Philadelphia Phillies logo" [ref=e483]
+              - generic [ref=e484]:
+                - generic [ref=e485]: HOME MONEYLINE
+                - generic [ref=e486]: Philadelphia Phillies
+              - strong [ref=e487]:
+                - text: 54.1%
+                - generic [ref=e488]: MELBET @ 1.702
+            - generic [ref=e491]:
+              - generic [ref=e492]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e493]: Philadelphia Phillies · @ 1.702
+              - generic [ref=e494]: EARLY BASELINE · 3:17:32 PM · ONE PICK PER GAME
+          - article [ref=e495]:
+            - generic [ref=e496]:
+              - generic [ref=e497]: 7:05 PM EDT
+              - link "OPEN MATCHUP" [ref=e498] [cursor=pointer]:
+                - /url: /games/823520?from=builder
+            - generic [ref=e499]: MONEYLINE
+            - button "St. Louis Cardinals logo AWAY MONEYLINE St. Louis Cardinals 38.9% MELBET @ 2.806" [ref=e500] [cursor=pointer]:
+              - img "St. Louis Cardinals logo" [ref=e502]
+              - generic [ref=e503]:
+                - generic [ref=e504]: AWAY MONEYLINE
+                - generic [ref=e505]: St. Louis Cardinals
+              - strong [ref=e506]:
+                - text: 38.9%
+                - generic [ref=e507]: MELBET @ 2.806
+            - generic [ref=e510]: VS
+            - button "New York Yankees logo HOME MONEYLINE New York Yankees 61.2% MELBET @ 1.506" [ref=e511] [cursor=pointer]:
+              - img "New York Yankees logo" [ref=e513]
+              - generic [ref=e514]:
+                - generic [ref=e515]: HOME MONEYLINE
+                - generic [ref=e516]: New York Yankees
+              - strong [ref=e517]:
+                - text: 61.2%
+                - generic [ref=e518]: MELBET @ 1.506
+            - generic [ref=e521]:
+              - generic [ref=e522]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e523]: New York Yankees · @ 1.506
+              - generic [ref=e524]: EARLY BASELINE · 3:17:32 PM · ONE PICK PER GAME
+          - article [ref=e525]:
+            - generic [ref=e526]:
+              - generic [ref=e527]: 7:40 PM EDT
+              - link "OPEN MATCHUP" [ref=e528] [cursor=pointer]:
+                - /url: /games/823757?from=builder
+            - generic [ref=e529]: MONEYLINE
+            - button "Pittsburgh Pirates logo AWAY MONEYLINE Pittsburgh Pirates 40.3% MELBET @ 2.28" [ref=e530] [cursor=pointer]:
+              - img "Pittsburgh Pirates logo" [ref=e532]
+              - generic [ref=e533]:
+                - generic [ref=e534]: AWAY MONEYLINE
+                - generic [ref=e535]: Pittsburgh Pirates
+              - strong [ref=e536]:
+                - text: 40.3%
+                - generic [ref=e537]: MELBET @ 2.28
+            - generic [ref=e540]: VS
+            - button "Milwaukee Brewers logo HOME MONEYLINE Milwaukee Brewers 59.7% MELBET @ 1.719" [ref=e541] [cursor=pointer]:
+              - img "Milwaukee Brewers logo" [ref=e543]
+              - generic [ref=e544]:
+                - generic [ref=e545]: HOME MONEYLINE
+                - generic [ref=e546]: Milwaukee Brewers
+              - strong [ref=e547]:
+                - text: 59.7%
+                - generic [ref=e548]: MELBET @ 1.719
+            - generic [ref=e551]:
+              - generic [ref=e552]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e553]: Milwaukee Brewers · @ 1.719
+              - generic [ref=e554]: EARLY BASELINE · 3:17:32 PM · ONE PICK PER GAME
+          - article [ref=e555]:
+            - generic [ref=e556]:
+              - generic [ref=e557]: 8:05 PM EDT
+              - link "OPEN MATCHUP" [ref=e558] [cursor=pointer]:
+                - /url: /games/824647?from=builder
+            - generic [ref=e559]: MONEYLINE
+            - button "Los Angeles Dodgers logo AWAY MONEYLINE Los Angeles Dodgers 50.0% MELBET @ 1.848" [ref=e560] [cursor=pointer]:
+              - img "Los Angeles Dodgers logo" [ref=e562]
+              - generic [ref=e563]:
+                - generic [ref=e564]: AWAY MONEYLINE
+                - generic [ref=e565]: Los Angeles Dodgers
+              - strong [ref=e566]:
+                - text: 50.0%
+                - generic [ref=e567]: MELBET @ 1.848
+            - generic [ref=e570]: VS
+            - button "Chicago Cubs logo HOME MONEYLINE Chicago Cubs 50.0% MELBET @ 2.086" [ref=e571] [cursor=pointer]:
+              - img "Chicago Cubs logo" [ref=e573]
+              - generic [ref=e574]:
+                - generic [ref=e575]: HOME MONEYLINE
+                - generic [ref=e576]: Chicago Cubs
+              - strong [ref=e577]:
+                - text: 50.0%
+                - generic [ref=e578]: MELBET @ 2.086
+            - generic [ref=e581]:
+              - generic [ref=e582]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e583]: Los Angeles Dodgers · @ 1.848
+              - generic [ref=e584]: EARLY BASELINE · 3:17:32 PM · ONE PICK PER GAME
+          - article [ref=e585]:
+            - generic [ref=e586]:
+              - generic [ref=e587]: 8:05 PM EDT
+              - link "OPEN MATCHUP" [ref=e588] [cursor=pointer]:
+                - /url: /games/822867?from=builder
+            - generic [ref=e589]: MONEYLINE
+            - button "San Francisco Giants logo AWAY MONEYLINE San Francisco Giants 47.3% MELBET @ 1.97" [ref=e590] [cursor=pointer]:
+              - img "San Francisco Giants logo" [ref=e592]
+              - generic [ref=e593]:
+                - generic [ref=e594]: AWAY MONEYLINE
+                - generic [ref=e595]: San Francisco Giants
+              - strong [ref=e596]:
+                - text: 47.3%
+                - generic [ref=e597]: MELBET @ 1.97
+            - generic [ref=e600]: VS
+            - button "Texas Rangers logo HOME MONEYLINE Texas Rangers 52.7% MELBET @ 1.95" [ref=e601] [cursor=pointer]:
+              - img "Texas Rangers logo" [ref=e603]
+              - generic [ref=e604]:
+                - generic [ref=e605]: HOME MONEYLINE
+                - generic [ref=e606]: Texas Rangers
+              - strong [ref=e607]:
+                - text: 52.7%
+                - generic [ref=e608]: MELBET @ 1.95
+            - generic [ref=e611]:
+              - generic [ref=e612]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e613]: Texas Rangers · @ 1.95
+              - generic [ref=e614]: EARLY BASELINE · 3:17:32 PM · ONE PICK PER GAME
+          - article [ref=e615]:
+            - generic [ref=e616]:
+              - generic [ref=e617]: 8:10 PM EDT
+              - link "OPEN MATCHUP" [ref=e618] [cursor=pointer]:
+                - /url: /games/824160?from=builder
+            - generic [ref=e619]: MONEYLINE
+            - button "Toronto Blue Jays logo AWAY MONEYLINE Toronto Blue Jays 42.9% MELBET @ 2.127" [ref=e620] [cursor=pointer]:
+              - img "Toronto Blue Jays logo" [ref=e622]
+              - generic [ref=e623]:
+                - generic [ref=e624]: AWAY MONEYLINE
+                - generic [ref=e625]: Toronto Blue Jays
+              - strong [ref=e626]:
+                - text: 42.9%
+                - generic [ref=e627]: MELBET @ 2.127
+            - generic [ref=e630]: VS
+            - button "Houston Astros logo HOME MONEYLINE Houston Astros 57.1% MELBET @ 1.817" [ref=e631] [cursor=pointer]:
+              - img "Houston Astros logo" [ref=e633]
+              - generic [ref=e634]:
+                - generic [ref=e635]: HOME MONEYLINE
+                - generic [ref=e636]: Houston Astros
+              - strong [ref=e637]:
+                - text: 57.1%
+                - generic [ref=e638]: MELBET @ 1.817
+            - generic [ref=e641]:
+              - generic [ref=e642]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e643]: Houston Astros · @ 1.817
+              - generic [ref=e644]: EARLY BASELINE · 3:17:32 PM · ONE PICK PER GAME
+          - article [ref=e645]:
+            - generic [ref=e646]:
+              - generic [ref=e647]: 8:40 PM EDT
+              - link "OPEN MATCHUP" [ref=e648] [cursor=pointer]:
+                - /url: /games/824324?from=builder
+            - generic [ref=e649]: MONEYLINE
+            - button "Tampa Bay Rays logo AWAY MONEYLINE Tampa Bay Rays 59.7% MELBET @ 1.665" [ref=e650] [cursor=pointer]:
+              - img "Tampa Bay Rays logo" [ref=e652]
+              - generic [ref=e653]:
+                - generic [ref=e654]: AWAY MONEYLINE
+                - generic [ref=e655]: Tampa Bay Rays
+              - strong [ref=e656]:
+                - text: 59.7%
+                - generic [ref=e657]: MELBET @ 1.665
+            - generic [ref=e660]: VS
+            - button "Colorado Rockies logo HOME MONEYLINE Colorado Rockies 40.3% MELBET @ 2.382" [ref=e661] [cursor=pointer]:
+              - img "Colorado Rockies logo" [ref=e663]
+              - generic [ref=e664]:
+                - generic [ref=e665]: HOME MONEYLINE
+                - generic [ref=e666]: Colorado Rockies
+              - strong [ref=e667]:
+                - text: 40.3%
+                - generic [ref=e668]: MELBET @ 2.382
+            - generic [ref=e671]:
+              - generic [ref=e672]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e673]: Tampa Bay Rays · @ 1.665
+              - generic [ref=e674]: EARLY BASELINE · 3:17:32 PM · ONE PICK PER GAME
+          - article [ref=e675]:
+            - generic [ref=e676]:
+              - generic [ref=e677]: 9:40 PM EDT
+              - link "OPEN MATCHUP" [ref=e678] [cursor=pointer]:
+                - /url: /games/825095?from=builder
+            - generic [ref=e679]: MONEYLINE
+            - button "San Diego Padres logo AWAY MONEYLINE San Diego Padres 48.4% MELBET @ 2.002" [ref=e680] [cursor=pointer]:
+              - img "San Diego Padres logo" [ref=e682]
+              - generic [ref=e683]:
+                - generic [ref=e684]: AWAY MONEYLINE
+                - generic [ref=e685]: San Diego Padres
+              - strong [ref=e686]:
+                - text: 48.4%
+                - generic [ref=e687]: MELBET @ 2.002
+            - generic [ref=e690]: VS
+            - button "Arizona Diamondbacks logo HOME MONEYLINE Arizona Diamondbacks 51.6% MELBET @ 1.919" [ref=e691] [cursor=pointer]:
+              - img "Arizona Diamondbacks logo" [ref=e693]
+              - generic [ref=e694]:
+                - generic [ref=e695]: HOME MONEYLINE
+                - generic [ref=e696]: Arizona Diamondbacks
+              - strong [ref=e697]:
+                - text: 51.6%
+                - generic [ref=e698]: MELBET @ 1.919
+            - generic [ref=e701]:
+              - generic [ref=e702]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e703]: Arizona Diamondbacks · @ 1.919
+              - generic [ref=e704]: EARLY BASELINE · 3:17:32 PM · ONE PICK PER GAME

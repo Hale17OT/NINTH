@@ -1,0 +1,87 @@
+- generic [ref=f8e3]:
+  - complementary [ref=f8e4]:
+    - link "NINTH all sports" [ref=f8e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f8e6]
+    - navigation "Sport workspaces" [ref=f8e7]:
+      - link "MLB" [ref=f8e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f8e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f8e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f8e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f8e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f8e33] [cursor=pointer]:
+      - generic [ref=f8e34]: D
+      - generic [ref=f8e35]: MODE
+  - generic [ref=f8e36]:
+    - banner [ref=f8e37]:
+      - generic [ref=f8e38]:
+        - generic [ref=f8e39]:
+          - generic [ref=f8e40]: VALORANT + CS2
+          - generic [ref=f8e41]: Esports
+          - emphasis [ref=f8e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f8e43]:
+          - link "Overview" [ref=f8e44] [cursor=pointer]:
+            - /url: /esports
+          - link "Leagues" [ref=f8e45] [cursor=pointer]:
+            - /url: /esports/leagues
+          - link "Games" [ref=f8e46] [cursor=pointer]:
+            - /url: /esports/games
+          - link "Teams" [ref=f8e47] [cursor=pointer]:
+            - /url: /esports/teams
+          - link "Players" [ref=f8e48] [cursor=pointer]:
+            - /url: /esports/players
+          - link "Models" [ref=f8e49] [cursor=pointer]:
+            - /url: /esports/models
+          - link "Data" [ref=f8e50] [cursor=pointer]:
+            - /url: /esports/data
+    - main [ref=f8e51]:
+      - generic [ref=f8e53]:
+        - generic [ref=f8e54]:
+          - generic [ref=f8e55]:
+            - text: ESP / TEAMS
+            - heading "Teams." [level=1] [ref=f8e56]
+          - paragraph [ref=f8e57]: Live presentation data for Esports, separated from model training and stamped with its source coverage.
+          - generic [ref=f8e58]: 05/02
+        - generic [ref=f8e59]:
+          - generic [ref=f8e60]:
+            - textbox "0 RESULTS" [ref=f8e64]:
+              - /placeholder: Find a team
+            - generic [ref=f8e65]: 0 RESULTS
+          - combobox [ref=f8e66]:
+            - option "All competitions" [selected]
+          - combobox [ref=f8e67]:
+            - option "Valorant + CS2" [selected]
+            - option "Valorant"
+            - option "Counter-Strike 2"
+        - generic [ref=f8e68]:
+          - article [ref=f8e69]:
+            - generic [ref=f8e70]: "01"
+            - generic [ref=f8e71]: Map pool strength
+            - generic [ref=f8e72]: OPERATIONAL DATA FIELD
+          - article [ref=f8e73]:
+            - generic [ref=f8e74]: "02"
+            - generic [ref=f8e75]: Opponent-adjusted form
+            - generic [ref=f8e76]: OPERATIONAL DATA FIELD
+          - article [ref=f8e77]:
+            - generic [ref=f8e78]: "03"
+            - generic [ref=f8e79]: Roster continuity
+            - generic [ref=f8e80]: OPERATIONAL DATA FIELD
+          - article [ref=f8e81]:
+            - generic [ref=f8e82]: "04"
+            - generic [ref=f8e83]: LAN and region context
+            - generic [ref=f8e84]: OPERATIONAL DATA FIELD
+        - generic [ref=f8e85]:
+          - generic [ref=f8e86]:
+            - generic [ref=f8e87]: TEAMS INDEX
+            - generic [ref=f8e88]: SOURCE / CONNECTING
+            - emphasis [ref=f8e89]: 0 LIVE ROWS
+          - generic [ref=f8e90]:
+            - generic [ref=f8e93]: Provider connection required
+            - paragraph [ref=f8e94]: PANDASCORE_API_KEY is required for Valorant and CS2 data
+            - link "OPEN DATA REQUIREMENTS" [ref=f8e95] [cursor=pointer]:
+              - /url: /esports/data

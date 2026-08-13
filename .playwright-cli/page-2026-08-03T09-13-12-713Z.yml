@@ -1,0 +1,57 @@
+- generic [ref=f5e3]:
+  - banner [ref=f5e4]:
+    - generic [ref=f5e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f5e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f5e7]
+        - generic [ref=f5e8]:
+          - generic [ref=f5e9]: NINTH
+          - generic [ref=f5e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f5e11]:
+        - link "Games" [ref=f5e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f5e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f5e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f5e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f5e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f5e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f5e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f5e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f5e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f5e70] [cursor=pointer]:
+        - generic [ref=f5e71]:
+          - generic [ref=f5e72]: DISPLAY / 09
+          - generic [ref=f5e73]: DAY
+    - generic [ref=f5e78]:
+      - generic [ref=f5e79]: TODAY
+      - generic [ref=f5e81]: Official scoreboard syncing
+      - generic [ref=f5e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f5e84]:
+    - generic [ref=f5e86]:
+      - generic [ref=f5e87]:
+        - generic [ref=f5e88]:
+          - text: 30 CLUBS / ONE LEAGUE
+          - heading "Find your team." [level=1] [ref=f5e89]
+          - paragraph [ref=f5e90]: Every MLB club, with live records, form, rosters, and the context behind the next game.
+        - generic [ref=f5e91]: LEAGUE PACE
+      - generic [ref=f5e93]:
+        - textbox [ref=f5e98]:
+          - /placeholder: Search clubs, cities, or divisions
+        - generic [ref=f5e99]:
+          - button "All" [ref=f5e100] [cursor=pointer]
+          - button "AL" [ref=f5e101] [cursor=pointer]
+          - button "NL" [ref=f5e102] [cursor=pointer]
+        - generic [ref=f5e103]: 0 CLUBS
+      - status [ref=f5e104]:
+        - generic [ref=f5e105]: "N"
+        - generic [ref=f5e109]:
+          - strong [ref=f5e110]: Loading all 30 clubs
+          - generic [ref=f5e111]: Synchronizing records, divisions and current form.

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { api } from "../services/api";
 import {
   ArrowUpRight,
@@ -18,6 +18,7 @@ const emptyLedger = () => ({
   games: [],
   evaluated: 0,
   correct: 0,
+  pushes: 0,
   accuracy: null,
   page: 1,
   total_pages: 1,
@@ -41,17 +42,21 @@ const loading = ref(true);
 const error = ref("");
 let refreshTimer;
 let propsFilterInitialized = false;
+let suppressPropFilterWatchers = false;
 
 const loadReport = async () => {
   const payload = await api.model();
   report.value = payload;
   if (!propsFilterInitialized) {
+    suppressPropFilterWatchers = true;
     const allPropTypes = Object.values(
       payload?.player_props_model?.models || {},
     ).map((item) => `${item.kind}:${item.prop}`);
     dailyPropTypes.value = [...allPropTypes];
     finishedPropTypes.value = [...allPropTypes];
     propsFilterInitialized = true;
+    await nextTick();
+    suppressPropFilterWatchers = false;
   }
 };
 const loadLedger = async () => {
@@ -84,8 +89,11 @@ const loadPropsDaily = async () => {
 const load = async () => {
   error.value = "";
   try {
-    await Promise.all([loadReport(), loadLedger(), loadTotalsLedger(), loadPropsLedger()]);
-    await Promise.all([loadDaily(), loadTotalsDaily(), loadPropsDaily()]);
+    await loadReport();
+    await Promise.all([
+      loadLedger(), loadTotalsLedger(), loadPropsLedger(),
+      loadDaily(), loadTotalsDaily(), loadPropsDaily(),
+    ]);
   } catch (caught) {
     error.value = caught?.message || "The model report could not be loaded.";
   } finally {
@@ -126,14 +134,14 @@ watch(propsSelectedDate, () =>
   }),
 );
 watch(dailyPropTypes, () => {
-  if (!propsFilterInitialized) return;
+  if (!propsFilterInitialized || suppressPropFilterWatchers) return;
   loadPropsDaily().catch((caught) => {
     error.value =
       caught?.message || "Filtered daily player-prop results could not be loaded.";
   });
 });
 watch(finishedPropTypes, () => {
-  if (!propsFilterInitialized) return;
+  if (!propsFilterInitialized || suppressPropFilterWatchers) return;
   propsPage.value = 1;
   loadPropsLedger().catch((caught) => {
     error.value =
@@ -173,6 +181,7 @@ const totalsVersion = computed(() => {
   return match ? `V${match[1]}` : "CURRENT";
 });
 const playerPropsReport = computed(() => report.value?.player_props_model || null);
+const livePropAudit = computed(() => playerPropsReport.value?.live_shadow_audit || null);
 const allPlayerPropModels = computed(() =>
   Object.values(playerPropsReport.value?.models || {}),
 );
@@ -409,6 +418,12 @@ const groups = [
     </section>
     <section v-if="playerPropsReport" class="props-audit">
       <header><div><span class="eyebrow">PLAYER PROP MODELS · V{{ playerPropsReport.version }}</span><h2>Every threshold earns its probability.</h2><p>Official player-game box scores are replayed chronologically. Models train through 2023, calibrate on 2024, and report the untouched 2025–26 Brier result shown below.</p></div><strong class="mono">{{ (playerPropSkill * 100).toFixed(2) }}%<small>MEAN BRIER SKILL VS LINE CLIMATOLOGY</small></strong></header>
+      <div v-if="livePropAudit" class="props-shadow">
+        <article><small>LIVE SHADOW SAMPLE</small><b class="mono">{{ livePropAudit.completed_games }} games</b><span>{{ livePropAudit.selections.toLocaleString() }} exact pregame listed lines</span></article>
+        <article><small>ALL LISTED SELECTIONS</small><b class="mono">{{ (livePropAudit.overall.accuracy * 100).toFixed(1) }}%</b><span>Brier {{ livePropAudit.overall.brier.toFixed(3) }}</span></article>
+        <article><small>AUDITED 65% FLOOR</small><b class="mono">{{ (livePropAudit.confidence_bands['0.65'].accuracy * 100).toFixed(1) }}%</b><span>{{ (livePropAudit.confidence_bands['0.65'].coverage * 100).toFixed(1) }}% line coverage</span></article>
+        <article><small>ONE PER GAME · NO HR</small><b class="mono">{{ (livePropAudit.automatic_one_per_game_excluding_home_runs['0.65'].accuracy * 100).toFixed(1) }}%</b><span>Small-sample shadow result, not a guarantee</span></article>
+      </div>
       <div class="props-table"><article v-for="item in playerPropModels" :key="`${item.kind}:${item.prop}`"><span><small>{{ item.kind.toUpperCase() }}</small><b>{{ item.prop.replaceAll('_', ' ') }}</b></span><span><small>UNSEEN BRIER</small><b class="mono">{{ item.unseen.brier.toFixed(5) }}</b></span><span><small>BASELINE</small><b class="mono">{{ item.climatology.brier.toFixed(5) }}</b></span><span><small>BRIER SKILL</small><b class="mono" :class="{ positive: item.brier_skill_vs_climatology > 0 }">{{ (item.brier_skill_vs_climatology * 100).toFixed(2) }}%</b></span><span><small>60%+ COVERAGE / HIT</small><b class="mono">{{ (item.confidence_60.coverage * 100).toFixed(1) }}% / {{ item.confidence_60.accuracy == null ? '—' : `${(item.confidence_60.accuracy * 100).toFixed(1)}%` }}</b></span></article></div>
       <p class="props-note">Low raw Brier scores for rare outcomes such as home runs and steals are not compared directly with high-frequency props. Brier skill measures each model against its own line-specific baseline; negative skill is a warning, not hidden.</p>
     </section>
@@ -714,30 +729,30 @@ const groups = [
     </section>
     <section class="prediction-ledger daily-audit totals-ledger">
       <header>
-        <div><span class="eyebrow">DAILY TOTAL-RUNS AUDIT</span><h2>How did the run model do that day?</h2><p>Every result uses the last archived Over/Under recommendation before first pitch and the official combined score.</p></div>
-        <div class="daily-controls"><CustomDatePicker v-model="totalsSelectedDate" label="Totals evaluation date"/><div class="ledger-score"><small>{{ fullDate(totalsSelectedDate).toUpperCase() }}</small><strong class="mono">{{ totalsDaily.accuracy === null ? '—' : `${(totalsDaily.accuracy*100).toFixed(1)}%` }}</strong><span>{{ totalsDaily.correct }} correct · {{ totalsDaily.evaluated-totalsDaily.correct }} missed · Brier {{ totalsDaily.brier_score == null ? '—' : totalsDaily.brier_score.toFixed(3) }}</span></div></div>
+        <div><span class="eyebrow">DAILY TOTAL-RUNS AUDIT</span><h2>How did the run model do that day?</h2><p>Every result uses the deterministic audit line locked before first pitch. Builder promotion is tracked separately.</p></div>
+        <div class="daily-controls"><CustomDatePicker v-model="totalsSelectedDate" label="Totals evaluation date"/><div class="ledger-score"><small>{{ fullDate(totalsSelectedDate).toUpperCase() }}</small><strong class="mono">{{ totalsDaily.accuracy === null ? '—' : `${(totalsDaily.accuracy*100).toFixed(1)}%` }}</strong><span>{{ totalsDaily.correct }} correct · {{ totalsDaily.evaluated-totalsDaily.correct }} missed<template v-if="totalsDaily.pushes"> · {{ totalsDaily.pushes }} push</template> · Brier {{ totalsDaily.brier_score == null ? '—' : totalsDaily.brier_score.toFixed(3) }}</span></div></div>
       </header>
       <div v-if="totalsDaily.games.length" class="result-list">
         <RouterLink v-for="result in totalsDaily.games" :key="`total-day-${result.game_id}`" :to="`/games/${result.game_id}`" class="result-row">
           <time class="mono">{{ lockTime(result.starts_at) }}</time>
           <div class="result-match"><span><TeamLogo :team="result.away" :size="34"/><b>{{result.away.name}}</b></span><strong class="mono">{{result.away_score}}–{{result.home_score}}</strong><span class="home"><b>{{result.home.name}}</b><TeamLogo :team="result.home" :size="34"/></span></div>
-          <div class="result-pick"><small>LOCKED RUN PICK</small><b>{{result.total_side.toUpperCase()}} {{result.total_line}} · {{(result.total_probability*100).toFixed(1)}}%</b><span>Final total {{result.total_runs}} · Snapshot {{lockTime(result.snapshot_at)}}</span></div>
-          <em :class="result.correct?'correct':'missed'">{{result.correct?'CORRECT':'MISSED'}}</em>
+          <div class="result-pick"><small>LOCKED RUN AUDIT</small><b>{{result.total_side.toUpperCase()}} {{result.total_line}} · {{(result.total_probability*100).toFixed(1)}}%</b><span>Final total {{result.total_runs}} · {{result.total_automatic_builder_eligible ? 'Builder eligible' : 'Audit only'}} · Snapshot {{lockTime(result.snapshot_at)}}</span></div>
+          <em :class="result.total_push ? 'push' : result.correct ? 'correct' : 'missed'">{{result.total_push ? 'PUSH' : result.correct ? 'CORRECT' : 'MISSED'}}</em>
         </RouterLink>
       </div>
-      <div v-else class="ledger-empty">No eligible locked total-runs predictions were found for {{fullDate(totalsSelectedDate)}}.</div>
+      <div v-else class="ledger-empty">No locked total-runs audit forecasts were found for {{fullDate(totalsSelectedDate)}}.</div>
     </section>
     <section class="prediction-ledger totals-ledger">
       <header>
-        <div><span class="eyebrow">LIVE TOTAL-RUNS RECORD</span><h2>Finished Over/Under predictions.</h2><p>This is deployment performance, separate from the training audit. The probability is scored against the model-selected line.</p></div>
-        <div class="ledger-score"><small>RUNNING HIT RATE</small><strong class="mono">{{totalsLedger.accuracy===null?'—':`${(totalsLedger.accuracy*100).toFixed(1)}%`}}</strong><span>{{totalsLedger.correct}} / {{totalsLedger.evaluated}} · Brier {{totalsLedger.brier_score==null?'—':totalsLedger.brier_score.toFixed(3)}}</span></div>
+        <div><span class="eyebrow">LIVE TOTAL-RUNS RECORD</span><h2>Finished Over/Under forecasts.</h2><p>This scores every deterministic pregame audit forecast. Audit-only rows remain excluded from Build Best until promotion.</p></div>
+        <div class="ledger-score"><small>RUNNING HIT RATE</small><strong class="mono">{{totalsLedger.accuracy===null?'—':`${(totalsLedger.accuracy*100).toFixed(1)}%`}}</strong><span>{{totalsLedger.correct}} / {{totalsLedger.evaluated}}<template v-if="totalsLedger.pushes"> · {{totalsLedger.pushes}} pushes</template> · Brier {{totalsLedger.brier_score==null?'—':totalsLedger.brier_score.toFixed(3)}}</span></div>
       </header>
       <div v-if="totalsLedger.games.length" class="result-list">
         <RouterLink v-for="result in totalsLedger.games" :key="`total-${result.game_id}`" :to="`/games/${result.game_id}`" class="result-row">
           <time class="mono">{{gameDate(result.starts_at)}}</time>
           <div class="result-match"><span><TeamLogo :team="result.away" :size="34"/><b>{{result.away.name}}</b></span><strong class="mono">{{result.away_score}}–{{result.home_score}}</strong><span class="home"><b>{{result.home.name}}</b><TeamLogo :team="result.home" :size="34"/></span></div>
-          <div class="result-pick"><small>LOCKED RUN PICK</small><b>{{result.total_side.toUpperCase()}} {{result.total_line}} · {{(result.total_probability*100).toFixed(1)}}%</b><span>Final total {{result.total_runs}} · Snapshot {{lockTime(result.snapshot_at)}}</span></div>
-          <em :class="result.correct?'correct':'missed'">{{result.correct?'CORRECT':'MISSED'}}</em>
+          <div class="result-pick"><small>LOCKED RUN AUDIT</small><b>{{result.total_side.toUpperCase()}} {{result.total_line}} · {{(result.total_probability*100).toFixed(1)}}%</b><span>Final total {{result.total_runs}} · {{result.total_automatic_builder_eligible ? 'Builder eligible' : 'Audit only'}} · Snapshot {{lockTime(result.snapshot_at)}}</span></div>
+          <em :class="result.total_push ? 'push' : result.correct ? 'correct' : 'missed'">{{result.total_push ? 'PUSH' : result.correct ? 'CORRECT' : 'MISSED'}}</em>
         </RouterLink>
       </div>
       <div v-else class="ledger-empty">Completed total-runs predictions will appear after a pre-first-pitch forecast reaches an official final.</div>
@@ -1289,6 +1304,9 @@ h1 i {
 .result-row > em.missed {
   color: var(--orange);
 }
+.result-row > em.push {
+  color: var(--muted);
+}
 .ledger-empty {
   padding: 32px;
   border: 1px solid var(--line);
@@ -1487,5 +1505,6 @@ h1 i {
   }
 }
 .props-audit{border:1px solid var(--line);background:var(--surface)}.props-audit>header{display:flex;justify-content:space-between;align-items:end;gap:24px;padding:27px;background:var(--contrast);color:var(--on-contrast)}.props-audit h2{font-size:28px;margin:8px 0}.props-audit header p{max-width:760px;color:var(--muted);font-size:9px;line-height:1.65}.props-audit header>strong{font-size:38px;color:var(--accent);text-align:right}.props-audit header>strong small{display:block;font:600 7px 'DM Mono';color:var(--muted)}.props-table{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line)}.props-table article{display:grid;grid-template-columns:1.2fr repeat(4,1fr);gap:10px;padding:14px;background:var(--surface)}.props-table span{min-width:0}.props-table small,.props-table b{display:block}.props-table small{font:600 6px 'DM Mono';color:var(--muted)}.props-table b{font-size:10px;margin-top:4px;text-transform:capitalize}.props-table .positive{color:var(--acid)}.props-note{padding:14px 18px;margin:0;color:var(--muted);font-size:8px;line-height:1.6}@media(max-width:980px){.props-table{grid-template-columns:1fr}}@media(max-width:650px){.props-audit>header{align-items:flex-start;flex-direction:column}.props-audit header>strong{text-align:left}.props-table article{grid-template-columns:repeat(2,1fr)}.props-table article>span:first-child{grid-column:1/-1}}
+.props-shadow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border-bottom:1px solid var(--line)}.props-shadow article{padding:15px 18px;background:var(--surface-2)}.props-shadow small,.props-shadow b,.props-shadow span{display:block}.props-shadow small{font:700 7px 'DM Mono';color:var(--muted)}.props-shadow b{font-size:20px;margin:5px 0}.props-shadow span{font-size:8px;color:var(--muted)}@media(max-width:900px){.props-shadow{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.props-shadow{grid-template-columns:1fr}}
 .props-deployment-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:1px;margin-bottom:14px;border:1px solid var(--line);background:var(--line)}.props-deployment-breakdown article{display:grid;gap:5px;padding:13px;background:var(--surface)}.props-deployment-breakdown small{font:700 7px 'DM Mono';color:var(--muted)}.props-deployment-breakdown b{font-size:20px;color:var(--acid)}.props-deployment-breakdown span{font-size:7px;color:var(--muted)}.prop-player{min-width:0;display:flex;align-items:center;gap:11px}.prop-player>span{min-width:0;display:grid;gap:4px}.prop-player b{overflow:hidden;font-size:10px;text-overflow:ellipsis;white-space:nowrap}.prop-player small{overflow:hidden;font:600 7px 'DM Mono';color:var(--muted);text-overflow:ellipsis;white-space:nowrap}@media(max-width:600px){.prop-result-row .prop-player{grid-column:1/-1;grid-row:2}.prop-result-row .result-pick{grid-row:3}.prop-result-row>em{grid-row:3}}
 </style>

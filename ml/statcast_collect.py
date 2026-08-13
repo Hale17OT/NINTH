@@ -107,6 +107,8 @@ def main(start,end,pause,workers,output=OUTPUT,manifest=MANIFEST):
             day=futures[future]
             try:
                 _,rows=future.result()
+                if target_days is not None and day in target_days and not rows:
+                    raise RuntimeError("official completed games exist but Baseball Savant returned no rows; leaving day pending")
                 for row in rows:
                     existing[str(row['game_id'])]=row;handle.write(json.dumps(row,separators=(',',':'))+'\n')
                 handle.flush();done.add(day);manifest.write_text('\n'.join(sorted(done))+'\n',encoding='utf8');print(f'{day}: {len(rows)} games',flush=True)

@@ -1,0 +1,115 @@
+- generic [ref=f8e3]:
+  - complementary [ref=f8e4]:
+    - link "NINTH all sports" [ref=f8e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f8e6]
+    - navigation "Sport workspaces" [ref=f8e7]:
+      - link "MLB" [ref=f8e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f8e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f8e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f8e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f8e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f8e33] [cursor=pointer]:
+      - generic [ref=f8e34]: D
+      - generic [ref=f8e35]: MODE
+  - generic [ref=f8e36]:
+    - banner [ref=f8e37]:
+      - generic [ref=f8e38]:
+        - generic [ref=f8e39]:
+          - generic [ref=f8e40]: VALORANT + CS2 + LOL
+          - generic [ref=f8e41]: Esports
+          - emphasis [ref=f8e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f8e43]:
+          - link "Overview" [ref=f8e44] [cursor=pointer]:
+            - /url: /esports
+          - link "Leagues" [ref=f8e45] [cursor=pointer]:
+            - /url: /esports/leagues
+          - link "Games" [ref=f8e46] [cursor=pointer]:
+            - /url: /esports/games
+          - link "Teams" [ref=f8e47] [cursor=pointer]:
+            - /url: /esports/teams
+          - link "Players" [ref=f8e48] [cursor=pointer]:
+            - /url: /esports/players
+          - link "Models" [ref=f8e49] [cursor=pointer]:
+            - /url: /esports/models
+          - link "Data" [ref=f8e50] [cursor=pointer]:
+            - /url: /esports/data
+    - main [ref=f8e51]:
+      - generic [ref=f8e53]:
+        - generic [ref=f8e54]:
+          - generic [ref=f8e55]:
+            - text: VALORANT + CS2 + LOL / NINTH RESEARCH LAB
+            - heading "Esports intelligence." [level=1] [ref=f8e56]: Esportsintelligence.
+            - paragraph [ref=f8e57]: Series-native Valorant, CS2 and League of Legends intelligence joined by one roster, map and matchup lab.
+            - generic [ref=f8e58]: LIVE DATA · SHADOW MODELS
+          - complementary [ref=f8e60]:
+            - generic [ref=f8e67]: MODEL STATE
+            - generic [ref=f8e68]: Evidence before exposure.
+            - paragraph [ref=f8e69]: No selection enters the all-sports builder until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.
+        - generic [ref=f8e70]:
+          - generic [ref=f8e71]:
+            - text: MODEL LAB / LIVE REGISTRY
+            - heading "Candidate families and promotion gates." [level=2] [ref=f8e72]
+            - paragraph [ref=f8e73]: This page reports the actual source and release state. It never invents accuracy metrics before a chronological prediction ledger exists.
+            - button "REFRESH STATUS" [ref=f8e74] [cursor=pointer]
+          - generic [ref=f8e80]:
+            - article [ref=f8e81]:
+              - generic [ref=f8e82]: SHADOW / CHRONOLOGICAL AUDIT
+              - heading "Valorant · match winner" [level=3] [ref=f8e83]
+              - paragraph [ref=f8e84]: time decayed series elo · trained through 2026-08-12
+              - generic [ref=f8e85]:
+                - generic [ref=f8e86]:
+                  - term [ref=f8e87]: UNSEEN BRIER
+                  - definition [ref=f8e88]: "0.250"
+                - generic [ref=f8e89]:
+                  - term [ref=f8e90]: CALIBRATION
+                  - definition [ref=f8e91]: 10.0%
+                - generic [ref=f8e92]:
+                  - term [ref=f8e93]: TEST SAMPLES
+                  - definition [ref=f8e94]: "10"
+              - generic [ref=f8e95]:
+                - generic [ref=f8e96]: UNSEEN ACCURACY 60.0%
+                - emphasis [ref=f8e97]: SHADOW LOCKED
+            - article [ref=f8e98]:
+              - generic [ref=f8e99]: SHADOW / CHRONOLOGICAL AUDIT
+              - heading "CS2 · match winner" [level=3] [ref=f8e100]
+              - paragraph [ref=f8e101]: time decayed series elo · trained through 2026-08-12
+              - generic [ref=f8e102]:
+                - generic [ref=f8e103]:
+                  - term [ref=f8e104]: UNSEEN BRIER
+                  - definition [ref=f8e105]: "0.249"
+                - generic [ref=f8e106]:
+                  - term [ref=f8e107]: CALIBRATION
+                  - definition [ref=f8e108]: 15.8%
+                - generic [ref=f8e109]:
+                  - term [ref=f8e110]: TEST SAMPLES
+                  - definition [ref=f8e111]: "110"
+              - generic [ref=f8e112]:
+                - generic [ref=f8e113]: UNSEEN ACCURACY 55.5%
+                - emphasis [ref=f8e114]: SHADOW LOCKED
+            - article [ref=f8e115]:
+              - generic [ref=f8e116]: SHADOW / CHRONOLOGICAL AUDIT
+              - heading "League of Legends · match winner" [level=3] [ref=f8e117]
+              - paragraph [ref=f8e118]: time decayed series elo · trained through 2026-08-12
+              - generic [ref=f8e119]:
+                - generic [ref=f8e120]:
+                  - term [ref=f8e121]: UNSEEN BRIER
+                  - definition [ref=f8e122]: "0.250"
+                - generic [ref=f8e123]:
+                  - term [ref=f8e124]: CALIBRATION
+                  - definition [ref=f8e125]: 10.0%
+                - generic [ref=f8e126]:
+                  - term [ref=f8e127]: TEST SAMPLES
+                  - definition [ref=f8e128]: "10"
+              - generic [ref=f8e129]:
+                - generic [ref=f8e130]: UNSEEN ACCURACY 40.0%
+                - emphasis [ref=f8e131]: SHADOW LOCKED
+        - generic [ref=f8e132]:
+          - generic [ref=f8e133]: /ESPORTS/MODELS
+          - link "ALL-SPORTS BUILDER" [ref=f8e134] [cursor=pointer]:
+            - /url: /build

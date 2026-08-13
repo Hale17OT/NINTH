@@ -59,12 +59,17 @@ const displayedProbabilities = computed(() => {
   return { away, home: Number((100 - away).toFixed(1)) }
 })
 const totals = computed(() => game.value?.totalsProjection)
-const totalSelectionAvailable = computed(() => isFinal.value || totals.value?.selection_available !== false)
+const totalSelectionAvailable = computed(() => Boolean(
+  totals.value?.recommended_side
+  && totals.value?.recommended_line !== null
+  && totals.value?.recommended_line !== undefined
+  && (isFinal.value || totals.value?.selection_available !== false),
+))
 const totalsBaselineBrier = computed(() => Number(totals.value?.model?.unseen_baseline?.mean_brier || totals.value?.model?.incumbent_unseen_brier || 0))
 const totalsBrierSkill = computed(() => totalsBaselineBrier.value ? (totalsBaselineBrier.value - Number(totals.value?.model?.unseen_2025_2026?.mean_brier || 0)) / totalsBaselineBrier.value : 0)
 const totalsMarketTime = computed(() => totals.value?.line_market?.observed_at ? new Date(totals.value.line_market.observed_at).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) : 'not currently listed')
 const finalTotalRuns = computed(() => Number(game.value?.home?.score || 0) + Number(game.value?.away?.score || 0))
-const totalPickCorrect = computed(() => totals.value?.available && isFinal.value ? (totals.value.recommended_side === 'over' ? finalTotalRuns.value > totals.value.recommended_line : finalTotalRuns.value < totals.value.recommended_line) : null)
+const totalPickCorrect = computed(() => totals.value?.available && isFinal.value && totalSelectionAvailable.value ? (totals.value.recommended_side === 'over' ? finalTotalRuns.value > totals.value.recommended_line : finalTotalRuns.value < totals.value.recommended_line) : null)
 const totalPct = value => `${(Number(value || 0) * 100).toFixed(1)}%`
 const totalImpact = reason => `${(Math.abs(Number(reason.impact || 0)) * 100).toFixed(1)} points`
 const supportingReasons = computed(() => (game.value?.projection?.reasons || []).filter(reason => reason.direction === projectedSide.value))
@@ -93,6 +98,23 @@ const reasonTeam = reason => game.value?.[reason.direction]
 const reasonRole = reason => reason.direction === projectedSide.value ? 'SUPPORTS THE PICK' : 'PUSHES TOWARD THE OPPONENT'
 const reasonImpact = reason => `${(Math.abs(Number(reason.impact || 0)) * 100).toFixed(1)} percentage points`
 const metric = (value, digits = 0) => value === null || value === undefined || value === '' ? '—' : Number(value).toFixed(digits)
+const shortStartDate = value => value ? new Date(`${value}T00:00:00`).toLocaleDateString([], { month: 'short', day: 'numeric' }) : '—'
+const startOpponent = start => `${start?.venue === 'home' ? 'vs' : '@'} ${start?.opponent || 'Unknown'}`
+const recentStartAverages = starts => {
+  const rows = starts || []
+  if (!rows.length) return null
+  const average = key => (rows.reduce((sum, row) => sum + Number(row?.[key] || 0), 0) / rows.length).toFixed(1)
+  const innings = rows.reduce((sum, row) => {
+    const [whole = '0', fraction = '0'] = String(row?.innings || '0').split('.')
+    return sum + Number(whole || 0) * 3 + Math.min(2, Number(fraction?.[0] || 0))
+  }, 0) / rows.length / 3
+  return {
+    innings: innings.toFixed(1), hits: average('hits'), runs: average('runs'),
+    earned_runs: average('earned_runs'), walks: average('walks'),
+    strikeouts: average('strikeouts'), home_runs: average('home_runs'),
+    pitches: average('pitches'),
+  }
+}
 const load = async () => {
   if (refreshing.value) { pendingReload = true; return }
   const requestedId = String(route.params.id)
@@ -198,11 +220,40 @@ watch(() => route.params.id, load)
         </article>
       </div>
     </SectionCard>
-    <SectionCard title="Starting pitchers" subtitle="Official predicted or confirmed status with current-season statistics">
+    <SectionCard title="Pitching run prevention" subtitle="Point-in-time season results through the last completed game before this matchup">
+      <div class="pitching-run-grid">
+        <article v-for="side in ['away','home']" :key="side" class="pitching-run-card">
+          <header><TeamLogo :team="game[side]" :size="42"/><div><small>{{ side.toUpperCase() }} STAFF</small><strong>{{ game[side].name }}</strong></div></header>
+          <div class="pitching-run-metrics">
+            <span><small>STARTER R / START</small><b class="mono">{{ metric(game.pitchingMatchup?.[side]?.starter_runs_per_start, 2) }}</b><em>{{ game.pitchingMatchup?.[side]?.starter_starts || 0 }} prior starts</em></span>
+            <span><small>BULLPEN ERA</small><b class="mono">{{ metric(game.pitchingMatchup?.[side]?.bullpen_era, 2) }}</b><em>{{ metric(game.pitchingMatchup?.[side]?.bullpen_innings, 1) }} IP</em></span>
+            <span><small>{{ game.pitchingMatchup?.[side]?.bullpen_runs_basis === 'runs' ? 'BULLPEN R / GAME' : 'BULLPEN ER / GAME' }}</small><b class="mono">{{ metric(game.pitchingMatchup?.[side]?.bullpen_runs_per_game, 2) }}</b><em>{{ game.pitchingMatchup?.[side]?.bullpen_games || 0 }} team games</em></span>
+          </div>
+          <p><b>{{ game.pitchingMatchup?.[side]?.starter_name || 'Starter pending' }}</b> starter average · bullpen figures exclude starting-pitcher innings.</p>
+        </article>
+      </div>
+    </SectionCard>
+    <SectionCard title="Starting pitchers" subtitle="Current season, home/away splits, and each pitcher's five most recent starts">
       <div v-if="game.starterProfiles?.length" class="pitcher-grid">
         <article v-for="starter in game.starterProfiles" :key="starter.id" class="starter">
           <div class="starter-head"><PlayerHeadshot :player="starter" :size="76"/><div><span class="eyebrow" :class="starter.status">{{ starter.status === 'confirmed' ? 'CONFIRMED STARTER' : 'PREDICTED STARTER' }}</span><h3>{{ starter.name }}</h3><small>{{ starter.team || starter.position }}</small></div><strong class="era mono">{{ starter.era ?? '—' }}<small>ERA</small></strong></div>
           <div class="stats"><span><small>W–L</small><b class="mono">{{ starter.wins ?? '—' }}–{{ starter.losses ?? '—' }}</b></span><span><small>WHIP</small><b class="mono">{{ starter.whip ?? '—' }}</b></span><span><small>IP</small><b class="mono">{{ starter.innings ?? '—' }}</b></span><span><small>SO / BB</small><b class="mono">{{ starter.strikeouts ?? '—' }} / {{ starter.walks ?? '—' }}</b></span></div>
+          <div class="starter-splits">
+            <article v-for="venue in ['home','away']" :key="venue">
+              <small>{{ venue.toUpperCase() }}</small>
+              <template v-if="starter.home_away?.[venue]"><b class="mono">{{ starter.home_away[venue].record }}</b><span>{{ starter.home_away[venue].starts }} GS · {{ starter.home_away[venue].innings }} IP</span><span>{{ starter.home_away[venue].era }} ERA · {{ starter.home_away[venue].whip }} WHIP</span></template>
+              <span v-else>No split returned</span>
+            </article>
+          </div>
+          <div class="recent-starts">
+            <header><span>LAST 5 STARTS</span><small>IP, hits, runs allowed and workload</small></header>
+            <div v-if="starter.recent_starts?.length" class="start-table-wrap">
+              <table><thead><tr><th>Date</th><th>Opponent</th><th>Dec</th><th>IP</th><th>H</th><th>R</th><th>ER</th><th>BB</th><th>K</th><th>HR</th><th>P</th></tr></thead><tbody>
+                <tr v-for="start in starter.recent_starts" :key="start.game_id || `${start.date}-${start.opponent}`"><td>{{ shortStartDate(start.date) }}</td><td><RouterLink v-if="start.game_id" :to="`/games/${start.game_id}`">{{ startOpponent(start) }}</RouterLink><span v-else>{{ startOpponent(start) }}</span></td><td><b class="decision" :class="start.decision?.toLowerCase() || 'nd'">{{ start.decision || 'ND' }}</b></td><td>{{ start.innings ?? '—' }}</td><td>{{ start.hits ?? '—' }}</td><td>{{ start.runs ?? '—' }}</td><td>{{ start.earned_runs ?? '—' }}</td><td>{{ start.walks ?? '—' }}</td><td>{{ start.strikeouts ?? '—' }}</td><td>{{ start.home_runs ?? '—' }}</td><td>{{ start.pitches ?? '—' }}</td></tr>
+              </tbody><tfoot v-if="recentStartAverages(starter.recent_starts)"><tr class="start-average"><td>AVG</td><td>{{ starter.recent_starts.length }} STARTS</td><td>—</td><td>{{ recentStartAverages(starter.recent_starts).innings }}</td><td>{{ recentStartAverages(starter.recent_starts).hits }}</td><td>{{ recentStartAverages(starter.recent_starts).runs }}</td><td>{{ recentStartAverages(starter.recent_starts).earned_runs }}</td><td>{{ recentStartAverages(starter.recent_starts).walks }}</td><td>{{ recentStartAverages(starter.recent_starts).strikeouts }}</td><td>{{ recentStartAverages(starter.recent_starts).home_runs }}</td><td>{{ recentStartAverages(starter.recent_starts).pitches }}</td></tr></tfoot></table>
+            </div>
+            <p v-else>No completed starts were returned for this season.</p>
+          </div>
         </article>
       </div>
       <p v-else class="unavailable">MLB has not announced the probable starting pitchers for this game.</p>
@@ -234,6 +285,7 @@ watch(() => route.params.id, load)
 .final-review{display:grid;grid-template-columns:1fr 1fr;gap:8px}.final-review>div{display:grid;gap:5px;padding:14px 16px;border:1px solid var(--line);border-radius:11px;background:var(--raised)}.final-review small{font:7px 'DM Mono';color:var(--muted)}.final-review strong{font-size:22px}.final-review b{font:800 11px 'DM Mono'}.final-review span{font-size:8px;color:var(--muted)}.final-review .correct{color:var(--acid)}.final-review .missed{color:var(--orange)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.form-team{padding:14px;background:var(--raised);border-radius:8px}.form-team header{display:flex;align-items:center;gap:10px;padding-bottom:11px;border-bottom:1px solid var(--line)}.form-team header>div{display:flex;flex-direction:column}.form-team header strong{font-size:12px}.form-team header small{font-size:8px;color:var(--muted);margin-top:3px}.form-record{margin-left:auto;color:var(--acid);font-size:15px}.form-row{display:grid;grid-template-columns:25px minmax(0,1fr) auto;align-items:center;gap:9px;padding:10px 2px;border-bottom:1px solid var(--line);text-decoration:none}.form-row i{width:22px;height:22px;display:grid;place-items:center;border-radius:5px;font:800 9px 'DM Mono';font-style:normal}.form-row i.win{background:rgba(65,234,212,.16);color:var(--acid)}.form-row i.loss{background:rgba(255,32,110,.14);color:#ff78a6}.form-row span{display:flex;flex-direction:column;min-width:0}.form-row b{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.form-row small{font-size:8px;color:var(--muted);margin-top:3px}.form-row>strong{font-size:12px;color:var(--text)}
 .starter{background:var(--raised);padding:14px;border-radius:7px}.starter-head{display:flex;align-items:center;gap:13px;margin-bottom:13px}.starter-head h3{margin:4px 0 3px}.starter-head>div{min-width:0}.starter-head>div small{color:var(--muted);font-size:9px}.era{margin-left:auto;color:var(--acid);font-size:25px;text-align:right}.era small{display:block;color:var(--muted);font-size:8px}.unavailable{color:var(--muted);font-size:11px;margin:0}
+.starter-splits{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.starter-splits article{display:grid;grid-template-columns:auto 1fr;gap:3px 9px;padding:10px;border:1px solid var(--line);background:var(--panel)}.starter-splits small{grid-row:1/4;align-self:center;font:800 7px 'DM Mono';letter-spacing:.08em;color:var(--muted);writing-mode:vertical-rl;transform:rotate(180deg)}.starter-splits b{font-size:15px;color:var(--acid)}.starter-splits span{font:600 7px 'DM Mono';color:var(--muted)}.recent-starts{margin-top:12px}.recent-starts>header{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:7px}.recent-starts>header span{font:800 8px 'DM Mono';letter-spacing:.08em}.recent-starts>header small{font-size:7px;color:var(--muted)}.start-table-wrap{overflow-x:auto;border:1px solid var(--line)}.recent-starts table{width:100%;min-width:530px;border-collapse:collapse;background:var(--panel);font:600 7px 'DM Mono'}.recent-starts th,.recent-starts td{padding:7px 5px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}.recent-starts th{font-size:6px;text-transform:uppercase;color:var(--muted);background:var(--surface)}.recent-starts th:first-child,.recent-starts td:first-child,.recent-starts th:nth-child(2),.recent-starts td:nth-child(2){text-align:left}.recent-starts tbody tr:last-child td{border-bottom:0}.recent-starts tfoot td{border-top:2px solid color-mix(in srgb,var(--acid) 55%,var(--line));border-bottom:0;background:color-mix(in srgb,var(--acid) 8%,var(--surface));color:var(--acid);font-weight:800}.recent-starts tfoot td:nth-child(2){color:var(--muted);font-size:6px;letter-spacing:.05em}.recent-starts a{color:var(--text);text-decoration:none}.recent-starts a:hover{text-decoration:underline}.recent-starts p{margin:0;padding:12px;background:var(--panel);font-size:8px;color:var(--muted)}.decision{display:inline-grid;min-width:20px;height:20px;place-items:center;border-radius:4px;background:var(--raised);font-size:7px}.decision.w{color:var(--acid)}.decision.l{color:var(--orange)}.decision.nd{color:var(--muted)}
 .view{display:grid;gap:14px}.match{padding:22px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;background:radial-gradient(circle at 80%,rgba(97,63,117,.25),transparent 30%),var(--panel)}.matchup-team{display:flex;align-items:center;gap:14px;min-width:0}.matchup-team.home{text-align:right;justify-content:flex-end}.matchup-team h2{font-size:22px;margin:5px 0;line-height:1.1}.match-meta{text-align:center}.match-meta strong{display:block;font:800 26px 'DM Mono';margin:7px 0}.match-meta p{font-size:10px;color:var(--muted);margin:0}.prob{grid-column:1/-1;max-width:340px;width:100%;justify-self:center;text-align:center}.prob small{font-size:9px}.prob>strong{display:block;font-size:24px;color:var(--acid);margin:6px 0}.two{display:grid;grid-template-columns:2fr 1fr;gap:14px}.pitcher-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.pitcher-grid>div{background:var(--raised);padding:14px;border-radius:7px}.pitcher-grid h3{margin:0 0 12px;font-size:13px}.pitcher-grid h3 small{color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.stats span{padding:8px;background:var(--panel);display:flex;flex-direction:column}.stats small{font-size:8px;color:var(--muted);text-transform:uppercase}.stats b{font-size:12px;margin-top:4px}.pitchmix{height:28px;display:flex;margin-top:13px;overflow:hidden;border-radius:3px}.pitchmix i{background:var(--acid);color:#04201b;display:grid;place-items:center;font-style:normal;border-right:1px solid #07111f}.pitchmix i:nth-child(even){background:#613f75;color:white}.pitchmix small{font-size:7px}.bull{margin:15px 0}.bull>div{display:flex;justify-content:space-between;font-size:11px}.bull p{font-size:9px;color:var(--muted)}.ai{display:flex;gap:15px}.ai>span{color:var(--acid);font-size:28px}.ai p{font-size:12px;line-height:1.7;margin:0}.load{padding:50px;text-align:center}@media(max-width:850px){.match{grid-template-columns:1fr 1fr}.match-meta{grid-column:1/-1;grid-row:2}.prob{grid-row:3}.two{grid-template-columns:1fr}.pitcher-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.matchup-team h2{font-size:17px}}@media(max-width:520px){.match{padding:15px;gap:10px}.matchup-team{flex-direction:column;align-items:flex-start}.matchup-team.home{flex-direction:column-reverse;align-items:flex-end}.matchup-team h2{font-size:14px}.match-meta p{font-size:9px}}
 @media(max-width:850px){.form-grid{grid-template-columns:1fr}.reason-grid{grid-template-columns:1fr}.model-audit{flex-wrap:wrap}.probability-row{grid-template-columns:1fr 1fr}.model-pick{grid-column:1/-1;grid-row:2}}
 @media(max-width:650px){.final-review{grid-template-columns:1fr}}
@@ -248,4 +300,5 @@ watch(() => route.params.id, load)
 .detail-load{display:flex;align-items:center;justify-content:center;gap:13px}.detail-load div{display:flex;flex-direction:column;text-align:left;gap:4px}.detail-load b{font-size:12px}.detail-load small{font-size:9px;color:var(--muted)}.load-pulse{width:11px;height:11px;border-radius:50%;background:var(--acid);animation:pulse-load 1.2s infinite}@keyframes pulse-load{50%{opacity:.25;transform:scale(.75)}}
 .prob>p{display:none}.projection-stamp{--freshness:var(--acid);min-height:54px;display:grid;grid-template-columns:3px auto 1fr;align-items:center;gap:12px;padding:9px 14px;border-radius:0}.projection-stamp>i{width:3px;height:28px;background:var(--freshness);box-shadow:0 0 14px color-mix(in srgb,var(--freshness) 45%,transparent)}.projection-stamp>span{display:flex;flex-direction:column;gap:4px}.projection-stamp small{font:500 7px 'DM Mono';letter-spacing:.11em;color:var(--muted)}.projection-stamp b{font-size:10px}.projection-stamp em{justify-self:end;padding:6px 9px;border:1px solid color-mix(in srgb,var(--freshness) 55%,var(--line));background:color-mix(in srgb,var(--freshness) 10%,var(--surface));color:var(--freshness);font:700 7px 'DM Mono';font-style:normal;letter-spacing:.07em}.projection-stamp.syncing{--freshness:var(--blue)}.projection-stamp.aging{--freshness:#e3a73f}.projection-stamp.stale{--freshness:var(--orange)}.projection-stamp.locked{--freshness:var(--muted)}@media(max-width:520px){.projection-stamp{grid-template-columns:3px 1fr}.projection-stamp em{grid-column:2;justify-self:start}}
 .probability-bar i{transition:width .65s cubic-bezier(.22,.8,.3,1)}
+.pitching-run-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pitching-run-card{padding:15px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--blue) 7%,transparent),transparent 48%),var(--raised)}.pitching-run-card>header{display:flex;align-items:center;gap:10px;padding-bottom:11px;border-bottom:1px solid var(--line)}.pitching-run-card>header div{display:flex;flex-direction:column;gap:3px}.pitching-run-card>header small{font:700 7px 'DM Mono';letter-spacing:.08em;color:var(--muted)}.pitching-run-card>header strong{font-size:12px}.pitching-run-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.pitching-run-metrics span{display:flex;min-width:0;flex-direction:column;gap:5px;padding:10px;background:var(--panel);border-radius:9px}.pitching-run-metrics small{font:700 7px 'DM Mono';line-height:1.35;color:var(--muted)}.pitching-run-metrics b{font-size:20px;color:var(--acid)}.pitching-run-metrics em{font:500 7px 'DM Mono';font-style:normal;color:var(--muted)}.pitching-run-card>p{margin:10px 1px 0;font-size:8px;line-height:1.5;color:var(--muted)}.pitching-run-card>p b{color:var(--text)}@media(max-width:850px){.pitching-run-grid{grid-template-columns:1fr}}@media(max-width:460px){.pitching-run-metrics{grid-template-columns:1fr}.pitching-run-metrics span{display:grid;grid-template-columns:1fr auto;align-items:center}.pitching-run-metrics em{grid-column:1/-1}.pitching-run-metrics b{grid-column:2;grid-row:1/3}}
 </style>

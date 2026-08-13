@@ -1,0 +1,68 @@
+- generic [ref=f7e3]:
+  - complementary [ref=f7e4]:
+    - link "NINTH all sports" [ref=f7e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f7e6]
+      - generic [ref=f7e7]: NINTH
+    - navigation "Sport workspaces" [ref=f7e8]:
+      - link "MLB" [ref=f7e9] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f7e13] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f7e18] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f7e22] [cursor=pointer]:
+        - /url: /basketball
+      - link "VAL" [ref=f7e29] [cursor=pointer]:
+        - /url: /valorant
+      - link "CS2" [ref=f7e34] [cursor=pointer]:
+        - /url: /cs2
+    - button "Use dark theme" [ref=f7e38] [cursor=pointer]:
+      - generic [ref=f7e39]: D
+      - generic [ref=f7e40]: MODE
+  - generic [ref=f7e41]:
+    - banner [ref=f7e42]:
+      - generic [ref=f7e43]:
+        - button "Choose sport" [ref=f7e44] [cursor=pointer]
+        - link "NINTH logo NINTH" [ref=f7e46] [cursor=pointer]:
+          - /url: /
+          - img "NINTH logo" [ref=f7e47]
+          - generic [ref=f7e48]: NINTH
+        - button "Open workspace navigation" [ref=f7e49] [cursor=pointer]
+    - main [ref=f7e51]:
+      - generic [ref=f7e53]:
+        - generic [ref=f7e54]:
+          - generic [ref=f7e55]:
+            - text: VCT / NINTH RESEARCH LAB
+            - heading "Valorant intelligence." [level=1] [ref=f7e56]: Valorantintelligence.
+            - paragraph [ref=f7e57]: Map-aware team strength, roster continuity, agent composition and veto simulation.
+            - generic [ref=f7e58]: SHADOW FOUNDATION · NOT YET PRODUCTION ELIGIBLE
+          - complementary [ref=f7e60]:
+            - generic [ref=f7e67]: MODEL STATE
+            - generic [ref=f7e68]: Evidence before exposure.
+            - paragraph [ref=f7e69]: No selection enters Build Best until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.
+        - generic [ref=f7e70]:
+          - generic [ref=f7e71]:
+            - text: DATA LINEAGE
+            - heading "Every input needs a source and an availability time." [level=2] [ref=f7e72]
+            - paragraph [ref=f7e73]: Event-time and knowledge-time are stored separately so late injury, lineup or veto information cannot leak backward into training.
+          - generic [ref=f7e74]:
+            - article [ref=f7e75]:
+              - generic [ref=f7e80]:
+                - generic [ref=f7e81]: Professional match data
+                - generic [ref=f7e82]: Riot–GRID / PandaScore
+              - emphasis [ref=f7e83]: Credentials required
+            - article [ref=f7e84]:
+              - generic [ref=f7e89]:
+                - generic [ref=f7e90]: Public match API
+                - generic [ref=f7e91]: Riot Developer API
+              - emphasis [ref=f7e92]: Opt-in constraints
+            - article [ref=f7e93]:
+              - generic [ref=f7e98]:
+                - generic [ref=f7e99]: VLR.gg
+                - generic [ref=f7e100]: Not used
+              - emphasis [ref=f7e101]: Automated scraping prohibited
+        - generic [ref=f7e102]:
+          - generic [ref=f7e103]: /VALORANT/DATA
+          - link "ALL SPORTS" [ref=f7e104] [cursor=pointer]:
+            - /url: /

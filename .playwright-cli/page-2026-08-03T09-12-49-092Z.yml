@@ -1,0 +1,64 @@
+- generic [ref=f2e3]:
+  - banner [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f2e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f2e7]
+        - generic [ref=f2e8]:
+          - generic [ref=f2e9]: NINTH
+          - generic [ref=f2e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f2e11]:
+        - link "Games" [ref=f2e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f2e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f2e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f2e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f2e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f2e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f2e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f2e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f2e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f2e70] [cursor=pointer]:
+        - generic [ref=f2e71]:
+          - generic [ref=f2e72]: DISPLAY / 09
+          - generic [ref=f2e73]: DAY
+    - generic [ref=f2e78]:
+      - generic [ref=f2e79]: TODAY
+      - generic [ref=f2e81]: Official scoreboard syncing
+      - generic [ref=f2e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f2e84]:
+    - generic [ref=f2e86]:
+      - generic [ref=f2e87]:
+        - text: NINTH / BASEBALL DECISION LAB
+        - heading "MLB schedule" [level=1] [ref=f2e88]
+        - paragraph [ref=f2e89]: Daily slate, probable pitchers, venues, and weather intelligence.
+        - generic [ref=f2e90]:
+          - generic [ref=f2e91]:
+            - button "Previous day" [ref=f2e92] [cursor=pointer]
+            - generic [ref=f2e95]:
+              - generic [ref=f2e96]: MONDAY
+              - strong [ref=f2e97]: AUG 03, 2026
+            - button "Next day" [ref=f2e98] [cursor=pointer]
+          - generic [ref=f2e101]:
+            - generic [ref=f2e102]: Choose date
+            - button "Aug 3, 2026" [ref=f2e103] [cursor=pointer]
+          - button "TODAY" [ref=f2e109] [cursor=pointer]
+          - generic [ref=f2e110]:
+            - generic [ref=f2e111]: Team
+            - button "All teams MLB" [ref=f2e112] [cursor=pointer]:
+              - generic [ref=f2e113]: All teams
+              - generic [ref=f2e114]: MLB
+          - generic [ref=f2e117]: MLB-STATSAPI + OPEN-METEO
+      - status [ref=f2e119]:
+        - generic [ref=f2e120]: "N"
+        - generic [ref=f2e124]:
+          - strong [ref=f2e125]: Loading the official schedule
+          - generic [ref=f2e126]: Synchronizing the selected date, teams and provider data.

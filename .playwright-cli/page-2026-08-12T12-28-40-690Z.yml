@@ -1,0 +1,283 @@
+- generic [ref=f3e3]:
+  - complementary [ref=f3e4]:
+    - link "NINTH all sports" [ref=f3e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f3e6]
+    - navigation "Sport workspaces" [ref=f3e7]:
+      - link "MLB" [ref=f3e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f3e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f3e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f3e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f3e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f3e32] [cursor=pointer]:
+      - generic [ref=f3e33]: D
+      - generic [ref=f3e34]: MODE
+  - generic [ref=f3e35]:
+    - banner [ref=f3e36]:
+      - generic [ref=f3e37]:
+        - generic [ref=f3e38]:
+          - generic [ref=f3e39]: DECISION SYSTEM
+          - generic [ref=f3e40]: All sports
+        - navigation "Workspace navigation" [ref=f3e41]:
+          - link "Platform" [ref=f3e42] [cursor=pointer]:
+            - /url: /
+          - link "All-sports builder" [ref=f3e43] [cursor=pointer]:
+            - /url: /build
+    - main [ref=f3e44]:
+      - generic [ref=f3e46]:
+        - generic [ref=f3e47]:
+          - generic [ref=f3e48]:
+            - text: NINTH / ALL-SPORTS BUILDER
+            - heading "One card. Every arena." [level=1] [ref=f3e49]: One card.Every arena.
+            - paragraph [ref=f3e50]: A shared construction surface with separate model eligibility. Baseball can contribute production legs now; every other sport unlocks automatically only after its own evidence gate passes.
+          - complementary [ref=f3e51]:
+            - generic [ref=f3e56]: PORTFOLIO CONTRACT
+            - generic [ref=f3e57]: Combined does not mean blended.
+            - paragraph [ref=f3e58]: Probabilities come from sport-native models. The builder only joins eligible outputs and then controls event, team, market and directional exposure across the final card.
+        - generic [ref=f3e59]:
+          - button "00 ALL 15 READY" [ref=f3e132] [cursor=pointer]:
+            - generic [ref=f3e61]: "00"
+            - generic [ref=f3e62]: ALL
+            - generic [ref=f3e63]: 15 READY
+          - button "01 MLB LIVE BOARD" [ref=f3e64] [cursor=pointer]:
+            - generic [ref=f3e65]: "01"
+            - generic [ref=f3e66]: MLB
+            - generic [ref=f3e67]: LIVE BOARD
+          - button "02 FTB RESEARCH LOCKED" [ref=f3e68] [cursor=pointer]:
+            - generic [ref=f3e69]: "02"
+            - generic [ref=f3e70]: FTB
+            - generic [ref=f3e71]: RESEARCH LOCKED
+          - button "03 NFL RESEARCH LOCKED" [ref=f3e72] [cursor=pointer]:
+            - generic [ref=f3e73]: "03"
+            - generic [ref=f3e74]: NFL
+            - generic [ref=f3e75]: RESEARCH LOCKED
+          - button "04 NBA RESEARCH LOCKED" [ref=f3e76] [cursor=pointer]:
+            - generic [ref=f3e77]: "04"
+            - generic [ref=f3e78]: NBA
+            - generic [ref=f3e79]: RESEARCH LOCKED
+          - button "05 ESP RESEARCH LOCKED" [ref=f3e80] [cursor=pointer]:
+            - generic [ref=f3e81]: "05"
+            - generic [ref=f3e82]: ESP
+            - generic [ref=f3e83]: RESEARCH LOCKED
+        - generic [ref=f3e84]:
+          - generic [ref=f3e85]:
+            - generic [ref=f3e86]:
+              - generic [ref=f3e87]:
+                - text: ELIGIBLE INVENTORY
+                - heading "Today’s audited legs" [level=2] [ref=f3e88]
+              - generic [ref=f3e89]:
+                - button "REFRESH" [ref=f3e90] [cursor=pointer]
+                - button "ADD BEST 5" [active] [ref=f3e96] [cursor=pointer]
+            - generic [ref=f3e133]:
+              - article [ref=f3e134]:
+                - generic [ref=f3e135]: MLB
+                - generic [ref=f3e136]:
+                  - generic [ref=f3e137]: Tampa Bay Rays @ Athletics · Moneyline
+                  - generic [ref=f3e138]: Tampa Bay Rays to win
+                  - generic [ref=f3e139]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e140]:
+                  - strong [ref=f3e141]: 68.3%
+                  - generic [ref=f3e142]: "@ 1.527"
+                - button [disabled] [ref=f3e143] [cursor=pointer]
+              - article [ref=f3e145]:
+                - generic [ref=f3e146]: MLB
+                - generic [ref=f3e147]:
+                  - generic [ref=f3e148]: Kansas City Royals @ Los Angeles Dodgers · Moneyline
+                  - generic [ref=f3e149]: Los Angeles Dodgers to win
+                  - generic [ref=f3e150]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e151]:
+                  - strong [ref=f3e152]: 64.4%
+                  - generic [ref=f3e153]: "@ 1.497"
+                - button [disabled] [ref=f3e154] [cursor=pointer]
+              - article [ref=f3e156]:
+                - generic [ref=f3e157]: MLB
+                - generic [ref=f3e158]:
+                  - generic [ref=f3e159]: Colorado Rockies @ Arizona Diamondbacks · Moneyline
+                  - generic [ref=f3e160]: Arizona Diamondbacks to win
+                  - generic [ref=f3e161]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e162]:
+                  - strong [ref=f3e163]: 63.7%
+                  - generic [ref=f3e164]: "@ 1.600"
+                - button [disabled] [ref=f3e165] [cursor=pointer]
+              - article [ref=f3e167]:
+                - generic [ref=f3e168]: MLB
+                - generic [ref=f3e169]:
+                  - generic [ref=f3e170]: New York Mets @ Atlanta Braves · Moneyline
+                  - generic [ref=f3e171]: Atlanta Braves to win
+                  - generic [ref=f3e172]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e173]:
+                  - strong [ref=f3e174]: 62.9%
+                  - generic [ref=f3e175]: "@ 1.665"
+                - button [disabled] [ref=f3e176] [cursor=pointer]
+              - article [ref=f3e178]:
+                - generic [ref=f3e179]: MLB
+                - generic [ref=f3e180]:
+                  - generic [ref=f3e181]: Boston Red Sox @ Toronto Blue Jays · Moneyline
+                  - generic [ref=f3e182]: Boston Red Sox to win
+                  - generic [ref=f3e183]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e184]:
+                  - strong [ref=f3e185]: 62.4%
+                  - generic [ref=f3e186]: "@ 1.826"
+                - button [disabled] [ref=f3e187] [cursor=pointer]
+              - article [ref=f3e189]:
+                - generic [ref=f3e190]: MLB
+                - generic [ref=f3e191]:
+                  - generic [ref=f3e192]: Chicago Cubs @ Washington Nationals · Moneyline
+                  - generic [ref=f3e193]: Chicago Cubs to win
+                  - generic [ref=f3e194]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e195]:
+                  - strong [ref=f3e196]: 61.0%
+                  - generic [ref=f3e197]: "@ 1.650"
+                - button [ref=f3e198] [cursor=pointer]
+              - article [ref=f3e200]:
+                - generic [ref=f3e201]: MLB
+                - generic [ref=f3e202]:
+                  - generic [ref=f3e203]: Philadelphia Phillies @ St. Louis Cardinals · Moneyline
+                  - generic [ref=f3e204]: Philadelphia Phillies to win
+                  - generic [ref=f3e205]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e206]:
+                  - strong [ref=f3e207]: 60.2%
+                  - generic [ref=f3e208]: "@ 1.660"
+                - button [ref=f3e209] [cursor=pointer]
+              - article [ref=f3e211]:
+                - generic [ref=f3e212]: MLB
+                - generic [ref=f3e213]:
+                  - generic [ref=f3e214]: Texas Rangers @ Los Angeles Angels · Moneyline
+                  - generic [ref=f3e215]: Texas Rangers to win
+                  - generic [ref=f3e216]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e217]:
+                  - strong [ref=f3e218]: 60.1%
+                  - generic [ref=f3e219]: "@ 1.804"
+                - button [ref=f3e220] [cursor=pointer]
+              - article [ref=f3e222]:
+                - generic [ref=f3e223]: MLB
+                - generic [ref=f3e224]:
+                  - generic [ref=f3e225]: Cleveland Guardians @ Detroit Tigers · Moneyline
+                  - generic [ref=f3e226]: Detroit Tigers to win
+                  - generic [ref=f3e227]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e228]:
+                  - strong [ref=f3e229]: 59.9%
+                  - generic [ref=f3e230]: "@ 1.804"
+                - button [ref=f3e231] [cursor=pointer]
+              - article [ref=f3e233]:
+                - generic [ref=f3e234]: MLB
+                - generic [ref=f3e235]:
+                  - generic [ref=f3e236]: Cincinnati Reds @ Chicago White Sox · Moneyline
+                  - generic [ref=f3e237]: Chicago White Sox to win
+                  - generic [ref=f3e238]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e239]:
+                  - strong [ref=f3e240]: 58.6%
+                  - generic [ref=f3e241]: "@ 1.713"
+                - button [ref=f3e242] [cursor=pointer]
+              - article [ref=f3e244]:
+                - generic [ref=f3e245]: MLB
+                - generic [ref=f3e246]:
+                  - generic [ref=f3e247]: Seattle Mariners @ New York Yankees · Moneyline
+                  - generic [ref=f3e248]: New York Yankees to win
+                  - generic [ref=f3e249]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e250]:
+                  - strong [ref=f3e251]: 56.5%
+                  - generic [ref=f3e252]: "@ 1.804"
+                - button [ref=f3e253] [cursor=pointer]
+              - article [ref=f3e255]:
+                - generic [ref=f3e256]: MLB
+                - generic [ref=f3e257]:
+                  - generic [ref=f3e258]: Milwaukee Brewers @ San Diego Padres · Moneyline
+                  - generic [ref=f3e259]: Milwaukee Brewers to win
+                  - generic [ref=f3e260]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e261]:
+                  - strong [ref=f3e262]: 55.7%
+                  - generic [ref=f3e263]: "@ 1.886"
+                - button [ref=f3e264] [cursor=pointer]
+              - article [ref=f3e266]:
+                - generic [ref=f3e267]: MLB
+                - generic [ref=f3e268]:
+                  - generic [ref=f3e269]: Pittsburgh Pirates @ Miami Marlins · Moneyline
+                  - generic [ref=f3e270]: Miami Marlins to win
+                  - generic [ref=f3e271]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e272]:
+                  - strong [ref=f3e273]: 53.7%
+                  - generic [ref=f3e274]: "@ 1.892"
+                - button [ref=f3e275] [cursor=pointer]
+              - article [ref=f3e277]:
+                - generic [ref=f3e278]: MLB
+                - generic [ref=f3e279]:
+                  - generic [ref=f3e280]: Houston Astros @ San Francisco Giants · Moneyline
+                  - generic [ref=f3e281]: Houston Astros to win
+                  - generic [ref=f3e282]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e283]:
+                  - strong [ref=f3e284]: 53.3%
+                  - generic [ref=f3e285]: "@ 1.783"
+                - button [ref=f3e286] [cursor=pointer]
+              - article [ref=f3e288]:
+                - generic [ref=f3e289]: MLB
+                - generic [ref=f3e290]:
+                  - generic [ref=f3e291]: Baltimore Orioles @ Minnesota Twins · Moneyline
+                  - generic [ref=f3e292]: Minnesota Twins to win
+                  - generic [ref=f3e293]: PRODUCTION ELIGIBLE
+                - generic [ref=f3e294]:
+                  - strong [ref=f3e295]: 51.9%
+                  - generic [ref=f3e296]: "@ 1.950"
+                - button [ref=f3e297] [cursor=pointer]
+          - complementary [ref=f3e105]:
+            - generic [ref=f3e106]:
+              - generic [ref=f3e107]:
+                - generic [ref=f3e108]: CARD / 05
+                - generic [ref=f3e109]: Combined build
+              - button [ref=f3e309] [cursor=pointer]
+            - generic [ref=f3e313]:
+              - article [ref=f3e314]:
+                - generic [ref=f3e315]: "01"
+                - generic [ref=f3e316]:
+                  - generic [ref=f3e317]: MLB · Moneyline
+                  - generic [ref=f3e318]: Tampa Bay Rays to win
+                  - emphasis [ref=f3e319]: Tampa Bay Rays @ Athletics
+                - button "×" [ref=f3e320] [cursor=pointer]
+              - article [ref=f3e321]:
+                - generic [ref=f3e322]: "02"
+                - generic [ref=f3e323]:
+                  - generic [ref=f3e324]: MLB · Moneyline
+                  - generic [ref=f3e325]: Los Angeles Dodgers to win
+                  - emphasis [ref=f3e326]: Kansas City Royals @ Los Angeles Dodgers
+                - button "×" [ref=f3e327] [cursor=pointer]
+              - article [ref=f3e328]:
+                - generic [ref=f3e329]: "03"
+                - generic [ref=f3e330]:
+                  - generic [ref=f3e331]: MLB · Moneyline
+                  - generic [ref=f3e332]: Arizona Diamondbacks to win
+                  - emphasis [ref=f3e333]: Colorado Rockies @ Arizona Diamondbacks
+                - button "×" [ref=f3e334] [cursor=pointer]
+              - article [ref=f3e335]:
+                - generic [ref=f3e336]: "04"
+                - generic [ref=f3e337]:
+                  - generic [ref=f3e338]: MLB · Moneyline
+                  - generic [ref=f3e339]: Atlanta Braves to win
+                  - emphasis [ref=f3e340]: New York Mets @ Atlanta Braves
+                - button "×" [ref=f3e341] [cursor=pointer]
+              - article [ref=f3e342]:
+                - generic [ref=f3e343]: "05"
+                - generic [ref=f3e344]:
+                  - generic [ref=f3e345]: MLB · Moneyline
+                  - generic [ref=f3e346]: Boston Red Sox to win
+                  - emphasis [ref=f3e347]: Boston Red Sox @ Toronto Blue Jays
+                - button "×" [ref=f3e348] [cursor=pointer]
+            - generic [ref=f3e117]:
+              - generic [ref=f3e118]:
+                - generic [ref=f3e119]:
+                  - term [ref=f3e120]: LEGS
+                  - definition [ref=f3e121]: "5"
+                - generic [ref=f3e122]:
+                  - term [ref=f3e123]: EVENTS
+                  - definition [ref=f3e124]: "5"
+                - generic [ref=f3e125]:
+                  - term [ref=f3e126]: JOINT MODEL
+                  - definition [ref=f3e127]: 11.0%
+                - generic [ref=f3e128]:
+                  - term [ref=f3e129]: DECIMAL ODDS
+                  - definition [ref=f3e130]: "11.12"
+              - paragraph [ref=f3e131]: No wager is placed from this research surface.

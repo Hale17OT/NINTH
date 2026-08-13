@@ -1,0 +1,113 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - link "NINTH all sports" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=e6]
+    - navigation "Sport workspaces" [ref=e7]:
+      - link "MLB" [ref=e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "VAL" [ref=e28] [cursor=pointer]:
+        - /url: /valorant
+      - link "CS2" [ref=e32] [cursor=pointer]:
+        - /url: /cs2
+    - button "Use dark theme" [ref=e36] [cursor=pointer]:
+      - generic [ref=e37]: D
+      - generic [ref=e38]: MODE
+  - generic [ref=e39]:
+    - banner [ref=e40]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e43]: DECISION SYSTEM
+          - generic [ref=e44]: All sports
+        - navigation "Workspace navigation"
+    - main [ref=e45]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - text: NINTH / MULTI-SPORT DECISION SYSTEM
+            - heading "One standard. Six different games." [level=1] [ref=e50]: One standard.Six different games.
+            - paragraph [ref=e51]: Shared probability discipline, separate sport intelligence. Every model has its own features, validation clock and promotion evidence.
+          - complementary [ref=e52]:
+            - generic [ref=e53]: PLATFORM PRINCIPLE / 01
+            - generic [ref=e54]: Never confuse a confident interface with a proven model.
+            - paragraph [ref=e55]: Unseen Brier score, calibration, coverage and live shadow evidence stay visible before any market can enter production.
+        - region "NINTH sports" [ref=e56]:
+          - link "MLB LIVE PRODUCTION Baseball Pregame, live, totals and player-prop intelligence with immutable audits. MLB" [ref=e57] [cursor=pointer]:
+            - /url: /baseball
+            - generic [ref=e58]:
+              - generic [ref=e59]: MLB
+              - emphasis [ref=e60]: LIVE
+            - generic [ref=e61]:
+              - text: PRODUCTION
+              - heading "Baseball" [level=2] [ref=e62]
+              - paragraph [ref=e63]: Pregame, live, totals and player-prop intelligence with immutable audits.
+            - generic [ref=e64]: MLB
+          - link "FTB LAB TOP FIVE LEAGUES Football Scoreline distributions, xG-adjusted team strength and lineup-aware markets. Premier League · La Liga · Bundesliga · Serie A · Ligue 1" [ref=e69] [cursor=pointer]:
+            - /url: /football
+            - generic [ref=e70]:
+              - generic [ref=e71]: FTB
+              - emphasis [ref=e72]: LAB
+            - generic [ref=e73]:
+              - text: TOP FIVE LEAGUES
+              - heading "Football" [level=2] [ref=e74]
+              - paragraph [ref=e75]: Scoreline distributions, xG-adjusted team strength and lineup-aware markets.
+            - generic [ref=e76]: Premier League · La Liga · Bundesliga · Serie A · Ligue 1
+          - link "NFL LAB NFL American Football EPA, success rate, quarterback value, injuries and drive-level simulation. NFL" [ref=e81] [cursor=pointer]:
+            - /url: /american-football
+            - generic [ref=e82]:
+              - generic [ref=e83]: NFL
+              - emphasis [ref=e84]: LAB
+            - generic [ref=e85]:
+              - text: NFL
+              - heading "American Football" [level=2] [ref=e86]
+              - paragraph [ref=e87]: EPA, success rate, quarterback value, injuries and drive-level simulation.
+            - generic [ref=e88]: NFL
+          - link "NBA LAB NBA Basketball Possession forecasts, lineup impact, rest, availability and pace distributions. NBA" [ref=e93] [cursor=pointer]:
+            - /url: /basketball
+            - generic [ref=e94]:
+              - generic [ref=e95]: NBA
+              - emphasis [ref=e96]: LAB
+            - generic [ref=e97]:
+              - text: NBA
+              - heading "Basketball" [level=2] [ref=e98]
+              - paragraph [ref=e99]: Possession forecasts, lineup impact, rest, availability and pace distributions.
+            - generic [ref=e100]: NBA
+          - link "VAL LAB VCT Valorant Map-aware team strength, roster continuity, agent composition and veto simulation. VCT International · VCT Challengers" [ref=e105] [cursor=pointer]:
+            - /url: /valorant
+            - generic [ref=e106]:
+              - generic [ref=e107]: VAL
+              - emphasis [ref=e108]: LAB
+            - generic [ref=e109]:
+              - text: VCT
+              - heading "Valorant" [level=2] [ref=e110]
+              - paragraph [ref=e111]: Map-aware team strength, roster continuity, agent composition and veto simulation.
+            - generic [ref=e112]: VCT International · VCT Challengers
+          - link "CS2 LAB CS2 Counter-Strike 2 Map pools, LAN context, roster strength, economy and best-of-series simulation. Tier-one · Tier-two" [ref=e117] [cursor=pointer]:
+            - /url: /cs2
+            - generic [ref=e118]:
+              - generic [ref=e119]: CS2
+              - emphasis [ref=e120]: LAB
+            - generic [ref=e121]:
+              - text: CS2
+              - heading "Counter-Strike 2" [level=2] [ref=e122]
+              - paragraph [ref=e123]: Map pools, LAN context, roster strength, economy and best-of-series simulation.
+            - generic [ref=e124]: Tier-one · Tier-two
+        - generic [ref=e129]:
+          - article [ref=e130]:
+            - generic [ref=e135]:
+              - text: Point-in-time data
+              - paragraph [ref=e136]: Only information available before the event enters a training row.
+          - article [ref=e137]:
+            - generic [ref=e143]:
+              - text: Sport-native models
+              - paragraph [ref=e144]: Possessions, drives, scorelines and maps are modeled on their own terms.
+          - article [ref=e145]:
+            - generic [ref=e149]:
+              - text: Evidence-gated release
+              - paragraph [ref=e150]: Research becomes production only after locked chronological and live audits.

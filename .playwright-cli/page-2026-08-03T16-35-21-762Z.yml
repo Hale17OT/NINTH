@@ -1,0 +1,116 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f1e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f1e7]
+        - generic [ref=f1e8]:
+          - generic [ref=f1e9]: NINTH
+          - generic [ref=f1e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f1e11]:
+        - link "Games" [ref=f1e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f1e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f1e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f1e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f1e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f1e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f1e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f1e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f1e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f1e70] [cursor=pointer]:
+        - generic [ref=f1e71]:
+          - generic [ref=f1e72]: DISPLAY / 09
+          - generic [ref=f1e73]: DAY
+    - generic [ref=f1e78]:
+      - generic [ref=f1e79]: TODAY
+      - generic [ref=f1e81]: Official scoreboard syncing
+      - generic [ref=f1e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f1e84]:
+    - generic [ref=f1e86]:
+      - generic [ref=f1e87]:
+        - generic [ref=f1e88]:
+          - text: NINTH / PLAYER LAB
+          - heading "Build from the player up." [level=1] [ref=f1e89]
+          - paragraph [ref=f1e90]: Start with a matchup, inspect its available player markets, then add only the legs you want to the card.
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]:
+            - generic [ref=f1e93]: MODEL
+            - generic [ref=f1e94]:
+              - link "MONEYLINE" [ref=f1e95] [cursor=pointer]:
+                - /url: /builder?market=moneyline
+              - link "TOTALS" [ref=f1e96] [cursor=pointer]:
+                - /url: /builder?market=totals
+              - link "MIXED" [ref=f1e97] [cursor=pointer]:
+                - /url: /builder?market=combined
+              - link "PLAYER PROPS" [ref=f1e98] [cursor=pointer]:
+                - /url: /props-builder
+          - generic [ref=f1e99]:
+            - generic [ref=f1e100]:
+              - generic [ref=f1e101]: SLATE
+              - generic [ref=f1e102]:
+                - button "DAILY" [ref=f1e103] [cursor=pointer]
+                - button "MULTI-DAY" [ref=f1e104] [cursor=pointer]
+            - generic [ref=f1e105]:
+              - generic [ref=f1e106]: Game date
+              - button "Aug 3, 2026" [ref=f1e107] [cursor=pointer]
+            - generic [ref=f1e113]:
+              - generic [ref=f1e114]: Target legs
+              - button "5 legs" [ref=f1e115] [cursor=pointer]
+            - generic [ref=f1e119]:
+              - generic [ref=f1e120]: Minimum MelBet odds
+              - button "1.50+" [ref=f1e121] [cursor=pointer]
+            - generic [ref=f1e125]:
+              - generic [ref=f1e126]: DATA
+              - button "REFRESH" [disabled] [ref=f1e127]
+          - generic [ref=f1e133]:
+            - generic [ref=f1e134]:
+              - generic [ref=f1e135]: Included player props
+              - button "No prop markets selected 0" [ref=f1e136] [cursor=pointer]:
+                - generic [ref=f1e137]: No prop markets selected
+                - generic [ref=f1e138]: "0"
+            - generic [ref=f1e141]:
+              - generic [ref=f1e142]: BUILD DIRECTION
+              - group "Automatic player prop build direction" [ref=f1e143]:
+                - button "BOTH" [pressed] [ref=f1e144] [cursor=pointer]
+                - button "OVER" [ref=f1e145] [cursor=pointer]
+                - button "UNDER" [ref=f1e146] [cursor=pointer]
+      - generic [ref=f1e147]:
+        - generic [ref=f1e149]:
+          - strong [ref=f1e150]: "0.0"
+          - text: "%"
+        - generic [ref=f1e151]:
+          - text: SAMPLE-SIZE ADJUSTED SLIP CONFIDENCE
+          - heading "ADD LEGS TO SCORE" [level=2] [ref=f1e152]
+          - paragraph [ref=f1e153]: Estimated chance that every selected prop lands. Short player histories are pulled toward 50%, and recommended cards use one prop per game at an audited 65% minimum to limit weak legs and hidden same-game correlation.
+          - generic [ref=f1e154]: MODEL PROBABILITY, NOT A GUARANTEE
+        - generic [ref=f1e155]:
+          - generic [ref=f1e156]:
+            - generic [ref=f1e157]: LEGS
+            - generic [ref=f1e158]: 0 / 5
+          - generic [ref=f1e159]:
+            - generic [ref=f1e160]: ADJUSTED
+            - generic [ref=f1e161]: 0.0%
+          - generic [ref=f1e162]:
+            - generic [ref=f1e163]: RAW PRODUCT
+            - generic [ref=f1e164]: 0.0%
+          - generic [ref=f1e165]:
+            - generic [ref=f1e166]: TYPICAL LEG
+            - generic [ref=f1e167]: 0.0%
+        - generic [ref=f1e168]:
+          - button "BUILD BEST 5" [disabled] [ref=f1e169]
+          - button "SEND TO MELBET" [disabled] [ref=f1e172]
+          - button "CLEAR" [disabled] [ref=f1e176]
+      - status [ref=f1e180]:
+        - generic [ref=f1e181]: "N"
+        - generic [ref=f1e185]:
+          - strong [ref=f1e186]: Building player distributions
+          - generic [ref=f1e187]: Loading official lineups, probable starters and calibrated prop thresholds.

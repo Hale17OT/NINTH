@@ -1,0 +1,54 @@
+- generic [ref=f21e3]:
+  - banner [ref=f21e4]:
+    - generic [ref=f21e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f21e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f21e7]
+        - generic [ref=f21e8]:
+          - generic [ref=f21e9]: NINTH
+          - generic [ref=f21e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f21e11] [cursor=pointer]:
+        - generic [ref=f21e12]: DAY
+      - button "Search" [ref=f21e18] [cursor=pointer]
+      - button "Menu" [ref=f21e22] [cursor=pointer]
+    - generic [ref=f21e24]:
+      - generic [ref=f21e25]: TODAY
+      - generic [ref=f21e27]: Official scoreboard syncing
+  - main [ref=f21e28]:
+    - generic [ref=f21e30]:
+      - generic [ref=f21e31]:
+        - text: NINTH / BASEBALL DECISION LAB
+        - heading "MLB schedule" [level=1] [ref=f21e32]
+        - paragraph [ref=f21e33]: Daily slate, probable pitchers, venues, and weather intelligence.
+        - generic [ref=f21e34]:
+          - generic [ref=f21e35]:
+            - button "Previous day" [ref=f21e36] [cursor=pointer]
+            - generic [ref=f21e39]:
+              - generic [ref=f21e40]: MONDAY
+              - strong [ref=f21e41]: AUG 03, 2026
+            - button "Next day" [ref=f21e42] [cursor=pointer]
+          - generic [ref=f21e45]:
+            - generic [ref=f21e46]: Choose date
+            - button "Aug 3, 2026" [ref=f21e47] [cursor=pointer]
+          - button "TODAY" [ref=f21e53] [cursor=pointer]
+          - generic [ref=f21e54]:
+            - generic [ref=f21e55]: Team
+            - button "All teams MLB" [ref=f21e56] [cursor=pointer]:
+              - generic [ref=f21e57]: All teams
+              - generic [ref=f21e58]: MLB
+      - status [ref=f21e61]:
+        - generic [ref=f21e62]: "N"
+        - generic [ref=f21e66]:
+          - strong [ref=f21e67]: Loading the official schedule
+          - generic [ref=f21e68]: Synchronizing the selected date, teams and provider data.
+  - generic [ref=f21e73]:
+    - link "Games" [ref=f21e74] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f21e78] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f21e86] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f21e89] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f21e97] [cursor=pointer]:
+      - /url: /teams

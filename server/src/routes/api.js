@@ -6,12 +6,18 @@ const wrap = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
 r.get("/health", wrap(c.health));
+r.get("/multisport/:sport/:type", wrap(c.multiSportDirectory));
 r.get("/model/results", wrap(c.modelResults));
 r.get("/model", wrap(c.model));
 r.get("/projection-board", wrap(c.projectionBoard));
 r.get("/player-props", wrap(c.playerProps));
+r.get("/player-props/guarantees", wrap(c.playerPropGuarantees));
+r.post("/player-props/build-snapshots", wrap(c.recordPlayerPropBuild));
 r.get("/slips", wrap(c.slips));
 r.post("/slips/import", wrap(c.importSlip));
+r.get("/alter-ego", wrap(c.alterEgo));
+r.post("/alter-ego/import", wrap(c.importMelbetHistory));
+r.post("/alter-ego/import-batch", wrap(c.importMelbetHistoryBatch));
 r.get("/dashboard", wrap(c.dashboard));
 r.get("/games/live", wrap(c.games));
 r.get("/games/today", wrap(c.games));

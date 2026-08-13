@@ -1,26 +1,30 @@
 <script setup>
-import { onBeforeUnmount, onMounted } from 'vue'
+import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import AppLayout from './components/layout/AppLayout.vue'
 import { useAppStore } from './stores/app'
 
 const store = useAppStore()
+const route = useRoute()
+const isBaseball = computed(() => route.meta?.sport === 'baseball')
 let dashboardTimer
 
 onMounted(() => {
-  store.load()
-  dashboardTimer = window.setInterval(() => store.load(true), 30_000)
+  if (isBaseball.value) store.load()
+  dashboardTimer = window.setInterval(() => { if (isBaseball.value) store.load(true) }, 30_000)
 })
+watch(isBaseball, active => { if (active) store.load() })
 onBeforeUnmount(() => window.clearInterval(dashboardTimer))
 </script>
 
 <template>
   <AppLayout>
-    <div v-if="store.error" class="provider-error panel">
+    <div v-if="isBaseball && store.error" class="provider-error panel">
       <span>OFFICIAL DATA PROVIDER UNAVAILABLE</span>
       <p>{{ store.error }}</p>
       <button @click="store.load(true)">RETRY CONNECTION</button>
     </div>
-    <div v-if="store.syncError" class="sync-warning">
+    <div v-if="isBaseball && store.syncError" class="sync-warning">
       <span>LIVE FEED RETRYING · CURRENT PAGE REMAINS AVAILABLE</span>
       <button @click="store.load(true)">RETRY NOW</button>
     </div>

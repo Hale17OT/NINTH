@@ -1,0 +1,223 @@
+- generic [ref=f2e3]:
+  - banner [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f2e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f2e7]
+        - generic [ref=f2e8]:
+          - generic [ref=f2e9]: NINTH
+          - generic [ref=f2e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f2e11]:
+        - link "Games" [ref=f2e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f2e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f2e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f2e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f2e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f2e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f2e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f2e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f2e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f2e70] [cursor=pointer]:
+        - generic [ref=f2e71]:
+          - generic [ref=f2e72]: DISPLAY / 09
+          - generic [ref=f2e73]: DAY
+    - generic [ref=f2e78]:
+      - generic [ref=f2e79]: TODAY
+      - generic [ref=f2e81]: Official scoreboard syncing
+      - generic [ref=f2e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f2e84]:
+    - generic [ref=f2e86]:
+      - generic [ref=f2e87]:
+        - generic [ref=f2e88]:
+          - text: NINTH / PLAYER LAB
+          - heading "Build from the player up." [level=1] [ref=f2e89]
+          - paragraph [ref=f2e90]: Start with a matchup, inspect its available player markets, then add only the legs you want to the card.
+        - generic [ref=f2e91]:
+          - generic [ref=f2e92]:
+            - generic [ref=f2e93]: MODEL
+            - generic [ref=f2e94]:
+              - link "MONEYLINE" [ref=f2e95] [cursor=pointer]:
+                - /url: /builder?market=moneyline
+              - link "TOTALS" [ref=f2e96] [cursor=pointer]:
+                - /url: /builder?market=totals
+              - link "MIXED" [ref=f2e97] [cursor=pointer]:
+                - /url: /builder?market=combined
+              - link "PLAYER PROPS" [ref=f2e98] [cursor=pointer]:
+                - /url: /props-builder
+          - generic [ref=f2e99]:
+            - generic [ref=f2e100]:
+              - generic [ref=f2e101]: SLATE
+              - generic [ref=f2e102]:
+                - button "DAILY" [ref=f2e103] [cursor=pointer]
+                - button "MULTI-DAY" [ref=f2e104] [cursor=pointer]
+            - generic [ref=f2e105]:
+              - generic [ref=f2e106]: Game date
+              - button "Aug 3, 2026" [ref=f2e107] [cursor=pointer]
+            - generic [ref=f2e113]:
+              - generic [ref=f2e114]: Target legs
+              - button "5 legs" [ref=f2e115] [cursor=pointer]
+            - generic [ref=f2e119]:
+              - generic [ref=f2e120]: Minimum MelBet odds
+              - button "1.50+" [ref=f2e121] [cursor=pointer]
+            - generic [ref=f2e125]:
+              - generic [ref=f2e126]: DATA
+              - button "REFRESH" [disabled] [ref=f2e127]
+          - generic [ref=f2e133]:
+            - generic [ref=f2e134]:
+              - generic [ref=f2e135]: Included player props
+              - button "7 of 0 selected 7" [ref=f2e136] [cursor=pointer]:
+                - generic [ref=f2e137]: 7 of 0 selected
+                - generic [ref=f2e138]: "7"
+            - generic [ref=f2e141]:
+              - generic [ref=f2e142]: BUILD DIRECTION
+              - group "Automatic player prop build direction" [ref=f2e143]:
+                - button "BOTH" [pressed] [ref=f2e144] [cursor=pointer]
+                - button "OVER" [ref=f2e145] [cursor=pointer]
+                - button "UNDER" [ref=f2e146] [cursor=pointer]
+      - generic [ref=f2e147]:
+        - generic [ref=f2e149]:
+          - strong [ref=f2e150]: "21.5"
+          - text: "%"
+        - generic [ref=f2e151]:
+          - text: SAMPLE-SIZE ADJUSTED SLIP CONFIDENCE
+          - heading "STRONG FOR A MULTI-LEG SLIP" [level=2] [ref=f2e152]
+          - paragraph [ref=f2e153]: Estimated chance that every selected prop lands. Short player histories are pulled toward 50%, and recommended cards use one prop per game at an audited 65% minimum to limit weak legs and hidden same-game correlation.
+          - generic [ref=f2e154]: MODEL PROBABILITY, NOT A GUARANTEE
+        - generic [ref=f2e155]:
+          - generic [ref=f2e156]:
+            - generic [ref=f2e157]: LEGS
+            - generic [ref=f2e158]: 5 / 5
+          - generic [ref=f2e159]:
+            - generic [ref=f2e160]: ADJUSTED
+            - generic [ref=f2e161]: 21.5%
+          - generic [ref=f2e162]:
+            - generic [ref=f2e163]: RAW PRODUCT
+            - generic [ref=f2e164]: 21.6%
+          - generic [ref=f2e165]:
+            - generic [ref=f2e166]: TYPICAL LEG
+            - generic [ref=f2e167]: 73.6%
+        - generic [ref=f2e168]:
+          - button "BUILD BEST 5" [disabled] [ref=f2e169]
+          - button "SEND TO MELBET" [ref=f2e172] [cursor=pointer]
+          - button "CLEAR" [ref=f2e176] [cursor=pointer]
+      - generic [ref=f2e180]:
+        - generic [ref=f2e181]:
+          - generic [ref=f2e182]:
+            - text: YOUR PLAYER PROP CARD
+            - heading "5 selected legs" [level=2] [ref=f2e183]
+          - generic [ref=f2e184]: Tap a card to edit its market or line.
+        - generic [ref=f2e185]:
+          - article [ref=f2e186] [cursor=pointer]:
+            - button "Remove leg" [ref=f2e187]
+            - generic [ref=f2e191]:
+              - img "TJ Rumfield headshot" [ref=f2e194]
+              - generic [ref=f2e195]:
+                - generic [ref=f2e196]: PLAYER · PROJECTED
+                - generic [ref=f2e197]: TJ Rumfield
+                - emphasis [ref=f2e198]: Tampa Bay Rays at Colorado Rockies
+            - generic [ref=f2e199]:
+              - generic [ref=f2e200]:
+                - generic [ref=f2e201]: Toby Joseph Rumfield Under (0.5)
+                - generic [ref=f2e202]: Batters. Total Runs · @ 1.645
+              - generic [ref=f2e203]:
+                - generic [ref=f2e204]: NINTH MODEL CHANCE
+                - strong [ref=f2e205]: 76.7%
+            - button "No alternate available for TJ Rumfield Runs" [disabled] [ref=f2e206]:
+              - generic [ref=f2e212]: NO MORE ELIGIBLE ALTERNATES
+            - generic [ref=f2e214]:
+              - text: LAST 10 AVG —
+              - generic [ref=f2e215]: Model confidence · —/100
+          - article [ref=f2e216] [cursor=pointer]:
+            - button "Remove leg" [ref=f2e217]
+            - generic [ref=f2e221]:
+              - img "Gabriel Moreno headshot" [ref=f2e224]
+              - generic [ref=f2e225]:
+                - generic [ref=f2e226]: PLAYER · PROJECTED
+                - generic [ref=f2e227]: Gabriel Moreno
+                - emphasis [ref=f2e228]: San Diego Padres at Arizona Diamondbacks
+            - generic [ref=f2e229]:
+              - generic [ref=f2e230]:
+                - generic [ref=f2e231]: Gabriel Moreno Under (0.5)
+                - generic [ref=f2e232]: Batters. Total Runs · @ 1.571
+              - generic [ref=f2e233]:
+                - generic [ref=f2e234]: NINTH MODEL CHANCE
+                - strong [ref=f2e235]: 72.6%
+            - button "No alternate available for Gabriel Moreno Runs" [disabled] [ref=f2e236]:
+              - generic [ref=f2e242]: NO MORE ELIGIBLE ALTERNATES
+            - generic [ref=f2e244]:
+              - text: LAST 10 AVG —
+              - generic [ref=f2e245]: Model confidence · —/100
+          - article [ref=f2e246] [cursor=pointer]:
+            - button "Remove leg" [ref=f2e247]
+            - generic [ref=f2e251]:
+              - img "Kyle Schwarber headshot" [ref=f2e254]
+              - generic [ref=f2e255]:
+                - generic [ref=f2e256]: PLAYER · PROJECTED
+                - generic [ref=f2e257]: Kyle Schwarber
+                - emphasis [ref=f2e258]: Washington Nationals at Philadelphia Phillies
+            - generic [ref=f2e259]:
+              - generic [ref=f2e260]:
+                - generic [ref=f2e261]: Kyle Schwarber Under (0.5)
+                - generic [ref=f2e262]: Batters. Total Runs · @ 2
+              - generic [ref=f2e263]:
+                - generic [ref=f2e264]: NINTH MODEL CHANCE
+                - strong [ref=f2e265]: 73.6%
+            - button "No alternate available for Kyle Schwarber Runs" [disabled] [ref=f2e266]:
+              - generic [ref=f2e272]: NO MORE ELIGIBLE ALTERNATES
+            - generic [ref=f2e274]:
+              - text: LAST 10 AVG —
+              - generic [ref=f2e275]: Model confidence · —/100
+          - article [ref=f2e276] [cursor=pointer]:
+            - button "Remove leg" [ref=f2e277]
+            - generic [ref=f2e281]:
+              - img "Alec Burleson headshot" [ref=f2e284]
+              - generic [ref=f2e285]:
+                - generic [ref=f2e286]: PLAYER · PROJECTED
+                - generic [ref=f2e287]: Alec Burleson
+                - emphasis [ref=f2e288]: St. Louis Cardinals at New York Yankees
+            - generic [ref=f2e289]:
+              - generic [ref=f2e290]:
+                - generic [ref=f2e291]: Alec Burleson Under (0.5)
+                - generic [ref=f2e292]: Batters. Total Runs · @ 1.5
+              - generic [ref=f2e293]:
+                - generic [ref=f2e294]: NINTH MODEL CHANCE
+                - strong [ref=f2e295]: 72.6%
+            - button "No alternate available for Alec Burleson Runs" [disabled] [ref=f2e296]:
+              - generic [ref=f2e302]: NO MORE ELIGIBLE ALTERNATES
+            - generic [ref=f2e304]:
+              - text: LAST 10 AVG —
+              - generic [ref=f2e305]: Model confidence · —/100
+          - article [ref=f2e306] [cursor=pointer]:
+            - button "Remove leg" [ref=f2e307]
+            - generic [ref=f2e311]:
+              - img "Brice Turang headshot" [ref=f2e314]
+              - generic [ref=f2e315]:
+                - generic [ref=f2e316]: PLAYER · PROJECTED
+                - generic [ref=f2e317]: Brice Turang
+                - emphasis [ref=f2e318]: Pittsburgh Pirates at Milwaukee Brewers
+            - generic [ref=f2e319]:
+              - generic [ref=f2e320]:
+                - generic [ref=f2e321]: Brice Turang Under (0.5)
+                - generic [ref=f2e322]: Batters. Total Runs · @ 1.833
+              - generic [ref=f2e323]:
+                - generic [ref=f2e324]: NINTH MODEL CHANCE
+                - strong [ref=f2e325]: 72.6%
+            - button "No alternate available for Brice Turang Runs" [disabled] [ref=f2e326]:
+              - generic [ref=f2e332]: NO MORE ELIGIBLE ALTERNATES
+            - generic [ref=f2e334]:
+              - text: LAST 10 AVG —
+              - generic [ref=f2e335]: Model confidence · —/100
+      - status [ref=f2e336]:
+        - generic [ref=f2e337]: "N"
+        - generic [ref=f2e341]:
+          - strong [ref=f2e342]: Building player distributions
+          - generic [ref=f2e343]: Loading official lineups, probable starters and calibrated prop thresholds.

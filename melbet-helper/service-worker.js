@@ -3,6 +3,8 @@ const PRIMARY_HOST = "mel-bet.et";
 const FALLBACK_HOST = "melbet-322491.top";
 const FALLBACK_DELAY_MINUTES = 0.25;
 const MELBET_HOSTS = new Set([PRIMARY_HOST, FALLBACK_HOST]);
+const NINTH_HOSTS = new Set(["localhost", "127.0.0.1", "192.168.1.9", "192.168.137.1", "172.18.80.1"]);
+const sessionCreationByRequest = new Map();
 
 function boundedDebugger(operation, label, timeoutMs = 6000) {
   return new Promise((resolve, reject) => {
@@ -42,8 +44,23 @@ const PROP_ALIASES = {
   runs: "runs",
   hits: "hits",
   total_bases: "total_bases",
+  single: "singles",
+  singles: "singles",
+  total_singles: "singles",
   doubles: "doubles",
+  triple: "triples",
+  triples: "triples",
+  total_triples: "triples",
   rbi: "rbi",
+  hits_runs_rbi: "hits_runs_rbi",
+  hits_runs_rbis: "hits_runs_rbi",
+  hits_runs_and_rbi: "hits_runs_rbi",
+  hits_runs_and_rbis: "hits_runs_rbi",
+  stolen_base: "stolen_bases",
+  stolen_bases: "stolen_bases",
+  win: "win",
+  pitcher_to_win: "win",
+  pitchers_to_win: "win",
 };
 
 function canonicalProp(...values) {
@@ -71,9 +88,9 @@ function fallbackAlarmName(sessionId, tabId) {
 function shouldReconnectTab(url) {
   try {
     const parsed = new URL(url);
-    if (["localhost", "127.0.0.1"].includes(parsed.hostname)) return true;
+    if (parsed.protocol === "http:" && NINTH_HOSTS.has(parsed.hostname)) return true;
     return [PRIMARY_HOST, FALLBACK_HOST].includes(parsed.hostname)
-      && parsed.hash.includes("ninth-session=");
+      && (parsed.hash.includes("ninth-session=") || /\/office\/history(?:\/|$)/i.test(parsed.pathname));
   } catch {
     return false;
   }
@@ -124,12 +141,67 @@ function sessionUrl(url, sessionId, step) {
   return next.toString();
 }
 
+function bootstrapRequestId(url) {
+  try {
+    return new URLSearchParams(new URL(url).hash.replace(/^#/, "")).get("ninth-bootstrap");
+  } catch {
+    return null;
+  }
+}
+
+async function openSessionTab(session) {
+  // NINTH opens a tab synchronously inside the user's click. Reuse it so the
+  // helper cannot appear to do nothing while Chrome wakes a cold MV3 worker.
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const tabs = await chrome.tabs.query({});
+    const bootstrap = tabs.find((tab) => tab.id && bootstrapRequestId(tab.url || "") === session.requestId);
+    if (bootstrap?.id) {
+      return chrome.tabs.update(bootstrap.id, {
+        active: true,
+        url: sessionUrl(session.entries[0].url, session.id, 0),
+      });
+    }
+    if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 75));
+  }
+  return chrome.tabs.create({ url: sessionUrl(session.entries[0].url, session.id, 0) });
+}
+
+async function notifyBootstrap(requestId, message) {
+  if (!requestId) return;
+  const tabs = await chrome.tabs.query({});
+  const bootstrap = tabs.find((tab) => tab.id && bootstrapRequestId(tab.url || "") === requestId);
+  if (bootstrap?.id) {
+    await chrome.tabs.sendMessage(bootstrap.id, {
+      type: "NINTH_MELBET_BOOTSTRAP_ERROR",
+      message,
+    }).catch(() => {});
+  }
+}
+
+async function activeSession(id) {
+  if (!id) return null;
+  const stored = await chrome.storage.session.get(`ninth:${id}`);
+  const session = stored[`ninth:${id}`];
+  return session && !session.cancelled && Date.now() <= Number(session.expiresAt) ? session : null;
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type !== "NINTH_CREATE_MELBET_SESSION") return false;
+  const requestId = String(message.requestId || "");
   const requestedEntries = Array.isArray(message.payload?.entries) ? message.payload.entries : [];
-  if (!requestedEntries.length || requestedEntries.length > 20 || !requestedEntries.every(isValidEntry)) {
-    sendResponse({ ok: false, error: "Only complete, currently listed moneyline, total, or player-prop legs can be autofilled." });
+  if (!requestId || !requestedEntries.length || requestedEntries.length > 20 || !requestedEntries.every(isValidEntry)) {
+    const error = "One or more legs no longer has complete MelBet player, market, side, or line metadata. Return to NINTH and refresh the card.";
+    notifyBootstrap(requestId, error).catch(() => {});
+    sendResponse({ ok: false, error });
     return false;
+  }
+  const pendingCreation = sessionCreationByRequest.get(requestId);
+  if (pendingCreation) {
+    pendingCreation.then(sendResponse, (error) => sendResponse({
+      ok: false,
+      error: error?.message || "Could not start the MelBet helper session.",
+    }));
+    return true;
   }
   const kindPriority = { moneyline: 0, totals: 1, player_prop: 2 };
   const entries = requestedEntries.slice().sort((left, right) =>
@@ -140,6 +212,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const now = Date.now();
   const session = {
     id,
+    requestId,
     createdAt: now,
     expiresAt: now + SESSION_TTL_MS,
     sourceTabId: sender.tab?.id || null,
@@ -152,6 +225,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         kind: String(entry.automation.kind),
         eventId: String(entry.automation.eventId),
         player: String(entry.automation.player),
+        melbetPlayerName: String(entry.automation.melbetPlayerName || ""),
         prop: entry.automation.kind === "player_prop"
           ? canonicalProp(entry.automation.prop, entry.automation.marketLabel)
           : "",
@@ -160,14 +234,66 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         awayTeam: String(entry.automation.awayTeam || ""),
         side: String(entry.automation.side).toLowerCase(),
         line: entry.automation.line == null ? null : Number(entry.automation.line),
+        melbetMarketLabel: String(entry.automation.melbetMarketLabel || ""),
+        melbetSelectionName: String(entry.automation.melbetSelectionName || ""),
+        melbetDisplayLine: entry.automation.melbetDisplayLine == null ? null : Number(entry.automation.melbetDisplayLine),
+        melbetFormat: String(entry.automation.melbetFormat || ""),
+        melbetGroupId: entry.automation.melbetGroupId == null ? null : Number(entry.automation.melbetGroupId),
+        melbetTypeId: entry.automation.melbetTypeId == null ? null : Number(entry.automation.melbetTypeId),
       },
     })),
   };
 
-  chrome.storage.session.set({ [`ninth:${id}`]: session }).then(() =>
-    chrome.tabs.create({ url: sessionUrl(session.entries[0].url, id, 0) }),
-  ).then((tab) => sendResponse({ ok: true, sessionId: id, tabId: tab.id }))
-    .catch((error) => sendResponse({ ok: false, error: error?.message || "Could not open MelBet." }));
+  const creation = chrome.storage.session.set({ [`ninth:${id}`]: session }).then(() =>
+    openSessionTab(session),
+  ).then(async (tab) => {
+    session.melbetTabId = tab.id || null;
+    await chrome.storage.session.set({ [`ninth:${id}`]: session });
+    return { ok: true, sessionId: id, tabId: tab.id };
+  });
+  sessionCreationByRequest.set(requestId, creation);
+  const releaseRequest = () => {
+    const releaseTimer = setTimeout(() => {
+      if (sessionCreationByRequest.get(requestId) === creation) sessionCreationByRequest.delete(requestId);
+    }, 60000);
+    // Node contract tests expose unref(); browsers return a numeric timer ID.
+    releaseTimer?.unref?.();
+  };
+  creation.then(releaseRequest, releaseRequest);
+  creation.then(sendResponse).catch((error) => {
+    const detail = error?.message || "Could not start the MelBet helper session.";
+    notifyBootstrap(requestId, detail).catch(() => {});
+    sendResponse({ ok: false, error: detail });
+  });
+  return true;
+});
+
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message?.type !== "NINTH_MELBET_HELPER_PING") return false;
+  sendResponse({ ok: true, version: chrome.runtime.getManifest().version });
+  return false;
+});
+
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message?.type !== "NINTH_GET_SELECTED_MELBET_SLIP") return false;
+  (async () => {
+    const tabs = await chrome.tabs.query({});
+    const candidates = tabs
+      .filter((tab) => tab.id && [...MELBET_HOSTS].some((host) => String(tab.url || "").includes(`://${host}/`)))
+      .sort((left, right) => Number(/\/office\/history/i.test(right.url || "")) - Number(/\/office\/history/i.test(left.url || "")));
+    if (!candidates.length) throw new Error("No open MelBet tab was found. Open Bet history and select a slip first.");
+    let lastError = "Open MelBet Bet history and select a slip first.";
+    for (const tab of candidates) {
+      try {
+        const response = await chrome.tabs.sendMessage(tab.id, { type: "NINTH_EXTRACT_SELECTED_MELBET_SLIP" });
+        if (response?.ok) return response;
+        lastError = response?.error || lastError;
+      } catch (error) {
+        lastError = error?.message || lastError;
+      }
+    }
+    throw new Error(lastError);
+  })().then(sendResponse, (error) => sendResponse({ ok: false, error: error?.message || "The selected MelBet slip could not be imported." }));
   return true;
 });
 
@@ -186,16 +312,32 @@ chrome.tabs.onUpdated.addListener((tabId, change, tab) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message?.type !== "NINTH_MELBET_PAGE_READY" || !sender.tab?.id) return false;
-  chrome.alarms.clear(fallbackAlarmName(String(message.id || ""), sender.tab.id))
-    .then((cleared) => sendResponse({ ok: true, fallbackAlarmCleared: cleared }))
+  if (!["NINTH_MELBET_PAGE_BOOTSTRAPPED", "NINTH_MELBET_PAGE_READY"].includes(message?.type)
+      || !sender.tab?.id) return false;
+  const sessionId = String(message.id || "");
+  let senderHost = "";
+  try { senderHost = new URL(sender.url || "").hostname; } catch { senderHost = ""; }
+  Promise.all([
+    chrome.alarms.clear(fallbackAlarmName(sessionId, sender.tab.id)),
+    senderHost === PRIMARY_HOST && message.type === "NINTH_MELBET_PAGE_BOOTSTRAPPED"
+      ? chrome.storage.session.get(`ninth:${sessionId}`).then((stored) => {
+        const session = stored[`ninth:${sessionId}`];
+        if (!session) return;
+        session.primaryHostBootstrapped = true;
+        session.primaryHostBootstrappedAt = Date.now();
+        return chrome.storage.session.set({ [`ninth:${sessionId}`]: session });
+      })
+      : Promise.resolve(),
+  ])
+    .then(([cleared]) => sendResponse({ ok: true, fallbackAlarmCleared: cleared }))
     .catch((error) => sendResponse({
       ok: false,
       error: error?.message || "Could not clear the MelBet fallback timer.",
     }));
-  // Keep the request port alive until alarms.clear settles. Without this,
-  // Chrome reports "The message port closed before a response was received"
-  // as soon as the MelBet page announces that its market canvas is ready.
+  // Clear the primary-host timer as soon as the helper script boots. From
+  // this point onward, authentication, validation, viewport, and click errors
+  // belong to this healthy primary page and must never route to the proxy.
+  // PAGE_READY remains an idempotent second acknowledgement.
   return true;
 });
 
@@ -206,7 +348,8 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (!sessionId || !Number.isInteger(tabId)) return;
   const stored = await chrome.storage.session.get(`ninth:${sessionId}`).catch(() => ({}));
   const session = stored[`ninth:${sessionId}`];
-  if (!session || Date.now() > Number(session.expiresAt)) return;
+  if (!session || session.cancelled || Date.now() > Number(session.expiresAt)) return;
+  if (session.primaryHostBootstrapped) return;
   const tab = await chrome.tabs.get(tabId).catch(() => null);
   if (!tab?.url) return;
   const current = new URL(tab.url);
@@ -230,6 +373,33 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   return true;
 });
 
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message?.type !== "NINTH_CANCEL_MELBET_SESSION") return false;
+  const id = String(message.id || "");
+  (async () => {
+    const stored = await chrome.storage.session.get(`ninth:${id}`);
+    const session = stored[`ninth:${id}`];
+    if (!session) {
+      sendResponse({ ok: true, alreadyStopped: true });
+      return;
+    }
+    session.cancelled = true;
+    session.cancelledAt = Date.now();
+    await chrome.storage.session.set({ [`ninth:${id}`]: session });
+    const alarms = await chrome.alarms.getAll();
+    await Promise.all(alarms
+      .filter((alarm) => alarm.name.startsWith(`ninth-fallback:${id}:`))
+      .map((alarm) => chrome.alarms.clear(alarm.name)));
+    const tabId = Number(session.melbetTabId);
+    if (Number.isInteger(tabId)) {
+      await chrome.tabs.sendMessage(tabId, { type: "NINTH_CANCEL_MELBET_AUTOFILL", id }).catch(() => {});
+      await boundedDebugger(chrome.debugger.detach({ tabId }), "Detaching the cancelled MelBet helper", 2500).catch(() => {});
+    }
+    sendResponse({ ok: true });
+  })().catch((error) => sendResponse({ ok: false, error: error?.message || "The helper could not be stopped." }));
+  return true;
+});
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type !== "NINTH_MELBET_TRUSTED_ENTER") return false;
   const tabId = sender.tab?.id;
@@ -243,6 +413,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {
     let attached = false;
     try {
+      if (!await activeSession(String(message.sessionId || ""))) throw new Error("Autofill was cancelled before the keyboard action.");
       await boundedDebugger(chrome.debugger.attach(target, "1.3"), "Attaching the MelBet keyboard bridge");
       attached = true;
       const key = {
@@ -288,6 +459,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {
     let attached = false;
     try {
+      if (!await activeSession(String(message.sessionId || ""))) throw new Error("Autofill was cancelled before the scroll action.");
       await boundedDebugger(chrome.debugger.attach(target, "1.3"), "Attaching the MelBet wheel bridge");
       attached = true;
       await boundedDebugger(chrome.debugger.sendCommand(target, "Input.dispatchMouseEvent", {
@@ -328,6 +500,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {
     let attached = false;
     try {
+      if (!await activeSession(String(message.sessionId || ""))) throw new Error("Autofill was cancelled before the click.");
       await boundedDebugger(chrome.debugger.attach(target, "1.3"), "Attaching the MelBet click bridge");
       attached = true;
       await boundedDebugger(chrome.debugger.sendCommand(target, "Input.dispatchMouseEvent", {

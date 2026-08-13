@@ -1,4 +1,5 @@
 import { dataService as data } from "../services/dataService.js";
+import { multiSportProvider } from "../services/multiSportProvider.js";
 
 export const apiController = {
   dashboard: async (req, res) => res.json(await data.dashboard()),
@@ -30,6 +31,18 @@ export const apiController = {
         ["1", "true", "yes"].includes(String(req.query.refresh || "").toLowerCase()),
       ),
     ),
+  playerPropGuarantees: async (req, res) =>
+    res.json(
+      await data.playerPropGuarantees(
+        Number(req.query.minimum_samples) || 1,
+        req.query.search || "",
+        Object.prototype.hasOwnProperty.call(req.query, "prop_types")
+          ? String(req.query.prop_types).split(",").filter(Boolean)
+          : undefined,
+      ),
+    ),
+  recordPlayerPropBuild: async (req, res) =>
+    res.status(201).json(await data.recordPlayerPropBuild(req.body)),
   games: async (req, res) =>
     res.json(await data.games(req.path.split("/").pop(), req.query.date)),
   game: async (req, res) => res.json(await data.game(req.params.id)),
@@ -46,7 +59,17 @@ export const apiController = {
   injuries: (req, res) => res.json(data.injuries()),
   search: async (req, res) => res.json(await data.search(req.query.q || "")),
   health: async (req, res) => res.json(await data.health()),
+  multiSportDirectory: async (req, res) => res.json(await multiSportProvider.directory(
+    req.params.sport,
+    req.params.type,
+    { competition: req.query.competition, discipline: req.query.discipline, season: req.query.season },
+  )),
   slips: async (req, res) => res.json(await data.slips()),
   importSlip: async (req, res) =>
     res.status(201).json(await data.importSlip(req.body)),
+  alterEgo: async (req, res) => res.json(await data.alterEgo()),
+  importMelbetHistory: async (req, res) =>
+    res.status(201).json(await data.importMelbetHistory(req.body)),
+  importMelbetHistoryBatch: async (req, res) =>
+    res.status(201).json(await data.importMelbetHistoryBatch(req.body)),
 };

@@ -1,0 +1,44 @@
+- generic [ref=f27e3]:
+  - banner [ref=f27e4]:
+    - generic [ref=f27e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f27e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f27e7]
+        - generic [ref=f27e8]:
+          - generic [ref=f27e9]: NINTH
+          - generic [ref=f27e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f27e11] [cursor=pointer]:
+        - generic [ref=f27e12]: DAY
+      - button "Search" [ref=f27e18] [cursor=pointer]
+      - button "Menu" [ref=f27e22] [cursor=pointer]
+    - generic [ref=f27e24]:
+      - generic [ref=f27e25]: TODAY
+      - generic [ref=f27e27]: Official scoreboard syncing
+  - main [ref=f27e28]:
+    - generic [ref=f27e30]:
+      - generic [ref=f27e31]:
+        - generic [ref=f27e32]:
+          - text: PERSONAL PAPER TRACKER
+          - heading "Tracked slips" [level=1] [ref=f27e33]
+          - paragraph [ref=f27e34]: Active tickets stay open. Completed tickets collapse into a compact, chronological archive.
+        - generic [ref=f27e35]:
+          - generic [ref=f27e36]:
+            - generic [ref=f27e37]: "0"
+            - text: ACTIVE
+          - button "IMPORT PDF" [ref=f27e38] [cursor=pointer]
+      - status [ref=f27e39]:
+        - generic [ref=f27e40]: "N"
+        - generic [ref=f27e44]:
+          - strong [ref=f27e45]: Refreshing tracked slips
+          - generic [ref=f27e46]: Matching every selection with the latest official game status and projection alerts.
+  - generic [ref=f27e51]:
+    - link "Games" [ref=f27e52] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f27e56] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f27e64] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f27e67] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f27e75] [cursor=pointer]:
+      - /url: /teams

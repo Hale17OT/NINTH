@@ -3,6 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
+from difflib import SequenceMatcher
 import json
 import math
 import os
@@ -13,13 +14,28 @@ import sys
 import threading
 import time
 import unicodedata
+
+# Joblib's physical-core probe shells out to Windows during the first sklearn
+# prediction and can hang when that system query is unavailable. These models
+# are small and requests are already parallelized at the game level, so keep
+# each individual inference deterministic and single-threaded.
+_MODEL_INFERENCE_THREADS = os.getenv("NINTH_MODEL_INFERENCE_THREADS", "1")
+os.environ.setdefault("LOKY_MAX_CPU_COUNT", _MODEL_INFERENCE_THREADS)
+os.environ.setdefault("OMP_NUM_THREADS", _MODEL_INFERENCE_THREADS)
+
 import statsapi
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ml.predict import context_completeness, load_bundle, predict as model_predict
 from ml.totals_predict import load_bundle as load_totals_bundle, predict as totals_model_predict
-from ml.player_props_predict import load_bundle as load_player_props_bundle, predict_candidates, projected_lineup
+from ml.player_props_predict import (
+    AUTOMATIC_RECOMMENDATION_FLOOR,
+    load_bundle as load_player_props_bundle,
+    predict_candidates,
+    projected_lineup,
+)
 from ml.slips import load_slips, normalize_team as normalize_slip_team, parse_pdf, placed_at_iso, save_slip
+from ml.melbet_history import save_slip as save_melbet_history_slip, save_slips as save_melbet_history_slips, snapshot as melbet_history_snapshot
 
 PORT = int(os.getenv("MLB_STATS_PORT", "3002"))
 SLIP_TIMEZONE_OFFSET_HOURS = float(os.getenv("NINTH_SLIP_TIMEZONE_OFFSET_HOURS", "3"))
@@ -27,6 +43,10 @@ _detail_cache = {}
 _projection_board_cache = {}
 _board_schedule_cache = {}
 _board_schedule_lock = threading.Lock()
+
+
+class NotFoundError(Exception):
+    """Raised when an MLB entity identifier does not resolve."""
 _baseline_projection_cache = {}
 _baseline_projection_lock = threading.Lock()
 _baseline_projection_pending = set()
@@ -44,6 +64,8 @@ _projection_last_game_state = {}
 _projection_recent_alerts = {}
 _totals_projection_last = {}
 _bullpen_cache = {}
+_bullpen_history_cache = {"fingerprint": None, "rows": []}
+_bullpen_history_lock = threading.Lock()
 _recent_form_cache = {}
 _pitcher_profile_cache = {}
 _prediction_results_cache = None
@@ -65,9 +87,14 @@ _player_props_board_cache = {}
 _player_props_refreshing = set()
 _player_props_cache_lock = threading.Lock()
 _player_prop_snapshot_lock = threading.Lock()
+_player_prop_build_snapshot_lock = threading.Lock()
 _player_prop_snapshot_last = {}
+_player_prop_priced_snapshot_last = {}
+_player_prop_priced_snapshot_at = {}
 _player_prop_results_cache = None
 _player_prop_results_lock = threading.Lock()
+_player_prop_guarantee_cache = None
+_player_prop_guarantee_lock = threading.Lock()
 _player_prop_boxscore_cache = {}
 _slip_refresh_lock = threading.Lock()
 _slip_refresh_running = False
@@ -95,9 +122,28 @@ MELBET_CHAMP_PATH = "/service-api/LineFeed/GetChampZip"
 MELBET_GAME_PATH = "/service-api/LineFeed/GetGameZip"
 MELBET_MLB_CHAMP_ID = 166775
 PLAYER_PROPS_REPORT = os.path.join(os.path.dirname(MODEL_REPORT), "player_props_report.json")
+LIVE_PLAYER_PROPS_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "live_player_prop_audit.json")
+LIVE_PLAYER_PROP_BUILD_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "live_player_prop_build_audit.json")
+PLAYER_PROP_FORWARD_POLICY = os.path.join(os.path.dirname(MODEL_REPORT), "player_prop_forward_policy.json")
+DEPLOYMENT_SELECTION_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "deployment_selection_audit.json")
 PLAYER_PROP_PROJECTION_LOG = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "ml", "data", "player_prop_projection_snapshots.jsonl",
+)
+PLAYER_PROP_PRICED_BOARD_LOG = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "ml", "data", "player_prop_priced_board_snapshots.jsonl",
+)
+PLAYER_PROP_PRICED_BOARD_AUDIT = os.path.join(
+    os.path.dirname(MODEL_REPORT), "player_prop_priced_board_audit.json",
+)
+PLAYER_PROP_BUILD_LOG = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "ml", "data", "player_prop_build_snapshots.jsonl",
+)
+PLAYER_BOXSCORES = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "ml", "data", "player_boxscores.jsonl",
 )
 MELBET_TOTALS_SNAPSHOT_LOG = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -105,12 +151,43 @@ MELBET_TOTALS_SNAPSHOT_LOG = os.path.join(
 )
 
 # MelBet exposes player selections in a linked Player's Stats sub-game. These
-# group identifiers are stable baseball market identifiers; price fields are
-# intentionally never copied into NINTH.
+# group identifiers are stable baseball market identifiers. Decimal odds are
+# retained only as display and selection-eligibility metadata; they are never
+# passed into a prediction model or used to alter a model probability.
+MELBET_PLAYER_PROP_MARKETS = {
+    # Names and selection templates come from MelBet's English bet-template
+    # files. ``at_least`` selections use an integer display value, while the
+    # model's equivalent threshold is N - 0.5 (for example, 6 or more is over
+    # 5.5). Prices are deliberately not represented here or downstream.
+    2891: {"prop": "strikeouts", "kind": "pitcher", "name": "Pitchers. Total Strikeouts", "format": "over_under", "types": {3868: "over", 3869: "under"}},
+    3425: {"prop": "home_runs", "kind": "batter", "name": "Player To Score Home Run", "format": "yes", "model_line": .5, "display_line": 1, "types": {4743: "over"}},
+    8527: {"prop": "hits", "kind": "batter", "name": "Batters. Total Hits", "format": "over_under", "types": {8091: "over", 8092: "under"}},
+    10465: {"prop": "total_bases", "kind": "batter", "name": "Batters. Total Bases Taken", "format": "over_under", "types": {13827: "over", 13828: "under"}},
+    10466: {"prop": "home_runs", "kind": "batter", "name": "Batters. Total Home Runs", "format": "over_under", "types": {13829: "over", 13830: "under"}},
+    10469: {"prop": "singles", "kind": "batter", "name": "Batters. Total Singles", "format": "over_under", "types": {13838: "over", 13839: "under"}},
+    10710: {"prop": "outs", "kind": "pitcher", "name": "Pitchers. Total Outs", "format": "over_under", "types": {14500: "over", 14501: "under"}},
+    10711: {"prop": "win", "kind": "pitcher", "name": "Pitchers. To Win", "format": "yes_no", "model_line": .5, "display_line": 1, "types": {14502: "over", 14503: "under"}},
+    10712: {"prop": "walks", "kind": "pitcher", "name": "Pitchers. Total Walks Allowed", "format": "over_under", "types": {14504: "over", 14505: "under"}},
+    10713: {"prop": "hits_allowed", "kind": "pitcher", "name": "Pitchers. Total Hits Allowed", "format": "over_under", "types": {14506: "over", 14507: "under"}},
+    10714: {"prop": "rbi", "kind": "batter", "name": "Batters. Total RBIs", "format": "over_under", "types": {14508: "over", 14509: "under"}},
+    10955: {"prop": "stolen_bases", "kind": "batter", "name": "Batters. Total Stolen Bases", "format": "over_under", "types": {15212: "over", 15213: "under"}},
+    10956: {"prop": "doubles", "kind": "batter", "name": "Batters. Total Doubles", "format": "over_under", "types": {15214: "over", 15215: "under"}},
+    10957: {"prop": "triples", "kind": "batter", "name": "Batters. Total Triples", "format": "over_under", "types": {15216: "over", 15217: "under"}},
+    11325: {"prop": "strikeouts", "kind": "batter", "name": "Batters. Total Strikeouts Allowed", "format": "over_under", "types": {16064: "over", 16065: "under"}},
+    11326: {"prop": "hits_runs_rbi", "kind": "batter", "name": "Batters. Total Hits, Runs, and RBIs", "format": "over_under", "types": {16062: "over", 16063: "under"}},
+    11327: {"prop": "walks", "kind": "batter", "name": "Batters. Total Walks", "format": "over_under", "types": {16066: "over", 16067: "under"}},
+    11328: {"prop": "runs", "kind": "batter", "name": "Batters. Total Runs", "format": "over_under", "types": {16068: "over", 16069: "under"}},
+    11351: {"prop": "hits", "kind": "batter", "name": "Batters. Extra Total Hits", "format": "at_least", "types": {16125: "over"}},
+    11352: {"prop": "total_bases", "kind": "batter", "name": "Batters. Extra Total Bases Taken", "format": "at_least", "types": {16126: "over"}},
+    11353: {"prop": "home_runs", "kind": "batter", "name": "Batters. Extra Total Home Runs", "format": "at_least", "types": {16127: "over"}},
+    11354: {"prop": "runs", "kind": "batter", "name": "Batters. Extra Total Runs", "format": "at_least", "types": {16128: "over"}},
+    11355: {"prop": "hits_runs_rbi", "kind": "batter", "name": "Batters. Extra Total Hits, Runs, and RBIs", "format": "at_least", "types": {16129: "over"}},
+    11356: {"prop": "rbi", "kind": "batter", "name": "Batters. Extra Total RBIs", "format": "at_least", "types": {16130: "over"}},
+    11357: {"prop": "strikeouts", "kind": "batter", "name": "Batters. Extra Total Strikeouts Allowed", "format": "at_least", "types": {16131: "over"}},
+    11358: {"prop": "strikeouts", "kind": "pitcher", "name": "Pitchers. Extra Total Strikeouts", "format": "at_least", "types": {16132: "over"}},
+}
 MELBET_PLAYER_PROP_GROUPS = {
-    10710: "outs", 2891: "strikeouts", 10713: "hits_allowed", 10712: "walks",
-    10466: "home_runs", 11328: "runs", 8527: "hits",
-    10465: "total_bases", 10956: "doubles", 10714: "rbi",
+    group_id: market["prop"] for group_id, market in MELBET_PLAYER_PROP_MARKETS.items()
 }
 
 
@@ -123,14 +200,278 @@ def player_props_bundle():
     return _player_props_bundle
 
 
+def player_prop_automatic_policy():
+    """Build the automatic-card gate from immutable exact-line evidence.
+
+    Raw model probabilities remain available for manual picks. Automatic cards
+    require enough completed, pregame MelBet observations for the exact prop
+    family, then shrink confidence by the observed post-selection calibration
+    ratio. This prevents a sparse market from winning merely because its raw
+    probability is the largest value on a slate.
+    """
+    minimum_samples = max(25, int(os.getenv("NINTH_PROP_AUTOMATIC_MIN_SAMPLES", "100")))
+    minimum_accuracy = float(os.getenv("NINTH_PROP_AUTOMATIC_MIN_ACCURACY", ".55"))
+    maximum_brier = float(os.getenv("NINTH_PROP_AUTOMATIC_MAX_BRIER", ".24"))
+    maximum_calibration_gap = float(os.getenv("NINTH_PROP_AUTOMATIC_MAX_CALIBRATION_GAP", ".05"))
+    try:
+        with open(PLAYER_PROPS_REPORT, encoding="utf-8") as handle:
+            deployed = json.load(handle).get("models", {})
+    except (OSError, json.JSONDecodeError):
+        deployed = {}
+    try:
+        with open(LIVE_PLAYER_PROPS_AUDIT, encoding="utf-8") as handle:
+            audit = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        audit = {}
+    try:
+        with open(LIVE_PLAYER_PROP_BUILD_AUDIT, encoding="utf-8") as handle:
+            build_audit = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        build_audit = {}
+    try:
+        with open(PLAYER_PROP_PRICED_BOARD_AUDIT, encoding="utf-8") as handle:
+            priced_audit = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        priced_audit = {}
+    try:
+        with open(PLAYER_PROP_FORWARD_POLICY, encoding="utf-8") as handle:
+            forward_policy = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        forward_policy = {}
+
+    selected = (audit.get("automatic_one_per_game_excluding_home_runs", {}) or {}).get("0.65", {}) or {}
+    audit_rows = audit.get("rows") or []
+
+    def calibration_ratio(metrics):
+        accuracy = float(metrics.get("accuracy") or 0)
+        confidence = float(metrics.get("mean_confidence") or 0)
+        if accuracy <= .5 or confidence <= .5:
+            return .5
+        return max(.5, min(1.0, (accuracy - .5) / (confidence - .5)))
+
+    def wilson_lower_bound(wins, samples, z=1.645):
+        if samples <= 0:
+            return None
+        rate = wins / samples
+        denominator = 1 + z * z / samples
+        centre = rate + z * z / (2 * samples)
+        margin = z * math.sqrt((rate * (1 - rate) / samples) + z * z / (4 * samples * samples))
+        return max(0.0, (centre - margin) / denominator)
+
+    def summarize_segment(values):
+        samples = len(values)
+        if not samples:
+            return None
+        wins = sum(int(row.get("actual") or 0) for row in values)
+        mean_confidence = sum(float(row.get("probability") or 0) for row in values) / samples
+        accuracy = wins / samples
+        brier = sum(
+            (float(row.get("probability") or 0) - int(row.get("actual") or 0)) ** 2
+            for row in values
+        ) / samples
+        metrics = {
+            "samples": samples,
+            "wins": wins,
+            "accuracy": round(accuracy, 6),
+            "mean_confidence": round(mean_confidence, 6),
+            "brier": round(brier, 6),
+            "lower_bound": round(wilson_lower_bound(wins, samples), 6),
+        }
+        metrics["confidence_multiplier"] = round(calibration_ratio(metrics), 6)
+        return metrics
+
+    exact_groups = {}
+    for row in audit_rows:
+        try:
+            segment = f"{str(row['side']).lower()}:{float(row['line']):g}"
+            key = f"{row['kind']}:{row['prop']}"
+        except (KeyError, TypeError, ValueError):
+            continue
+        exact_groups.setdefault(key, {}).setdefault(segment, []).append(row)
+
+    # Build Best is a post-selection system, so also audit the exact line/side
+    # that wins the within-game ranking. This catches selection bias such as a
+    # generally sound market whose most confident recommendations are poor.
+    top_by_game = {}
+    for row in audit_rows:
+        if row.get("prop") == "home_runs":
+            continue
+        game_id = row.get("game_id")
+        current = top_by_game.get(game_id)
+        if current is None or float(row.get("probability") or 0) > float(current.get("probability") or 0):
+            top_by_game[game_id] = row
+    selected_groups = {}
+    for row in top_by_game.values():
+        try:
+            segment = f"{str(row['side']).lower()}:{float(row['line']):g}"
+            key = f"{row['kind']}:{row['prop']}"
+        except (KeyError, TypeError, ValueError):
+            continue
+        selected_groups.setdefault(key, {}).setdefault(segment, []).append(row)
+
+    selection_multiplier = calibration_ratio(selected)
+    rules = {}
+    evidence_by_prop = audit.get("by_prop", {}) or {}
+    priced_by_line = priced_audit.get("by_market_side_line", {}) or {}
+    for key in deployed:
+        evidence = evidence_by_prop.get(key) or {}
+        samples = int(evidence.get("selections") or 0)
+        accuracy = float(evidence.get("accuracy") or 0)
+        mean_confidence = float(evidence.get("mean_confidence") or 0)
+        brier = float(evidence.get("brier") if evidence.get("brier") is not None else 1)
+        wins = round(accuracy * samples)
+        lower_bound = wilson_lower_bound(wins, samples) if samples else None
+        quality_checks = {
+            "minimum_accuracy": accuracy >= minimum_accuracy,
+            "maximum_brier": brier <= maximum_brier,
+            "maximum_calibration_gap": mean_confidence - accuracy <= maximum_calibration_gap + 1e-9,
+            "positive_lower_bound": lower_bound is not None and lower_bound > .5,
+        }
+        eligible = samples >= minimum_samples and all(quality_checks.values())
+        market_multiplier = calibration_ratio(evidence) if samples else .5
+        if samples < minimum_samples:
+            reason = f"Needs {minimum_samples} completed exact-line observations; currently {samples}."
+        elif not eligible:
+            failed = ", ".join(
+                check.replace("_", " ") for check, passed in quality_checks.items() if not passed
+            )
+            reason = f"Manual only: completed exact-line evidence failed {failed}."
+        else:
+            reason = "Eligible from completed, accurate and calibrated exact-line evidence."
+        segments = {
+            segment: summarize_segment(values)
+            for segment, values in (exact_groups.get(key) or {}).items()
+        }
+        selection_segments = {
+            segment: summarize_segment(values)
+            for segment, values in (selected_groups.get(key) or {}).items()
+        }
+        priced_segments = {}
+        prefix = f"{key}:"
+        for segment_key, segment_value in priced_by_line.items():
+            if segment_key.startswith(prefix):
+                priced_segments[segment_key[len(prefix):]] = segment_value
+        rules[key] = {
+            "automatic_eligible": eligible,
+            "samples": samples,
+            "brier": evidence.get("brier"),
+            "accuracy": evidence.get("accuracy"),
+            "mean_confidence": evidence.get("mean_confidence"),
+            "confidence_multiplier": round(min(selection_multiplier, market_multiplier), 6),
+            "segments": segments,
+            "selection_segments": selection_segments,
+            "priced_segments": priced_segments,
+            "quality_checks": quality_checks,
+            "lower_bound": round(lower_bound, 6) if lower_bound is not None else None,
+            # Short-priced no-HR legs are excluded by the selected odds floor;
+            # higher-priced HR overs remain available once their own line and
+            # priced evidence passes the same automatic-card gates.
+            "blocked_sides": [],
+            "reason": reason,
+        }
+    return {
+        "minimum_probability": AUTOMATIC_RECOMMENDATION_FLOOR,
+        "maximum_per_game": 1,
+        "minimum_market_samples": minimum_samples,
+        "minimum_market_accuracy": minimum_accuracy,
+        "maximum_market_brier": maximum_brier,
+        "maximum_market_calibration_gap": maximum_calibration_gap,
+        "minimum_exact_segment_samples": 30,
+        "minimum_selection_segment_samples": 10,
+        "minimum_priced_segment_samples": 30,
+        "maximum_exact_segment_brier": .24,
+        "maximum_exact_segment_calibration_gap": .05,
+        "minimum_exact_segment_lower_bound": .50,
+        "lower_confidence_lines_manual_only": True,
+        "sportsbook_disagreement_tolerance": .15,
+        "sweep_sportsbook_disagreement_tolerance": .10,
+        "sweep_requires_paired_prices": True,
+        "tier_a_lower_bound": .65,
+        "tier_a_market_accuracy": .75,
+        "tier_a_market_brier": .20,
+        "tier_b_market_accuracy": .65,
+        "market_side_repeat_penalty": .025,
+        "cross_card_reuse_penalty": .25,
+        "sweep_tier_b_maximum": 2,
+        "sweep_probation_maximum": 1,
+        "balanced_tier_b_maximum": 3,
+        "balanced_probation_maximum": 2,
+        "sweep_market_side_maximum": 2,
+        "balanced_market_side_maximum": 3,
+        "sweep_maximum_legs": 5,
+        "minimum_build_selection_samples": 20,
+        "sparse_selection_sportsbook_weight": .75,
+        "sparse_selection_edge_multiplier": .5,
+        "portfolio_context_reuse_penalty": .08,
+        "reranker_version": forward_policy.get("reranker_version") or "within_game_v1",
+        "reranker_promoted": bool(forward_policy.get("reranker_promoted", False)),
+        "line_clearance_ranking_weight": float(forward_policy.get("line_clearance_ranking_weight") or .035),
+        "sportsbook_disagreement_ranking_weight": float(forward_policy.get("sportsbook_disagreement_ranking_weight") or .35),
+        "unpaired_price_fragility_penalty": float(forward_policy.get("unpaired_price_fragility_penalty") or .015),
+        "forward_test_policy_id": forward_policy.get("policy_id"),
+        "forward_test_policy_date": forward_policy.get("policy_date"),
+        "forward_test_training_through": forward_policy.get("training_through"),
+        "ranking_probability": "Frozen within-game reranker using calibrated probability, model line clearance, matchup readiness, fragility, sportsbook agreement and exact selection-process evidence",
+        "selection_confidence_multiplier": round(selection_multiplier, 6),
+        "basis": "Last immutable pregame MelBet recommendation per completed game",
+        "build_selection_audit": {
+            key: value for key, value in build_audit.items()
+            if key != "rows"
+        },
+        "market_rules": rules,
+    }
+
+
+def deployment_selection_policy():
+    """Return the prospective gate for automatic moneyline/totals cards."""
+    try:
+        with open(DEPLOYMENT_SELECTION_AUDIT, encoding="utf-8") as handle:
+            audit = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        audit = {}
+    moneyline = audit.get("moneyline") or {}
+    totals = audit.get("totals") or {}
+    return {
+        "generated_at": audit.get("generated_at"),
+        "snapshot_rule": audit.get("snapshot_rule") or "No completed deployment audit is available",
+        "moneyline": {
+            **moneyline,
+            "minimum_probability": None,
+            "automatic_eligible": True,
+            "reason": "Every available moneyline can enter Build Best; probability ranks picks and is not a hard cutoff.",
+        },
+        "totals": {
+            **totals,
+            "rules": totals.get("rules") or {},
+            "automatic_eligible_rules": int(totals.get("automatic_eligible_rules") or 0),
+            "calibration": totals.get("calibration") or {},
+            "reason": (
+                "Production Over/Under probabilities use a chronologically validated calibration correction."
+                if (totals.get("calibration") or {}).get("promoted") is True else
+                "Totals remain available manually until the production calibration improves held-out Brier score."
+            ),
+        },
+    }
+
+
 def _props_game(game, bundle):
     game_id = int(game.get("game_id") or game.get("gamePk"))
     feed = statsapi.get("game", {"gamePk": game_id})
     data = feed.get("gameData", {}); teams = data.get("teams", {})
     raw_teams = feed.get("liveData", {}).get("boxscore", {}).get("teams", {})
     probable = data.get("probablePitchers", {})
+    game_players = data.get("players", {})
     game_date = (data.get("datetime", {}).get("officialDate") or str(game.get("game_date", ""))[:10])
     season = int(data.get("game", {}).get("season") or game_date[:4])
+
+    def market_names(player_id, primary_name):
+        person = game_players.get("ID" + str(player_id), {})
+        values = [
+            primary_name, person.get("fullName"), person.get("fullFMLName"),
+            " ".join(filter(None, [person.get("firstName"), person.get("lastName")])),
+            " ".join(filter(None, [person.get("useName"), person.get("lastName")])),
+        ]
+        return list(dict.fromkeys(value for value in values if value))
     starters = {}
     for side in ("away", "home"):
         person = probable.get(side) or {}
@@ -139,6 +480,21 @@ def _props_game(game, bundle):
             pid = int(raw["pitchers"][0]); player = raw.get("players", {}).get("ID" + str(pid), {})
             person = player.get("person") or {"id": pid, "fullName": f"Player {pid}"}
         starters[side] = person
+    lineups = {}
+    lineup_statuses = {}
+    for side in ("away", "home"):
+        team_id = int(teams.get(side, {}).get("id") or game.get(f"{side}_id"))
+        raw = raw_teams.get(side, {}); order = (raw.get("battingOrder") or [])[:9]
+        if order:
+            players = raw.get("players", {})
+            lineups[side] = [{
+                "player_id": int(pid), "lineup_slot": index + 1,
+                "name": (players.get("ID" + str(pid), {}).get("person") or {}).get("fullName"),
+            } for index, pid in enumerate(order)]
+            lineup_statuses[side] = "confirmed"
+        else:
+            lineups[side] = projected_lineup(bundle, team_id, game_date, season)
+            lineup_statuses[side] = "projected"
     candidates = []
     for side, opponent in (("away", "home"), ("home", "away")):
         team_id = int(teams.get(side, {}).get("id") or game.get(f"{side}_id"))
@@ -148,29 +504,33 @@ def _props_game(game, bundle):
             candidate = {
                 "kind": "pitcher", "player_id": int(starter["id"]),
                 "name": starter.get("fullName"), "team_id": team_id, "opponent_id": opponent_id,
+                "market_names": market_names(starter["id"], starter.get("fullName")),
                 "home": side == "home", "lineup_slot": 0, "side": side,
                 "role": "Starting pitcher", "lineup_status": "confirmed" if raw_teams.get(side, {}).get("pitchers") else "probable",
+                "opponent_starter_id": (starters.get(opponent) or {}).get("id"),
+                "opponent_lineup_ids": [
+                    int(player["player_id"]) for player in lineups.get(opponent, [])
+                ],
+                "opponent_lineup_status": lineup_statuses.get(opponent, "projected"),
             }
             candidates.append(candidate)
-        raw = raw_teams.get(side, {}); order = (raw.get("battingOrder") or [])[:9]
-        if order:
-            players = raw.get("players", {})
-            lineup = [{"player_id": int(pid), "lineup_slot": index + 1,
-                       "name": (players.get("ID" + str(pid), {}).get("person") or {}).get("fullName")}
-                      for index, pid in enumerate(order)]
-            lineup_status = "confirmed"
-        else:
-            lineup = projected_lineup(bundle, team_id); lineup_status = "projected"
+        lineup = lineups.get(side, []); lineup_status = lineup_statuses.get(side, "projected")
         for batter in lineup:
             candidate = {
                 "kind": "batter", "player_id": int(batter["player_id"]), "name": batter.get("name"),
+                "market_names": market_names(batter["player_id"], batter.get("name")),
                 "team_id": team_id, "opponent_id": opponent_id, "home": side == "home",
                 "lineup_slot": batter.get("lineup_slot"), "opponent_starter_id": (starters.get(opponent) or {}).get("id"),
+                "opponent_starter_hand": (
+                    game_players.get("ID" + str((starters.get(opponent) or {}).get("id")), {})
+                    .get("pitchHand", {}).get("code")
+                ),
                 "side": side, "role": f"Projected batting order #{batter.get('lineup_slot')}", "lineup_status": lineup_status,
             }
             candidates.append(candidate)
     return {
         "game_id": game_id, "datetime": data.get("datetime", {}).get("dateTime") or game.get("game_datetime"),
+        "official_date": game_date,
         "status": data.get("status", {}).get("detailedState") or game.get("status"),
         "away": normalize_team(teams.get("away", {})), "home": normalize_team(teams.get("home", {})),
         "_candidates": candidates, "_game_date": game_date, "_season": season,
@@ -182,7 +542,8 @@ def player_props_board(start_date, days=1, force=False, defer_refresh=False):
     with _player_props_cache_lock:
         cached = _player_props_board_cache.get(key)
         if cached and (not force or defer_refresh):
-            should_refresh = defer_refresh or time.monotonic() - cached[0] >= 60
+            cache_ttl = max(10, min(60, int(cached[1].get("refresh_seconds", 60))))
+            should_refresh = defer_refresh or time.monotonic() - cached[0] >= cache_ttl
             if should_refresh and key not in _player_props_refreshing:
                 _player_props_refreshing.add(key)
                 def refresh():
@@ -216,6 +577,7 @@ def player_props_board(start_date, days=1, force=False, defer_refresh=False):
             game_id = player.pop("_game_id")
             games_by_id[game_id]["players"].append(player)
     market_snapshot = market_future.result()
+    partial_market_games = 0
     for game in games:
         market = match_melbet_player_props(
             game.get("home", {}).get("name"), game.get("away", {}).get("name"),
@@ -226,14 +588,19 @@ def player_props_board(start_date, days=1, force=False, defer_refresh=False):
             "available": False, "source": "MelBet displayed player props",
             "prices_used": False, "observed_at": market_snapshot.get("updated_at").isoformat() if market_snapshot.get("updated_at") else None,
         }
+        if market and market.get("partial"):
+            partial_market_games += 1
     payload = {
         "start_date": first.isoformat(), "days": days, "updated_at": datetime.now(timezone.utc).isoformat(),
-        "refresh_seconds": 60, "method": "Market-free calibrated player-game distributions restricted to currently displayed selections",
+        "refresh_seconds": 15 if partial_market_games else 60, "method": "Market-free calibrated player-game distributions restricted by current MelBet selections; decimal odds are display/filter metadata only",
+        "automatic_recommendation_policy": player_prop_automatic_policy(),
         "games": games,
         "player_prop_line_feed": {
-            "source": "MelBet displayed player props", "prices_used": False,
+            "source": "MelBet displayed player props and decimal odds", "prices_used": False,
+            "odds_available": True, "odds_format": "decimal", "odds_model_inputs": False,
             "observed_at": market_snapshot.get("updated_at").isoformat() if market_snapshot.get("updated_at") else None,
-            "listed_games": len(market_snapshot.get("markets", [])), "error": market_snapshot.get("error"),
+            "listed_games": len(market_snapshot.get("markets", [])), "partial_games": partial_market_games,
+            "error": market_snapshot.get("error"),
         },
     }
     record_player_prop_snapshots(games)
@@ -243,16 +610,71 @@ def player_props_board(start_date, days=1, force=False, defer_refresh=False):
 
 
 def record_player_prop_snapshots(games):
-    """Archive only the exact model recommendations visible before first pitch."""
+    """Archive recommendations and a separate full, priced pregame board."""
     global _player_prop_results_cache
     recorded_at = datetime.now(timezone.utc).isoformat()
     rows = []
+    priced_rows = []
     for game in games:
         if game.get("player_line_market", {}).get("stale"):
             continue
         selections = []
+        priced_candidates = []
         for player in game.get("players", []):
             for prop in player.get("props", []):
+                for threshold_row in prop.get("thresholds", []):
+                    melbet = threshold_row.get("melbet_selections") or {}
+                    best_prices = {}
+                    for price_side in ("over", "under"):
+                        available_prices = [
+                            float(value["decimal_odds"])
+                            for value in melbet.get(price_side, [])
+                            if value.get("decimal_odds") is not None and float(value["decimal_odds"]) > 1
+                        ]
+                        if available_prices:
+                            best_prices[price_side] = max(available_prices)
+                    paired_total = sum(1 / best_prices[value] for value in ("over", "under")) \
+                        if all(value in best_prices for value in ("over", "under")) else None
+                    for price_side in ("over", "under"):
+                        probability = threshold_row.get(f"{price_side}_probability")
+                        if probability is None:
+                            continue
+                        for price in melbet.get(price_side, []):
+                            decimal_odds = price.get("decimal_odds")
+                            if decimal_odds is None or float(decimal_odds) <= 1:
+                                continue
+                            sportsbook_probability = (
+                                (1 / best_prices[price_side]) / paired_total
+                                if paired_total and price_side in best_prices else None
+                            )
+                            priced_candidates.append({
+                                "player_id": int(player["player_id"]),
+                                "player_name": player.get("name"),
+                                "kind": player.get("kind"),
+                                "team_id": int(player.get("team_id") or 0),
+                                "opponent_id": int(player.get("opponent_id") or 0),
+                                "prop": prop.get("prop"), "label": prop.get("label"),
+                                "line": float(threshold_row["line"]), "side": price_side,
+                                "model_probability": float(probability),
+                                "decimal_odds": float(decimal_odds),
+                                "opposite_decimal_odds": best_prices.get("under" if price_side == "over" else "over"),
+                                "sportsbook_probability": sportsbook_probability,
+                                "group_id": price.get("group_id"), "type_id": price.get("type_id"),
+                                "format": price.get("format"), "display_line": price.get("display_line"),
+                                "market_name": price.get("market_name"),
+                                "selection_name": price.get("selection_name"),
+                                "lineup_status": player.get("lineup_status"),
+                                "lineup_slot": player.get("lineup_slot"),
+                                "role": player.get("role"),
+                                "opponent_starter_id": player.get("opponent_starter_id"),
+                                "opponent_lineup_status": player.get("opponent_lineup_status"),
+                                "history_games": int(player.get("history_games") or 0),
+                                "recent_10_average": prop.get("recent_10_average"),
+                                "recommended": (
+                                    float(prop.get("recommended_line")) == float(threshold_row["line"])
+                                    and prop.get("recommended_side") == price_side
+                                ) if prop.get("recommended_line") is not None else False,
+                            })
                 line = prop.get("recommended_line")
                 side = prop.get("recommended_side")
                 threshold = next(
@@ -267,31 +689,170 @@ def record_player_prop_snapshots(games):
                     "kind": player.get("kind"), "team_id": int(player.get("team_id") or 0),
                     "prop": prop.get("prop"), "label": prop.get("label"),
                     "line": float(line), "side": side, "probability": float(probability),
+                    "lineup_status": player.get("lineup_status"),
                 })
-        if not selections:
+        if not selections and not priced_candidates:
             continue
-        selections.sort(key=lambda row: (row["player_id"], row["prop"], row["line"], row["side"]))
         game_id = int(game["game_id"])
-        signature = json.dumps(selections, sort_keys=True, separators=(",", ":"))
-        if _player_prop_snapshot_last.get(game_id) == signature:
-            continue
-        _player_prop_snapshot_last[game_id] = signature
-        rows.append({
-            "game_id": game_id, "recorded_at": recorded_at,
-            "scheduled_start": game.get("datetime"),
-            "game_date": str(game.get("datetime") or "")[:10],
-            "away": game.get("away"), "home": game.get("home"),
-            "selections": selections,
-            "snapshot_rule": "Exact displayed recommendation before first pitch",
-        })
-    if not rows:
+        if selections:
+            selections.sort(key=lambda row: (row["player_id"], row["prop"], row["line"], row["side"]))
+            signature = json.dumps(selections, sort_keys=True, separators=(",", ":"))
+            if _player_prop_snapshot_last.get(game_id) != signature:
+                _player_prop_snapshot_last[game_id] = signature
+                rows.append({
+                    "game_id": game_id, "recorded_at": recorded_at,
+                    "scheduled_start": game.get("datetime"),
+                    "game_date": game.get("official_date") or str(game.get("datetime") or "")[:10],
+                    "official_date": game.get("official_date"),
+                    "away": game.get("away"), "home": game.get("home"),
+                    "selections": selections,
+                    "snapshot_rule": "Exact displayed recommendation before first pitch",
+                })
+        if priced_candidates:
+            priced_candidates.sort(key=lambda row: (
+                row["player_id"], row["prop"], row["line"], row["side"],
+                int(row.get("group_id") or 0), int(row.get("type_id") or 0),
+            ))
+            priced_signature = json.dumps(priced_candidates, sort_keys=True, separators=(",", ":"))
+            last_priced_at = float(_player_prop_priced_snapshot_at.get(game_id) or 0)
+            archive_interval = max(60, int(os.getenv("NINTH_PLAYER_PROP_PRICED_ARCHIVE_SECONDS", "900")))
+            scheduled = None
+            try:
+                scheduled = datetime.fromisoformat(str(game.get("datetime") or "").replace("Z", "+00:00"))
+                if scheduled.tzinfo is None:
+                    scheduled = scheduled.replace(tzinfo=timezone.utc)
+            except ValueError:
+                pass
+            minutes_to_start = (scheduled - datetime.now(timezone.utc)).total_seconds() / 60 if scheduled else None
+            near_first_pitch = minutes_to_start is not None and 0 <= minutes_to_start <= 20
+            interval_elapsed = time.monotonic() - last_priced_at >= archive_interval
+            if (_player_prop_priced_snapshot_last.get(game_id) != priced_signature
+                    and (not last_priced_at or interval_elapsed or near_first_pitch)):
+                _player_prop_priced_snapshot_last[game_id] = priced_signature
+                _player_prop_priced_snapshot_at[game_id] = time.monotonic()
+                priced_rows.append({
+                    "game_id": game_id, "recorded_at": recorded_at,
+                    "scheduled_start": game.get("datetime"),
+                    "game_date": game.get("official_date") or str(game.get("datetime") or "")[:10],
+                    "official_date": game.get("official_date"),
+                    "away": game.get("away"), "home": game.get("home"),
+                    "candidates": priced_candidates,
+                    "snapshot_rule": "Every displayed MelBet player-prop price before first pitch",
+                })
+    if not rows and not priced_rows:
         return
     with _player_prop_snapshot_lock:
-        os.makedirs(os.path.dirname(PLAYER_PROP_PROJECTION_LOG), exist_ok=True)
-        with open(PLAYER_PROP_PROJECTION_LOG, "a", encoding="utf-8") as handle:
-            for row in rows:
-                handle.write(json.dumps(row, separators=(",", ":")) + "\n")
+        if rows:
+            os.makedirs(os.path.dirname(PLAYER_PROP_PROJECTION_LOG), exist_ok=True)
+            with open(PLAYER_PROP_PROJECTION_LOG, "a", encoding="utf-8") as handle:
+                for row in rows:
+                    handle.write(json.dumps(row, separators=(",", ":")) + "\n")
+        if priced_rows:
+            os.makedirs(os.path.dirname(PLAYER_PROP_PRICED_BOARD_LOG), exist_ok=True)
+            with open(PLAYER_PROP_PRICED_BOARD_LOG, "a", encoding="utf-8") as handle:
+                for row in priced_rows:
+                    handle.write(json.dumps(row, separators=(",", ":")) + "\n")
     _player_prop_results_cache = None
+
+
+def record_player_prop_build(payload):
+    """Archive the exact recommendations selected by a Build Best action."""
+    entries = payload.get("entries") if isinstance(payload, dict) else None
+    if not isinstance(entries, list) or not 1 <= len(entries) <= 20:
+        raise ValueError("Build snapshot entries must contain between 1 and 20 selections")
+
+    clean_entries = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            raise ValueError("Every build snapshot entry must be an object")
+        side = str(entry.get("side") or "").lower()
+        kind = str(entry.get("kind") or "").lower()
+        if side not in ("over", "under") or kind not in ("batter", "pitcher"):
+            raise ValueError("Build snapshot entries require a valid player kind and side")
+        clean_entries.append({
+            "game_id": int(entry["game_id"]),
+            "official_date": str(entry.get("official_date") or "")[:10] or None,
+            "scheduled_start": str(entry.get("scheduled_start") or "")[:40] or None,
+            "player_id": int(entry["player_id"]),
+            "player_name": str(entry.get("player_name") or "")[:120],
+            "kind": kind,
+            "team_id": int(entry.get("team_id") or 0),
+            "prop": str(entry["prop"])[:80],
+            "label": str(entry.get("label") or "")[:120],
+            "line": float(entry["line"]),
+            "side": side,
+            "model_probability": float(entry["model_probability"]),
+            "recommendation_probability": float(entry["recommendation_probability"]),
+            "decimal_odds": float(entry["decimal_odds"]) if entry.get("decimal_odds") is not None else None,
+            "market_name": str(entry.get("market_name") or "")[:160],
+            "selection_name": str(entry.get("selection_name") or "")[:160],
+            "audit_samples": max(0, int(entry.get("audit_samples") or 0)),
+            "exact_audit_samples": max(0, int(entry.get("exact_audit_samples") or 0)),
+            "selection_audit_samples": max(0, int(entry.get("selection_audit_samples") or 0)),
+            "lineup_status": str(entry.get("lineup_status") or "")[:30] or None,
+            "sportsbook_probability": (
+                float(entry["sportsbook_probability"])
+                if entry.get("sportsbook_probability") is not None else None
+            ),
+            "robust_probability": float(entry.get("robust_probability") or entry["recommendation_probability"]),
+            "process_probability": float(entry.get("process_probability") or entry.get("robust_probability") or entry["recommendation_probability"]),
+            "candidate_rank": max(1, int(entry.get("candidate_rank") or 1)),
+            "within_game_rank": max(1, int(entry.get("within_game_rank") or entry.get("candidate_rank") or 1)),
+            "rerank_score": float(entry["rerank_score"]) if entry.get("rerank_score") is not None else None,
+            "shadow_rerank_score": float(entry["shadow_rerank_score"]) if entry.get("shadow_rerank_score") is not None else None,
+            "reranker_promoted": bool(entry.get("reranker_promoted")),
+            "expected_value": float(entry["expected_value"]) if entry.get("expected_value") is not None else None,
+            "raw_line_clearance": float(entry["raw_line_clearance"]) if entry.get("raw_line_clearance") is not None else None,
+            "normalized_line_clearance": float(entry["normalized_line_clearance"]) if entry.get("normalized_line_clearance") is not None else None,
+            "fragility_penalty": max(0.0, float(entry.get("fragility_penalty") or 0)),
+            "fragility_reasons": [str(value)[:80] for value in (entry.get("fragility_reasons") or [])[:12]],
+            "sportsbook_disagreement": float(entry["sportsbook_disagreement"]) if entry.get("sportsbook_disagreement") is not None else None,
+            "reranker_version": str(entry.get("reranker_version") or "")[:40] or None,
+            "selection_action": str(entry.get("selection_action") or payload.get("selection_action") or "build_best")[:30],
+            "replaced_selection": entry.get("replaced_selection") if isinstance(entry.get("replaced_selection"), dict) else None,
+            "post_selection_samples": max(0, int(entry.get("post_selection_samples") or 0)),
+        })
+    if any(
+        not 0 <= row["model_probability"] <= 1
+        or not 0 <= row["recommendation_probability"] <= 1
+        or not 0 <= row["robust_probability"] <= 1
+        or not 0 <= row["process_probability"] <= 1
+        or (row["sportsbook_probability"] is not None and not 0 <= row["sportsbook_probability"] <= 1)
+        for row in clean_entries
+    ):
+        raise ValueError("Build snapshot probabilities must be between zero and one")
+
+    record = {
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
+        "start_date": str(payload.get("start_date") or "")[:10],
+        "days": max(1, min(7, int(payload.get("days") or 1))),
+        "target_legs": max(1, min(20, int(payload.get("target_legs") or len(clean_entries)))),
+        "build_style": str(payload.get("build_style") or "balanced")[:20],
+        "build_side": str(payload.get("build_side") or "both")[:10],
+        "minimum_odds": str(payload.get("minimum_odds") or "all")[:20],
+        "recommendation_cutoff": str(payload.get("recommendation_cutoff") or "0.65")[:20],
+        "portfolio_mode": str(payload.get("portfolio_mode") or "best")[:20],
+        "prop_preset": str(payload.get("prop_preset") or "included")[:20],
+        "rotation_depth": max(0, int(payload.get("rotation_depth") or 0)),
+        "selection_action": str(payload.get("selection_action") or "build_best")[:30],
+        "shadow_test": bool(payload.get("shadow_test")),
+        "forward_test_policy_id": str((payload.get("policy") or {}).get("forward_test_policy_id") or "")[:120] or None,
+        "decisions": [value for value in (payload.get("decisions") or [])[:20] if isinstance(value, dict)],
+        "selected_prop_types": [str(value)[:80] for value in (payload.get("selected_prop_types") or [])[:40]],
+        "selected_prop_sides": {
+            str(key)[:80]: str(value).lower()[:10]
+            for key, value in (payload.get("selected_prop_sides") or {}).items()
+            if str(value).lower() in ("both", "over", "under")
+        } if isinstance(payload.get("selected_prop_sides"), dict) else {},
+        "policy": payload.get("policy") if isinstance(payload.get("policy"), dict) else {},
+        "entries": clean_entries,
+        "snapshot_rule": "Exact Build Best selections before first pitch",
+    }
+    with _player_prop_build_snapshot_lock:
+        os.makedirs(os.path.dirname(PLAYER_PROP_BUILD_LOG), exist_ok=True)
+        with open(PLAYER_PROP_BUILD_LOG, "a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, separators=(",", ":")) + "\n")
+    return {"ok": True, "recorded_at": record["recorded_at"], "entries": len(clean_entries)}
 
 
 def refresh_player_prop_archive():
@@ -360,27 +921,93 @@ def detail_lock(game_id):
         return _detail_locks.setdefault(int(game_id), threading.Lock())
 
 
+def cached_game_detail(game_id, allow_stale=False):
+    cached = _detail_cache.get(int(game_id))
+    if not cached:
+        return None
+    cached_at, payload = cached
+    state = payload.get("status_code")
+    ttl = 8 if state == "Live" else 3600 if state == "Final" else 45
+    if allow_stale or (datetime.now(timezone.utc) - cached_at).total_seconds() < ttl:
+        return payload
+    return None
+
+
+def pending_game_detail(game_id):
+    """Return a usable shell while one background enrichment owns the lock."""
+    summary = game_summary(game_id)
+    status = str(summary.get("status") or "Unknown")
+    status_lower = status.lower()
+    status_code = (
+        "Final" if "final" in status_lower or "completed" in status_lower else
+        "Live" if "live" in status_lower or "progress" in status_lower else
+        "Preview"
+    )
+    return {
+        **summary,
+        "status_code": status_code,
+        "partial": True,
+        "context_updated_at": None,
+        "projection_refresh_seconds": 5 if status_code == "Live" else 10,
+        "projection": {"available": False, "message": "The matchup projection is calculating in the background."},
+        "totals_projection": {"available": False, "selection_available": False, "message": "The totals projection is calculating in the background."},
+        "model_context": {
+            "weather": {"temperature": None, "wind_speed": None, "condition": "Weather is refreshing", "source": "Pending", "available": False},
+        },
+        "team_stats": {}, "probable_pitchers": {}, "pitching_matchup": {}, "recent_form": {},
+        "linescore": {}, "plays": [], "pitches": [], "live_stats": None,
+    }
+
+
 def game_detail(game_id, force=False):
     game_id = int(game_id)
-    with detail_lock(game_id):
-        if force:
-            _detail_cache.pop(game_id, None)
-        return _game_detail(game_id)
+    if not force:
+        cached = cached_game_detail(game_id)
+        if cached:
+            return cached
+    lock = detail_lock(game_id)
+    acquired = lock.acquire(blocking=False)
+    if not force:
+        stale = cached_game_detail(game_id, allow_stale=True)
+        if acquired:
+            def refresh_uncached_detail():
+                try:
+                    _game_detail(game_id, bypass_cache=True)
+                except Exception as exc:
+                    print(f"[matchup-enrichment] game {game_id} failed: {exc}", flush=True)
+                finally:
+                    lock.release()
+            threading.Thread(
+                target=refresh_uncached_detail,
+                name=f"matchup-enrichment-{game_id}",
+                daemon=True,
+            ).start()
+        return stale or pending_game_detail(game_id)
+    if not acquired:
+        cached = cached_game_detail(game_id, allow_stale=True)
+        if cached:
+            return cached
+        raise RuntimeError("Game projection refresh is already in progress")
+    try:
+        return _game_detail(game_id, bypass_cache=force)
+    finally:
+        lock.release()
 
 
-def _game_detail(game_id):
+def _game_detail(game_id, bypass_cache=False):
     game_id = int(game_id)
     cached = _detail_cache.get(game_id)
-    if cached:
+    if cached and not bypass_cache:
         cached_at, cached_payload = cached
         state = cached_payload.get("status_code")
         ttl = 8 if state == "Live" else 3600 if state == "Final" else 45
         if (datetime.now(timezone.utc) - cached_at).total_seconds() < ttl:
             return cached_payload
-        _detail_cache.pop(game_id, None)
-    if game_id not in _detail_cache:
+    if bypass_cache or game_id not in _detail_cache or not cached_game_detail(game_id):
         feed = statsapi.get("game", {"gamePk": game_id})
         data = feed.get("gameData", {})
+        if not data.get("teams", {}).get("away") or not data.get("teams", {}).get("home"):
+            raise NotFoundError("Game not found")
         venue = data.get("venue", {})
         location = venue.get("location", {})
         coords = location.get("defaultCoordinates", {})
@@ -394,23 +1021,45 @@ def _game_detail(game_id):
         box_teams = live.get("boxscore", {}).get("teams", {})
         game_time = data.get("datetime", {}).get("dateTime")
         team_ids = [teams.get("away", {}).get("id"), teams.get("home", {}).get("id")]
-        with ThreadPoolExecutor(max_workers=5) as pool:
-            away_pitcher = pool.submit(pitcher_profile, probable.get("away"))
-            home_pitcher = pool.submit(pitcher_profile, probable.get("home"))
+        status_code = status_data.get("abstractGameState", "Preview")
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            away_pitcher = pool.submit(
+                pitcher_profile, probable.get("away"), game_time, game_id,
+            )
+            home_pitcher = pool.submit(
+                pitcher_profile, probable.get("home"), game_time, game_id,
+            )
             away_recent = pool.submit(recent_form, team_ids[0], game_time, game_id)
             home_recent = pool.submit(recent_form, team_ids[1], game_time, game_id)
-            totals_market_future = pool.submit(
-                match_melbet_totals,
-                teams.get("home", {}).get("name"), teams.get("away", {}).get("name"), game_time,
+            bullpen_future = pool.submit(
+                bullpen_performance, team_ids, game_time, game_id,
+            )
+            totals_market_future = (
+                None if status_code == "Final" else pool.submit(
+                    match_melbet_totals,
+                    teams.get("home", {}).get("name"), teams.get("away", {}).get("name"), game_time,
+                )
             )
             pitcher_profiles = {"away": away_pitcher.result(), "home": home_pitcher.result()}
             recent_results = [away_recent.result(), home_recent.result()]
-            totals_market = totals_market_future.result()
+            bullpen_results = bullpen_future.result()
+            totals_market = totals_market_future.result() if totals_market_future else None
+        pitching_matchup = {}
+        for side, team_id in (("away", team_ids[0]), ("home", team_ids[1])):
+            starter = pitcher_profiles.get(side) or {}
+            pitching_matchup[side] = {
+                **(bullpen_results.get(int(team_id)) or {}),
+                "starter_id": starter.get("id"),
+                "starter_name": starter.get("name"),
+                "starter_runs_per_start": starter.get("runs_per_start"),
+                "starter_earned_runs_per_start": starter.get("earned_runs_per_start"),
+                "starter_starts": starter.get("starts_before_matchup", 0),
+            }
         context = live_context(feed, pitcher_profiles, team_ids, game_time, game_id)
-        status_code = status_data.get("abstractGameState", "Preview")
         if status_code == "Final":
-            projection = locked_pregame_projection(game_id, game_time)
-            totals_projection = locked_pregame_totals_projection(game_id, game_time)
+            locked_snapshot = last_pregame_snapshot(game_id, game_time)
+            projection = locked_pregame_projection(game_id, game_time, locked_snapshot)
+            totals_projection = locked_pregame_totals_projection(game_id, game_time, locked_snapshot)
         else:
             try:
                 projection = moneyline_projection(team_ids[1], team_ids[0], game_time, context)
@@ -462,6 +1111,7 @@ def _game_detail(game_id):
                 "home": normalize_live_team(box_teams.get("home", {}), all_plays),
             },
             "probable_pitchers": pitcher_profiles,
+            "pitching_matchup": pitching_matchup,
             "model_context": context,
             "recent_form": {"away": recent_results[0], "home": recent_results[1]},
             "projection": projection,
@@ -639,6 +1289,8 @@ def team_detail(team_id):
     if cached and datetime.now(timezone.utc) - cached[0] < timedelta(minutes=5):
         return cached[1]
     team = next((item for item in teams_data() if item["id"] == team_id), None)
+    if team is None:
+        raise NotFoundError("Team not found")
     raw_stats = statsapi.get("team_stats", {"teamId": team_id, "stats": "season", "group": "hitting,pitching", "season": 2026})
     stat_groups = {}
     for group in raw_stats.get("stats", []):
@@ -693,6 +1345,97 @@ def _float(value, default=0.0):
         return default
 
 
+def _innings_pitched(value):
+    """Convert baseball innings notation (for example, 123.2) to decimal innings."""
+    text = str(value or "0")
+    whole, _, fraction = text.partition(".")
+    outs = int(fraction[:1]) if fraction[:1].isdigit() else 0
+    return max(0.0, _float(whole) + min(2, outs) / 3.0)
+
+
+def _bullpen_game_line(game, side):
+    """Reduce one completed box score to the bullpen fields used by matchups."""
+    pitchers = []
+    for player in (game.get(side, {}).get("players") or []):
+        pitching = player.get("pitching") or {}
+        if not pitching or int(pitching.get("gamesStarted") or 0) > 0:
+            continue
+        pitchers.append(pitching)
+    runs_are_exact = all("runs" in pitching for pitching in pitchers)
+    earned_runs = sum(_float(pitching.get("earnedRuns")) for pitching in pitchers)
+    return {
+        "game_id": int(game.get("game_id") or 0),
+        "date": str(game.get("date") or "")[:10],
+        "season": int(game.get("season") or 0),
+        "team_id": int(game.get(side, {}).get("team_id") or 0),
+        "outs": sum(int(pitching.get("outs") or 0) for pitching in pitchers),
+        "earned_runs": earned_runs,
+        "runs": (
+            sum(_float(pitching.get("runs")) for pitching in pitchers)
+            if runs_are_exact else earned_runs
+        ),
+        "runs_are_exact": runs_are_exact,
+        "relief_appearances": len(pitchers),
+    }
+
+
+def _bullpen_history_rows():
+    """Load a compact current file index and invalidate it after nightly sync."""
+    try:
+        stat = os.stat(PLAYER_BOXSCORES)
+        fingerprint = (PLAYER_BOXSCORES, stat.st_mtime_ns, stat.st_size)
+    except OSError:
+        return []
+    if _bullpen_history_cache["fingerprint"] == fingerprint:
+        return _bullpen_history_cache["rows"]
+    with _bullpen_history_lock:
+        if _bullpen_history_cache["fingerprint"] == fingerprint:
+            return _bullpen_history_cache["rows"]
+        rows = []
+        with open(PLAYER_BOXSCORES, encoding="utf-8") as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                game = json.loads(line)
+                rows.extend((_bullpen_game_line(game, "away"), _bullpen_game_line(game, "home")))
+        _bullpen_history_cache.update({"fingerprint": fingerprint, "rows": rows})
+        return rows
+
+
+def bullpen_performance(team_ids, game_datetime, exclude_game_id):
+    """Return point-in-time season bullpen ERA and runs allowed per team game."""
+    target_date = str(game_datetime or "")[:10]
+    season = int(target_date[:4]) if target_date[:4].isdigit() else datetime.now(timezone.utc).year
+    wanted = {int(team_id) for team_id in team_ids if team_id}
+    grouped = {team_id: [] for team_id in wanted}
+    for row in _bullpen_history_rows():
+        team_id = int(row.get("team_id") or 0)
+        if (
+            team_id in wanted
+            and int(row.get("season") or 0) == season
+            and row.get("date", "") < target_date
+            and int(row.get("game_id") or 0) != int(exclude_game_id or 0)
+        ):
+            grouped[team_id].append(row)
+    output = {}
+    for team_id, rows in grouped.items():
+        outs = sum(row["outs"] for row in rows)
+        earned_runs = sum(row["earned_runs"] for row in rows)
+        exact_runs = bool(rows) and all(row["runs_are_exact"] for row in rows)
+        runs = sum(row["runs"] for row in rows)
+        games = len(rows)
+        output[team_id] = {
+            "bullpen_era": round(earned_runs * 27 / outs, 2) if outs else None,
+            "bullpen_runs_per_game": round(runs / games, 2) if games else None,
+            "bullpen_runs_basis": "runs" if exact_runs else "earned_runs",
+            "bullpen_games": games,
+            "bullpen_innings": round(outs / 3, 1),
+            "bullpen_relief_appearances": sum(row["relief_appearances"] for row in rows),
+            "through": max((row["date"] for row in rows), default=None),
+        }
+    return output
+
+
 def bullpen_recent_pitches(team_id, game_datetime, exclude_game_id):
     game_date = datetime.fromisoformat(game_datetime.replace("Z", "+00:00")).date()
     key = f"{team_id}:{game_date}:{exclude_game_id}"
@@ -736,13 +1479,22 @@ def live_context(feed, pitcher_profiles, team_ids, game_datetime, game_id):
         def roster_player(player_id, batting_spot=None):
             player = players.get("ID" + str(player_id), {})
             person, position = player.get("person", {}), player.get("position", {})
+            batting = player.get("seasonStats", {}).get("batting", {})
+            plate_appearances = _float(batting.get("plateAppearances"))
+            ops = _float(batting.get("ops"), .710)
+            shrunk_ops = (
+                plate_appearances * ops + 120 * .710
+            ) / (plate_appearances + 120)
             return {
                 "id": int(player_id), "name": person.get("fullName") or f"Player {player_id}",
                 "position": position.get("abbreviation") or position.get("name") or "—",
                 "position_name": position.get("name"), "position_type": position.get("type"),
-                "batting_order": batting_spot,
+                "batting_order": batting_spot, "ops": ops,
+                "shrunk_ops": shrunk_ops, "pa": plate_appearances,
             }
-        ops = [_float(players.get("ID" + str(pid), {}).get("seasonStats", {}).get("batting", {}).get("ops"), .710) for pid in order]
+        lineup_players = [roster_player(pid, index + 1) for index, pid in enumerate(order)]
+        ops = [player["ops"] for player in lineup_players]
+        shrunk_ops = [player["shrunk_ops"] for player in lineup_players]
         profile = pitcher_profiles.get(side) or {}
         probable_id = profile.get("id")
         starter_confirmed = bool(probable_id and official_pitchers and int(official_pitchers[0]) == int(probable_id) and (len(order) >= 9 or game_status in ("Live", "Final")))
@@ -750,10 +1502,20 @@ def live_context(feed, pitcher_profiles, team_ids, game_datetime, game_id):
         context[side] = {
             "starter_id": probable_id, "starter_name": profile.get("name"),
             "starter_era": _float(profile.get("era"), 4.5), "starter_whip": _float(profile.get("whip"), 1.35),
+            "starter_fip": _float(profile.get("fip"), 4.5),
+            "starter_innings": _float(profile.get("innings_decimal")),
+            "starter_strikeouts": _float(profile.get("strikeouts")),
+            "starter_walks": _float(profile.get("walks")),
+            "starter_home_runs": _float(profile.get("home_runs")),
             "starter_status": "confirmed" if starter_confirmed else "predicted" if probable_id else "pending",
             "lineup_ids": order, "lineup_confirmed": len(order) >= 9,
-            "lineup_players": [roster_player(pid, index + 1) for index, pid in enumerate(order)],
+            "lineup_players": lineup_players,
             "lineup_ops": sum(ops) / len(ops) if ops else .710,
+            "lineup_ops_shrunk": sum(shrunk_ops) / len(shrunk_ops) if shrunk_ops else .710,
+            "lineup_average_pa": (
+                sum(player["pa"] for player in lineup_players) / len(lineup_players)
+                if lineup_players else 0
+            ),
             "bullpen_status": "confirmed" if bullpen_confirmed else "predicted",
             "bullpen_pitcher_ids": bullpen_ids,
             "bullpen_players": [roster_player(pid) for pid in bullpen_ids],
@@ -787,7 +1549,10 @@ def open_meteo_weather(latitude, longitude, game_datetime):
             return None
         endpoint = "https://archive-api.open-meteo.com/v1/archive" if historical else "https://api.open-meteo.com/v1/forecast"
         try:
-            response = requests.get(endpoint, params={"latitude": latitude, "longitude": longitude, "start_date": day, "end_date": day, "hourly": "temperature_2m,wind_speed_10m,weather_code", "temperature_unit": "fahrenheit", "wind_speed_unit": "mph", "timezone": "UTC"}, timeout=12)
+            # Weather enriches a matchup, but it must never hold the core game
+            # feed hostage.  A short connect/read budget lets the existing
+            # neutral or cached fallback take over when Open-Meteo is down.
+            response = requests.get(endpoint, params={"latitude": latitude, "longitude": longitude, "start_date": day, "end_date": day, "hourly": "temperature_2m,wind_speed_10m,weather_code", "temperature_unit": "fahrenheit", "wind_speed_unit": "mph", "timezone": "UTC"}, timeout=(1.5, 3.0))
             if response.status_code == 429:
                 try:
                     retry_seconds = max(60, min(900, int(response.headers.get("Retry-After", "300"))))
@@ -835,6 +1600,56 @@ def _normalize_player_market_name(value):
     return re.sub(r"[^a-z0-9]", "", value.lower())
 
 
+def _player_market_name_parts(value):
+    value = unicodedata.normalize("NFKD", str(value or ""))
+    value = "".join(char for char in value if not unicodedata.combining(char))
+    return [part for part in re.findall(r"[a-z0-9]+", value.lower()) if part not in {"jr", "sr", "ii", "iii", "iv"}]
+
+
+def _match_melbet_player(players, name):
+    """Match exact names first, then only unique identity-safe variants."""
+    exact = players.get(_normalize_player_market_name(name))
+    if exact:
+        return exact
+    wanted_parts = _player_market_name_parts(name)
+    if len(wanted_parts) < 2:
+        return None
+
+    def identity(parts):
+        first = parts[0]
+        # Treat ``J. T. Realmuto`` and ``JT Realmuto`` as the same initials.
+        # Other middle names are deliberately excluded from identity.
+        if len(parts) > 2 and all(len(part) == 1 for part in parts[:-1]):
+            first = "".join(parts[:-1])
+        return first, parts[-1]
+
+    wanted_first, wanted_last = identity(wanted_parts)
+    candidates = []
+    for offered in players.values():
+        offered_parts = _player_market_name_parts(offered.get("name"))
+        if len(offered_parts) < 2:
+            continue
+        offered_first, offered_last = identity(offered_parts)
+        if offered_last != wanted_last or offered_first[0] != wanted_first[0]:
+            continue
+        if offered_first == wanted_first:
+            score = 1.0
+        elif (len(offered_first) == 1 or len(wanted_first) == 1) and (
+            offered_first.startswith(wanted_first) or wanted_first.startswith(offered_first)
+        ):
+            score = .9
+        else:
+            first_score = SequenceMatcher(None, wanted_first, offered_first).ratio()
+            if min(len(wanted_first), len(offered_first)) < 3 or first_score < .72:
+                continue
+            score = .8 + first_score / 10
+        candidates.append((score, offered))
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    if not candidates or (len(candidates) > 1 and candidates[0][0] - candidates[1][0] < .02):
+        return None
+    return candidates[0][1]
+
+
 def _melbet_referer(base):
     return f"{base}/en/line/baseball/{MELBET_MLB_CHAMP_ID}-usa-mlb"
 
@@ -867,16 +1682,28 @@ def _melbet_value(path, params, usable=None, timeout=(3.0, 8.0)):
     raise requests.RequestException(" | ".join(errors) or "MelBet feeds unavailable")
 
 
-def _melbet_game_params(game_id):
+def _melbet_game_params(game_id, count=250):
     return {
         "id": int(game_id), "lng": "en", "cfview": 0,
-        "isSubGames": "true", "GroupEvents": "true", "countevents": 250,
+        "isSubGames": "true", "GroupEvents": "true", "countevents": int(count),
         "partner": 1, "country": 87,
     }
 
 
-def _melbet_game_payload(game_id, usable=None):
-    return _melbet_value(MELBET_GAME_PATH, _melbet_game_params(game_id), usable=usable)
+def _melbet_game_payload(game_id, usable=None, count=250):
+    return _melbet_value(MELBET_GAME_PATH, _melbet_game_params(game_id, count), usable=usable)
+
+
+def _melbet_complete_player_payload(game_id):
+    """Fetch every player selection, following MelBet's advertised total."""
+    count = 2000
+    payload = _melbet_game_payload(game_id, count=count)
+    advertised = int(payload.get("EC") or 0)
+    if advertised > count:
+        payload = _melbet_game_payload(game_id, count=advertised + 100)
+    if not _parse_melbet_player_prop_groups(payload):
+        raise ValueError("response contained no supported MLB player markets")
+    return payload
 
 
 def _melbet_champ_payload():
@@ -889,30 +1716,70 @@ def _melbet_champ_payload():
 
 
 def _parse_melbet_player_prop_groups(payload):
-    """Return displayed player thresholds by normalized name; discard prices."""
+    """Return displayed player selections and non-model decimal-odds metadata."""
     players = {}
     for group in payload.get("GE", []):
-        prop = MELBET_PLAYER_PROP_GROUPS.get(int(group.get("G", 0)))
-        if not prop:
+        group_id = int(group.get("G", 0))
+        market = MELBET_PLAYER_PROP_MARKETS.get(group_id)
+        if not market:
             continue
         by_selection = {}
         for row in _melbet_event_rows(group.get("E", [])):
             person = row.get("PL") or {}
-            if not person.get("N") or row.get("P") is None:
+            if not person.get("N") or (row.get("P") is None and "model_line" not in market):
                 continue
-            name = str(person["N"]); line = float(row["P"])
-            key = (_normalize_player_market_name(name), line)
-            entry = by_selection.setdefault(key, {"name": name, "types": set()})
-            entry["types"].add(int(row.get("T", 0)))
+            type_id = int(row.get("T", 0))
+            side = market["types"].get(type_id)
+            if not side:
+                continue
+            name = str(person["N"])
+            display_line = float(row["P"]) if row.get("P") is not None else float(market["display_line"])
+            model_line = float(market.get("model_line", display_line - .5 if market["format"] == "at_least" else display_line))
+            key = (_normalize_player_market_name(name), model_line)
+            entry = by_selection.setdefault(key, {"name": name, "selections": {}})
+            entry["selections"][side] = {
+                "group_id": group_id, "type_id": type_id, "side": side,
+                "format": market["format"], "market_name": market["name"],
+                "player_name": name,
+                "display_line": display_line,
+                "decimal_odds": float(row["C"]) if row.get("C") is not None and float(row["C"]) > 1 else None,
+                "selection_name": (
+                    f"{name} ({display_line:g}) Or More" if market["format"] == "at_least"
+                    else f"{name} - {'Yes' if side == 'over' else 'No'}" if market["format"] == "yes_no"
+                    else name if market["format"] == "yes"
+                    else f"{name} {side.title()} ({display_line:g})"
+                ),
+            }
         for (name_key, line), entry in by_selection.items():
-            # A selectable higher/lower threshold must be present on both sides.
-            if len(entry["types"]) < 2:
-                continue
-            player = players.setdefault(name_key, {"name": entry["name"], "props": {}})
-            player["props"].setdefault(prop, []).append(line)
+            selections = entry["selections"]
+            player = players.setdefault(name_key, {"name": entry["name"], "props": {}, "offers": []})
+            player["props"].setdefault(market["prop"], []).append(line)
+            for selection in selections.values():
+                player["offers"].append({"prop": market["prop"], "line": line, **selection})
     for player in players.values():
         player["props"] = {prop: sorted(set(lines)) for prop, lines in player["props"].items()}
+        player["offers"].sort(key=lambda row: (row["prop"], row["line"], row["side"], row["group_id"]))
     return players
+
+
+def _unmapped_melbet_player_prop_groups(payload):
+    """Expose unsupported live group shapes without guessing their meaning."""
+    values = []
+    for group in payload.get("GE", []):
+        group_id = int(group.get("G", 0))
+        if not group_id or group_id in MELBET_PLAYER_PROP_MARKETS:
+            continue
+        rows = _melbet_event_rows(group.get("E", []))
+        player_rows = [row for row in rows if (row.get("PL") or {}).get("N")]
+        if not player_rows:
+            continue
+        values.append({
+            "group_id": group_id,
+            "player_selections": len(player_rows),
+            "thresholds": sorted({float(row["P"]) for row in player_rows if row.get("P") is not None}),
+            "selection_types": sorted({int(row["T"]) for row in player_rows if row.get("T") is not None}),
+        })
+    return values
 
 
 def _fetch_melbet_game_player_props(game):
@@ -926,15 +1793,16 @@ def _fetch_melbet_game_player_props(game):
     # the same "Players' stats" sub-game, so inspect both collections.
     linked_games = [*main.get("SG", []), *main.get("BIG", [])]
     subgame = next((row for row in linked_games if "player" in str(row.get("TG", "")).lower() and row.get("CI")), None)
-    props_payload = _melbet_game_payload(
-        subgame["CI"],
-        usable=lambda payload: bool(_parse_melbet_player_prop_groups(payload)),
-    ) if subgame else {}
+    # Player-stat sub-games currently contain roughly 1,000 selections.
+    # MelBet otherwise truncates the response at the requested count, which
+    # silently drops the groups rendered below the first page.
+    props_payload = _melbet_complete_player_payload(subgame["CI"]) if subgame else {}
     players = _parse_melbet_player_prop_groups(props_payload)
     source_host = props_payload.get("_ninth_melbet_host") or main.get("_ninth_melbet_host") or game.get("feed_host")
     return {
         **game, "player_subgame_id": int(subgame["CI"]) if subgame else None,
         "players": players, "feed_host": source_host,
+        "unmapped_player_groups": _unmapped_melbet_player_prop_groups(props_payload),
     }
 
 
@@ -1003,7 +1871,27 @@ def melbet_player_prop_markets(force=False):
                         markets_by_id[game_id] = {**previous, "stale": True}
             markets = list(markets_by_id.values())
             sources = sorted({item.get("feed_host") for item in markets if item.get("feed_host")})
-            _melbet_player_props_cache.update({"updated_at": now, "markets": markets, "sources": sources, "error": None})
+            unknown = {}
+            for item in markets:
+                for group in item.get("unmapped_player_groups") or []:
+                    summary = unknown.setdefault(group["group_id"], {
+                        "group_id": group["group_id"], "games_offered": 0,
+                        "player_selections": 0, "thresholds": set(), "selection_types": set(),
+                    })
+                    summary["games_offered"] += 1
+                    summary["player_selections"] += group["player_selections"]
+                    summary["thresholds"].update(group["thresholds"])
+                    summary["selection_types"].update(group["selection_types"])
+            unmapped_groups = [{
+                **value,
+                "thresholds": sorted(value["thresholds"]),
+                "selection_types": sorted(value["selection_types"]),
+            } for _, value in sorted(unknown.items())]
+            _player_prop_monitor["unmapped_market_groups"] = unmapped_groups
+            _melbet_player_props_cache.update({
+                "updated_at": now, "markets": markets, "sources": sources,
+                "unmapped_market_groups": unmapped_groups, "error": None,
+            })
         except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
             _melbet_player_props_cache["error"] = str(exc)
             if not _melbet_player_props_cache.get("markets"):
@@ -1030,12 +1918,23 @@ def match_melbet_player_props(home_name, away_name, starts_at, snapshot=None):
     distance, market = min(candidates, key=lambda item: item[0])
     if distance > 3 * 60 * 60:
         return None
+    listed_prop_types = sorted({
+        str(offer.get("prop"))
+        for player in market.get("players", {}).values()
+        for offer in player.get("offers", [])
+        if offer.get("prop")
+    })
+    home_runs_only = listed_prop_types == ["home_runs"]
     return {
         "available": True, "players": market["players"],
         "source": "MelBet displayed player props" + (" via proxy" if market.get("feed_host") == MELBET_PROXY_BASE else ""),
         "feed_host": market.get("feed_host"), "prices_used": False,
+        "odds_format": "decimal", "odds_model_inputs": False,
         "observed_at": market.get("last_confirmed_at") or (snapshot.get("updated_at").isoformat() if snapshot.get("updated_at") else None),
         "stale": bool(market.get("stale")),
+        "partial": home_runs_only,
+        "market_status": "home_runs_only" if home_runs_only else "full_or_mixed",
+        "listed_prop_types": listed_prop_types,
         "bookmaker_game_id": market["bookmaker_game_id"],
         "player_subgame_id": market.get("player_subgame_id"),
     }
@@ -1046,50 +1945,100 @@ def restrict_player_props_to_available_lines(players, market):
         return []
     restricted = []
     for player in players or []:
-        offered = market["players"].get(_normalize_player_market_name(player.get("name")))
+        offered = next((
+            match for name in (player.get("market_names") or [player.get("name")])
+            if (match := _match_melbet_player(market["players"], name))
+        ), None)
         if not offered:
             continue
         props = []
         for projection in player.get("props", []):
             offered_lines = {float(line) for line in offered.get("props", {}).get(projection.get("prop"), [])}
-            thresholds = [row for row in projection.get("thresholds", []) if float(row.get("line", -999)) in offered_lines]
+            offer_rows = [row for row in offered.get("offers", []) if row.get("prop") == projection.get("prop")]
+            offers_by_line = {}
+            for offer in offer_rows:
+                offers_by_line.setdefault(float(offer["line"]), {}).setdefault(offer["side"], []).append(offer)
+            thresholds = []
+            for row in projection.get("thresholds", []):
+                line = float(row.get("line", -999))
+                if line not in offered_lines:
+                    continue
+                selections = offers_by_line.get(line) or {
+                    "over": [], "under": [],
+                }
+                available_sides = [side for side in ("over", "under") if side in selections]
+                # Backward compatibility for cached snapshots written before
+                # selection metadata was introduced.
+                if not offer_rows:
+                    available_sides = ["over", "under"]
+                thresholds.append({
+                    **row, "available_sides": available_sides,
+                    "melbet_selections": selections,
+                })
             if not thresholds:
                 continue
-            best = max(thresholds, key=lambda row: max(float(row.get("over_probability", 0)), float(row.get("under_probability", 0))))
-            side = "over" if float(best.get("over_probability", 0)) >= float(best.get("under_probability", 0)) else "under"
+            choices = [
+                (float(row.get(f"{side}_probability", 0)), row, side)
+                for row in thresholds for side in row["available_sides"]
+            ]
+            if not choices:
+                continue
+            _, best, side = max(choices, key=lambda value: value[0])
+            market_names = sorted({
+                selection["market_name"] for row in thresholds
+                for values in row["melbet_selections"].values() for selection in values
+            })
             props.append({
                 **projection, "thresholds": thresholds, "recommended_line": float(best["line"]),
                 "recommended_side": side, "recommended_probability": float(best[f"{side}_probability"]),
-                "line_market": {"source": market["source"], "prices_used": False, "observed_at": market.get("observed_at")},
+                "melbet_market_names": market_names,
+                "line_market": {"source": market["source"], "prices_used": False, "odds_format": "decimal", "odds_model_inputs": False, "observed_at": market.get("observed_at")},
             })
         if props:
-            value = dict(player); value["props"] = props
+            value = {key: item for key, item in player.items() if key != "market_names"}; value["props"] = props
             value["best_projection"] = max(props, key=lambda row: row["recommended_probability"])
             restricted.append(value)
     return restricted
 
 
 def _fetch_melbet_game_totals(game):
-    def displayed_lines(payload):
+    def displayed_market(payload):
         group = next((row for row in payload.get("GE", []) if int(row.get("G", 0)) == 17), None)
         events = _melbet_event_rows((group or {}).get("E", []))
         over = {
-            float(row["P"]) for row in events
+            float(row["P"]): (float(row["C"]) if row.get("C") is not None and float(row["C"]) > 1 else None)
+            for row in events
             if int(row.get("T", 0)) == 9 and row.get("P") is not None
             and 2 <= float(row["P"]) <= 25
         }
         under = {
-            float(row["P"]) for row in events
+            float(row["P"]): (float(row["C"]) if row.get("C") is not None and float(row["C"]) > 1 else None)
+            for row in events
             if int(row.get("T", 0)) == 10 and row.get("P") is not None
             and 2 <= float(row["P"]) <= 25
         }
-        return sorted(over & under)
+        lines = sorted(set(over) & set(under))
+        moneyline_group = next((row for row in payload.get("GE", []) if int(row.get("G", 0)) == 1), None)
+        moneyline_rows = _melbet_event_rows((moneyline_group or {}).get("E", []))
+        moneyline = {
+            "home" if int(row.get("T", 0)) == 1 else "away": float(row["C"])
+            for row in moneyline_rows
+            if int(row.get("T", 0)) in (1, 3) and row.get("C") is not None and float(row["C"]) > 1
+        }
+        return {
+            "lines": lines,
+            "total_odds": {line: {"over": over[line], "under": under[line]} for line in lines},
+            "moneyline_odds": moneyline,
+        }
 
-    payload = _melbet_game_payload(game["bookmaker_game_id"], usable=lambda value: bool(displayed_lines(value)))
-    lines = displayed_lines(payload)
-    # Only thresholds displayed on both sides survive. Price fields are
-    # deliberately discarded before this data reaches model selection.
-    return {**game, "lines": lines, "feed_host": payload.get("_ninth_melbet_host") or game.get("feed_host")}
+    payload = _melbet_game_payload(
+        game["bookmaker_game_id"],
+        usable=lambda value: bool(displayed_market(value)["lines"] or displayed_market(value)["moneyline_odds"]),
+    )
+    displayed = displayed_market(payload)
+    # Only thresholds displayed on both sides survive. Odds remain isolated
+    # from inference and are used later only as UI labels and eligibility rails.
+    return {**game, **displayed, "feed_host": payload.get("_ninth_melbet_host") or game.get("feed_host")}
 
 
 def _safe_fetch_melbet_game_totals(game):
@@ -1100,8 +2049,32 @@ def _safe_fetch_melbet_game_totals(game):
         return None
 
 
+def _melbet_totals_snapshot_payload(market):
+    lines = sorted({
+        float(line) for line in market.get("lines", [])
+        if 2 <= float(line) <= 25
+    })
+    total_odds = {}
+    source_total_odds = market.get("total_odds") or {}
+    for line in lines:
+        prices = source_total_odds.get(line) or source_total_odds.get(str(line)) or source_total_odds.get(f"{line:g}") or {}
+        normalized = {
+            side: float(prices[side]) for side in ("over", "under")
+            if prices.get(side) is not None and float(prices[side]) > 1
+        }
+        if normalized:
+            total_odds[f"{line:g}"] = normalized
+    moneyline_odds = {
+        side: float((market.get("moneyline_odds") or {})[side])
+        for side in ("home", "away")
+        if (market.get("moneyline_odds") or {}).get(side) is not None
+        and float((market.get("moneyline_odds") or {})[side]) > 1
+    }
+    return {"lines": lines, "total_odds": total_odds, "moneyline_odds": moneyline_odds}
+
+
 def record_melbet_totals_snapshots(markets, observed_at):
-    """Archive exact point-in-time line grids without retaining prices."""
+    """Archive point-in-time line grids and display-only prices for replay."""
     global _melbet_totals_snapshot_loaded
     observed = observed_at.isoformat() if isinstance(observed_at, datetime) else str(observed_at)
     with _melbet_totals_snapshot_lock:
@@ -1112,23 +2085,20 @@ def record_melbet_totals_snapshots(markets, observed_at):
                         try:
                             saved = json.loads(line)
                             _melbet_totals_snapshot_last[int(saved["bookmaker_game_id"])] = json.dumps(
-                                sorted(float(value) for value in saved.get("lines", [])),
-                                separators=(",", ":"),
+                                _melbet_totals_snapshot_payload(saved), sort_keys=True, separators=(",", ":"),
                             )
                         except (json.JSONDecodeError, KeyError, TypeError, ValueError):
                             continue
             _melbet_totals_snapshot_loaded = True
         rows = []
         for market in markets or []:
-            lines = sorted({
-                float(line) for line in market.get("lines", [])
-                if 2 <= float(line) <= 25
-            })
+            snapshot = _melbet_totals_snapshot_payload(market)
+            lines = snapshot["lines"]
             names = f"{market.get('away_name', '')} {market.get('home_name', '')}"
             if not lines or "(runs)" in names.lower():
                 continue
             event_id = int(market["bookmaker_game_id"])
-            signature = json.dumps(lines, separators=(",", ":"))
+            signature = json.dumps(snapshot, sort_keys=True, separators=(",", ":"))
             if _melbet_totals_snapshot_last.get(event_id) == signature:
                 continue
             _melbet_totals_snapshot_last[event_id] = signature
@@ -1139,6 +2109,8 @@ def record_melbet_totals_snapshots(markets, observed_at):
                 "home_name": market.get("home_name"),
                 "away_name": market.get("away_name"),
                 "lines": lines,
+                "total_odds": snapshot["total_odds"],
+                "moneyline_odds": snapshot["moneyline_odds"],
                 "feed_host": market.get("feed_host"),
                 "prices_used": False,
             })
@@ -1151,14 +2123,30 @@ def record_melbet_totals_snapshots(markets, observed_at):
     return len(rows)
 
 
-def melbet_totals_markets(force=False):
-    """Return currently displayed full-game MLB totals, never their prices."""
+def melbet_totals_markets(force=False, defer_refresh=False):
+    """Return current full-game lines and display-only decimal odds."""
     now = datetime.now(timezone.utc)
     cached_at = _melbet_totals_cache.get("updated_at")
     if not force and cached_at and now - cached_at < timedelta(minutes=2):
         return _melbet_totals_cache
     last_attempt = _melbet_totals_cache.get("last_attempt_at")
     if not force and _melbet_totals_cache.get("error") and last_attempt and now - last_attempt < timedelta(minutes=1):
+        return _melbet_totals_cache
+    if defer_refresh:
+        with _melbet_totals_lock:
+            if _melbet_totals_cache.get("refreshing"):
+                return _melbet_totals_cache
+            _melbet_totals_cache["refreshing"] = True
+
+        def refresh():
+            try:
+                melbet_totals_markets(force=True)
+            finally:
+                with _melbet_totals_lock:
+                    _melbet_totals_cache["refreshing"] = False
+                _projection_board_cache.clear()
+
+        threading.Thread(target=refresh, name="melbet-totals-refresh", daemon=True).start()
         return _melbet_totals_cache
     with _melbet_totals_lock:
         cached_at = _melbet_totals_cache.get("updated_at")
@@ -1219,9 +2207,181 @@ def match_melbet_totals(home_name, away_name, starts_at, snapshot=None):
         "available": bool(market["lines"]), "lines": market["lines"],
         "source": "MelBet displayed full-game totals" + (" via proxy" if market.get("feed_host") == MELBET_PROXY_BASE else ""),
         "feed_host": market.get("feed_host"), "prices_used": False,
+        "odds_format": "decimal", "odds_model_inputs": False,
+        "moneyline_odds": market.get("moneyline_odds", {}),
+        "total_odds": market.get("total_odds", {}),
         "observed_at": snapshot.get("updated_at").isoformat() if snapshot.get("updated_at") else None,
         "bookmaker_game_id": market["bookmaker_game_id"], "game_label": market.get("game_label"),
     }
+
+
+def totals_distribution_probability(expected_total, line, side, prediction_interval_80):
+    """Conservative side probability implied by the model's residual interval."""
+    try:
+        expected = float(expected_total)
+        threshold = float(line)
+        lower, upper = (float(value) for value in prediction_interval_80)
+    except (TypeError, ValueError):
+        return None
+    lower_width = expected - lower
+    upper_width = upper - expected
+    residual_width = max(lower_width, upper_width)
+    if not math.isfinite(residual_width) or residual_width <= 0:
+        return None
+    # For a central 80% interval, either tail is 1.28155 standard deviations.
+    # Using the wider tail is deliberately conservative when residuals are skewed.
+    sigma = residual_width / 1.2815515655446004
+    z_score = (threshold - expected) / max(sigma, 1e-6)
+    under = .5 * (1 + math.erf(z_score / math.sqrt(2)))
+    probability = under if side == "under" else 1 - under
+    return max(0.0, min(1.0, probability))
+
+
+def totals_empirical_residual_probability(expected_total, line, side, calibration):
+    """Return a smoothed probability from previously settled forecast errors.
+
+    Residuals are frozen by nightly maintenance and therefore predate the game
+    being selected.  A small symmetric prior prevents a short residual history
+    from producing extreme probabilities.
+    """
+    try:
+        threshold = float(line) - float(expected_total)
+    except (TypeError, ValueError):
+        return None
+    residuals = []
+    for value in (calibration or {}).get("empirical_residuals", []):
+        try:
+            residual = float(value)
+        except (TypeError, ValueError):
+            continue
+        if math.isfinite(residual):
+            residuals.append(residual)
+    minimum = int((calibration or {}).get("minimum_empirical_residuals") or 60)
+    if len(residuals) < minimum:
+        return None
+    prior = 8.0
+    over = (sum(value > threshold for value in residuals) + prior / 2) / (len(residuals) + prior)
+    probability = over if side == "over" else 1 - over
+    return max(0.0, min(1.0, probability))
+
+
+def totals_no_vig_imbalance(row):
+    odds = row.get("melbet_odds") or {}
+    try:
+        over_price, under_price = float(odds["over"]), float(odds["under"])
+        if over_price <= 1 or under_price <= 1:
+            return None
+        over_implied, under_implied = 1 / over_price, 1 / under_price
+        return abs(over_implied / (over_implied + under_implied) - .5)
+    except (KeyError, TypeError, ValueError, ZeroDivisionError):
+        return None
+
+
+def totals_market_central_line(thresholds):
+    """Return the displayed total whose paired prices are closest to even."""
+    candidates = []
+    for row in thresholds or []:
+        imbalance = totals_no_vig_imbalance(row)
+        if imbalance is not None:
+            candidates.append((imbalance, float(row["line"])))
+    return min(candidates)[1] if candidates else None
+
+
+def deterministic_totals_audit_selection(projection, thresholds=None):
+    """Return one stable, market-representative selection for model auditing.
+
+    Audit selection is intentionally independent of the deployment promotion
+    gate. The Builder may only consume ``recommended_*`` when
+    ``automatic_builder_eligible`` is true, while this selection exists for
+    every usable pregame totals forecast, including legacy snapshots.
+    """
+    projection = projection or {}
+    try:
+        audit_line = float(projection.get("audit_line"))
+        audit_side = str(projection.get("audit_side") or "").lower()
+        audit_probability = float(projection.get("audit_probability"))
+        if audit_side in ("over", "under"):
+            return {
+                "line": audit_line, "side": audit_side,
+                "probability": audit_probability,
+                "push_probability": float(projection.get("audit_push_probability") or 0),
+                "rule": projection.get("audit_selection_rule") or "archived_deterministic_audit_selection",
+            }
+    except (TypeError, ValueError):
+        pass
+
+    usable = []
+    for threshold in thresholds if thresholds is not None else projection.get("thresholds", []):
+        try:
+            line = float(threshold["line"])
+            over = float(threshold["over_probability"])
+            under = float(threshold["under_probability"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        usable.append((line, threshold, over, under))
+
+    if not usable:
+        try:
+            line = float(projection.get("recommended_line"))
+            side = str(projection.get("recommended_side") or "").lower()
+            probability = float(projection.get("recommended_probability"))
+        except (TypeError, ValueError):
+            return None
+        if side not in ("over", "under"):
+            return None
+        return {
+            "line": line, "side": side, "probability": probability,
+            "push_probability": 0.0,
+            "rule": "original_model_recommendation_without_threshold_grid",
+        }
+
+    central_line = totals_market_central_line([row for _, row, _, _ in usable])
+    if central_line is None:
+        try:
+            recommended_line = float(projection.get("recommended_line"))
+        except (TypeError, ValueError):
+            recommended_line = None
+        offered_lines = {line for line, _, _, _ in usable}
+        if recommended_line in offered_lines:
+            central_line = recommended_line
+        else:
+            try:
+                central_line = float(projection.get("expected_total_runs"))
+            except (TypeError, ValueError):
+                ordered = sorted(offered_lines)
+                central_line = ordered[(len(ordered) - 1) // 2]
+
+    # Audit the actual balanced market line.  Moving an integer centre to a
+    # lower half-line mechanically favoured Overs and treated pushes as losses.
+    try:
+        expected_anchor = float(projection.get("expected_total_runs"))
+    except (TypeError, ValueError):
+        expected_anchor = central_line
+    line, selected_row, over, under = min(
+        usable,
+        key=lambda item: (abs(item[0] - central_line), abs(item[0] - expected_anchor)),
+    )
+    side = "over" if over >= under else "under"
+    probability = over if side == "over" else under
+    return {
+        "line": line, "side": side, "probability": round(probability, 4),
+        "push_probability": round(float(selected_row.get("push_probability") or 0), 4),
+        "rule": "exact_balanced_market_line_max_probability_side_push_aware",
+    }
+
+
+def apply_totals_audit_selection(projection, thresholds=None):
+    selection = deterministic_totals_audit_selection(projection, thresholds)
+    if selection:
+        projection.update({
+            "audit_line": selection["line"],
+            "audit_side": selection["side"],
+            "audit_probability": selection["probability"],
+            "audit_push_probability": selection.get("push_probability", 0),
+            "audit_selection_rule": selection["rule"],
+            "audit_policy_version": "central-line-consensus-v2",
+        })
+    return projection
 
 
 def restrict_totals_to_available_lines(projection, market):
@@ -1231,7 +2391,10 @@ def restrict_totals_to_available_lines(projection, market):
         "prices_used": False, "observed_at": None,
     }
     result["selection_available"] = bool(market and market.get("lines"))
+    result["automatic_selection_available"] = False
+    result["automatic_builder_eligible"] = False
     if not result.get("available") or not result["selection_available"]:
+        apply_totals_audit_selection(result)
         return result
     offered = {float(line) for line in market["lines"]}
     thresholds = [row for row in result.get("thresholds", []) if float(row.get("line", -999)) in offered]
@@ -1241,6 +2404,7 @@ def restrict_totals_to_available_lines(projection, market):
     normalized_thresholds = []
     for threshold in thresholds:
         row = dict(threshold)
+        row["melbet_odds"] = (market.get("total_odds", {}).get(float(row.get("line", -999))) or {})
         push = max(0.0, min(1.0, float(row.get("push_probability", 0) or 0)))
         resolved = 1 - push
         is_integer_line = abs(float(row.get("line", 0)) - round(float(row.get("line", 0)))) < 1e-9
@@ -1254,19 +2418,206 @@ def restrict_totals_to_available_lines(projection, market):
             })
         normalized_thresholds.append(row)
     thresholds = normalized_thresholds
-    candidates = []
+    apply_totals_audit_selection(result, thresholds)
+    configured_lines = (result.get("model") or {}).get("decision_lines") or [7.5, 8.5, 9.5, 10.5]
+    decision_lines = {float(line) for line in configured_lines}
+    deployment_policy = deployment_selection_policy().get("totals", {})
+    calibration = deployment_policy.get("calibration") or {}
+    calibration_promoted = calibration.get("promoted") is True
+    logit_slope = float(calibration.get("logit_slope") or 1) if calibration_promoted else 1.0
+    global_intercepts = calibration.get("global_intercepts") or {}
+    line_side_intercepts = calibration.get("line_side_intercepts") or {}
+    hierarchical_calibration = bool(global_intercepts and line_side_intercepts)
+    legacy_offset = float(calibration.get("intercept", calibration.get("logit_offset")) or 0) if calibration_promoted else 0.0
+    expected_total = result.get("expected_total_runs")
+    try:
+        expected_total = float(expected_total)
+    except (TypeError, ValueError):
+        expected_total = None
+    prediction_interval_80 = result.get("prediction_interval_80")
+    consistency_margin = float(calibration.get("consistency_margin_runs") or 1.0)
+    override_probability = float(calibration.get("consistency_override_probability") or .62)
+    exact_selection_rules = deployment_policy.get("rules") or {}
+    automatic_thresholds = []
     for row in thresholds:
+        if float(row["line"]) not in decision_lines:
+            continue
+        raw_over = max(1e-6, min(1 - 1e-6, float(row["over_probability"])))
+        raw_under = max(1e-6, min(1 - 1e-6, float(row["under_probability"])))
+        if hierarchical_calibration:
+            scores = {}
+            for side, raw in (("over", raw_over), ("under", raw_under)):
+                key = f"{float(row['line']):g}:{side}"
+                intercept = float(line_side_intercepts.get(key, global_intercepts.get(side, 0)) or 0)
+                scores[side] = 1 / (1 + math.exp(-(intercept + logit_slope * math.log(raw / (1 - raw)))))
+            score_total = scores["over"] + scores["under"]
+            calibrated_over = scores["over"] / score_total
+            calibrated_under = scores["under"] / score_total
+        else:
+            calibrated_over = 1 / (1 + math.exp(-(legacy_offset + logit_slope * math.log(raw_over / (1 - raw_over)))))
+            calibrated_under = 1 - calibrated_over
+        difference = None if expected_total is None else expected_total - float(row["line"])
+        if difference is not None and difference >= consistency_margin and raw_over >= .5 and calibrated_over < .5:
+            row["pre_consistency_over_probability"] = round(calibrated_over, 4)
+            calibrated_over = .5 + (raw_over - .5) * .5
+            calibrated_under = 1 - calibrated_over
+            row["consistency_adjustment"] = "rejected_contradictory_under_used_conservative_raw_over"
+        elif difference is not None and difference <= -consistency_margin and raw_under >= .5 and calibrated_under < .5:
+            row["pre_consistency_under_probability"] = round(calibrated_under, 4)
+            calibrated_under = .5 + (raw_under - .5) * .5
+            calibrated_over = 1 - calibrated_under
+            row["consistency_adjustment"] = "rejected_contradictory_over_used_conservative_raw_under"
+        row["uncalibrated_over_probability"] = round(raw_over, 4)
+        row["uncalibrated_under_probability"] = round(raw_under, 4)
+        row["over_probability"] = round(calibrated_over, 4)
+        row["under_probability"] = round(calibrated_under, 4)
         for side in ("over", "under"):
-            candidates.append((float(row.get(f"{side}_probability", 0)), side, float(row["line"])))
-    probability, side, line = max(candidates, key=lambda item: item[0])
+            distribution_probability = totals_distribution_probability(
+                expected_total, row["line"], side, prediction_interval_80,
+            )
+            row[f"distribution_{side}_probability"] = (
+                None if distribution_probability is None else round(distribution_probability, 4)
+            )
+        row["probability_calibration"] = (
+            "hierarchical_line_side_platt" if hierarchical_calibration
+            else "production_logit_offset" if calibration_promoted else "none"
+        )
+        if calibration_promoted:
+            automatic_thresholds.append(row)
+    result["calibrated_decision_lines"] = sorted(
+        float(row["line"]) for row in automatic_thresholds
+    )
+    result["automatic_selection_lines"] = []
+    result["automatic_selection_policy"] = {
+        "status": "calibrated" if automatic_thresholds else "calibration_not_promoted",
+        "decision_lines": sorted(decision_lines), "deployment": deployment_policy,
+        "manual_lines_remain_available": True,
+    }
+    central_market_line = totals_market_central_line(thresholds)
+    result["central_market_line"] = central_market_line
+    if central_market_line is not None:
+        result["automatic_selection_policy"].update({
+            "central_market_line": central_market_line,
+            "line_anchor": "exact balanced MelBet total; no alternate-line fallback",
+        })
+    if not automatic_thresholds:
+        result.update({
+            "thresholds": thresholds,
+            "recommended_line": None,
+            "recommended_side": None,
+            "recommended_probability": None,
+            "automatic_builder_eligible": False,
+            "confidence_score": None,
+            "confidence_label": "Manual only",
+            "line_selection_rule": "Production totals calibration has not passed chronological validation; all listed lines remain manually selectable",
+        })
+        return result
+    candidates = []
+    rejected_candidates = []
+    for row in automatic_thresholds:
+        line = float(row["line"])
+        if central_market_line is None or abs(line - central_market_line) > 1e-9:
+            rejected_candidates.append({
+                "line": line, "side": None, "probability": None,
+                "market_line_distance": None if central_market_line is None else abs(line - central_market_line),
+                "reason": "Rejected: automatic totals use only MelBet's balanced central line; alternate ladder lines remain manual.",
+            })
+            continue
+        for side in ("over", "under"):
+            calibrated_probability = float(row.get(f"{side}_probability", 0))
+            distribution_probability = row.get(f"distribution_{side}_probability")
+            empirical_probability = totals_empirical_residual_probability(
+                expected_total, line, side, calibration,
+            )
+            consensus_values = [calibrated_probability]
+            if distribution_probability is not None:
+                consensus_values.append(float(distribution_probability))
+            if empirical_probability is not None:
+                consensus_values.append(float(empirical_probability))
+            probability = min(consensus_values)
+            difference = None if expected_total is None else expected_total - line
+            contradiction = difference is not None and (
+                (side == "under" and difference >= consistency_margin)
+                or (side == "over" and difference <= -consistency_margin)
+            )
+            evidence_key = f"{line:g}:{side}"
+            evidence = exact_selection_rules.get(evidence_key) or {}
+            evidence_passed = evidence.get("automatic_eligible") is True
+            distribution_agrees = distribution_probability is not None and float(distribution_probability) >= .5
+            empirical_agrees = empirical_probability is not None and float(empirical_probability) >= .5
+            override = probability >= override_probability and evidence_passed
+            candidate = {
+                "probability": probability, "side": side, "line": line,
+                "market_line_distance": None if central_market_line is None else abs(line - central_market_line),
+                "calibrated_probability": calibrated_probability,
+                "distribution_probability": distribution_probability,
+                "empirical_residual_probability": empirical_probability,
+                "exact_line_side_evidence": evidence,
+                "distribution_consistent": not contradiction,
+                "consistency_override": bool(contradiction and override),
+            }
+            if not evidence_passed:
+                candidate["reason"] = (
+                    f"Rejected: {side.title()} {line:g} has not passed the exact line/side sample, Brier and Wilson gates."
+                )
+                rejected_candidates.append(candidate)
+            elif not distribution_agrees or not empirical_agrees:
+                missing = []
+                if not distribution_agrees:
+                    missing.append("forecast distribution")
+                if not empirical_agrees:
+                    missing.append("nightly empirical residuals")
+                candidate["reason"] = (
+                    f"Rejected: {side.title()} {line:g} lacks agreement from " + " and ".join(missing) + "."
+                )
+                rejected_candidates.append(candidate)
+            elif contradiction and not override:
+                candidate["reason"] = (
+                    f"Rejected: {side.title()} {line:g} contradicts expected total {expected_total:g} "
+                    f"by {abs(difference):.1f} runs without validated {override_probability:.0%} override evidence."
+                )
+                rejected_candidates.append(candidate)
+            elif probability < .5:
+                candidate["reason"] = (
+                    f"Rejected: conservative calibrated/distribution {side.title()} {line:g} "
+                    "probability is below 50%."
+                )
+                rejected_candidates.append(candidate)
+            else:
+                candidates.append(candidate)
+    result["automatic_selection_rejections"] = rejected_candidates
+    result["automatic_candidates"] = sorted(candidates, key=lambda item: (
+        item["market_line_distance"] if item["market_line_distance"] is not None else 0,
+        -item["probability"],
+    ))
+    if not candidates:
+        result.update({
+            "thresholds": thresholds,
+            "recommended_line": None,
+            "recommended_side": None,
+            "recommended_probability": None,
+            "automatic_selection_available": False,
+            "automatic_builder_eligible": False,
+            "confidence_score": None,
+            "confidence_label": "Manual only",
+            "line_selection_rule": "No central-line side passed exact evidence plus forecast-distribution and empirical-residual consensus; listed lines remain manually selectable",
+        })
+        result["automatic_selection_policy"]["status"] = "distribution_consistency_rejected"
+        return result
+    selected = max(candidates, key=lambda item: item["probability"])
+    probability, side, line = selected["probability"], selected["side"], selected["line"]
+    if central_market_line is not None:
+        result["automatic_selection_lines"] = [line]
     completeness = float(result.get("input_completeness", 0))
     adjusted = .5 + (probability - .5) * (.75 + .25 * completeness)
     result.update({
         "thresholds": thresholds, "recommended_line": line,
         "recommended_side": side, "recommended_probability": round(probability, 4),
+        "automatic_selection_available": True,
+        "automatic_builder_eligible": True,
         "confidence_score": round(adjusted * 100),
         "confidence_label": "High" if adjusted >= .72 else "Moderate" if adjusted >= .60 else "Low",
-        "line_selection_rule": "Highest calibrated side probability among currently displayed full-game totals; integer-line chances are conditional on no push; prices excluded",
+        "line_selection_rule": "Exact balanced MelBet line with passed line/side evidence and conservative agreement across calibration, forecast distribution and nightly empirical residuals; decimal odds only identify the central line",
     })
     return result
 
@@ -1614,7 +2965,9 @@ def projection_board(start_date, days=7):
         return cached[1]
     final_day = first_day + timedelta(days=days - 1)
     raw_games = board_schedule(first_day.isoformat(), final_day.isoformat())
-    totals_market_snapshot = melbet_totals_markets()
+    # Market discovery must never hold the MLB slate hostage. On a cold start,
+    # return projections immediately and merge MelBet lines on the next poll.
+    totals_market_snapshot = melbet_totals_markets(defer_refresh=True)
     now = datetime.now(timezone.utc)
     context_candidates = []
     for game in raw_games:
@@ -1671,6 +3024,8 @@ def projection_board(start_date, days=7):
         if cached:
             baselines[str(game["game_id"])] = cached
 
+    recommendation_policy = deployment_selection_policy()
+    moneyline_policy = recommendation_policy["moneyline"]
     games = []
     for game in upcoming_games:
         # Confirmed starters and lineups normally arrive close to first pitch.
@@ -1691,6 +3046,7 @@ def projection_board(start_date, days=7):
         home_probability = projection["home_win_probability"]
         away_probability = projection["away_win_probability"]
         selected_home = home_probability >= away_probability
+        selected_probability = max(home_probability, away_probability)
         games.append({
             "game_id": int(game["game_id"]), "starts_at": game["game_datetime"],
             "status": game.get("status", "Scheduled"), "venue": game.get("venue_name") or "Venue TBD",
@@ -1699,12 +3055,14 @@ def projection_board(start_date, days=7):
             "away_win_probability": away_probability, "home_win_probability": home_probability,
             "recommended_side": "home" if selected_home else "away",
             "recommended_team_id": int(game["home_id"] if selected_home else game["away_id"]),
-            "recommended_probability": max(home_probability, away_probability),
+            "recommended_probability": selected_probability,
+            "automatic_moneyline_eligible": True,
             "model_confidence": projection.get("confidence_score"),
             "historical_tier": projection.get("historical_tier"),
             "input_completeness": projection.get("input_completeness", 0),
             "projection_updated_at": (context_snapshot or {}).get("updated_at") or now.isoformat(),
             "projection_basis": "matchup_synced" if context_snapshot else "early_baseline",
+            "moneyline_odds": (totals_market or {}).get("moneyline_odds", {}),
             "totals_projection": totals_projection,
         })
     games.sort(key=lambda item: item["starts_at"])
@@ -1730,11 +3088,25 @@ def projection_board(start_date, days=7):
     try:
         with open(MARKET_SLIP_CALIBRATION, "r", encoding="utf-8") as handle:
             market_slip_calibration = json.load(handle)
+            deployed_totals_model = (totals_report or {}).get("model")
+            calibrated_totals_model = market_slip_calibration.get("totals_model")
+            market_slip_calibration["deployed_totals_model"] = deployed_totals_model
+            market_slip_calibration["compatible_with_deployed_totals"] = bool(
+                deployed_totals_model
+                and calibrated_totals_model
+                and calibrated_totals_model == deployed_totals_model
+            )
+            if not market_slip_calibration["compatible_with_deployed_totals"]:
+                market_slip_calibration["compatibility_note"] = (
+                    "Totals and mixed card adjustment is disabled because this "
+                    "calibrator was not generated from the deployed totals artifact."
+                )
     except (OSError, json.JSONDecodeError):
         market_slip_calibration = None
     payload = {
         "generated_at": now.isoformat(), "start_date": first_day.isoformat(), "days": days,
         "games": games, "recommended_game_ids": [item["game_id"] for item in recommendation],
+        "automatic_recommendation_policy": recommendation_policy,
         "recommendation_available": len(recommendation) == 5,
         "slip_calibration": slip_calibration,
         "multiday_slip_calibrations": multiday_slip_calibrations,
@@ -1746,7 +3118,8 @@ def projection_board(start_date, days=7):
         "projection_pending": baseline_pending,
         "scheduled_games": len(upcoming_games),
         "totals_line_feed": {
-            "source": "MelBet displayed full-game totals", "prices_used": False,
+            "source": "MelBet displayed full-game totals and decimal odds", "prices_used": False,
+            "odds_available": True, "odds_format": "decimal", "odds_model_inputs": False,
             "observed_at": totals_market_snapshot.get("updated_at").isoformat() if totals_market_snapshot.get("updated_at") else None,
             "listed_games": len(totals_market_snapshot.get("markets", [])),
             "error": totals_market_snapshot.get("error"),
@@ -1802,6 +3175,35 @@ def load_projection_snapshots(game_id=None):
     return snapshots
 
 
+def reverse_jsonl(path, block_size=128 * 1024):
+    """Yield an append-only JSONL file newest-first without loading it all."""
+    try:
+        with open(path, "rb") as handle:
+            handle.seek(0, os.SEEK_END)
+            position = handle.tell()
+            leading_fragment = b""
+            while position > 0:
+                read_size = min(block_size, position)
+                position -= read_size
+                handle.seek(position)
+                parts = (handle.read(read_size) + leading_fragment).split(b"\n")
+                leading_fragment = parts[0]
+                for raw in reversed(parts[1:]):
+                    if not raw.strip():
+                        continue
+                    try:
+                        yield json.loads(raw)
+                    except (json.JSONDecodeError, UnicodeDecodeError):
+                        continue
+            if leading_fragment.strip():
+                try:
+                    yield json.loads(leading_fragment)
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    pass
+    except OSError:
+        return
+
+
 def last_pregame_snapshot(game_id, game_datetime):
     if not game_datetime:
         return None
@@ -1809,13 +3211,22 @@ def last_pregame_snapshot(game_id, game_datetime):
         starts_at = datetime.fromisoformat(game_datetime.replace("Z", "+00:00"))
     except (TypeError, ValueError):
         return None
-    rows = load_projection_snapshots(game_id).get(int(game_id), [])
-    eligible = [row for row in rows if row["_recorded_at"] <= starts_at and row.get("phase") != "live"]
-    return max(eligible, key=lambda row: row["_recorded_at"]) if eligible else None
+    wanted_game_id = int(game_id)
+    for row in reverse_jsonl(PROJECTION_LOG):
+        try:
+            if int(row["game_id"]) != wanted_game_id or row.get("phase") == "live":
+                continue
+            recorded_at = datetime.fromisoformat(row["recorded_at"].replace("Z", "+00:00"))
+        except (KeyError, TypeError, ValueError):
+            continue
+        if recorded_at <= starts_at:
+            row["_recorded_at"] = recorded_at
+            return row
+    return None
 
 
-def locked_pregame_projection(game_id, game_datetime):
-    snapshot = last_pregame_snapshot(game_id, game_datetime)
+def locked_pregame_projection(game_id, game_datetime, snapshot=None):
+    snapshot = snapshot or last_pregame_snapshot(game_id, game_datetime)
     if not snapshot:
         return {"available": False, "message": "No projection was archived before scheduled first pitch.", "projection_source": "pregame_missing"}
     probability = float(snapshot["home_win_probability"])
@@ -1851,8 +3262,8 @@ def locked_pregame_projection(game_id, game_datetime):
     return projection
 
 
-def locked_pregame_totals_projection(game_id, game_datetime):
-    snapshot = last_pregame_snapshot(game_id, game_datetime)
+def locked_pregame_totals_projection(game_id, game_datetime, snapshot=None):
+    snapshot = snapshot or last_pregame_snapshot(game_id, game_datetime)
     stored = (snapshot or {}).get("totals_projection")
     if not stored:
         return {"available": False, "message": "No totals forecast was archived before scheduled first pitch."}
@@ -1891,10 +3302,21 @@ def record_projection(game_id, projection, context=None, status_code="Preview", 
     totals_summary = None
     totals_changed = False
     if totals_projection and totals_projection.get("available"):
-        total_keys = ("expected_total_runs", "prediction_interval_80", "recommended_line", "recommended_side", "recommended_probability", "confidence_score", "confidence_label", "input_completeness", "confidence_explanation", "thresholds", "reasons", "market_inputs", "selection_available", "line_market", "line_selection_rule")
+        apply_totals_audit_selection(totals_projection)
+        if totals_projection.get("automatic_builder_eligible") is None:
+            totals_projection["automatic_builder_eligible"] = (
+                totals_projection.get("automatic_selection_available") is True
+            )
+        total_keys = ("expected_total_runs", "prediction_interval_80", "recommended_line", "recommended_side", "recommended_probability", "audit_line", "audit_side", "audit_probability", "audit_push_probability", "audit_selection_rule", "audit_policy_version", "automatic_builder_eligible", "automatic_selection_available", "confidence_score", "confidence_label", "input_completeness", "confidence_explanation", "thresholds", "reasons", "market_inputs", "selection_available", "line_market", "line_selection_rule", "central_market_line", "automatic_selection_policy", "automatic_selection_rejections")
         totals_summary = {key: totals_projection.get(key) for key in total_keys}
         previous_total = _totals_projection_last.get(str(game_id))
-        totals_changed = previous_total is None or previous_total.get("recommended_line") != totals_summary.get("recommended_line") or previous_total.get("recommended_side") != totals_summary.get("recommended_side") or abs(float(previous_total.get("recommended_probability", 0)) - float(totals_summary.get("recommended_probability", 0))) >= .005
+        totals_changed = previous_total is None or any(
+            previous_total.get(key) != totals_summary.get(key)
+            for key in ("recommended_line", "recommended_side", "audit_line", "audit_side", "audit_push_probability", "automatic_builder_eligible")
+        ) or any(
+            abs(float(previous_total.get(key) or 0) - float(totals_summary.get(key) or 0)) >= .005
+            for key in ("recommended_probability", "audit_probability")
+        )
     if previous is None or movement["changed"] or coverage_changed or game_state_changed or new_alerts or totals_changed:
         os.makedirs(os.path.dirname(PROJECTION_LOG), exist_ok=True)
         audit_keys = ("confidence_score", "confidence_label", "input_completeness", "confidence_explanation", "historical_tier", "market_inputs", "projection_source", "projection_phase", "game_state", "pregame_home_win_probability", "pregame_away_win_probability")
@@ -1914,7 +3336,10 @@ def record_projection(game_id, projection, context=None, status_code="Preview", 
 def prediction_results_page(results, target_date=None, page=1, page_size=10, updated_at=None, market="moneyline"):
     """Filter and paginate scored forecasts without changing their audit totals."""
     if market == "totals":
-        results = [{**row, "correct": row["total_correct"]} for row in results if row.get("totals_eligible")]
+        results = [
+            {**row, "correct": row["total_correct"]}
+            for row in results if row.get("totals_eligible")
+        ]
     if target_date:
         results = [row for row in results if row.get("game_date") == target_date]
     ranked = sorted(
@@ -1927,9 +3352,12 @@ def prediction_results_page(results, target_date=None, page=1, page_size=10, upd
         for legs in range(2, min(8, len(ranked)) + 1):
             selections = ranked[:legs]
             correct_legs = sum(1 for row in selections if row["correct"])
+            push_legs = sum(1 for row in selections if market == "totals" and row.get("total_push"))
+            decided_legs = legs - push_legs
             daily_parlays.append({
-                "legs": legs, "correct_legs": correct_legs,
-                "leg_accuracy": correct_legs / legs, "all_correct": correct_legs == legs,
+                "legs": legs, "correct_legs": correct_legs, "push_legs": push_legs,
+                "leg_accuracy": correct_legs / decided_legs if decided_legs else None,
+                "all_correct": decided_legs > 0 and correct_legs == decided_legs,
                 "game_ids": [row["game_id"] for row in selections],
             })
     page_size = max(1, min(int(page_size or 10), 50))
@@ -1938,13 +3366,15 @@ def prediction_results_page(results, target_date=None, page=1, page_size=10, upd
     page = max(1, min(int(page or 1), total_pages))
     start = (page - 1) * page_size
     games = results[start:start + page_size]
-    correct = sum(1 for row in results if row["correct"])
+    scored = [row for row in results if not (market == "totals" and row.get("total_push"))]
+    correct = sum(1 for row in scored if row["correct"])
     brier = None
-    if market == "totals" and results:
-        brier = sum((float(row["total_probability"]) - int(row["total_correct"])) ** 2 for row in results) / len(results)
+    if market == "totals" and scored:
+        brier = sum((float(row["total_probability"]) - int(row["total_correct"])) ** 2 for row in scored) / len(scored)
     return {
-        "games": games, "evaluated": total, "correct": correct,
-        "accuracy": correct / total if total else None, "date": target_date,
+        "games": games, "evaluated": len(scored), "correct": correct,
+        "pushes": sum(1 for row in results if row.get("total_push")) if market == "totals" else 0,
+        "accuracy": correct / len(scored) if scored else None, "date": target_date,
         "market": market, "brier_score": brier,
         "daily_parlays": daily_parlays,
         "page": page, "page_size": page_size, "total_pages": total_pages,
@@ -1957,12 +3387,13 @@ PLAYER_PROP_OUTCOME_FIELDS = {
     "batter": {
         "hits": "hits", "total_bases": "totalBases", "home_runs": "homeRuns",
         "runs": "runs", "rbi": "rbi", "walks": "baseOnBalls",
-        "strikeouts": "strikeOuts", "doubles": "doubles", "stolen_bases": "stolenBases",
+        "strikeouts": "strikeOuts", "doubles": "doubles", "triples": "triples",
+        "stolen_bases": "stolenBases",
     },
     "pitcher": {
         "strikeouts": "strikeOuts", "outs": "outs", "walks": "baseOnBalls",
         "hits_allowed": "hits", "earned_runs": "earnedRuns",
-        "home_runs_allowed": "homeRuns", "pitches": "pitchesThrown",
+        "home_runs_allowed": "homeRuns", "pitches": "pitchesThrown", "win": "wins",
     },
 }
 
@@ -2009,9 +3440,15 @@ def _player_prop_actual(boxscore, selection):
     if int(participation or 0) <= 0:
         return None
     field = PLAYER_PROP_OUTCOME_FIELDS.get(kind, {}).get(selection.get("prop"))
-    if not field:
-        return None
     try:
+        if kind == "batter" and selection.get("prop") == "singles":
+            return float(stats.get("hits") or 0) - float(stats.get("doubles") or 0) \
+                - float(stats.get("triples") or 0) - float(stats.get("homeRuns") or 0)
+        if kind == "batter" and selection.get("prop") == "hits_runs_rbi":
+            return float(stats.get("hits") or 0) + float(stats.get("runs") or 0) \
+                + float(stats.get("rbi") or 0)
+        if not field:
+            return None
         return float(stats.get(field) or 0)
     except (TypeError, ValueError):
         return None
@@ -2078,7 +3515,7 @@ def _completed_player_prop_results(
 ):
     global _player_prop_results_cache
     now = datetime.now(timezone.utc)
-    if _player_prop_results_cache and now - _player_prop_results_cache[0] < timedelta(minutes=5):
+    if _player_prop_results_cache and now - _player_prop_results_cache[0] < timedelta(minutes=15):
         results, updated_at = _player_prop_results_cache[1], _player_prop_results_cache[0].isoformat()
     else:
         snapshots = load_player_prop_snapshots()
@@ -2086,6 +3523,7 @@ def _completed_player_prop_results(
         if snapshots:
             earliest = min(row["_recorded_at"].date() for rows in snapshots.values() for row in rows)
             games = statsapi.schedule(start_date=earliest.isoformat(), end_date=now.date().isoformat(), sportId=1)
+            eligible_games = []
             for game in games:
                 game_id = int(game.get("game_id") or 0)
                 if game_id not in snapshots or "final" not in str(game.get("status", "")).lower():
@@ -2098,9 +3536,21 @@ def _completed_player_prop_results(
                 if not eligible:
                     continue
                 snapshot = max(eligible, key=lambda row: row["_recorded_at"])
+                eligible_games.append((game, game_id, starts_at, snapshot))
+
+            def fetch_boxscore(item):
+                game_id = item[1]
                 try:
-                    boxscore = _player_prop_boxscore(game_id)
+                    return game_id, _player_prop_boxscore(game_id)
                 except (requests.RequestException, ValueError, KeyError):
+                    return game_id, None
+
+            with ThreadPoolExecutor(max_workers=min(8, len(eligible_games) or 1)) as pool:
+                boxscores = dict(pool.map(fetch_boxscore, eligible_games))
+
+            for game, game_id, starts_at, snapshot in eligible_games:
+                boxscore = boxscores.get(game_id)
+                if not boxscore:
                     continue
                 home = {"id": int(game["home_id"]), "name": game.get("home_name")}
                 away = {"id": int(game["away_id"]), "name": game.get("away_name")}
@@ -2161,12 +3611,20 @@ def _completed_prediction_results(target_date=None, page=1, page_size=10, market
                 home = {"id": int(game["home_id"]), "name": game.get("home_name")}
                 away = {"id": int(game["away_id"]), "name": game.get("away_name")}
                 total_projection = snapshot.get("totals_projection") or {}
-                total_line = total_projection.get("recommended_line")
-                total_side = total_projection.get("recommended_side")
-                total_probability = total_projection.get("recommended_probability")
+                audit_selection = deterministic_totals_audit_selection(total_projection)
+                total_line = audit_selection.get("line") if audit_selection else None
+                total_side = audit_selection.get("side") if audit_selection else None
+                total_probability = audit_selection.get("probability") if audit_selection else None
                 total_runs = int(game["home_score"]) + int(game["away_score"])
                 totals_eligible = total_line is not None and total_side in ("over", "under") and total_probability is not None
-                total_correct = bool((total_runs > float(total_line)) == (total_side == "over")) if totals_eligible else None
+                total_push = bool(totals_eligible and total_runs == float(total_line))
+                total_correct = (
+                    bool((total_runs > float(total_line)) == (total_side == "over"))
+                    if totals_eligible and not total_push else None
+                )
+                automatic_builder_eligible = total_projection.get("automatic_builder_eligible")
+                if automatic_builder_eligible is None:
+                    automatic_builder_eligible = total_projection.get("automatic_selection_available") is True
                 results.append({
                     "game_id": game_id, "game_date": game.get("game_date") or starts_at.date().isoformat(),
                     "starts_at": game.get("game_datetime"), "snapshot_at": snapshot["recorded_at"],
@@ -2176,6 +3634,8 @@ def _completed_prediction_results(target_date=None, page=1, page_size=10, market
                     "winner_side": actual_side, "winner": (home if actual_side == "home" else away), "correct": correct,
                     "totals_eligible": totals_eligible, "total_runs": total_runs, "total_line": total_line,
                     "total_side": total_side, "total_probability": total_probability, "total_correct": total_correct,
+                    "total_push": total_push,
+                    "total_automatic_builder_eligible": bool(automatic_builder_eligible),
                 })
         results.sort(key=lambda row: row["starts_at"] or "", reverse=True)
         _prediction_results_cache = (now, results)
@@ -2360,22 +3820,204 @@ def player_detail(player_id):
     return statsapi.player_stat_data(int(player_id), group="[hitting,pitching,fielding]", type="season")
 
 
-def pitcher_profile(person):
+def _pitcher_game_line(split):
+    stat = split.get("stat", {})
+    decision = "W" if int(stat.get("wins") or 0) else "L" if int(stat.get("losses") or 0) else "ND"
+    opponent = split.get("opponent", {})
+    return {
+        "game_id": (split.get("game") or {}).get("gamePk"),
+        "date": split.get("date"),
+        "opponent_id": opponent.get("id"),
+        "opponent": opponent.get("name") or "Unknown opponent",
+        "venue": "home" if split.get("isHome") else "away",
+        "decision": decision,
+        "team_result": "W" if split.get("isWin") else "L",
+        "innings": stat.get("inningsPitched"),
+        "hits": stat.get("hits"),
+        "runs": stat.get("runs"),
+        "earned_runs": stat.get("earnedRuns"),
+        "walks": stat.get("baseOnBalls"),
+        "strikeouts": stat.get("strikeOuts"),
+        "home_runs": stat.get("homeRuns"),
+        "pitches": stat.get("numberOfPitches"),
+    }
+
+
+def _guarantee_wilson_lower(wins, samples, z=1.282):
+    """Return an 80% Wilson lower bound for a compact, sample-aware rank."""
+    if samples <= 0:
+        return 0.0
+    rate = wins / samples
+    denominator = 1 + z * z / samples
+    centre = rate + z * z / (2 * samples)
+    margin = z * math.sqrt(rate * (1 - rate) / samples + z * z / (4 * samples * samples))
+    return max(0.0, (centre - margin) / denominator)
+
+
+def player_prop_guarantees(minimum_samples=1, search=None, prop_types=None):
+    """Aggregate immutable prop predictions by player and exact pick identity.
+
+    The user-facing name is Guarantee List, but the ranking is deliberately a
+    historical consistency measure rather than a future-certainty claim.
+    """
+    global _player_prop_guarantee_cache
+    try:
+        fingerprint = os.path.getmtime(LIVE_PLAYER_PROPS_AUDIT)
+    except OSError:
+        fingerprint = None
+    with _player_prop_guarantee_lock:
+        if not _player_prop_guarantee_cache or _player_prop_guarantee_cache[0] != fingerprint:
+            try:
+                with open(LIVE_PLAYER_PROPS_AUDIT, encoding="utf-8") as handle:
+                    audit = json.load(handle)
+            except (OSError, json.JSONDecodeError):
+                audit = {}
+            groups = {}
+            for row in audit.get("rows") or []:
+                try:
+                    key = (
+                        int(row["player_id"]), str(row["kind"]), str(row["prop"]),
+                        str(row["side"]).lower(), float(row["line"]),
+                    )
+                    actual = int(row["actual"])
+                    probability = float(row.get("probability") or .5)
+                except (KeyError, TypeError, ValueError):
+                    continue
+                group = groups.setdefault(key, {
+                    "player_id": key[0], "player_name": row.get("player") or row.get("player_name") or f"Player {key[0]}",
+                    "kind": key[1], "prop": key[2], "side": key[3], "line": key[4], "rows": [],
+                })
+                group["rows"].append({
+                    "date": row.get("official_date") or row.get("date"),
+                    "actual": actual, "probability": probability, "value": row.get("value"),
+                })
+            records = []
+            for group in groups.values():
+                rows = sorted(group.pop("rows"), key=lambda item: item.get("date") or "")
+                samples = len(rows)
+                wins = sum(row["actual"] for row in rows)
+                recent = rows[-10:]
+                streak = 0
+                for row in reversed(rows):
+                    if row["actual"] != 1:
+                        break
+                    streak += 1
+                accuracy = wins / samples
+                brier = sum((row["probability"] - row["actual"]) ** 2 for row in rows) / samples
+                lower = _guarantee_wilson_lower(wins, samples)
+                evidence = "established" if samples >= 10 else "developing" if samples >= 5 else "early"
+                records.append({
+                    **group, "label": group["prop"].replace("_", " ").title(),
+                    "samples": samples, "correct": wins, "accuracy": round(accuracy, 6),
+                    "brier_score": round(brier, 6), "wilson_lower": round(lower, 6),
+                    "consistency_score": round(lower * min(1.0, samples / 10), 6),
+                    "current_streak": streak, "recent_10_correct": sum(row["actual"] for row in recent),
+                    "recent_10_samples": len(recent), "first_date": rows[0].get("date"),
+                    "last_date": rows[-1].get("date"), "evidence": evidence,
+                })
+            records.sort(key=lambda row: (row["consistency_score"], row["samples"], row["accuracy"]), reverse=True)
+            _player_prop_guarantee_cache = (fingerprint, records)
+        records = list(_player_prop_guarantee_cache[1])
+    minimum_samples = max(1, min(int(minimum_samples or 1), 100))
+    records = [row for row in records if row["samples"] >= minimum_samples]
+    if prop_types:
+        wanted = {str(value).lower() for value in prop_types}
+        records = [row for row in records if f"{row['kind']}:{row['prop']}".lower() in wanted]
+    if search:
+        needle = str(search).strip().lower()
+        records = [row for row in records if needle in row["player_name"].lower()]
+    total_predictions = sum(row["samples"] for row in records)
+    return {
+        "records": records, "players": len({row["player_id"] for row in records}),
+        "exact_picks": len(records), "predictions": total_predictions,
+        "minimum_samples": minimum_samples,
+        "updated_at": datetime.fromtimestamp(fingerprint, timezone.utc).isoformat() if fingerprint else None,
+        "method": "Same player, role, prop, side and exact line across immutable pregame predictions",
+        "ranking": "80% Wilson lower bound multiplied by evidence maturity through ten settled samples",
+        "warning": "Historical consistency is not a guarantee of the next outcome.",
+    }
+
+
+def _pitcher_venue_split(split):
+    stat = split.get("stat", {})
+    return {
+        "record": f"{int(stat.get('wins') or 0)}-{int(stat.get('losses') or 0)}",
+        "wins": int(stat.get("wins") or 0),
+        "losses": int(stat.get("losses") or 0),
+        "era": stat.get("era"),
+        "whip": stat.get("whip"),
+        "innings": stat.get("inningsPitched"),
+        "starts": int(stat.get("gamesStarted") or 0),
+    }
+
+
+def pitcher_profile(person, game_datetime=None, current_game_id=None):
     if not person or not person.get("id"):
         return None
     player_id = int(person["id"])
-    cached = _pitcher_profile_cache.get(player_id)
+    try:
+        season = int(str(game_datetime)[:4]) if game_datetime else datetime.now(timezone.utc).year
+    except (TypeError, ValueError):
+        season = datetime.now(timezone.utc).year
+    cache_key = (player_id, season, int(current_game_id or 0))
+    cached = _pitcher_profile_cache.get(cache_key)
     if cached and datetime.now(timezone.utc) - cached[0] < timedelta(minutes=10):
         return cached[1]
-    profile = statsapi.player_stat_data(player_id, group="pitching", type="season")
-    pitching = next((item.get("stats", {}) for item in profile.get("stats", []) if item.get("group") == "pitching"), {})
-    result = {
-        "id": person.get("id"), "name": person.get("fullName"), "team": profile.get("current_team"),
-        "position": profile.get("position"), "era": pitching.get("era"), "whip": pitching.get("whip"),
-        "innings": pitching.get("inningsPitched"), "strikeouts": pitching.get("strikeOuts"),
-        "walks": pitching.get("baseOnBalls"), "wins": pitching.get("wins"), "losses": pitching.get("losses"),
+    params = {
+        "personId": player_id,
+        "hydrate": (
+            "stats(group=[pitching],type=[season,gameLog,homeAndAway],"
+            f"season={season},sportId=1),currentTeam"
+        ),
     }
-    _pitcher_profile_cache[player_id] = (datetime.now(timezone.utc), result)
+    raw = statsapi.get("person", params)
+    profile = (raw.get("people") or [{}])[0]
+    sections = {
+        item.get("type", {}).get("displayName"): item.get("splits", [])
+        for item in profile.get("stats", [])
+        if item.get("group", {}).get("displayName") == "pitching"
+    }
+    season_splits = sections.get("season") or []
+    pitching = season_splits[0].get("stat", {}) if season_splits else {}
+    cutoff_date = str(game_datetime or "")[:10]
+    prior_starts = [
+        split for split in sections.get("gameLog", [])
+        if int(split.get("stat", {}).get("gamesStarted") or 0) > 0
+        and int((split.get("game") or {}).get("gamePk") or 0) != int(current_game_id or 0)
+        and (not cutoff_date or str(split.get("date") or "")[:10] < cutoff_date)
+    ]
+    prior_starts.sort(key=lambda split: split.get("date") or "", reverse=True)
+    venue_splits = {
+        "home" if split.get("isHome") else "away": _pitcher_venue_split(split)
+        for split in sections.get("homeAndAway", [])
+    }
+    innings = _innings_pitched(pitching.get("inningsPitched"))
+    strikeouts = _float(pitching.get("strikeOuts"))
+    walks = _float(pitching.get("baseOnBalls"))
+    home_runs = _float(pitching.get("homeRuns"))
+    starts = len(prior_starts)
+    runs_allowed = sum(_float(split.get("stat", {}).get("runs")) for split in prior_starts)
+    earned_runs_allowed = sum(_float(split.get("stat", {}).get("earnedRuns")) for split in prior_starts)
+    fip = (
+        (13 * home_runs + 3 * walks - 2 * strikeouts) / innings + 3.1
+        if innings > 0 else 4.5
+    )
+    result = {
+        "id": person.get("id"), "name": person.get("fullName"),
+        "team": (profile.get("currentTeam") or {}).get("name"),
+        "position": (profile.get("primaryPosition") or {}).get("abbreviation"),
+        "era": pitching.get("era"), "whip": pitching.get("whip"),
+        "innings": pitching.get("inningsPitched"), "innings_decimal": innings,
+        "strikeouts": pitching.get("strikeOuts"),
+        "walks": pitching.get("baseOnBalls"), "wins": pitching.get("wins"), "losses": pitching.get("losses"),
+        "home_runs": pitching.get("homeRuns"), "fip": round(fip, 3),
+        "starts_before_matchup": starts,
+        "runs_per_start": round(runs_allowed / starts, 2) if starts else None,
+        "earned_runs_per_start": round(earned_runs_allowed / starts, 2) if starts else None,
+        "home_away": venue_splits,
+        "recent_starts": [_pitcher_game_line(split) for split in prior_starts[:5]],
+    }
+    _pitcher_profile_cache[cache_key] = (datetime.now(timezone.utc), result)
     return result
 
 
@@ -2410,6 +4052,11 @@ class Handler(BaseHTTPRequestHandler):
                 try:
                     with open(PLAYER_PROPS_REPORT, "r", encoding="utf-8") as handle:
                         report["player_props_model"] = json.load(handle)
+                    try:
+                        with open(LIVE_PLAYER_PROPS_AUDIT, "r", encoding="utf-8") as handle:
+                            report["player_props_model"]["live_shadow_audit"] = json.load(handle)
+                    except (OSError, json.JSONDecodeError):
+                        report["player_props_model"]["live_shadow_audit"] = None
                 except (OSError, json.JSONDecodeError):
                     report["player_props_model"] = None
                 report["maintenance"] = maintenance_status()
@@ -2425,6 +4072,15 @@ class Handler(BaseHTTPRequestHandler):
                     query.get("date", [None])[0], query.get("page", [1])[0],
                     query.get("page_size", [10])[0],
                     query.get("market", ["moneyline"])[0], prop_types,
+                ))
+            elif parsed.path == "/player-props/guarantees":
+                prop_types = [
+                    value for item in query.get("prop_types", [])
+                    for value in str(item).split(",") if str(value).strip()
+                ] or None
+                self.send_json(player_prop_guarantees(
+                    query.get("minimum_samples", [1])[0],
+                    query.get("search", [None])[0], prop_types,
                 ))
             elif parsed.path == "/projection-board":
                 start_date = query.get("start_date", [datetime.now(timezone.utc).date().isoformat()])[0]
@@ -2454,10 +4110,21 @@ class Handler(BaseHTTPRequestHandler):
                 slips = slip_snapshot()
                 queue_slip_refresh()
                 self.send_json(slips)
+            elif parsed.path == "/alter-ego":
+                self.send_json(melbet_history_snapshot())
             else:
                 self.send_json({"error": "Not found"}, 404)
+        except NotFoundError as exc:
+            self.send_json({"error": str(exc), "provider": "MLB-StatsAPI"}, 404)
+        except requests.HTTPError as exc:
+            status = exc.response.status_code if exc.response is not None else 502
+            if status == 404:
+                self.send_json({"error": "MLB resource not found", "provider": "MLB-StatsAPI"}, 404)
+            else:
+                self.send_json({"error": "The MLB data provider request failed", "provider": "MLB-StatsAPI"}, 502)
         except Exception as exc:
-            self.send_json({"error": str(exc), "provider": "MLB-StatsAPI"}, 502)
+            print(f"[mlb-stats] request failed: {exc}", flush=True)
+            self.send_json({"error": "The MLB data provider request failed", "provider": "MLB-StatsAPI"}, 502)
 
     def do_POST(self):
         parsed = urlparse(self.path)
@@ -2468,6 +4135,14 @@ class Handler(BaseHTTPRequestHandler):
                 slip = save_slip(parse_pdf(payload["data"], payload.get("filename", "slip.pdf")))
                 queue_slip_refresh()
                 self.send_json(slip, 201)
+            elif parsed.path == "/alter-ego/import":
+                save_melbet_history_slip(payload.get("slip") or payload)
+                self.send_json(melbet_history_snapshot(), 201)
+            elif parsed.path == "/alter-ego/import-batch":
+                result = save_melbet_history_slips(payload.get("slips") or [])
+                self.send_json({"import": result, "analysis": melbet_history_snapshot()}, 201)
+            elif parsed.path == "/player-props/build-snapshots":
+                self.send_json(record_player_prop_build(payload), 201)
             else:
                 self.send_json({"error": "Not found"}, 404)
         except Exception as exc:

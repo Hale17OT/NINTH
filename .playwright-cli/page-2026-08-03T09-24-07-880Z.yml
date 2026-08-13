@@ -1,0 +1,44 @@
+- generic [ref=f32e3]:
+  - banner [ref=f32e4]:
+    - generic [ref=f32e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f32e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f32e7]
+        - generic [ref=f32e8]:
+          - generic [ref=f32e9]: NINTH
+          - generic [ref=f32e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f32e11] [cursor=pointer]:
+        - generic [ref=f32e12]: DAY
+      - button "Search" [ref=f32e18] [cursor=pointer]
+      - button "Menu" [ref=f32e22] [cursor=pointer]
+    - generic [ref=f32e24]:
+      - generic [ref=f32e25]: TODAY
+      - generic [ref=f32e27]: Official scoreboard syncing
+  - main [ref=f32e28]:
+    - generic [ref=f32e30]:
+      - button "BACK TO HOME" [ref=f32e31] [cursor=pointer]
+      - generic [ref=f32e34]:
+        - text: NINTH / GLOBAL SEARCH
+        - heading "Find anyone in baseball." [level=1] [ref=f32e35]
+        - paragraph [ref=f32e36]: Search active MLB players, all 30 clubs, and official games around today.
+        - generic [ref=f32e37]:
+          - textbox "Search MLB" [active] [ref=f32e41]:
+            - /placeholder: Team, player, stadium, or matchup
+            - text: Phillies
+          - button "SEARCH" [ref=f32e42] [cursor=pointer]
+      - status [ref=f32e43]:
+        - generic [ref=f32e44]: "N"
+        - generic [ref=f32e48]:
+          - strong [ref=f32e49]: Searching official MLB data
+          - generic [ref=f32e50]: Looking across teams, players and games.
+  - generic [ref=f32e51]:
+    - link "Games" [ref=f32e52] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f32e56] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f32e64] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f32e67] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f32e75] [cursor=pointer]:
+      - /url: /teams

@@ -122,7 +122,7 @@ The Vite development server proxies `/api` to Express. Express then communicates
 | Game-time forecasts | [Open-Meteo](https://open-meteo.com/) | Loaded progressively and cached; historical endpoint is used for older games |
 | Pitch-level starter history | [Baseball Savant](https://baseballsavant.mlb.com/) | Collected as compact prior-game aggregates; raw pitch downloads are discarded |
 | Optional sportsbook adapter | [The Odds API](https://the-odds-api.com/) | Not used by the production model; no simulated odds are shown without a key |
-| Currently listed builder markets | MelBet line feed | Event IDs, totals thresholds, and player-prop thresholds try `mel-bet.et` first and automatically retry through `melbet-322491.top`; prices are discarded |
+| Currently listed builder markets | MelBet line feed | Event IDs, totals thresholds, player-prop thresholds, and decimal odds try `mel-bet.et` first and automatically retry through `melbet-322491.top`; odds are display/filter metadata only and never model inputs |
 
 The health endpoint includes `syntheticData: false` so provider status can be audited directly.
 
@@ -222,6 +222,7 @@ NINTH_SLIP_TIMEZONE_OFFSET_HOURS=3
 NINTH_MAINTENANCE_ENABLED=1
 NINTH_MAINTENANCE_CHECK_SECONDS=3600
 NINTH_ENRICH_WORKERS=6
+NINTH_PLAYER_PROP_WORKERS=12
 NINTH_RETRAIN_GAME_THRESHOLD=100
 NINTH_RETRAIN_DAYS=7
 
@@ -260,11 +261,21 @@ python ml/statcast_collect.py --start 2018-03-01 --end 2026-07-14
 python -m ml.train_v3
 
 # Train and audit the promoted total-runs distribution model
-python -m ml.train_totals_v3
+python -m ml.train_totals_v5
+
+# Compare guarded Poisson, negative-binomial, direct, and boosted totals candidates
+python -m ml.tune_totals_v4
 
 # Collect official player outcomes (resumable), then train prop models
 python ml/collect_player_boxscores.py --workers 12
 python -m ml.train_player_props
+
+# Audit immutable pregame prop snapshots and exact historically listed lines
+python -m ml.evaluate_live_prop_snapshots
+python -m ml.evaluate_observed_prop_lines ml/artifacts/player_props.joblib
+
+# Inventory every currently listed MelBet player-market shape and aggregate decimal-odds coverage
+python ml/audit_melbet_player_markets.py
 
 # Rebuild market-specific daily and multi-day card calibration
 python -m ml.calibrate_market_slips
@@ -370,47 +381,51 @@ The local artifact at the time this README was generated reports:
 
 | Metric | Value |
 |---|---:|
-| Model | `v5_prior_strength_calibrated_margin_histogram_blend` |
+| Model | `v6_multiseason_lineup_talent` |
 | Status | Promoted |
-| Deployment training games | 19,365 |
-| Trained through | 2026-07-20 |
-| Walk-forward games | 11,202 |
-| Walk-forward accuracy | 57.24% |
-| Walk-forward Brier score | 0.24197 |
+| Deployment training games | 19,457 |
+| Trained through | 2026-07-28 |
+| Walk-forward games | 11,294 |
+| Walk-forward accuracy | 57.47% |
+| Walk-forward Brier score | 0.24146 |
 | Qualified accuracy | 63.47% |
-| Qualified coverage | 29.79% |
-| Recent 2024–2026 outer accuracy | 56.41% |
-| Recent outer Brier score | 0.24357 |
+| Qualified coverage | 37.15% |
+| Recent 2024–2026 outer accuracy | 56.66% |
+| Recent outer Brier score | 0.24303 |
 
 These values belong to the current local `report.json`; they will change after a promoted retrain. They are historical evaluation results, not promised future accuracy.
 
-Version 5 retains the conservative margin/nonlinear blend and adds explicit prior-season win, run-margin and Pythagorean strength. Prior-year strength is weighted most heavily early, then current-season strength takes over as games accumulate. The 2025–2026 temporal audit recorded a 0.24371 Brier score over 3,929 games versus 0.24425 for the prior artifact. This is a real forward-audit gain, but it does not meet the aspirational sub-0.240 target; future completed games remain the next untouched confirmation.
+Version 6 retains the conservative margin/nonlinear blend and prior-season team strength, then adds point-in-time, partially pooled multi-season hitter talent for the submitted batting order. It carries career signal through the offseason with shrinkage, weights lineup position, and remains neutral when an official lineup is unavailable. Against the previous production artifact, the locked 2025–2026 audit improved from 0.24371 to 0.24302 Brier; 2025 improved to 0.24189 and 2026 improved to 0.24473. Accuracy, log loss and AUC also improved in the development period and in each audit season. This is a stable forward-audit gain, not a claim that the still-aspirational sub-0.240 target has been reached.
 
 ### Total-runs distribution model
 
 `ml/train_totals.py` builds a separate `totals.joblib`; it never alters the moneyline artifact. The model forecasts `P(total runs > line)` for 6.5 through 11.5 and recommends from the practical 7.5–10.5 decision range. Its inputs include the rolling MLB run environment, both offenses and defenses, recent game totals and volatility, learned venue scoring, starters, submitted lineups, prior-three-day bullpen workload, rest, weather, and seasonality.
 
-Selectable sportsbook thresholds are query inputs, not training features. NINTH can score a supplied grid such as `7, 7.5, 8, 8.5, 9, 9.5, 10` from the same market-free run distribution while discarding prices and implied probabilities. Half-run lines have only over/under outcomes; integer lines expose separate over, under and push probabilities. The builder's per-game run-line control lets the user mirror an actually available line without allowing sportsbook prices to alter the expected-runs model.
+Selectable sportsbook thresholds are query inputs, not training features. NINTH can score a supplied grid such as `7, 7.5, 8, 8.5, 9, 9.5, 10` from the same market-free run distribution. MelBet decimal odds are displayed and may impose a user-selected eligibility floor, but never alter expected runs or any outcome probability. Half-run lines have only over/under outcomes; integer lines expose separate over, under and push probabilities.
 
-The training audit compares direct classifiers with Poisson and negative-binomial distributions, then calibrates the count mean into monotone threshold probabilities. Architecture selection uses rolling-origin 2022–2024 results; 2025–2026 remains unseen until the final audit. Production totals v3 recorded a 0.22392 mean unseen Brier score versus 0.22418 for the previous artifact. That is a modest improvement, not a profitability claim, because the system has no price or payout input.
+The training audit compares direct classifiers with Poisson and negative-binomial distributions, then calibrates the count mean into monotone threshold probabilities. Architecture selection uses rolling-origin 2022–2024 results; 2025–2026 is excluded from candidate selection and used for the final audit, although repeated prior research means it is no longer a pristine first-look holdout. Production totals v5 retains the v4 lineup-talent distribution and adds pregame-only starter workload/form plus individual-reliever quality and availability. Against a freshly replayed v4 incumbent, mean Brier improved from 0.22136 to 0.22123 in development, from 0.22264 to 0.22231 in 2025, and from 0.22181 to 0.22155 in 2026; binary log loss also improved in both audit seasons. The pooled 2025–2026 Brier gain was 0.000303 (game-bootstrap 95% interval 0.000078 to 0.000530). These are forecasting metrics, not profitability claims, because the system has no price or payout input.
 
 ### Player-prop probability models
 
 `ml/train_player_props.py` replays official player box scores chronologically and trains separate batter and starting-pitcher threshold models. Batter targets include hits, total bases, home runs, runs, RBIs, walks, strikeouts, doubles and stolen bases. Pitcher targets include strikeouts, outs, walks, hits allowed, earned runs, home runs allowed and pitches thrown.
 
-Each model combines empirical-Bayes player form, recent and season opportunity volume, opponent tendencies, projected or confirmed batting order, probable starter history, and prior-game Statcast xwOBA, hard-hit, barrel, whiff and exit-velocity signals. Direct LightGBM threshold probabilities are blended with a Poisson or overdispersed negative-binomial count distribution, then sigmoid or isotonic calibration is selected on 2024 only. The final report is reserved for 2025-2026 and includes Brier skill against a line-specific climatology baseline so sparse outcomes cannot look strong merely by predicting the under.
+Each model combines empirical-Bayes player form, recent and season opportunity volume, per-opportunity rates, opponent team tendencies, projected or confirmed batting order, probable starter history, handedness splits, and prior-game Statcast xwOBA, hard-hit, barrel, whiff and velocity signals. Pitcher forecasts also aggregate the confirmed opposing lineup's point-in-time hit, strikeout, walk and home-run tendencies. Direct LightGBM threshold probabilities are calibrated on 2024 only. Count-distribution heads were tested for pitcher strikeouts and outs, but were not deployed because the exact listed-line audit rejected them. The final report is reserved for 2025–2026 and includes Brier skill against a line-specific climatology baseline so sparse outcomes cannot look strong merely by predicting the under.
 
-The Player Lab recommends at most one prop per game. This avoids presenting correlated same-game legs as independent. Its displayed card confidence is the product of calibrated leg probabilities after sample-history shrinkage; it is not a sportsbook-return or profitability estimate.
+The Player Lab recommends at most one prop per game and requires an audited 65% probability floor for automatic cards. Lower-confidence listed lines remain available for manual inspection but are not silently inserted by “Build Best.” This avoids presenting weak or correlated same-game legs as independent. Its displayed card confidence is the product of calibrated leg probabilities after sample-history shrinkage; it is not a sportsbook-return or profitability estimate.
 
 Historical bullpen features are rebuilt from games preceding the prediction. The current game's final reliever usage is explicitly excluded, even though it exists in archived box scores.
 
 ### July 2026 tuning audit
 
-The next moneyline research stage is data-first rather than a wider hyperparameter search: point-in-time confirmed-lineup batter xwOBA and quality-of-contact aggregation, defensive run value, explicit travel distance and time-zone change, reliever-level availability, and pitcher workload or velocity movement. Candidates must use nested rolling-origin selection, report Brier calibration and refinement separately, and beat v4 in both aggregate and season-by-season forward tests before promotion. This keeps potentially useful player-form signals from becoming a new overfitting route.
+The moneyline research stage was data-first rather than a wider hyperparameter search. Point-in-time multi-season lineup talent passed the promotion gate and became v6. Elo recency adaptation, partial-pooling team run models and wider blends were rejected because they regressed 2026 or failed to improve both audit seasons. Starter workload, velocity movement and reliever-level availability were subsequently tested: the development-selected bullpen candidate worsened pooled 2025–2026 Brier by 0.000021, so moneyline v6 was retained. Remaining research targets include defensive run value and explicit travel distance and time-zone change. Candidates must still beat the incumbent in aggregate and season-by-season forward tests before promotion.
 
-Moneyline tuning also tested beta calibration, categorical team/personnel effects, score-distribution forecasts, confirmed-lineup Statcast, bullpen quality and constrained ensembles. Those candidates either regressed later seasons or could not be reproduced from live inputs. Explicit prior-season strength was the exception: it improved the later audit and became v5. The requested sub-0.240 audit target was not reached and is not claimed.
+Moneyline tuning also tested beta calibration, categorical team/personnel effects, score-distribution forecasts, bullpen quality and constrained ensembles. Those candidates either regressed later seasons or could not be reproduced from live inputs. Explicit prior-season strength from v5 remains in v6, and multi-season lineup talent is the only new component promoted in this cycle. The requested sub-0.240 audit target was not reached and is not claimed.
 
-The totals cycle tested game-varying dispersion, beta calibration, isotonic distribution maps, direct threshold models and rolling Statcast contact quality. Production v3 uses only components reproducible from live inputs: a negative-binomial count distribution, monotone mean calibration, direct thresholds and prior-season run strength. Its 2025–2026 mean Brier is 0.22392. More aggressive Statcast variants remain shadow-only because their historical gain cannot yet be reproduced by the live feature path.
+The totals cycle tested game-varying dispersion, beta calibration, isotonic distribution maps, direct threshold models, partial-pooling team run counts and rolling Statcast contact quality. Production v5 uses only components reproducible from pregame inputs: a negative-binomial count distribution, monotone mean calibration, direct thresholds, prior-season run strength, partially pooled lineup talent, starter workload/form, and individual bullpen availability. Historical bullpen membership is inferred only from prior relief appearances; the current game's eventual relievers are never exposed to a forecast. More aggressive variants remain shadow-only when they fail a separate-season gate.
+
+The player-prop cycle evaluated 16 prop markets over 2,200,113 chronological threshold observations and separately replayed 3,193 immutable MelBet listed-line selections. Only the new direct pitcher-strikeout model passed the aggregate, 2025, 2026 and exact-line gates, so the production v3 artifact is deliberately hybrid: pitcher strikeouts use the new confirmed-opponent-lineup feature set while the other 15 markets retain their stronger incumbent models. On exact listed lines, Brier improved from 0.19706 to 0.19694 and side accuracy from 67.74% to 67.80%. Within pitcher strikeouts, exact-line Brier improved from 0.24311 to 0.23941 and accuracy from 56.19% to 58.10%. The broader all-threshold Brier moved from 0.121793 to 0.121776; the small family-wide change is expected because only one market was promoted.
+
+The research design is informed by MLB's definitions of [xwOBA](https://www.mlb.com/glossary/statcast/expected-woba) and [xERA](https://www.mlb.com/glossary/statcast/expected-era), [empirical-Bayes shrinkage for baseball rates](https://arxiv.org/abs/0803.3697), [beta calibration](https://proceedings.mlr.press/v54/kull17a.html), and hierarchical count modeling. External ideas are treated as hypotheses only: every implementation must remain reproducible from pregame data and pass NINTH's chronological promotion gates.
 
 ### Model Lab records
 
@@ -424,7 +439,7 @@ Each ledger has its own date selector. Results come only from snapshots created 
 
 ### Feature groups
 
-The deployed moneyline artifact contains 38 market-free features:
+The deployed moneyline artifact contains 44 market-free features:
 
 **Team strength and form**
 
@@ -446,6 +461,8 @@ The deployed moneyline artifact contains 38 market-free features:
 **Matchup context**
 
 - Submitted-lineup OPS difference.
+- Partially pooled multi-season lineup wOBA, top-four quality, depth, power and discipline differences.
+- Joint lineup-history reliability so sparse orders are pulled toward neutral.
 - Bullpen pitches over the previous three days.
 - Temperature and wind.
 - Context-availability indicator.
@@ -472,7 +489,9 @@ The matchup UI shows the four strongest material contributors. The model page li
 
 ### Promotion safeguards
 
-Maintenance trains both artifacts into a candidate directory. Each model promotes independently only if its own gates pass. Moneyline gates include:
+Maintenance trains moneyline, totals, and player-prop artifacts into a candidate
+directory. Each model family promotes independently only if its own gates pass.
+Moneyline gates include:
 
 - New completed games are present.
 - Walk-forward accuracy is at least 57%.
@@ -484,6 +503,14 @@ Maintenance trains both artifacts into a candidate directory. Each model promote
 A failed candidate is deleted and cannot replace the incumbent artifact. This is intended to reduce overfitting and accidental degradation.
 
 Totals promotion separately requires new completed games, positive unseen Brier skill versus climatology, no material regression in the locked 2025–2026 Brier audit, and an acceptable selected-line Brier score.
+
+Player-prop promotion is artifact-wide and guarded. It requires every deployed
+prop model to be present, positive aggregate Brier skill, lower sample-weighted
+2025–2026 Brier score, stable side accuracy, and no individual prop Brier
+or individual-season regression greater than 0.00001. Nightly maintenance syncs official player box
+scores before creating the candidate. MelBet is audited only for currently
+selectable market types and exact thresholds; its prices are never training
+features or retained in the audit.
 
 ## Projection lifecycle
 
@@ -552,10 +579,20 @@ The builder is market-free and supports:
 - Manual home/away moneyline or higher/lower selections at the model-selected total.
 - Recommended cards built from the highest projected eligible probability.
 - Exactly one selection per game; moneyline and total cannot coexist for one matchup.
+- Automatic totals recommendations use the exact balanced central MelBet line;
+  they never shift to the lower of two half-run neighbours. Integer-line ties are
+  retained as pushes instead of being relabelled as wins or losses.
+- A totals leg is automatic only when its exact line and side passed the
+  chronological promotion gate and the calibrated probability, forecast-run
+  distribution, and frozen empirical-residual estimate all agree. Otherwise the
+  model abstains while leaving listed lines available for manual selection.
+- Recommended totals cards cap repeated exact line/side exposure at two legs on
+  2–5 leg cards and three legs on larger cards. They do not manufacture Over/Under
+  balance by forcing a weaker side into the card.
 - A combined all-correct estimate.
 - Input-completeness adjustments.
 - Historical calibration only where a validation cell passed its promotion gate.
-- Current MelBet event IDs and listed totals thresholds, with prices discarded before inference.
+- Current MelBet event IDs, listed totals thresholds, and decimal odds; odds remain isolated from inference and are used only for display and the optional minimum-odds rail.
 
 The raw joint probability is the product of the selected leg probabilities; probabilities are never added. NINTH then reduces each leg's distance from 50% when that leg's official model inputs are missing. Moneyline, totals and mixed cards each use a separate chronological card calibration. An adjustment is applied only when the exact market, daily/multi-day horizon and 2-8 leg cell improved Brier score on the 2025-2026 forward audit and passed separate-season stability checks. Rejected or sparse cells retain the multiplicative model estimate.
 
@@ -565,11 +602,29 @@ Backtest calibration currently targets 2–8 leg cards. Nine- and ten-leg cards 
 
 Builder selections and settings are stored in browser `localStorage`. The saved draft expires after 15 minutes without visiting the builder. Opening a matchup from the builder preserves the draft and provides context-aware return navigation.
 
+### NFL model and builder
+
+`/american-football/builder` is a separate NFL-native construction surface.
+It reads nflverse schedules and play-by-play, presents current moneyline, spread
+and total anchors, and enforces one selection per game. Prices and lines are not
+model features: lines are applied only after the forecast as decision thresholds.
+
+- NFL moneyline has passed the multi-season chronological historical gate and
+  remains automatic-only locked until 30 immutable live observations also pass
+  the Brier gate.
+- Spread and totals are generated by a joint expected-total/home-margin score
+  distribution. They remain shadow-only because the untouched line-aware audit
+  did not beat the no-skill Brier baseline.
+- The nightly multisport job rebuilds `score.jsonl`, trains the joint score
+  artifact, regenerates upcoming predictions, and settles the pregame live ledger.
+- The Builder exposes Shadow and Automatic evidence modes; research cards never
+  call MelBet Autofill and never place a wager.
+
 The separate Player Props builder uses the same Daily/Multi-day controls and target-leg behavior. It shows games first, then opens an in-page player market panel. Users can filter prop families, restrict automatic recommendations to Over, Under, or Both, and select only exact thresholds currently present in the listed-line feed. The target is capped by the eligible games because NINTH permits at most one recommended player-prop leg per game.
 
 ## MelBet browser helper
 
-`melbet-helper/` contains the optional **NINTH MelBet Helper v0.7.2**, an unpacked Manifest V3 extension for Chrome and Edge. It supports Moneyline, Totals, Mixed, and Player Props cards.
+`melbet-helper/` contains the optional **NINTH MelBet Helper v0.8.0**, an unpacked Manifest V3 extension for Chrome and Edge. It supports Moneyline, Totals, Mixed, and Player Props cards.
 
 To install it locally:
 
@@ -653,7 +708,7 @@ Several paths are intentionally progressive:
 
 - The schedule returns official games first and merges cached Open-Meteo forecasts afterward.
 - Projection boards return real baseline predictions first and enrich nearby matchups with starters, lineups, bullpens and weather in the background.
-- MelBet listed-line requests use a primary/proxy fallback and short-lived caches; prices are discarded.
+- MelBet listed-line requests use a primary/proxy fallback and short-lived caches; decimal odds are retained only as transient display/filter metadata.
 - The player-prop archive refreshes in the background, so opening the builder is not required to record the day's exact recommendations.
 - Pitcher profiles and recent team form are cached.
 - Team and player directory requests are cached by the server adapter.
@@ -697,7 +752,7 @@ The 30-test integrity suite currently verifies:
 - Slip refreshes are backgrounded and deduplicated.
 - Consecutive-day games, doubleheaders, postponed games, total settlement, and integer pushes resolve correctly.
 - Completed moneyline, totals, and player-prop ledgers filter, score, and paginate independently.
-- MelBet primary/proxy fallbacks discard prices and preserve exact event, group, side, and line matching.
+- MelBet primary/proxy fallbacks preserve current decimal odds plus exact event, group, side, and line matching; odds never enter model inference.
 - Player-prop results void non-participants and never score an unlisted prop or threshold.
 
 Additional focused model/parser tests:

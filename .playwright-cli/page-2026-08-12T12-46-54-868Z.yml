@@ -1,0 +1,180 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - link "NINTH all sports" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=e6]
+    - navigation "Sport workspaces" [ref=e7]:
+      - link "MLB" [ref=e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=e18] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=e22] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=e29] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=e33] [cursor=pointer]:
+      - generic [ref=e34]: D
+      - generic [ref=e35]: MODE
+  - generic [ref=e36]:
+    - banner [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - generic [ref=e40]: TOP FIVE LEAGUES
+          - generic [ref=e41]: Football
+          - emphasis [ref=e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=e43]:
+          - link "Overview" [ref=e44] [cursor=pointer]:
+            - /url: /football
+          - link "Leagues" [ref=e45] [cursor=pointer]:
+            - /url: /football/leagues
+          - link "Games" [ref=e46] [cursor=pointer]:
+            - /url: /football/games
+          - link "Teams" [ref=e47] [cursor=pointer]:
+            - /url: /football/teams
+          - link "Players" [ref=e48] [cursor=pointer]:
+            - /url: /football/players
+          - link "Models" [ref=e49] [cursor=pointer]:
+            - /url: /football/models
+          - link "Data" [ref=e50] [cursor=pointer]:
+            - /url: /football/data
+    - main [ref=e51]:
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - text: FTB / LEAGUES
+            - heading "Leagues." [level=1] [ref=e56]
+          - paragraph [ref=e57]: Live presentation data for Football, separated from model training and stamped with its source coverage.
+          - generic [ref=e58]: 02/00
+        - generic [ref=e60]:
+          - textbox "14 RESULTS" [ref=e64]:
+            - /placeholder: Find a competition
+          - generic [ref=e65]: 14 RESULTS
+        - generic [ref=e66]:
+          - article [ref=e67]:
+            - generic [ref=e68]: "01"
+            - generic [ref=e69]: Competition identity
+            - generic [ref=e70]: OPERATIONAL DATA FIELD
+          - article [ref=e71]:
+            - generic [ref=e72]: "02"
+            - generic [ref=e73]: Domestic / European scope
+            - generic [ref=e74]: OPERATIONAL DATA FIELD
+          - article [ref=e75]:
+            - generic [ref=e76]: "03"
+            - generic [ref=e77]: Country and season
+            - generic [ref=e78]: OPERATIONAL DATA FIELD
+          - article [ref=e79]:
+            - generic [ref=e80]: "04"
+            - generic [ref=e81]: Data coverage
+            - generic [ref=e82]: OPERATIONAL DATA FIELD
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - generic [ref=e85]: LEAGUES INDEX
+            - generic [ref=e86]: SOURCE / TheSportsDB
+            - emphasis [ref=e87]: 14 LIVE ROWS
+          - generic [ref=e88]:
+            - generic [ref=e89]:
+              - generic [ref=e90]:
+                - generic [ref=e91]: Domestic league
+                - generic [ref=e92]: "5"
+              - generic [ref=e93]:
+                - article [ref=e94]:
+                  - generic [ref=e95]: EPL
+                  - heading "Premier League" [level=2] [ref=e96]
+                  - paragraph [ref=e97]: England
+                  - link "OPEN COMPETITION" [ref=e98] [cursor=pointer]:
+                    - /url: /football/games?competition=4328
+                - article [ref=e99]:
+                  - generic [ref=e100]: LAL
+                  - heading "La Liga" [level=2] [ref=e101]
+                  - paragraph [ref=e102]: Spain
+                  - link "OPEN COMPETITION" [ref=e103] [cursor=pointer]:
+                    - /url: /football/games?competition=4335
+                - article [ref=e104]:
+                  - generic [ref=e105]: BUN
+                  - heading "Bundesliga" [level=2] [ref=e106]
+                  - paragraph [ref=e107]: Germany
+                  - link "OPEN COMPETITION" [ref=e108] [cursor=pointer]:
+                    - /url: /football/games?competition=4331
+                - article [ref=e109]:
+                  - generic [ref=e110]: SEA
+                  - heading "Serie A" [level=2] [ref=e111]
+                  - paragraph [ref=e112]: Italy
+                  - link "OPEN COMPETITION" [ref=e113] [cursor=pointer]:
+                    - /url: /football/games?competition=4332
+                - article [ref=e114]:
+                  - generic [ref=e115]: L1
+                  - heading "Ligue 1" [level=2] [ref=e116]
+                  - paragraph [ref=e117]: France
+                  - link "OPEN COMPETITION" [ref=e118] [cursor=pointer]:
+                    - /url: /football/games?competition=4334
+            - generic [ref=e119]:
+              - generic [ref=e120]:
+                - generic [ref=e121]: European competition
+                - generic [ref=e122]: "3"
+              - generic [ref=e123]:
+                - article [ref=e124]:
+                  - generic [ref=e125]: UCL
+                  - heading "UEFA Champions League" [level=2] [ref=e126]
+                  - paragraph [ref=e127]: Europe
+                  - link "OPEN COMPETITION" [ref=e128] [cursor=pointer]:
+                    - /url: /football/games?competition=4480
+                - article [ref=e129]:
+                  - generic [ref=e130]: UEL
+                  - heading "UEFA Europa League" [level=2] [ref=e131]
+                  - paragraph [ref=e132]: Europe
+                  - link "OPEN COMPETITION" [ref=e133] [cursor=pointer]:
+                    - /url: /football/games?competition=4481
+                - article [ref=e134]:
+                  - generic [ref=e135]: UECL
+                  - heading "UEFA Conference League" [level=2] [ref=e136]
+                  - paragraph [ref=e137]: Europe
+                  - link "OPEN COMPETITION" [ref=e138] [cursor=pointer]:
+                    - /url: /football/games?competition=5071
+            - generic [ref=e139]:
+              - generic [ref=e140]:
+                - generic [ref=e141]: Domestic cup
+                - generic [ref=e142]: "6"
+              - generic [ref=e143]:
+                - article [ref=e144]:
+                  - generic [ref=e145]: FAC
+                  - heading "FA Cup" [level=2] [ref=e146]
+                  - paragraph [ref=e147]: England
+                  - link "OPEN COMPETITION" [ref=e148] [cursor=pointer]:
+                    - /url: /football/games?competition=4482
+                - article [ref=e149]:
+                  - generic [ref=e150]: EFL
+                  - heading "EFL Cup" [level=2] [ref=e151]
+                  - paragraph [ref=e152]: England
+                  - link "OPEN COMPETITION" [ref=e153] [cursor=pointer]:
+                    - /url: /football/games?competition=4570
+                - article [ref=e154]:
+                  - generic [ref=e155]: CDR
+                  - heading "Copa del Rey" [level=2] [ref=e156]
+                  - paragraph [ref=e157]: Spain
+                  - link "OPEN COMPETITION" [ref=e158] [cursor=pointer]:
+                    - /url: /football/games?competition=4483
+                - article [ref=e159]:
+                  - generic [ref=e160]: DFB
+                  - heading "DFB-Pokal" [level=2] [ref=e161]
+                  - paragraph [ref=e162]: Germany
+                  - link "OPEN COMPETITION" [ref=e163] [cursor=pointer]:
+                    - /url: /football/games?competition=4485
+                - article [ref=e164]:
+                  - generic [ref=e165]: CIT
+                  - heading "Coppa Italia" [level=2] [ref=e166]
+                  - paragraph [ref=e167]: Italy
+                  - link "OPEN COMPETITION" [ref=e168] [cursor=pointer]:
+                    - /url: /football/games?competition=4506
+                - article [ref=e169]:
+                  - generic [ref=e170]: CDF
+                  - heading "Coupe de France" [level=2] [ref=e171]
+                  - paragraph [ref=e172]: France
+                  - link "OPEN COMPETITION" [ref=e173] [cursor=pointer]:
+                    - /url: /football/games?competition=4484
+        - generic [ref=e174]:
+          - generic [ref=e179]:
+            - text: Public free-tier coverage
+            - paragraph [ref=e180]: Presentation data is not used to train or promote betting models. The public key limits response depth; a premium key unlocks complete league rosters and schedules.
+          - emphasis [ref=e181]: 8/12/2026, 3:46:53 PM

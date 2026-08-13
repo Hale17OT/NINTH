@@ -1,0 +1,53 @@
+- generic [ref=f3e3]:
+  - banner [ref=f3e4]:
+    - generic [ref=f3e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f3e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f3e7]
+        - generic [ref=f3e8]:
+          - generic [ref=f3e9]: NINTH
+          - generic [ref=f3e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f3e11]:
+        - link "Games" [ref=f3e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f3e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f3e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f3e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f3e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f3e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f3e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f3e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f3e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f3e70] [cursor=pointer]:
+        - generic [ref=f3e71]:
+          - generic [ref=f3e72]: DISPLAY / 09
+          - generic [ref=f3e73]: DAY
+    - generic [ref=f3e78]:
+      - generic [ref=f3e79]: TODAY
+      - generic [ref=f3e81]: Official scoreboard syncing
+      - generic [ref=f3e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f3e84]:
+    - generic [ref=f3e86]:
+      - generic [ref=f3e87]:
+        - generic [ref=f3e88]:
+          - generic [ref=f3e89]: NINTH / OFFICIAL MLB SCOREBOARD
+          - heading [level=1] [ref=f3e91]:
+            - text: Every live game.
+            - emphasis [ref=f3e92]: One pulse.
+          - paragraph [ref=f3e93]: Choose a game for pitch tracking, counts, baserunners, and official play-by-play.
+        - generic [ref=f3e94]:
+          - strong [ref=f3e95]: "0"
+          - generic [ref=f3e96]: GAMES LIVE
+      - status [ref=f3e97]:
+        - generic [ref=f3e98]: "N"
+        - generic [ref=f3e102]:
+          - strong [ref=f3e103]: Loading the live scoreboard
+          - generic [ref=f3e104]: Checking every official MLB game currently in progress.

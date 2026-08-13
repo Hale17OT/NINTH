@@ -1,0 +1,189 @@
+- generic [ref=f7e3]:
+  - complementary [ref=f7e4]:
+    - link "NINTH all sports" [ref=f7e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f7e6]
+    - navigation "Sport workspaces" [ref=f7e7]:
+      - link "MLB" [ref=f7e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f7e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f7e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f7e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f7e29] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f7e33] [cursor=pointer]:
+      - generic [ref=f7e34]: D
+      - generic [ref=f7e35]: MODE
+  - generic [ref=f7e36]:
+    - banner [ref=f7e37]:
+      - generic [ref=f7e38]:
+        - generic [ref=f7e39]:
+          - generic [ref=f7e40]: NBA
+          - generic [ref=f7e41]: Basketball
+          - emphasis [ref=f7e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f7e43]:
+          - link "Overview" [ref=f7e44] [cursor=pointer]:
+            - /url: /basketball
+          - link "Leagues" [ref=f7e45] [cursor=pointer]:
+            - /url: /basketball/leagues
+          - link "Games" [ref=f7e46] [cursor=pointer]:
+            - /url: /basketball/games
+          - link "Teams" [ref=f7e47] [cursor=pointer]:
+            - /url: /basketball/teams
+          - link "Players" [ref=f7e48] [cursor=pointer]:
+            - /url: /basketball/players
+          - link "Models" [ref=f7e49] [cursor=pointer]:
+            - /url: /basketball/models
+          - link "Data" [ref=f7e50] [cursor=pointer]:
+            - /url: /basketball/data
+    - main [ref=f7e51]:
+      - generic [ref=f7e53]:
+        - generic [ref=f7e54]:
+          - generic [ref=f7e55]:
+            - text: NBA / TEAMS
+            - heading "Teams." [level=1] [ref=f7e56]
+          - paragraph [ref=f7e57]: Live presentation data for Basketball, separated from model training and stamped with its source coverage.
+          - generic [ref=f7e58]: 04/02
+        - generic [ref=f7e59]:
+          - generic [ref=f7e60]:
+            - textbox "13 RESULTS" [ref=f7e64]:
+              - /placeholder: Find a team
+            - generic [ref=f7e65]: 13 RESULTS
+          - combobox [ref=f7e66]:
+            - option "All competitions" [selected]
+            - option "NBA"
+        - generic [ref=f7e67]:
+          - article [ref=f7e68]:
+            - generic [ref=f7e69]: "01"
+            - generic [ref=f7e70]: Possession efficiency
+            - generic [ref=f7e71]: OPERATIONAL DATA FIELD
+          - article [ref=f7e72]:
+            - generic [ref=f7e73]: "02"
+            - generic [ref=f7e74]: Shot-quality profile
+            - generic [ref=f7e75]: OPERATIONAL DATA FIELD
+          - article [ref=f7e76]:
+            - generic [ref=f7e77]: "03"
+            - generic [ref=f7e78]: Transition and half court
+            - generic [ref=f7e79]: OPERATIONAL DATA FIELD
+          - article [ref=f7e80]:
+            - generic [ref=f7e81]: "04"
+            - generic [ref=f7e82]: Rotation stability
+            - generic [ref=f7e83]: OPERATIONAL DATA FIELD
+        - generic [ref=f7e84]:
+          - generic [ref=f7e85]:
+            - generic [ref=f7e86]: TEAMS INDEX
+            - generic [ref=f7e87]: SOURCE / TheSportsDB
+            - emphasis [ref=f7e88]: 13 LIVE ROWS
+          - generic [ref=f7e89]:
+            - article [ref=f7e90]:
+              - img "Atlanta Hawks badge" [ref=f7e92]
+              - generic [ref=f7e93]: NBA
+              - heading "Atlanta Hawks" [level=2] [ref=f7e94]
+              - paragraph [ref=f7e95]: State Farm Arena
+              - generic [ref=f7e96]:
+                - generic [ref=f7e97]: 1946 FOUNDED
+                - emphasis [ref=f7e98]: United States
+            - article [ref=f7e99]:
+              - img "Boston Celtics badge" [ref=f7e101]
+              - generic [ref=f7e102]: NBA
+              - heading "Boston Celtics" [level=2] [ref=f7e103]
+              - paragraph [ref=f7e104]: TD Garden
+              - generic [ref=f7e105]:
+                - generic [ref=f7e106]: 1946 FOUNDED
+                - emphasis [ref=f7e107]: United States
+            - article [ref=f7e108]:
+              - img "Brooklyn Nets badge" [ref=f7e110]
+              - generic [ref=f7e111]: NBA
+              - heading "Brooklyn Nets" [level=2] [ref=f7e112]
+              - paragraph [ref=f7e113]: Barclays Center
+              - generic [ref=f7e114]:
+                - generic [ref=f7e115]: 1967 FOUNDED
+                - emphasis [ref=f7e116]: United States
+            - article [ref=f7e117]:
+              - img "Charlotte Hornets badge" [ref=f7e119]
+              - generic [ref=f7e120]: NBA
+              - heading "Charlotte Hornets" [level=2] [ref=f7e121]
+              - paragraph [ref=f7e122]: Spectrum Center
+              - generic [ref=f7e123]:
+                - generic [ref=f7e124]: 1988 FOUNDED
+                - emphasis [ref=f7e125]: United States
+            - article [ref=f7e126]:
+              - img "Chicago Bulls badge" [ref=f7e128]
+              - generic [ref=f7e129]: NBA
+              - heading "Chicago Bulls" [level=2] [ref=f7e130]
+              - paragraph [ref=f7e131]: United Center
+              - generic [ref=f7e132]:
+                - generic [ref=f7e133]: 1966 FOUNDED
+                - emphasis [ref=f7e134]: United States
+            - article [ref=f7e135]:
+              - img "Cleveland Cavaliers badge" [ref=f7e137]
+              - generic [ref=f7e138]: NBA
+              - heading "Cleveland Cavaliers" [level=2] [ref=f7e139]
+              - paragraph [ref=f7e140]: Rocket Arena
+              - generic [ref=f7e141]:
+                - generic [ref=f7e142]: 1970 FOUNDED
+                - emphasis [ref=f7e143]: United States
+            - article [ref=f7e144]:
+              - img "Dallas Mavericks badge" [ref=f7e146]
+              - generic [ref=f7e147]: NBA
+              - heading "Dallas Mavericks" [level=2] [ref=f7e148]
+              - paragraph [ref=f7e149]: American Airlines Center
+              - generic [ref=f7e150]:
+                - generic [ref=f7e151]: 1980 FOUNDED
+                - emphasis [ref=f7e152]: United States
+            - article [ref=f7e153]:
+              - img "Denver Nuggets badge" [ref=f7e155]
+              - generic [ref=f7e156]: NBA
+              - heading "Denver Nuggets" [level=2] [ref=f7e157]
+              - paragraph [ref=f7e158]: Ball Arena
+              - generic [ref=f7e159]:
+                - generic [ref=f7e160]: 1967 FOUNDED
+                - emphasis [ref=f7e161]: United States
+            - article [ref=f7e162]:
+              - img "Detroit Pistons badge" [ref=f7e164]
+              - generic [ref=f7e165]: NBA
+              - heading "Detroit Pistons" [level=2] [ref=f7e166]
+              - paragraph [ref=f7e167]: Little Caesars Arena
+              - generic [ref=f7e168]:
+                - generic [ref=f7e169]: 1941 FOUNDED
+                - emphasis [ref=f7e170]: United States
+            - article [ref=f7e171]:
+              - img "Golden State Warriors badge" [ref=f7e173]
+              - generic [ref=f7e174]: NBA
+              - heading "Golden State Warriors" [level=2] [ref=f7e175]
+              - paragraph [ref=f7e176]: Chase Center
+              - generic [ref=f7e177]:
+                - generic [ref=f7e178]: 1946 FOUNDED
+                - emphasis [ref=f7e179]: United States
+            - article [ref=f7e180]:
+              - img "Memphis Grizzlies badge" [ref=f7e182]
+              - generic [ref=f7e183]: NBA
+              - heading "Memphis Grizzlies" [level=2] [ref=f7e184]
+              - paragraph [ref=f7e185]: Venue available from event detail
+              - generic [ref=f7e186]:
+                - generic [ref=f7e187]: — FOUNDED
+                - emphasis [ref=f7e188]: United States
+            - article [ref=f7e189]:
+              - img "New York Knicks badge" [ref=f7e191]
+              - generic [ref=f7e192]: NBA
+              - heading "New York Knicks" [level=2] [ref=f7e193]
+              - paragraph [ref=f7e194]: Venue available from event detail
+              - generic [ref=f7e195]:
+                - generic [ref=f7e196]: — FOUNDED
+                - emphasis [ref=f7e197]: United States
+            - article [ref=f7e198]:
+              - img "San Antonio Spurs badge" [ref=f7e200]
+              - generic [ref=f7e201]: NBA
+              - heading "San Antonio Spurs" [level=2] [ref=f7e202]
+              - paragraph [ref=f7e203]: Venue available from event detail
+              - generic [ref=f7e204]:
+                - generic [ref=f7e205]: — FOUNDED
+                - emphasis [ref=f7e206]: United States
+        - generic [ref=f7e207]:
+          - generic [ref=f7e212]:
+            - text: Public free-tier coverage
+            - paragraph [ref=f7e213]: Presentation data is not used to train or promote betting models. The public key limits response depth; a premium key unlocks complete league rosters and schedules.
+          - emphasis [ref=f7e214]: 8/12/2026, 3:56:51 PM

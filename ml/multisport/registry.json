@@ -1,0 +1,72 @@
+{
+  "version": "2026-08-12-research-v1",
+  "shared_contract": {
+    "knowledge_time_required": true,
+    "validation": "expanding-window, competition/season separated",
+    "metrics": ["brier", "log_loss", "expected_calibration_error", "roc_auc", "wilson_lower_bound"],
+    "market_prices": "evaluation and eligibility only; never silently used as target leakage",
+    "release": "candidate -> untouched temporal audit -> live shadow -> production"
+  },
+  "sports": {
+    "football": {
+      "scope": ["Premier League", "La Liga", "Bundesliga", "Serie A", "Ligue 1", "UEFA Champions League", "UEFA Europa League", "UEFA Conference League", "FA Cup", "EFL Cup", "Copa del Rey", "DFB-Pokal", "Coppa Italia", "Coupe de France"],
+      "sources": [
+        {"name": "Football-Data.co.uk", "role": "keyless fixtures, results, match statistics and archived prices", "url": "https://www.football-data.co.uk/data.php"},
+        {"name": "StatsBomb Open Data", "role": "selected keyless events, lineups and 360 data", "url": "https://github.com/statsbomb/open-data"},
+        {"name": "football-data.org free tier", "role": "optional competition supplement", "env": "NINTH_FOOTBALL_DATA_TOKEN", "url": "https://api.football-data.org/v4"}
+      ],
+      "features": ["time-decayed attack and defence", "xG/xGA", "shot quality", "set-piece rates", "lineup strength", "rest", "travel", "home advantage", "league-season prior"],
+      "models": ["Dixon-Coles", "bivariate Poisson", "gradient boosted residual", "isotonic calibration"],
+      "markets": ["home_win", "draw", "away_win", "total_goals", "both_teams_score", "exact_score"]
+    },
+    "american-football": {
+      "scope": ["NFL"],
+      "sources": [
+        {"name": "nflverse", "role": "play-by-play, EPA, participation", "url": "https://github.com/nflverse/nflverse-data/releases"},
+        {"name": "NFL Next Gen Stats", "role": "official tracking aggregates", "url": "https://nextgenstats.nfl.com"}
+      ],
+      "features": ["EPA/play", "success rate", "early-down pass rate", "explosive rate", "pressure and sack rate", "quarterback value", "line continuity", "injuries", "rest", "weather"],
+      "models": ["dynamic team/QB ratings", "drive efficiency ensemble", "joint score Monte Carlo", "isotonic calibration"],
+      "markets": ["moneyline", "spread", "total_points", "team_total"]
+    },
+    "basketball": {
+      "scope": ["NBA"],
+      "sources": [
+        {"name": "llimllib/nba_data", "role": "keyless NBA Stats game and efficiency mirror", "url": "https://github.com/llimllib/nba_data"},
+        {"name": "NBA Stats", "role": "official optional refresh source", "url": "https://stats.nba.com/stats"}
+      ],
+      "features": ["pace", "half-court efficiency", "transition rate", "shot-quality profile", "turnover and rebound rates", "lineup RAPM", "minutes uncertainty", "rest", "travel", "availability"],
+      "models": ["possession efficiency hierarchy", "lineup impact shrinkage", "joint score simulation", "isotonic calibration"],
+      "markets": ["moneyline", "spread", "total_points", "team_total", "player_props"]
+    },
+    "valorant": {
+      "scope": ["VCT International", "VCT Challengers"],
+      "sources": [
+        {"name": "Liquipedia MediaWiki API", "role": "keyless schedules, results, teams and active-player directory", "url": "https://liquipedia.net/valorant/api.php"}
+      ],
+      "prohibited_sources": [{"name": "VLR.gg scraper", "reason": "VLR terms prohibit automated scraping and data-mining."}],
+      "features": ["map rating", "opponent-adjusted ACS/KAST/ADR", "first-duel differential", "attack/defence splits", "agent-role proficiency", "patch", "roster continuity", "LAN/region", "veto probability"],
+      "models": ["dynamic team/player ratings", "map logistic ensemble", "veto tree simulation", "isotonic calibration"],
+      "markets": ["match_winner", "map_winner", "map_handicap", "total_maps"]
+    },
+    "cs2": {
+      "scope": ["Tier-one", "Tier-two"],
+      "sources": [
+        {"name": "Liquipedia MediaWiki API", "role": "keyless schedules, results, teams and active-player directory", "url": "https://liquipedia.net/counterstrike/api.php"},
+        {"name": "CS API", "role": "keyless result, ranking and player-stat supplement", "url": "https://api.csapi.de"}
+      ],
+      "features": ["map rating", "side-adjusted round rate", "opponent-adjusted player impact", "opening-duel rate", "economy conversion", "LAN/online", "roster continuity", "rest", "veto probability"],
+      "models": ["dynamic team/player ratings", "map logistic ensemble", "veto tree simulation", "isotonic calibration"],
+      "markets": ["match_winner", "map_winner", "map_handicap", "total_maps"]
+    },
+    "lol": {
+      "scope": ["LCK", "LPL", "LEC", "LCS", "International events"],
+      "sources": [
+        {"name": "Liquipedia MediaWiki API", "role": "keyless schedules, results, teams and active-player directory", "url": "https://liquipedia.net/leagueoflegends/api.php"}
+      ],
+      "features": ["time-decayed series rating", "side strength", "patch", "roster continuity", "objective control", "region", "series format"],
+      "models": ["dynamic team ratings", "series logistic baseline", "patch-aware ensemble", "isotonic calibration"],
+      "markets": ["match_winner", "map_winner", "map_handicap", "total_maps"]
+    }
+  }
+}

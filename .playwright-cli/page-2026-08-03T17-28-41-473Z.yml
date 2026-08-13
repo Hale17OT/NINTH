@@ -1,0 +1,634 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - banner [ref=e8]:
+        - link [ref=e10] [cursor=pointer]:
+          - /url: /en
+          - img "MelBet" [ref=e11]
+        - generic [ref=e12]:
+          - generic [ref=e13]:
+            - list [ref=e14]:
+              - listitem [ref=e15]:
+                - generic [ref=e836]:
+                  - generic [ref=e837]:
+                    - button [ref=e839] [cursor=pointer]
+                    - button [ref=e843] [cursor=pointer]
+                  - generic [ref=e847]:
+                    - link [ref=e848] [cursor=pointer]:
+                      - /url: /en/mobile#ios
+                    - button [ref=e852] [cursor=pointer]
+              - listitem [ref=e856]:
+                - button "Bonus" [ref=e857] [cursor=pointer]:
+                  - generic [ref=e858]: "1"
+            - list [ref=e23]:
+              - listitem [ref=e24]:
+                - link [ref=e863] [cursor=pointer]:
+                  - /url: https://www.youtube.com/channel/UCM6TzBsbcF_8v0VUETRxNkw
+              - listitem [ref=e28]:
+                - link [ref=e864] [cursor=pointer]:
+                  - /url: https://t.me/melbetethiopiatg
+          - generic [ref=e32]:
+            - link "Become a payment agent" [ref=e33] [cursor=pointer]:
+              - /url: https://melbetagents.com/
+            - link "Registration" [ref=e37] [cursor=pointer]:
+              - /url: /en/registration
+            - button "Log in" [ref=e867] [cursor=pointer]
+            - generic [ref=e870]:
+              - button "Settings" [ref=e873] [cursor=pointer]
+              - button "Language and time zone" [ref=e882] [cursor=pointer]:
+                - generic [ref=e884]:
+                  - generic [ref=e891]: en
+                  - generic [ref=e892]: /
+                  - generic [ref=e893]: 20:28
+        - generic [ref=e50]:
+          - list [ref=e51]:
+            - listitem [ref=e52]:
+              - link "Sports" [ref=e53] [cursor=pointer]:
+                - /url: /en/line
+            - listitem [ref=e58]:
+              - link "Live" [ref=e59] [cursor=pointer]:
+                - /url: /en/live
+            - listitem [ref=e64]:
+              - link "Fast Games" [ref=e65] [cursor=pointer]:
+                - /url: /en/games
+            - listitem [ref=e70]:
+              - link "Casino" [ref=e71] [cursor=pointer]:
+                - /url: /en/slots
+            - listitem [ref=e901]:
+              - link "Live Casino" [ref=e902] [cursor=pointer]:
+                - /url: /en/casino
+            - listitem [ref=e907]:
+              - link "Esports" [ref=e908] [cursor=pointer]:
+                - /url: /en/esports/real
+            - listitem [ref=e913]:
+              - link "Promotions" [ref=e914] [cursor=pointer]:
+                - /url: /en/bonus/rules
+            - listitem [ref=e919]:
+              - link "Bingo" [ref=e920] [cursor=pointer]:
+                - /url: /en/bingo
+            - listitem [ref=e922]:
+              - button "More" [ref=e923] [cursor=pointer]
+          - link "Plinko" [ref=e929] [cursor=pointer]:
+            - /url: /en/games/plinko
+            - img "Plinko" [ref=e930]
+          - link "Terms and Conditions" [ref=e82] [cursor=pointer]:
+            - /url: /en/information/rules
+      - generic [ref=e90]:
+        - complementary "Side panel" [ref=e92]:
+          - navigation [ref=e98]:
+            - list [ref=e99]:
+              - listitem [ref=e932]
+              - listitem [ref=e938]
+              - listitem [ref=e945]
+              - listitem [ref=e951]
+          - generic [ref=e127]: "7898"
+        - main [ref=e181]:
+          - generic [ref=e2898]:
+            - generic [ref=e2899]:
+              - navigation [ref=e2900]:
+                - link "LINE (7898)" [ref=e2901] [cursor=pointer]:
+                  - /url: /en/line
+                - link "Baseball" [ref=e2906] [cursor=pointer]:
+                  - /url: /en/line/baseball
+                - link "USA. MLB" [ref=e2912] [cursor=pointer]:
+                  - /url: /en/line/baseball/166775-usa-mlb
+              - generic [ref=e2915]:
+                - list [ref=e2917]:
+                  - listitem [ref=e2918]:
+                    - generic [ref=e2919] [cursor=pointer]:
+                      - generic [ref=e2920]: Matches
+                      - radio "Matches" [ref=e2921]
+                  - listitem [ref=e2922]:
+                    - generic [ref=e2923] [cursor=pointer]:
+                      - generic [ref=e2924]: Event
+                      - radio "Event" [checked] [ref=e2925]
+                - list [ref=e2926]:
+                  - listitem [ref=e2927]:
+                    - button "Statistics" [ref=e2930] [cursor=pointer]
+                - generic [ref=e2940]:
+                  - textbox "Search by match" [ref=e2941]
+                  - button "Search" [ref=e2942] [cursor=pointer]
+            - generic [ref=e2945]:
+              - generic [ref=e2953]:
+                - generic "USA" [ref=e2960]
+                - generic [ref=e2973]:
+                  - generic [ref=e2975]:
+                    - generic [ref=e2976]:
+                      - generic [ref=e2977]:
+                        - generic [ref=e2978]: "0"
+                        - generic [ref=e2980]: "5"
+                      - generic [ref=e2982]: hours
+                    - generic [ref=e2984]:
+                      - generic [ref=e2985]:
+                        - generic [ref=e2986]: "1"
+                        - generic [ref=e2988]: "1"
+                      - generic [ref=e2990]: minutes
+                    - generic [ref=e2992]:
+                      - generic [ref=e2993]:
+                        - generic [ref=e2994]: "1"
+                        - generic [ref=e2996]: "9"
+                      - generic [ref=e2998]: seconds
+                  - generic [ref=e2999]: 01:40
+                  - generic [ref=e3001]:
+                    - generic [ref=e3005]:
+                      - img "Philadelphia Phillies" [ref=e3008]
+                      - link "Philadelphia Phillies" [ref=e3010] [cursor=pointer]:
+                        - /url: /en/team/line/10509-philadelphiaphillies?gameId=356654190&sportId=5&subSportId=0
+                    - generic [ref=e3011]: 04/08
+                    - generic [ref=e3016]:
+                      - img "Washington Nationals" [ref=e3019]
+                      - link "Washington Nationals" [ref=e3021] [cursor=pointer]:
+                        - /url: /en/team/line/10511-washingtonnationals?gameId=356654190&sportId=5&subSportId=0
+                - button "Standings" [ref=e3028] [cursor=pointer]
+              - generic [ref=e3035]:
+                - generic [ref=e3036] [cursor=pointer]: Regular time
+                - generic [ref=e3048]:
+                  - list [ref=e3051]:
+                    - listitem [ref=e3052]:
+                      - generic [ref=e3053] [cursor=pointer]:
+                        - generic [ref=e3054]:
+                          - generic [ref=e3055]: All markets
+                          - generic [ref=e3056]: ( 139 )
+                        - radio "All markets ( 139 )" [checked] [ref=e3058]
+                    - listitem [ref=e3059]:
+                      - generic [ref=e3060] [cursor=pointer]:
+                        - generic [ref=e3061]:
+                          - generic [ref=e3062]: Total
+                          - generic [ref=e3063]: ( 30 )
+                        - radio "Total ( 30 )" [ref=e3065]
+                    - listitem [ref=e3066]:
+                      - generic [ref=e3067] [cursor=pointer]:
+                        - generic [ref=e3068]:
+                          - generic [ref=e3069]: Handicap
+                          - generic [ref=e3070]: ( 14 )
+                        - radio "Handicap ( 14 )" [ref=e3072]
+                    - listitem [ref=e3073]:
+                      - generic [ref=e3074] [cursor=pointer]:
+                        - generic [ref=e3075]:
+                          - generic [ref=e3076]: Popular
+                          - generic [ref=e3077]: ( 70 )
+                        - radio "Popular ( 70 )" [ref=e3079]
+                    - listitem [ref=e3080]:
+                      - generic [ref=e3081] [cursor=pointer]:
+                        - generic [ref=e3082]:
+                          - generic [ref=e3083]: Result + Total
+                          - generic [ref=e3084]: ( 24 )
+                        - radio "Result + Total ( 24 )" [ref=e3086]
+                  - list [ref=e3087]:
+                    - listitem [ref=e3088]:
+                      - button "Notification settings" [ref=e3091] [cursor=pointer]
+                    - listitem [ref=e3099]:
+                      - button "Market settings" [ref=e3102] [cursor=pointer]
+                  - button [ref=e3109] [cursor=pointer]
+                - button "Collapse all" [ref=e3113] [cursor=pointer]
+          - generic [ref=e2202]:
+            - article [ref=e2204]:
+              - generic [ref=e2205]:
+                - generic [ref=e2206]:
+                  - button "Previous" [ref=e2207] [cursor=pointer]
+                  - generic [ref=e2210]:
+                    - generic [ref=e2211]: "1"
+                    - generic [ref=e2212]: /8
+                  - button "Next" [ref=e2213] [cursor=pointer]
+                - generic [ref=e2216]: Accumulator Of The Day
+                - button "Delete" [ref=e2218] [cursor=pointer]
+              - generic [ref=e2221]:
+                - list [ref=e2222]:
+                  - listitem [ref=e2223]:
+                    - generic [ref=e2224]:
+                      - generic [ref=e2225]:
+                        - generic [ref=e2226]:
+                          - generic [ref=e2227]:
+                            - paragraph [ref=e2228]: 03/08
+                            - paragraph [ref=e2229]: 22:45
+                          - link [ref=e2230] [cursor=pointer]:
+                            - /url: /en/line/football/119599-argentina-primera-division/354886612-club-atletico-sarmiento-junin-independiente-rivadavia
+                            - generic [ref=e2231]:
+                              - img "Club Atletico Sarmiento Junin" [ref=e2234]
+                              - paragraph [ref=e2235]: Club Atletico Sarmiento Junin
+                            - generic [ref=e2236]:
+                              - img "Independiente Rivadavia" [ref=e2239]
+                              - paragraph [ref=e2240]: Independiente Rivadavia
+                        - generic [ref=e2241]:
+                          - button [ref=e2242] [cursor=pointer]
+                          - generic: "1.536"
+                      - generic [ref=e2243]:
+                        - paragraph [ref=e2244]: 193529 / Argentina. Primera Division
+                        - paragraph [ref=e2247]: Total Under 2.5
+                  - listitem [ref=e2248]:
+                    - generic [ref=e2249]:
+                      - generic [ref=e2250]:
+                        - generic [ref=e2251]:
+                          - generic [ref=e2252]:
+                            - paragraph [ref=e2253]: 03/08
+                            - paragraph [ref=e2254]: 21:30
+                          - link [ref=e2255] [cursor=pointer]:
+                            - /url: /en/line/football/13521-scotland-premier-league/343409286-celtic-dundee
+                            - generic [ref=e2256]:
+                              - img "Celtic" [ref=e2259]
+                              - paragraph [ref=e2260]: Celtic
+                            - generic [ref=e2261]:
+                              - img "Dundee" [ref=e2264]
+                              - paragraph [ref=e2265]: Dundee
+                        - generic [ref=e2266]:
+                          - button [ref=e2267] [cursor=pointer]
+                          - generic: "1.97"
+                      - generic [ref=e2268]:
+                        - paragraph [ref=e2269]: 181446 / Scotland. Premier League
+                        - paragraph [ref=e2272]: Next Goal No Goal 4
+                  - listitem [ref=e2273]:
+                    - generic [ref=e2274]:
+                      - generic [ref=e2275]:
+                        - generic [ref=e2276]:
+                          - generic [ref=e2277]:
+                            - paragraph [ref=e2278]: 03/08
+                            - paragraph [ref=e2279]: 21:30
+                          - link [ref=e2280] [cursor=pointer]:
+                            - /url: /en/line/table-tennis/2685665-masters-russia/356646948-vladislav-bushkov-kirill-klepikov
+                            - generic [ref=e2281]:
+                              - img "Vladislav Bushkov" [ref=e2284]
+                              - paragraph [ref=e2285]: Vladislav Bushkov
+                            - generic [ref=e2286]:
+                              - img "Kirill Klepikov" [ref=e2289]
+                              - paragraph [ref=e2290]: Kirill Klepikov
+                        - generic [ref=e2291]:
+                          - button [ref=e2292] [cursor=pointer]
+                          - generic: "1.88"
+                      - generic [ref=e2293]:
+                        - paragraph [ref=e2294]: 160746 / Masters. Russia
+                        - paragraph [ref=e2297]: 1X2 W2
+                - generic [ref=e2298]:
+                  - generic [ref=e2299]:
+                    - generic [ref=e2300]: Bonus from MelBet
+                    - generic [ref=e2301]: "1.1"
+                  - generic [ref=e2302]:
+                    - generic [ref=e2303]: Overall odds
+                    - generic [ref=e2304]: "6.258"
+                - button "Add to bet slip" [ref=e2305] [cursor=pointer]
+            - article [ref=e2309]:
+              - generic [ref=e2310]:
+                - generic [ref=e2311]:
+                  - button "Previous" [ref=e2312] [cursor=pointer]
+                  - generic [ref=e2315]:
+                    - generic [ref=e2316]: "1"
+                    - generic [ref=e2317]: /5
+                  - button "Next" [ref=e2318] [cursor=pointer]
+                - generic [ref=e2321]: Live Accumulator Of The Day
+                - button "Delete" [ref=e2323] [cursor=pointer]
+              - generic [ref=e2326]:
+                - list [ref=e2327]:
+                  - listitem [ref=e2328]:
+                    - generic [ref=e2329]:
+                      - generic [ref=e2330]:
+                        - generic [ref=e2331]:
+                          - generic [ref=e2332]:
+                            - paragraph [ref=e2333]: 03/08
+                            - paragraph [ref=e2334]: 18:45
+                          - link [ref=e2335] [cursor=pointer]:
+                            - /url: /en/live/football/1298619-bulgaria-second-league/354743868-etar-yantra-gabrovo
+                            - generic [ref=e2336]:
+                              - img "Etar" [ref=e2339]
+                              - paragraph [ref=e2340]: Etar
+                            - generic [ref=e2341]:
+                              - img "Yantra Gabrovo" [ref=e2344]
+                              - paragraph [ref=e2345]: Yantra Gabrovo
+                        - generic [ref=e2346]:
+                          - button [ref=e2347] [cursor=pointer]
+                          - generic: "1.56"
+                      - generic [ref=e2348]:
+                        - paragraph [ref=e2349]: 242807 / Bulgaria. Second League
+                        - paragraph [ref=e2352]: Handicap 1 (-1)
+                  - listitem [ref=e2353]:
+                    - generic [ref=e2354]:
+                      - generic [ref=e2355]:
+                        - generic [ref=e2356]:
+                          - generic [ref=e2357]:
+                            - paragraph [ref=e2358]: 03/08
+                            - paragraph [ref=e2359]: 19:00
+                          - link [ref=e2360] [cursor=pointer]:
+                            - /url: /en/live/ice-hockey/87591-belarus-cup/356240464-aviator-baranavichy-lida
+                            - generic [ref=e2361]:
+                              - img "Aviator Baranavichy" [ref=e2364]
+                              - paragraph [ref=e2365]: Aviator Baranavichy
+                            - generic [ref=e2366]:
+                              - img "Lida" [ref=e2369]
+                              - paragraph [ref=e2370]: Lida
+                        - generic [ref=e2371]:
+                          - button [ref=e2372] [cursor=pointer]
+                          - generic: "1.625"
+                      - generic [ref=e2373]:
+                        - paragraph [ref=e2374]: 259106 / Belarus Cup
+                        - paragraph [ref=e2378]: Handicap 2 (-1.5)
+                  - listitem [ref=e2379]:
+                    - generic [ref=e2380]:
+                      - generic [ref=e2381]:
+                        - generic [ref=e2382]:
+                          - generic [ref=e2383]:
+                            - paragraph [ref=e2384]: 03/08
+                            - paragraph [ref=e2385]: 19:00
+                          - link [ref=e2386] [cursor=pointer]:
+                            - /url: /en/live/football/1959629-bolivia-championship-women/356896156-san-antonio-bulo-bulo-women-bolivar-la-paz-women
+                            - generic [ref=e2387]:
+                              - img "San Antonio Bulo Bulo (Women)" [ref=e2390]
+                              - paragraph [ref=e2391]: San Antonio Bulo Bulo (Women)
+                            - generic [ref=e2392]:
+                              - img "Bolivar La Paz (Women)" [ref=e2395]
+                              - paragraph [ref=e2396]: Bolivar La Paz (Women)
+                        - generic [ref=e2397]:
+                          - button [ref=e2398] [cursor=pointer]
+                          - generic: "1.784"
+                      - generic [ref=e2399]:
+                        - paragraph [ref=e2400]: 212710 / Bolivia Championship. Women
+                        - paragraph [ref=e2403]: Total Under 2
+                - generic [ref=e2404]:
+                  - generic [ref=e2405]:
+                    - generic [ref=e2406]: Bonus from MelBet
+                    - generic [ref=e2407]: "1.1"
+                  - generic [ref=e2408]:
+                    - generic [ref=e2409]: Overall odds
+                    - generic [ref=e2410]: "4.975"
+                - button "Add to bet slip" [ref=e2411] [cursor=pointer]
+        - complementary [ref=e586]:
+          - button "Collapse/Expand" [ref=e587] [cursor=pointer]:
+            - generic [ref=e588]: Collapse block
+          - generic [ref=e2416]:
+            - generic [ref=e2417]:
+              - generic [ref=e2418]: Registration
+              - generic [ref=e2419]:
+                - list [ref=e2420]:
+                  - listitem [ref=e2421]:
+                    - generic "By phone" [ref=e2422]:
+                      - radio "By phone" [checked] [ref=e2423]
+                - generic [ref=e2428]:
+                  - generic [ref=e2429]: By phone
+                  - generic [ref=e2430]: To register on the website, enter your phone number and choose how you want to receive the code
+                - generic [ref=e2431]:
+                  - generic [ref=e2432]:
+                    - generic [ref=e2435] [cursor=pointer]:
+                      - button "+ 251" [ref=e2438]
+                      - textbox "91 123 4567" [ref=e2452]
+                    - generic [ref=e2454]:
+                      - generic [ref=e2455] [cursor=pointer]: SMS
+                      - button "Send via SMS" [disabled] [ref=e2467]
+                  - generic [ref=e2478]:
+                    - textbox "Select option" [disabled]
+                    - generic [ref=e2479]: Ethiopian birr (ETB)
+                  - generic [ref=e2485] [cursor=pointer]:
+                    - textbox "Confirmation code" [ref=e2486]
+                    - button [disabled] [ref=e2487]
+                  - textbox "Promo code (if you have one)" [ref=e2494]
+                  - button "Register" [disabled] [ref=e2495]
+                  - generic [ref=e2499]:
+                    - text: By clicking this button you confirm that you have read and agree to the
+                    - link "Terms and Conditions" [ref=e2500] [cursor=pointer]:
+                      - /url: /en/information/rules
+                    - text: and
+                    - link "Privacy Policy" [ref=e2501] [cursor=pointer]:
+                      - /url: /en/information/rules/privacy_policy
+                    - text: of the company and confirm that you are of legal age
+                  - generic [ref=e2502] [cursor=pointer]:
+                    - checkbox "I consent to receiving marketing and promotional offers by phone" [ref=e2503]
+                    - generic [ref=e2507]: I consent to receiving marketing and promotional offers by phone
+            - button "200% bonus on your 1st deposit" [ref=e2508] [cursor=pointer]
+          - generic [ref=e2511]:
+            - generic [ref=e2512]:
+              - list [ref=e2514]:
+                - listitem [ref=e2515]:
+                  - generic "Bet slip" [ref=e2516]:
+                    - radio "Bet slip" [checked] [ref=e2517]
+                - listitem [ref=e2521]:
+                  - generic "My bets" [ref=e2522] [cursor=pointer]:
+                    - radio "My bets" [ref=e2523]
+              - generic [ref=e2530]:
+                - generic [ref=e2531]:
+                  - generic [ref=e2532]:
+                    - generic [ref=e2533]: Your bets
+                    - button [disabled] [ref=e2534]
+                    - button "Settings" [ref=e2540] [cursor=pointer]
+                  - generic [ref=e2544]: Add events to the bet slip or enter a code to load events
+                  - generic [ref=e2547]:
+                    - generic [ref=e2548]:
+                      - generic [ref=e2551]: Bet on the favorite!
+                      - generic [ref=e2552]:
+                        - button "Previous" [disabled] [ref=e2553]
+                        - generic [ref=e2557]:
+                          - generic [ref=e2558]: "1"
+                          - generic [ref=e2559]: /3
+                        - button "Next" [ref=e2560] [cursor=pointer]
+                    - generic [ref=e2566]:
+                      - generic [ref=e2568]:
+                        - generic [ref=e2569]: 21317. Africa Cup of Nations
+                        - generic [ref=e2573]:
+                          - link "Sudan - Ethiopia" [ref=e2575] [cursor=pointer]:
+                            - /url: /en/line/football/21317-africa-cup-of-nations/348447578-sudan-ethiopia
+                          - generic [ref=e2576]:
+                            - generic [ref=e2577]: "1X2: W1"
+                            - generic [ref=e2578]: "1.93"
+                          - button "Add to bet slip" [ref=e2579] [cursor=pointer]
+                      - generic [ref=e2583]:
+                        - generic [ref=e2584]: 21317. Africa Cup of Nations
+                        - generic [ref=e2588]:
+                          - link "Libya - Botswana" [ref=e2590] [cursor=pointer]:
+                            - /url: /en/line/football/21317-africa-cup-of-nations/345779304-libya-botswana
+                          - generic [ref=e2591]:
+                            - generic [ref=e2592]: "1X2: W1"
+                            - generic [ref=e2593]: "1.6"
+                          - button "Add to bet slip" [ref=e2594] [cursor=pointer]
+                      - generic [ref=e2598]:
+                        - generic [ref=e2599]: 21317. Africa Cup of Nations
+                        - generic [ref=e2603]:
+                          - link "Mali - Cape Verde" [ref=e2605] [cursor=pointer]:
+                            - /url: /en/line/football/21317-africa-cup-of-nations/346381802-mali-cape-verde
+                          - generic [ref=e2606]:
+                            - generic [ref=e2607]: "1X2: W1"
+                            - generic [ref=e2608]: "1.86"
+                          - button "Add to bet slip" [ref=e2609] [cursor=pointer]
+                - generic [ref=e2612]:
+                  - link "Registration" [ref=e2615] [cursor=pointer]:
+                    - /url: /en/registration?type=fast
+                  - button "Save/load events" [ref=e2619] [cursor=pointer]
+            - generic [ref=e2621]:
+              - generic [ref=e2622]:
+                - generic [ref=e2623]: Bet slip generator
+                - generic [ref=e2624]: Enter your parameters and we will generate a bet slip for you
+              - button "Generate" [ref=e2625] [cursor=pointer]
+          - generic [ref=e2631]:
+            - generic [ref=e2632]:
+              - list [ref=e2633]:
+                - listitem [ref=e2634]:
+                  - generic "Android" [ref=e2635]:
+                    - radio "Android" [checked] [ref=e2636]
+                - listitem [ref=e2642]:
+                  - generic "iOS" [ref=e2643] [cursor=pointer]:
+                    - radio "iOS" [ref=e2644]
+              - button "Close" [ref=e2650] [cursor=pointer]
+            - generic [ref=e2654]:
+              - button [ref=e2655] [cursor=pointer]:
+                - img "QR code for Android app" [ref=e2666]
+              - generic [ref=e2669]:
+                - button "MelBet Mobile application" [ref=e2671] [cursor=pointer]:
+                  - img "MelBet" [ref=e2672]
+                  - generic [ref=e2673]: Mobile application
+                - button "Free download" [ref=e2675] [cursor=pointer]
+      - generic [ref=e617]:
+        - generic [ref=e2681]:
+          - generic [ref=e2682]:
+            - checkbox [checked] [ref=e2683] [cursor=pointer]
+            - heading "Bet on USA. MLB 2026 - Baseball" [level=1] [ref=e2685]
+          - generic [ref=e2686]:
+            - checkbox [checked] [ref=e2687] [cursor=pointer]
+            - generic [ref=e2688]:
+              - heading "Melbet Ethiopia Navigation" [level=4] [ref=e2689]
+              - button "Collapse/Expand" [ref=e2691] [cursor=pointer]
+        - contentinfo [ref=e2695]:
+          - generic [ref=e2696]:
+            - navigation [ref=e2697]:
+              - generic [ref=e2698]:
+                - generic [ref=e2699]: Information
+                - list [ref=e2700]:
+                  - listitem [ref=e2701]:
+                    - link "About us" [ref=e2702] [cursor=pointer]:
+                      - /url: /en/information/about
+                  - listitem [ref=e2704]:
+                    - link "Terms and Conditions" [ref=e2705] [cursor=pointer]:
+                      - /url: /en/information/rules
+                  - listitem [ref=e2707]:
+                    - link "How to top up your account with crypto" [ref=e2708] [cursor=pointer]:
+                      - /url: /en/information/crypto_landing
+                  - listitem [ref=e2710]:
+                    - link "Affiliate Program" [ref=e2711] [cursor=pointer]:
+                      - /url: https://melbetaffiliates.com
+                  - listitem [ref=e2713]:
+                    - link "Become an agent" [ref=e2714] [cursor=pointer]:
+                      - /url: https://melbetagents.com/
+                  - listitem [ref=e2716]:
+                    - link "TeamCash agents" [ref=e2717] [cursor=pointer]:
+                      - /url: /en/information/teamcash-agents
+                  - listitem [ref=e2719]:
+                    - link "Сookie Policy" [ref=e2720] [cursor=pointer]:
+                      - /url: /en/information/cookies
+                  - listitem [ref=e2722]:
+                    - link "Contacts" [ref=e2723] [cursor=pointer]:
+                      - /url: /en/information/contacts
+                  - listitem [ref=e2725]:
+                    - link "We are on social media" [ref=e2726] [cursor=pointer]:
+                      - /url: /en/information/socials
+                  - listitem [ref=e2728]:
+                    - link "How to place a bet" [ref=e2729] [cursor=pointer]:
+                      - /url: /en/information/howbet
+              - generic [ref=e2731]:
+                - generic [ref=e2732]: Betting
+                - list [ref=e2733]:
+                  - listitem [ref=e2734]:
+                    - link "Sports" [ref=e2735] [cursor=pointer]:
+                      - /url: /en/line
+                  - listitem [ref=e2737]:
+                    - link "Multi-LIVE" [ref=e2738] [cursor=pointer]:
+                      - /url: /en/multi
+                  - listitem [ref=e2740]:
+                    - link "Live" [ref=e2741] [cursor=pointer]:
+                      - /url: /en/live
+                  - listitem [ref=e2743]:
+                    - link "Toto" [ref=e2744] [cursor=pointer]:
+                      - /url: /en/toto/fifteen
+              - generic [ref=e2746]:
+                - generic [ref=e2747]: Games
+                - list [ref=e2748]:
+                  - listitem [ref=e2749]:
+                    - link "Casino" [ref=e2750] [cursor=pointer]:
+                      - /url: /en/slots
+                  - listitem [ref=e2752]:
+                    - link "Fast Games" [ref=e2753] [cursor=pointer]:
+                      - /url: /en/games
+                  - listitem [ref=e2755]:
+                    - link "Live Casino" [ref=e2756] [cursor=pointer]:
+                      - /url: /en/casino
+              - generic [ref=e2758]:
+                - generic [ref=e2759]: Statistics
+                - list [ref=e2760]:
+                  - listitem [ref=e2761]:
+                    - link "Statistics" [ref=e2762] [cursor=pointer]:
+                      - /url: /en/statistic
+                  - listitem [ref=e2764]:
+                    - link "Results" [ref=e2765] [cursor=pointer]:
+                      - /url: /en/results
+              - generic [ref=e2767]:
+                - generic [ref=e2768]: Useful links
+                - list [ref=e2769]:
+                  - listitem [ref=e2770]:
+                    - link "Mobile version" [ref=e2771] [cursor=pointer]:
+                      - /url: "?platform_type=mobile"
+                  - listitem [ref=e2773]:
+                    - link "Registration" [ref=e2774] [cursor=pointer]:
+                      - /url: /en/registration
+                  - listitem [ref=e2776]:
+                    - link "Responsible Gambling" [ref=e2777] [cursor=pointer]:
+                      - /url: /en/promotions/responsible-gambling
+                  - listitem [ref=e2779]:
+                    - link "Our awards" [ref=e2780] [cursor=pointer]:
+                      - /url: /en/betting-awards
+              - generic [ref=e2782]:
+                - generic [ref=e2783]: Apps
+                - generic [ref=e2787]:
+                  - list [ref=e2788]:
+                    - listitem [ref=e2789]:
+                      - generic "Android" [ref=e2790]:
+                        - radio "Android" [checked] [ref=e2791]
+                    - listitem [ref=e2797]:
+                      - generic "iOS" [ref=e2798] [cursor=pointer]:
+                        - radio "iOS" [ref=e2799]
+                    - listitem [ref=e2805]:
+                      - generic "Others" [ref=e2806] [cursor=pointer]:
+                        - radio "Others" [ref=e2807]
+                  - generic [ref=e2813]:
+                    - button [ref=e2814] [cursor=pointer]:
+                      - img "QR code for Android app" [ref=e2815]
+                    - generic [ref=e2818]:
+                      - button "MelBet Mobile application" [ref=e2820] [cursor=pointer]:
+                        - img "MelBet" [ref=e2821]
+                        - generic [ref=e2822]: Mobile application
+                      - button "Download" [ref=e2824] [cursor=pointer]
+            - generic [ref=e2826]:
+              - heading "Partners" [level=4] [ref=e2827]
+              - generic [ref=e2829]:
+                - link "Media Partner of Spanish LaLiga" [ref=e2832] [cursor=pointer]:
+                  - /url: https://www.laliga.com/
+                - link "Partner in Africa and MENA" [ref=e2836] [cursor=pointer]:
+                  - /url: /en/ourpartners/juventus
+                - link [ref=e2840] [cursor=pointer]:
+                  - /url: /en/ourpartners/andres-iniesta
+                - link [ref=e2844] [cursor=pointer]:
+                  - /url: /en/ourpartners/kamaru-usman
+                - link [ref=e2848] [cursor=pointer]:
+                  - /url: /en/ourpartners/ogesports
+            - generic [ref=e2850]: Mel-bet.et is owned and operated by Bet Win Sport PLC, which operates under license issued by National Lottery Administration of the Federal Democratic Republic of Ethiopia on 8th of January 2020.
+            - link [ref=e2856] [cursor=pointer]:
+              - /url: //www.dmca.com/Protection/Status.aspx?ID=03ca01cd-15f3-4392-933a-9251aa33b626&refurl=https://mel-bet.et
+              - img "DMCA.com Protection Status" [ref=e2858]
+            - generic [ref=e2859]:
+              - generic [ref=e2860]:
+                - generic [ref=e2861]: © 2015 - 2026. All rights reserved and protected by law.
+                - generic [ref=e2862]: The platform's interface and code are protected by copyright laws and are registered with the UK's Copyright House as of July 5, 2024, under Certificate of Registration IDs WS972540219 and WS972540218. Unauthorized use, reproduction, or distribution of any content from the website is strictly prohibited and may result in legal action.
+              - generic [ref=e2864]:
+                - text: MelBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on MelBet.
+                - link "Find out more" [ref=e2865] [cursor=pointer]:
+                  - /url: /en/information/cookies
+            - generic [ref=e2869]:
+              - heading "Customer Support" [level=4] [ref=e2870]
+              - link "+442038077601" [ref=e2871] [cursor=pointer]:
+                - /url: tel:+442038077601
+            - generic [ref=e2872]:
+              - generic [ref=e2873]:
+                - list [ref=e2874]:
+                  - listitem [ref=e2875]:
+                    - link "YouTube" [ref=e2876] [cursor=pointer]:
+                      - /url: https://www.youtube.com/channel/UCM6TzBsbcF_8v0VUETRxNkw
+                  - listitem [ref=e2879]:
+                    - link "Telegram" [ref=e2880] [cursor=pointer]:
+                      - /url: https://t.me/melbetethiopiatg
+                - generic [ref=e2883]: 21+
+              - link "Mobile version" [ref=e2886] [cursor=pointer]:
+                - /url: /en/line/baseball/166775-usa-mlb/356654190-philadelphia-phillies-washington-nationals?platform_type=mobile
+    - button "Customer Support" [ref=e2890] [cursor=pointer]
+  - iframe [ref=e2895]:
+    - alert [ref=f2e5]

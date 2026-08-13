@@ -7,16 +7,30 @@ from math import sqrt
 from pathlib import Path
 
 import numpy as np
-from scipy.stats import nbinom
 from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 from ml.starter_statcast_experiment import starter_matrix
-from ml.train_totals import DECISION_LINES, LINES, matrix as totals_matrix, regressor
-from ml.train_v3 import fit as fit_moneyline
+from ml.research_pitching_availability_v1 import pitching_matrix
+from ml.totals_modeling import (
+    CountDistributionTotalsModel, FeatureSubsetTotalsModel,
+    MeanCalibratedTotalsModel, TotalsModelBlend, TotalsProbabilityModel,
+)
+from ml.train_totals import DECISION_LINES, LINES, matrix as totals_matrix
+from ml.train_totals_v3 import (
+    fit_components, lineup_talent_matrix as totals_lineup_talent_matrix,
+    mean_model,
+)
+from ml.train_v3 import (
+    fit as fit_moneyline,
+    lineup_talent_matrix as moneyline_lineup_talent_matrix,
+)
 from ml.v2_experiment import matrix as moneyline_matrix
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = Path(os.getenv("NINTH_ARTIFACT_DIR", ROOT / "ml" / "artifacts")) / "market_slip_calibration.json"
+PRODUCTION_ARTIFACTS = ROOT / "ml" / "artifacts"
 
 
 def logit(value):
@@ -78,9 +92,54 @@ def calibration(rows):
     }
 
 
+def totals_production_model(rows, total, weights):
+    legacy = rows[:, :21]
+    fitted, calibrators = fit_components(legacy, total)
+    count = FeatureSubsetTotalsModel(
+        CountDistributionTotalsModel(
+            fitted, LINES, "negative_binomial", fitted.dispersion_,
+        ),
+        range(21),
+    )
+    calibrated = FeatureSubsetTotalsModel(
+        MeanCalibratedTotalsModel(fitted, calibrators, LINES),
+        range(21),
+    )
+    direct_mean = mean_model().fit(rows, total)
+    actual = np.column_stack([total > line for line in LINES]).astype(int)
+    line_models = {
+        str(line): Pipeline([
+            ("scale", StandardScaler()),
+            ("logistic", LogisticRegression(C=.03, max_iter=2500)),
+        ]).fit(rows, actual[:, index])
+        for index, line in enumerate(LINES)
+    }
+    direct = TotalsProbabilityModel(direct_mean, line_models, LINES)
+    return TotalsModelBlend([count, calibrated, direct], weights)
+
+
 def main():
-    base, _, _, outcome, years, _, _ = moneyline_matrix(); starter, _ = starter_matrix(); moneyline_x = np.column_stack([base, starter[:, 6:]])
+    artifacts = Path(os.getenv(
+        "NINTH_DEPLOYED_ARTIFACT_DIR",
+        os.getenv("NINTH_ARTIFACT_DIR", PRODUCTION_ARTIFACTS),
+    ))
+    moneyline_report = json.loads((artifacts / "report.json").read_text(encoding="utf8"))
+    totals_report = json.loads((artifacts / "totals_report.json").read_text(encoding="utf8"))
+    base, _, _, outcome, years, _, _ = moneyline_matrix()
+    starter, _ = starter_matrix()
     games, totals_x, total_runs, totals_years, dates, _, _ = totals_matrix()
+    moneyline_lineup, _, _ = moneyline_lineup_talent_matrix(games)
+    totals_lineup, _, _ = totals_lineup_talent_matrix(games)
+    moneyline_x = np.column_stack([base, starter[:, 6:], moneyline_lineup])
+    totals_x = np.column_stack([totals_x, totals_lineup])
+    if "pitching_availability" in totals_report.get("model", ""):
+        _, pitching = pitching_matrix(games)
+        totals_x = np.column_stack([totals_x, pitching])
+    totals_weights = [
+        float(totals_report["count_weight"]),
+        float(totals_report["calibrated_weight"]),
+        float(totals_report["direct_weight"]),
+    ]
     if len(games) != len(outcome) or not np.array_equal(years, totals_years):
         raise RuntimeError("Moneyline and totals histories are not aligned")
     margins = np.asarray([game["home_score"]-game["away_score"] for game in games], float)
@@ -90,10 +149,10 @@ def main():
             continue
         train, test = years < year, years == year
         moneyline_probability = fit_moneyline(moneyline_x[train], outcome[train], margins[train]).predict_proba(moneyline_x[test])[:, 1]
-        legacy_train, legacy_test = totals_x[train, :21], totals_x[test, :21]
-        total_model = regressor("poisson").fit(legacy_train, total_runs[train]); test_mean=np.clip(total_model.predict(legacy_test), .1, 30); train_mean=np.clip(total_model.predict(legacy_train), .1, 30)
-        alpha=float(np.clip(np.mean(((total_runs[train]-train_mean)**2-train_mean)/np.maximum(train_mean**2,1e-6)),.01,1));size=1/alpha
-        total_over=np.column_stack([nbinom.sf(int(line),size,size/(size+test_mean)) for line in LINES])
+        total_model = totals_production_model(
+            totals_x[train], total_runs[train], totals_weights,
+        )
+        total_over = total_model.predict_over_probabilities(totals_x[test])
         for local_index, game_index in enumerate(np.flatnonzero(test)):
             home_p=float(moneyline_probability[local_index]); ml_p=max(home_p,1-home_p); ml_won=int((home_p>=.5)==bool(outcome[game_index]))
             candidates=[]
@@ -105,7 +164,13 @@ def main():
             for market,(probability,won) in values.items():
                 market_rows[market].append({"date":dates[game_index],"year":int(year),"probability":probability,"won":won})
         print(f"completed rolling-origin {year}", flush=True)
-    report={"model":"market_aware_joint_card_calibration_v1","selection_policy":"Card calibrators fit on 2022-2024 rolling-origin predictions and promoted only after a 2025-2026 temporal audit.","markets":{}}
+    report={
+        "model": "market_aware_joint_card_calibration_v2",
+        "moneyline_model": moneyline_report["model"],
+        "totals_model": totals_report["model"],
+        "selection_policy": "Card calibrators replay the deployed moneyline and totals architectures in rolling-origin folds, fit on 2022-2024 cards, and promote only after a 2025-2026 temporal audit.",
+        "markets": {},
+    }
     for market,rows in market_rows.items():
         report["markets"][market]={"daily":{},"multiday":{}}
         for legs in range(2,9):

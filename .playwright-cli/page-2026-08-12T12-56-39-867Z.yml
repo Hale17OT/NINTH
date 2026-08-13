@@ -1,0 +1,338 @@
+- generic [ref=f5e3]:
+  - complementary [ref=f5e4]:
+    - link "NINTH all sports" [ref=f5e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f5e6]
+    - navigation "Sport workspaces" [ref=f5e7]:
+      - link "MLB" [ref=f5e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f5e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f5e18] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f5e22] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f5e29] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f5e33] [cursor=pointer]:
+      - generic [ref=f5e34]: D
+      - generic [ref=f5e35]: MODE
+  - generic [ref=f5e36]:
+    - banner [ref=f5e37]:
+      - generic [ref=f5e38]:
+        - generic [ref=f5e39]:
+          - generic [ref=f5e40]: TOP FIVE LEAGUES
+          - generic [ref=f5e41]: Football
+          - emphasis [ref=f5e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f5e43]:
+          - link "Overview" [ref=f5e44] [cursor=pointer]:
+            - /url: /football
+          - link "Leagues" [ref=f5e45] [cursor=pointer]:
+            - /url: /football/leagues
+          - link "Games" [ref=f5e46] [cursor=pointer]:
+            - /url: /football/games
+          - link "Teams" [ref=f5e47] [cursor=pointer]:
+            - /url: /football/teams
+          - link "Players" [ref=f5e48] [cursor=pointer]:
+            - /url: /football/players
+          - link "Models" [ref=f5e49] [cursor=pointer]:
+            - /url: /football/models
+          - link "Data" [ref=f5e50] [cursor=pointer]:
+            - /url: /football/data
+    - main [ref=f5e51]:
+      - generic [ref=f5e53]:
+        - generic [ref=f5e54]:
+          - generic [ref=f5e55]:
+            - text: FTB / PLAYERS
+            - heading "Players." [level=1] [ref=f5e56]
+          - paragraph [ref=f5e57]: Live presentation data for Football, separated from model training and stamped with its source coverage.
+          - generic [ref=f5e58]: 02/03
+        - generic [ref=f5e59]:
+          - generic [ref=f5e60]:
+            - textbox "30 RESULTS" [ref=f5e64]:
+              - /placeholder: Find a player
+            - generic [ref=f5e65]: 30 RESULTS
+          - combobox [ref=f5e66]:
+            - option "All competitions"
+            - option "Premier League"
+            - option "La Liga"
+            - option "Bundesliga"
+            - option "Serie A"
+            - option "Ligue 1"
+            - option "UEFA Champions League" [selected]
+            - option "UEFA Europa League"
+            - option "UEFA Conference League"
+            - option "FA Cup"
+            - option "EFL Cup"
+            - option "Copa del Rey"
+            - option "DFB-Pokal"
+            - option "Coppa Italia"
+            - option "Coupe de France"
+        - generic [ref=f5e67]:
+          - article [ref=f5e68]:
+            - generic [ref=f5e69]: "01"
+            - generic [ref=f5e70]: Expected minutes
+            - generic [ref=f5e71]: OPERATIONAL DATA FIELD
+          - article [ref=f5e72]:
+            - generic [ref=f5e73]: "02"
+            - generic [ref=f5e74]: xG+xA contribution
+            - generic [ref=f5e75]: OPERATIONAL DATA FIELD
+          - article [ref=f5e76]:
+            - generic [ref=f5e77]: "03"
+            - generic [ref=f5e78]: On-ball progression
+            - generic [ref=f5e79]: OPERATIONAL DATA FIELD
+          - article [ref=f5e80]:
+            - generic [ref=f5e81]: "04"
+            - generic [ref=f5e82]: Role and availability
+            - generic [ref=f5e83]: OPERATIONAL DATA FIELD
+        - generic [ref=f5e84]:
+          - generic [ref=f5e85]:
+            - generic [ref=f5e86]: PLAYERS INDEX
+            - generic [ref=f5e87]: SOURCE / TheSportsDB
+            - emphasis [ref=f5e88]: 30 LIVE ROWS
+          - generic [ref=f5e89]:
+            - article [ref=f5e90]:
+              - img "Abner" [ref=f5e92]
+              - generic [ref=f5e93]: Lyon
+              - heading "Abner" [level=2] [ref=f5e94]
+              - paragraph [ref=f5e95]: Left-Back · Brazil
+              - generic [ref=f5e96]:
+                - generic [ref=f5e97]: "#16"
+                - emphasis [ref=f5e98]: 1.81 m (5 ft 11 in)
+            - article [ref=f5e99]:
+              - generic [ref=f5e100]: AG
+              - generic [ref=f5e102]: Sparta Prague
+              - heading "Adam Goljan" [level=2] [ref=f5e103]
+              - paragraph [ref=f5e104]: Midfielder · Slovakia
+              - generic [ref=f5e105]:
+                - generic [ref=f5e106]: ROSTER
+                - emphasis [ref=f5e107]: —
+            - article [ref=f5e108]:
+              - img "Adam Karabec" [ref=f5e110]
+              - generic [ref=f5e111]: Lyon
+              - heading "Adam Karabec" [level=2] [ref=f5e112]
+              - paragraph [ref=f5e113]: Midfielder · Czechia
+              - generic [ref=f5e114]:
+                - generic [ref=f5e115]: "#7"
+                - emphasis [ref=f5e116]: 6' 1"
+            - article [ref=f5e117]:
+              - img "Adam Ševínský" [ref=f5e119]
+              - generic [ref=f5e120]: Sparta Prague
+              - heading "Adam Ševínský" [level=2] [ref=f5e121]
+              - paragraph [ref=f5e122]: Centre-Back · Czechia
+              - generic [ref=f5e123]:
+                - generic [ref=f5e124]: "#19"
+                - emphasis [ref=f5e125]: 1.87 m (6 ft 2 in)
+            - article [ref=f5e126]:
+              - img "Afonso Bastardo Moreira" [ref=f5e128]
+              - generic [ref=f5e129]: Lyon
+              - heading "Afonso Bastardo Moreira" [level=2] [ref=f5e130]
+              - paragraph [ref=f5e131]: Attacker · Portugal
+              - generic [ref=f5e132]:
+                - generic [ref=f5e133]: "#17"
+                - emphasis [ref=f5e134]: 175 cm
+            - article [ref=f5e135]:
+              - img "Ainsley Maitland-Niles" [ref=f5e137]
+              - generic [ref=f5e138]: Lyon
+              - heading "Ainsley Maitland-Niles" [level=2] [ref=f5e139]
+              - paragraph [ref=f5e140]: Midfielder · England
+              - generic [ref=f5e141]:
+                - generic [ref=f5e142]: "#98"
+                - emphasis [ref=f5e143]: 5 ft 10 in (1.77 m)
+            - article [ref=f5e144]:
+              - generic [ref=f5e145]: AR
+              - generic [ref=f5e147]: Sparta Prague
+              - heading "Albion Rrahmani" [level=2] [ref=f5e148]
+              - paragraph [ref=f5e149]: Attacker · Kosovo
+              - generic [ref=f5e150]:
+                - generic [ref=f5e151]: "#10"
+                - emphasis [ref=f5e152]: 187 cm
+            - article [ref=f5e153]:
+              - img "Allan Saint-Maximin" [ref=f5e155]
+              - generic [ref=f5e156]: Fenerbahce
+              - heading "Allan Saint-Maximin" [level=2] [ref=f5e157]
+              - paragraph [ref=f5e158]: Left Wing · France
+              - generic [ref=f5e159]:
+                - generic [ref=f5e160]: "#97"
+                - emphasis [ref=f5e161]: 173 cm
+            - article [ref=f5e162]:
+              - generic [ref=f5e163]: AA
+              - generic [ref=f5e165]: Sparta Prague
+              - heading "Andreas Aalen Vindheim" [level=2] [ref=f5e166]
+              - paragraph [ref=f5e167]: Defender · Norway
+              - generic [ref=f5e168]:
+                - generic [ref=f5e169]: ROSTER
+                - emphasis [ref=f5e170]: 184 cm
+            - article [ref=f5e171]:
+              - img "Andreas Vindheim" [ref=f5e173]
+              - generic [ref=f5e174]: Sparta Prague
+              - heading "Andreas Vindheim" [level=2] [ref=f5e175]
+              - paragraph [ref=f5e176]: Right-Back · Norway
+              - generic [ref=f5e177]:
+                - generic [ref=f5e178]: "#16"
+                - emphasis [ref=f5e179]: 1.83 m (6 ft 0 in)
+            - article [ref=f5e180]:
+              - img "Andy Irving" [ref=f5e182]
+              - generic [ref=f5e183]: Sparta Prague
+              - heading "Andy Irving" [level=2] [ref=f5e184]
+              - paragraph [ref=f5e185]: Central Midfield · Scotland
+              - generic [ref=f5e186]:
+                - generic [ref=f5e187]: "#18"
+                - emphasis [ref=f5e188]: 190 cm
+            - article [ref=f5e189]:
+              - img "Archie Brown" [ref=f5e191]
+              - generic [ref=f5e192]: Fenerbahçe
+              - heading "Archie Brown" [level=2] [ref=f5e193]
+              - paragraph [ref=f5e194]: Defender · England
+              - generic [ref=f5e195]:
+                - generic [ref=f5e196]: "#3"
+                - emphasis [ref=f5e197]: 190 cm
+            - article [ref=f5e198]:
+              - img "Asger Sörensen" [ref=f5e200]
+              - generic [ref=f5e201]: Sparta Prague
+              - heading "Asger Sörensen" [level=2] [ref=f5e202]
+              - paragraph [ref=f5e203]: Centre-Back · Denmark
+              - generic [ref=f5e204]:
+                - generic [ref=f5e205]: "#25"
+                - emphasis [ref=f5e206]: 191 cm
+            - article [ref=f5e207]:
+              - img "Bartuğ Elmaz" [ref=f5e209]
+              - generic [ref=f5e210]: Fenerbahçe
+              - heading "Bartuğ Elmaz" [level=2] [ref=f5e211]
+              - paragraph [ref=f5e212]: Defensive Midfield · Turkey
+              - generic [ref=f5e213]:
+                - generic [ref=f5e214]: "#28"
+                - emphasis [ref=f5e215]: 179 cm
+            - article [ref=f5e216]:
+              - generic [ref=f5e217]: BD
+              - generic [ref=f5e219]: Sparta Prague
+              - heading "Bořek Dočkal" [level=2] [ref=f5e220]
+              - paragraph [ref=f5e221]: Midfielder · Czechia
+              - generic [ref=f5e222]:
+                - generic [ref=f5e223]: ROSTER
+                - emphasis [ref=f5e224]: 1.83 m (6 ft 0 in)
+            - article [ref=f5e225]:
+              - img "Çağlar Söyüncü" [ref=f5e227]
+              - generic [ref=f5e228]: Fenerbahçe
+              - heading "Çağlar Söyüncü" [level=2] [ref=f5e229]
+              - paragraph [ref=f5e230]: Centre-Back · Turkey
+              - generic [ref=f5e231]:
+                - generic [ref=f5e232]: "#4"
+                - emphasis [ref=f5e233]: 185 cm
+            - article [ref=f5e234]:
+              - img "Clinton Mata" [ref=f5e236]
+              - generic [ref=f5e237]: Lyon
+              - heading "Clinton Mata" [level=2] [ref=f5e238]
+              - paragraph [ref=f5e239]: Right-Back · Angola
+              - generic [ref=f5e240]:
+                - generic [ref=f5e241]: "#22"
+                - emphasis [ref=f5e242]: 1.80 m (5 ft 11 in)
+            - article [ref=f5e243]:
+              - img "Corentin Tolisso" [ref=f5e245]
+              - generic [ref=f5e246]: Lyon
+              - heading "Corentin Tolisso" [level=2] [ref=f5e247]
+              - paragraph [ref=f5e248]: Central Midfield · France
+              - generic [ref=f5e249]:
+                - generic [ref=f5e250]: "#8"
+                - emphasis [ref=f5e251]: 1.80 m (5 ft 11 in)
+            - article [ref=f5e252]:
+              - generic [ref=f5e253]: DK
+              - generic [ref=f5e255]: Sparta Prague
+              - heading "Daniel Kaštánek" [level=2] [ref=f5e256]
+              - paragraph [ref=f5e257]: Midfielder · Czechia
+              - generic [ref=f5e258]:
+                - generic [ref=f5e259]: ROSTER
+                - emphasis [ref=f5e260]: —
+            - article [ref=f5e261]:
+              - generic [ref=f5e262]: DP
+              - generic [ref=f5e264]: Sparta Prague
+              - heading "David Pavelka" [level=2] [ref=f5e265]
+              - paragraph [ref=f5e266]: Midfielder · Czechia
+              - generic [ref=f5e267]:
+                - generic [ref=f5e268]: "#8"
+                - emphasis [ref=f5e269]: 1.85 m (6 ft 1 in)
+            - article [ref=f5e270]:
+              - img "Diego Carlos" [ref=f5e272]
+              - generic [ref=f5e273]: Fenerbahçe
+              - heading "Diego Carlos" [level=2] [ref=f5e274]
+              - paragraph [ref=f5e275]: Centre-Back · Brazil
+              - generic [ref=f5e276]:
+                - generic [ref=f5e277]: "#34"
+                - emphasis [ref=f5e278]: 1.86 m (6 ft 1 in)
+            - article [ref=f5e279]:
+              - img "Dominik Greif" [ref=f5e281]
+              - generic [ref=f5e282]: Lyon
+              - heading "Dominik Greif" [level=2] [ref=f5e283]
+              - paragraph [ref=f5e284]: Goalkeeper · Slovakia
+              - generic [ref=f5e285]:
+                - generic [ref=f5e286]: "#1"
+                - emphasis [ref=f5e287]: 1.97 m (6 ft 6 in)
+            - article [ref=f5e288]:
+              - img "Dominik Livaković" [ref=f5e290]
+              - generic [ref=f5e291]: Fenerbahçe
+              - heading "Dominik Livaković" [level=2] [ref=f5e292]
+              - paragraph [ref=f5e293]: Goalkeeper · Croatia
+              - generic [ref=f5e294]:
+                - generic [ref=f5e295]: "#1"
+                - emphasis [ref=f5e296]: 188 cm
+            - article [ref=f5e297]:
+              - img "Duje Ćaleta-Car" [ref=f5e299]
+              - generic [ref=f5e300]: Lyon
+              - heading "Duje Ćaleta-Car" [level=2] [ref=f5e301]
+              - paragraph [ref=f5e302]: Centre-Back · Croatia
+              - generic [ref=f5e303]:
+                - generic [ref=f5e304]: "#16"
+                - emphasis [ref=f5e305]: 1.92 m (6 ft 4 in)
+            - article [ref=f5e306]:
+              - img "Dusan Tadic" [ref=f5e308]
+              - generic [ref=f5e309]: Fenerbahce
+              - heading "Dusan Tadic" [level=2] [ref=f5e310]
+              - paragraph [ref=f5e311]: Left Wing · Serbia
+              - generic [ref=f5e312]:
+                - generic [ref=f5e313]: "#10"
+                - emphasis [ref=f5e314]: 181 cm
+            - article [ref=f5e315]:
+              - img "Ederson" [ref=f5e317]
+              - generic [ref=f5e318]: Fenerbahçe
+              - heading "Ederson" [level=2] [ref=f5e319]
+              - paragraph [ref=f5e320]: Goalkeeper · Brazil
+              - generic [ref=f5e321]:
+                - generic [ref=f5e322]: "#31"
+                - emphasis [ref=f5e323]: 1.88 m (6 ft 2 in)
+            - article [ref=f5e324]:
+              - img "Edin Džeko" [ref=f5e326]
+              - generic [ref=f5e327]: Fenerbahçe
+              - heading "Edin Džeko" [level=2] [ref=f5e328]
+              - paragraph [ref=f5e329]: Centre-Forward · Bosnia and Herzegovina
+              - generic [ref=f5e330]:
+                - generic [ref=f5e331]: "#10"
+                - emphasis [ref=f5e332]: 193 cm
+            - article [ref=f5e333]:
+              - img "Edson Álvarez" [ref=f5e335]
+              - generic [ref=f5e336]: Fenerbahçe
+              - heading "Edson Álvarez" [level=2] [ref=f5e337]
+              - paragraph [ref=f5e338]: Defensive Midfield · Mexico
+              - generic [ref=f5e339]:
+                - generic [ref=f5e340]: "#11"
+                - emphasis [ref=f5e341]: 1.87 m (6 ft 2 in)
+            - article [ref=f5e342]:
+              - img "Enzo Honoré Molébé" [ref=f5e344]
+              - generic [ref=f5e345]: Lyon
+              - heading "Enzo Honoré Molébé" [level=2] [ref=f5e346]
+              - paragraph [ref=f5e347]: Attacker · France
+              - generic [ref=f5e348]:
+                - generic [ref=f5e349]: "#29"
+                - emphasis [ref=f5e350]: 5 ft 10 in
+            - article [ref=f5e351]:
+              - img "Ernest Nuamah" [ref=f5e353]
+              - generic [ref=f5e354]: Lyon
+              - heading "Ernest Nuamah" [level=2] [ref=f5e355]
+              - paragraph [ref=f5e356]: Left Wing · Ghana
+              - generic [ref=f5e357]:
+                - generic [ref=f5e358]: "#37"
+                - emphasis [ref=f5e359]: 178 cm
+        - generic [ref=f5e360]:
+          - generic [ref=f5e365]:
+            - text: Public free-tier coverage
+            - paragraph [ref=f5e366]: Presentation data is not used to train or promote betting models. The public key limits response depth; a premium key unlocks complete league rosters and schedules.
+          - emphasis [ref=f5e367]: 8/12/2026, 3:56:39 PM

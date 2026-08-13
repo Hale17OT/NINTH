@@ -1,0 +1,3 @@
+- generic [ref=e1]:
+  - button "Launch one helper session" [active] [ref=e2]
+  - status [ref=e3]: waiting

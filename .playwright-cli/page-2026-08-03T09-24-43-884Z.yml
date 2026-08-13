@@ -1,0 +1,38 @@
+- generic [ref=f33e3]:
+  - banner [ref=f33e4]:
+    - generic [ref=f33e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f33e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f33e7]
+        - generic [ref=f33e8]:
+          - generic [ref=f33e9]: NINTH
+          - generic [ref=f33e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f33e11] [cursor=pointer]:
+        - generic [ref=f33e12]: DAY
+      - button "Search" [ref=f33e18] [cursor=pointer]
+      - button "Menu" [ref=f33e22] [cursor=pointer]
+    - generic [ref=f33e24]:
+      - generic [ref=f33e25]: TODAY
+      - generic [ref=f33e27]: Official scoreboard syncing
+  - main [ref=f33e28]:
+    - generic [ref=f33e30]:
+      - generic [ref=f33e31]: NINTH / 404
+      - paragraph [ref=f33e32]: "404"
+      - heading "This page is out of play." [level=1] [ref=f33e33]
+      - paragraph [ref=f33e34]: The address may have changed, or the page may no longer exist.
+      - generic [ref=f33e35]:
+        - link "GO HOME" [ref=f33e36] [cursor=pointer]:
+          - /url: /
+        - link "VIEW GAMES" [ref=f33e37] [cursor=pointer]:
+          - /url: /schedule
+  - generic [ref=f33e38]:
+    - link "Games" [ref=f33e39] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f33e43] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f33e51] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f33e54] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f33e62] [cursor=pointer]:
+      - /url: /teams

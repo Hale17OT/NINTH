@@ -23,7 +23,7 @@ from ml.features import FEATURE_NAMES, apply_result, fresh_state, matchup_featur
 from ml.accuracy_experiments import STATCAST_FEATURES
 
 DATA = ROOT / "ml" / "data" / "games.jsonl"
-CONTEXTS = ROOT / "ml" / "data" / "contexts_v2.jsonl"
+CONTEXTS = ROOT / "ml" / "data" / "contexts_v3.jsonl"
 STATCAST = ROOT / "ml" / "data" / "statcast_contexts.jsonl"
 OUTPUT = ROOT / "ml" / "artifacts" / "v2_experiment.json"
 V2_FEATURES = [

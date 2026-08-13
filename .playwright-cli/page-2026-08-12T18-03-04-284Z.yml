@@ -1,0 +1,915 @@
+- generic [ref=f7e3]:
+  - complementary [ref=f7e4]:
+    - link "NINTH all sports" [ref=f7e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f7e6]
+    - navigation "Sport workspaces" [ref=f7e7]:
+      - link "MLB" [ref=f7e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f7e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f7e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f7e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f7e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f7e32] [cursor=pointer]:
+      - generic [ref=f7e33]: D
+      - generic [ref=f7e34]: MODE
+  - generic [ref=f7e35]:
+    - banner [ref=f7e36]:
+      - generic [ref=f7e37]:
+        - generic [ref=f7e38]:
+          - generic [ref=f7e39]: DECISION SYSTEM
+          - generic [ref=f7e40]: All sports
+        - navigation "Workspace navigation" [ref=f7e41]:
+          - link "Platform" [ref=f7e42] [cursor=pointer]:
+            - /url: /
+          - link "All-sports builder" [ref=f7e43] [cursor=pointer]:
+            - /url: /build
+    - main [ref=f7e44]:
+      - generic [ref=f7e46]:
+        - generic [ref=f7e47]:
+          - generic [ref=f7e48]:
+            - text: NINTH / ALL-SPORTS BUILDER
+            - heading "One card. Every arena." [level=1] [ref=f7e49]: One card.Every arena.
+            - paragraph [ref=f7e50]: A shared construction surface with separate model eligibility. Baseball can contribute production legs now; every other sport unlocks automatically only after its own evidence gate passes.
+          - complementary [ref=f7e51]:
+            - generic [ref=f7e56]: PORTFOLIO CONTRACT
+            - generic [ref=f7e57]: Combined does not mean blended.
+            - paragraph [ref=f7e58]: Probabilities come from sport-native models. The builder only joins eligible outputs and then controls event, team, market and directional exposure across the final card.
+        - generic [ref=f7e59]:
+          - button "00 ALL 81 READY" [ref=f7e298] [cursor=pointer]:
+            - generic [ref=f7e61]: "00"
+            - generic [ref=f7e62]: ALL
+            - generic [ref=f7e63]: 81 READY
+          - button "01 MLB LIVE BOARD" [ref=f7e64] [cursor=pointer]:
+            - generic [ref=f7e65]: "01"
+            - generic [ref=f7e66]: MLB
+            - generic [ref=f7e67]: LIVE BOARD
+          - button "02 FTB SHADOW BOARD" [ref=f7e140] [cursor=pointer]:
+            - generic [ref=f7e69]: "02"
+            - generic [ref=f7e70]: FTB
+            - generic [ref=f7e71]: SHADOW BOARD
+          - button "03 NFL SHADOW BOARD" [ref=f7e141] [cursor=pointer]:
+            - generic [ref=f7e73]: "03"
+            - generic [ref=f7e74]: NFL
+            - generic [ref=f7e75]: SHADOW BOARD
+          - button "04 NBA RESEARCH LOCKED" [ref=f7e76] [cursor=pointer]:
+            - generic [ref=f7e77]: "04"
+            - generic [ref=f7e78]: NBA
+            - generic [ref=f7e79]: RESEARCH LOCKED
+          - button "05 ESP SHADOW BOARD" [ref=f7e142] [cursor=pointer]:
+            - generic [ref=f7e81]: "05"
+            - generic [ref=f7e82]: ESP
+            - generic [ref=f7e83]: SHADOW BOARD
+        - region "Builder evidence mode" [ref=f7e84]:
+          - button "PRODUCTION Only audited, automatically eligible legs" [ref=f7e85] [cursor=pointer]:
+            - generic [ref=f7e86]: PRODUCTION
+            - generic [ref=f7e87]: Only audited, automatically eligible legs
+          - button "RESEARCH SHADOW Preview locked Football, NFL and Esports forecasts" [active] [ref=f7e88] [cursor=pointer]:
+            - generic [ref=f7e89]: RESEARCH SHADOW
+            - generic [ref=f7e90]: Preview locked Football, NFL and Esports forecasts
+        - generic [ref=f7e91]:
+          - generic [ref=f7e92]:
+            - generic [ref=f7e93]:
+              - generic [ref=f7e94]:
+                - text: RESEARCH INVENTORY
+                - heading "Current shadow forecasts" [level=2] [ref=f7e299]
+              - generic [ref=f7e96]:
+                - button "REFRESH" [ref=f7e97] [cursor=pointer]
+                - button "ADD CROSS-SPORT 5" [ref=f7e300] [cursor=pointer]
+            - generic [ref=f7e143]:
+              - article [ref=f7e301]:
+                - generic [ref=f7e302]: NFL
+                - generic [ref=f7e303]:
+                  - generic [ref=f7e304]: Arizona Cardinals @ Los Angeles Chargers · Moneyline
+                  - generic [ref=f7e305]: Los Angeles Chargers to win
+                  - generic [ref=f7e306]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e307]:
+                  - strong [ref=f7e308]: 76.6%
+                  - generic [ref=f7e309]: PRICE PENDING
+                - button "Add leg" [ref=f7e310] [cursor=pointer]
+              - article [ref=f7e312]:
+                - generic [ref=f7e313]: NFL
+                - generic [ref=f7e314]:
+                  - generic [ref=f7e315]: Green Bay Packers @ New York Jets · Moneyline
+                  - generic [ref=f7e316]: Green Bay Packers to win
+                  - generic [ref=f7e317]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e318]:
+                  - strong [ref=f7e319]: 71.9%
+                  - generic [ref=f7e320]: PRICE PENDING
+                - button "Add leg" [ref=f7e321] [cursor=pointer]
+              - article [ref=f7e323]:
+                - generic [ref=f7e324]: NFL
+                - generic [ref=f7e325]:
+                  - generic [ref=f7e326]: Seattle Seahawks @ Arizona Cardinals · Moneyline
+                  - generic [ref=f7e327]: Seattle Seahawks to win
+                  - generic [ref=f7e328]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e329]:
+                  - strong [ref=f7e330]: 71.9%
+                  - generic [ref=f7e331]: PRICE PENDING
+                - button "Add leg" [ref=f7e332] [cursor=pointer]
+              - article [ref=f7e144]:
+                - generic [ref=f7e145]: MLB
+                - generic [ref=f7e146]:
+                  - generic [ref=f7e147]: Tampa Bay Rays @ Athletics · Moneyline
+                  - generic [ref=f7e148]: Tampa Bay Rays to win
+                  - generic [ref=f7e149]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e150]:
+                  - strong [ref=f7e151]: 65.7%
+                  - generic [ref=f7e152]: "@ 1.475"
+                - button "Add leg" [ref=f7e153] [cursor=pointer]
+              - article [ref=f7e155]:
+                - generic [ref=f7e156]: MLB
+                - generic [ref=f7e157]:
+                  - generic [ref=f7e158]: Kansas City Royals @ Los Angeles Dodgers · Moneyline
+                  - generic [ref=f7e159]: Los Angeles Dodgers to win
+                  - generic [ref=f7e160]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e161]:
+                  - strong [ref=f7e162]: 64.4%
+                  - generic [ref=f7e163]: "@ 1.497"
+                - button "Add leg" [ref=f7e164] [cursor=pointer]
+              - article [ref=f7e334]:
+                - generic [ref=f7e335]: NFL
+                - generic [ref=f7e336]:
+                  - generic [ref=f7e337]: New Orleans Saints @ Detroit Lions · Moneyline
+                  - generic [ref=f7e338]: Detroit Lions to win
+                  - generic [ref=f7e339]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e340]:
+                  - strong [ref=f7e341]: 64.4%
+                  - generic [ref=f7e342]: PRICE PENDING
+                - button "Add leg" [ref=f7e343] [cursor=pointer]
+              - article [ref=f7e345]:
+                - generic [ref=f7e346]: NFL
+                - generic [ref=f7e347]:
+                  - generic [ref=f7e348]: Cleveland Browns @ Jacksonville Jaguars · Moneyline
+                  - generic [ref=f7e349]: Jacksonville Jaguars to win
+                  - generic [ref=f7e350]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e351]:
+                  - strong [ref=f7e352]: 64.4%
+                  - generic [ref=f7e353]: PRICE PENDING
+                - button "Add leg" [ref=f7e354] [cursor=pointer]
+              - article [ref=f7e356]:
+                - generic [ref=f7e357]: NFL
+                - generic [ref=f7e358]:
+                  - generic [ref=f7e359]: New Orleans Saints @ Baltimore Ravens · Moneyline
+                  - generic [ref=f7e360]: Baltimore Ravens to win
+                  - generic [ref=f7e361]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e362]:
+                  - strong [ref=f7e363]: 64.4%
+                  - generic [ref=f7e364]: PRICE PENDING
+                - button "Add leg" [ref=f7e365] [cursor=pointer]
+              - article [ref=f7e367]:
+                - generic [ref=f7e368]: NFL
+                - generic [ref=f7e369]:
+                  - generic [ref=f7e370]: Cleveland Browns @ Tampa Bay Buccaneers · Moneyline
+                  - generic [ref=f7e371]: Tampa Bay Buccaneers to win
+                  - generic [ref=f7e372]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e373]:
+                  - strong [ref=f7e374]: 64.4%
+                  - generic [ref=f7e375]: PRICE PENDING
+                - button "Add leg" [ref=f7e376] [cursor=pointer]
+              - article [ref=f7e378]:
+                - generic [ref=f7e379]: NFL
+                - generic [ref=f7e380]:
+                  - generic [ref=f7e381]: Las Vegas Raiders @ Los Angeles Chargers · Moneyline
+                  - generic [ref=f7e382]: Los Angeles Chargers to win
+                  - generic [ref=f7e383]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e384]:
+                  - strong [ref=f7e385]: 64.4%
+                  - generic [ref=f7e386]: PRICE PENDING
+                - button "Add leg" [ref=f7e387] [cursor=pointer]
+              - article [ref=f7e389]:
+                - generic [ref=f7e390]: NFL
+                - generic [ref=f7e391]:
+                  - generic [ref=f7e392]: Miami Dolphins @ San Francisco 49ers · Moneyline
+                  - generic [ref=f7e393]: San Francisco 49ers to win
+                  - generic [ref=f7e394]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e395]:
+                  - strong [ref=f7e396]: 64.4%
+                  - generic [ref=f7e397]: PRICE PENDING
+                - button "Add leg" [ref=f7e398] [cursor=pointer]
+              - article [ref=f7e400]:
+                - generic [ref=f7e401]: NFL
+                - generic [ref=f7e402]:
+                  - generic [ref=f7e403]: Indianapolis Colts @ Kansas City Chiefs · Moneyline
+                  - generic [ref=f7e404]: Kansas City Chiefs to win
+                  - generic [ref=f7e405]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e406]:
+                  - strong [ref=f7e407]: 64.4%
+                  - generic [ref=f7e408]: PRICE PENDING
+                - button "Add leg" [ref=f7e409] [cursor=pointer]
+              - article [ref=f7e411]:
+                - generic [ref=f7e412]: NFL
+                - generic [ref=f7e413]:
+                  - generic [ref=f7e414]: New York Giants @ Los Angeles Rams · Moneyline
+                  - generic [ref=f7e415]: Los Angeles Rams to win
+                  - generic [ref=f7e416]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e417]:
+                  - strong [ref=f7e418]: 64.4%
+                  - generic [ref=f7e419]: PRICE PENDING
+                - button "Add leg" [ref=f7e420] [cursor=pointer]
+              - article [ref=f7e166]:
+                - generic [ref=f7e167]: MLB
+                - generic [ref=f7e168]:
+                  - generic [ref=f7e169]: New York Mets @ Atlanta Braves · Moneyline
+                  - generic [ref=f7e170]: Atlanta Braves to win
+                  - generic [ref=f7e171]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e172]:
+                  - strong [ref=f7e173]: 62.9%
+                  - generic [ref=f7e174]: "@ 1.600"
+                - button "Add leg" [ref=f7e175] [cursor=pointer]
+              - article [ref=f7e177]:
+                - generic [ref=f7e178]: MLB
+                - generic [ref=f7e179]:
+                  - generic [ref=f7e180]: Boston Red Sox @ Toronto Blue Jays · Moneyline
+                  - generic [ref=f7e181]: Boston Red Sox to win
+                  - generic [ref=f7e182]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e183]:
+                  - strong [ref=f7e184]: 62.3%
+                  - generic [ref=f7e185]: "@ 1.826"
+                - button "Add leg" [ref=f7e186] [cursor=pointer]
+              - article [ref=f7e422]:
+                - generic [ref=f7e423]: NFL
+                - generic [ref=f7e424]:
+                  - generic [ref=f7e425]: New England Patriots @ Seattle Seahawks · Moneyline
+                  - generic [ref=f7e426]: Seattle Seahawks to win
+                  - generic [ref=f7e427]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e428]:
+                  - strong [ref=f7e429]: 61.7%
+                  - generic [ref=f7e430]: PRICE PENDING
+                - button "Add leg" [ref=f7e431] [cursor=pointer]
+              - article [ref=f7e433]:
+                - generic [ref=f7e434]: NFL
+                - generic [ref=f7e435]:
+                  - generic [ref=f7e436]: Washington Commanders @ Philadelphia Eagles · Moneyline
+                  - generic [ref=f7e437]: Philadelphia Eagles to win
+                  - generic [ref=f7e438]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e439]:
+                  - strong [ref=f7e440]: 61.7%
+                  - generic [ref=f7e441]: PRICE PENDING
+                - button "Add leg" [ref=f7e442] [cursor=pointer]
+              - article [ref=f7e188]:
+                - generic [ref=f7e189]: MLB
+                - generic [ref=f7e190]:
+                  - generic [ref=f7e191]: Colorado Rockies @ Arizona Diamondbacks · Moneyline
+                  - generic [ref=f7e192]: Arizona Diamondbacks to win
+                  - generic [ref=f7e193]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e194]:
+                  - strong [ref=f7e195]: 61.7%
+                  - generic [ref=f7e196]: "@ 1.600"
+                - button "Add leg" [ref=f7e197] [cursor=pointer]
+              - article [ref=f7e199]:
+                - generic [ref=f7e200]: MLB
+                - generic [ref=f7e201]:
+                  - generic [ref=f7e202]: Chicago Cubs @ Washington Nationals · Moneyline
+                  - generic [ref=f7e203]: Chicago Cubs to win
+                  - generic [ref=f7e204]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e205]:
+                  - strong [ref=f7e206]: 61.0%
+                  - generic [ref=f7e207]: "@ 1.650"
+                - button "Add leg" [ref=f7e208] [cursor=pointer]
+              - article [ref=f7e210]:
+                - generic [ref=f7e211]: MLB
+                - generic [ref=f7e212]:
+                  - generic [ref=f7e213]: Cleveland Guardians @ Detroit Tigers · Moneyline
+                  - generic [ref=f7e214]: Detroit Tigers to win
+                  - generic [ref=f7e215]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e216]:
+                  - strong [ref=f7e217]: 60.3%
+                  - generic [ref=f7e218]: "@ 1.817"
+                - button "Add leg" [ref=f7e219] [cursor=pointer]
+              - article [ref=f7e221]:
+                - generic [ref=f7e222]: MLB
+                - generic [ref=f7e223]:
+                  - generic [ref=f7e224]: Texas Rangers @ Los Angeles Angels · Moneyline
+                  - generic [ref=f7e225]: Texas Rangers to win
+                  - generic [ref=f7e226]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e227]:
+                  - strong [ref=f7e228]: 60.1%
+                  - generic [ref=f7e229]: "@ 1.782"
+                - button "Add leg" [ref=f7e230] [cursor=pointer]
+              - article [ref=f7e232]:
+                - generic [ref=f7e233]: MLB
+                - generic [ref=f7e234]:
+                  - generic [ref=f7e235]: Cincinnati Reds @ Chicago White Sox · Moneyline
+                  - generic [ref=f7e236]: Chicago White Sox to win
+                  - generic [ref=f7e237]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e238]:
+                  - strong [ref=f7e239]: 58.6%
+                  - generic [ref=f7e240]: "@ 1.702"
+                - button "Add leg" [ref=f7e241] [cursor=pointer]
+              - article [ref=f7e444]:
+                - generic [ref=f7e445]: NFL
+                - generic [ref=f7e446]:
+                  - generic [ref=f7e447]: Baltimore Ravens @ Indianapolis Colts · Moneyline
+                  - generic [ref=f7e448]: Baltimore Ravens to win
+                  - generic [ref=f7e449]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e450]:
+                  - strong [ref=f7e451]: 58.1%
+                  - generic [ref=f7e452]: PRICE PENDING
+                - button "Add leg" [ref=f7e453] [cursor=pointer]
+              - article [ref=f7e455]:
+                - generic [ref=f7e456]: NFL
+                - generic [ref=f7e457]:
+                  - generic [ref=f7e458]: Philadelphia Eagles @ Tennessee Titans · Moneyline
+                  - generic [ref=f7e459]: Philadelphia Eagles to win
+                  - generic [ref=f7e460]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e461]:
+                  - strong [ref=f7e462]: 58.1%
+                  - generic [ref=f7e463]: PRICE PENDING
+                - button "Add leg" [ref=f7e464] [cursor=pointer]
+              - article [ref=f7e243]:
+                - generic [ref=f7e244]: MLB
+                - generic [ref=f7e245]:
+                  - generic [ref=f7e246]: Seattle Mariners @ New York Yankees · Moneyline
+                  - generic [ref=f7e247]: New York Yankees to win
+                  - generic [ref=f7e248]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e249]:
+                  - strong [ref=f7e250]: 56.5%
+                  - generic [ref=f7e251]: "@ 1.804"
+                - button "Add leg" [ref=f7e252] [cursor=pointer]
+              - article [ref=f7e466]:
+                - generic [ref=f7e467]: NFL
+                - generic [ref=f7e468]:
+                  - generic [ref=f7e469]: Chicago Bears @ Carolina Panthers · Moneyline
+                  - generic [ref=f7e470]: Chicago Bears to win
+                  - generic [ref=f7e471]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e472]:
+                  - strong [ref=f7e473]: 56.5%
+                  - generic [ref=f7e474]: PRICE PENDING
+                - button "Add leg" [ref=f7e475] [cursor=pointer]
+              - article [ref=f7e477]:
+                - generic [ref=f7e478]: NFL
+                - generic [ref=f7e479]:
+                  - generic [ref=f7e480]: Dallas Cowboys @ New York Giants · Moneyline
+                  - generic [ref=f7e481]: Dallas Cowboys to win
+                  - generic [ref=f7e482]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e483]:
+                  - strong [ref=f7e484]: 56.5%
+                  - generic [ref=f7e485]: PRICE PENDING
+                - button "Add leg" [ref=f7e486] [cursor=pointer]
+              - article [ref=f7e488]:
+                - generic [ref=f7e489]: NFL
+                - generic [ref=f7e490]:
+                  - generic [ref=f7e491]: Tampa Bay Buccaneers @ Cincinnati Bengals · Moneyline
+                  - generic [ref=f7e492]: Cincinnati Bengals to win
+                  - generic [ref=f7e493]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e494]:
+                  - strong [ref=f7e495]: 56.4%
+                  - generic [ref=f7e496]: PRICE PENDING
+                - button "Add leg" [ref=f7e497] [cursor=pointer]
+              - article [ref=f7e499]:
+                - generic [ref=f7e500]: NFL
+                - generic [ref=f7e501]:
+                  - generic [ref=f7e502]: Atlanta Falcons @ Pittsburgh Steelers · Moneyline
+                  - generic [ref=f7e503]: Pittsburgh Steelers to win
+                  - generic [ref=f7e504]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e505]:
+                  - strong [ref=f7e506]: 56.4%
+                  - generic [ref=f7e507]: PRICE PENDING
+                - button "Add leg" [ref=f7e508] [cursor=pointer]
+              - article [ref=f7e510]:
+                - generic [ref=f7e511]: NFL
+                - generic [ref=f7e512]:
+                  - generic [ref=f7e513]: Detroit Lions @ Buffalo Bills · Moneyline
+                  - generic [ref=f7e514]: Buffalo Bills to win
+                  - generic [ref=f7e515]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e516]:
+                  - strong [ref=f7e517]: 56.4%
+                  - generic [ref=f7e518]: PRICE PENDING
+                - button "Add leg" [ref=f7e519] [cursor=pointer]
+              - article [ref=f7e521]:
+                - generic [ref=f7e522]: NFL
+                - generic [ref=f7e523]:
+                  - generic [ref=f7e524]: Pittsburgh Steelers @ New England Patriots · Moneyline
+                  - generic [ref=f7e525]: New England Patriots to win
+                  - generic [ref=f7e526]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e527]:
+                  - strong [ref=f7e528]: 56.4%
+                  - generic [ref=f7e529]: PRICE PENDING
+                - button "Add leg" [ref=f7e530] [cursor=pointer]
+              - article [ref=f7e254]:
+                - generic [ref=f7e255]: MLB
+                - generic [ref=f7e256]:
+                  - generic [ref=f7e257]: Philadelphia Phillies @ St. Louis Cardinals · Moneyline
+                  - generic [ref=f7e258]: Philadelphia Phillies to win
+                  - generic [ref=f7e259]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e260]:
+                  - strong [ref=f7e261]: 55.8%
+                  - generic [ref=f7e262]: PRICE PENDING
+                - button "Add leg" [ref=f7e263] [cursor=pointer]
+              - article [ref=f7e532]:
+                - generic [ref=f7e533]: CS2
+                - generic [ref=f7e534]:
+                  - generic [ref=f7e535]: 100 Thieves vs Team Vitality · Match winner
+                  - generic [ref=f7e536]: 100 Thieves to win
+                  - generic [ref=f7e537]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e538]:
+                  - strong [ref=f7e539]: 55.3%
+                  - generic [ref=f7e540]: PRICE PENDING
+                - button "Add leg" [ref=f7e541] [cursor=pointer]
+              - article [ref=f7e543]:
+                - generic [ref=f7e544]: CS2
+                - generic [ref=f7e545]:
+                  - generic [ref=f7e546]: BIG vs G2 Esports · Match winner
+                  - generic [ref=f7e547]: BIG to win
+                  - generic [ref=f7e548]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e549]:
+                  - strong [ref=f7e550]: 55.0%
+                  - generic [ref=f7e551]: PRICE PENDING
+                - button "Add leg" [ref=f7e552] [cursor=pointer]
+              - article [ref=f7e265]:
+                - generic [ref=f7e266]: MLB
+                - generic [ref=f7e267]:
+                  - generic [ref=f7e268]: Pittsburgh Pirates @ Miami Marlins · Moneyline
+                  - generic [ref=f7e269]: Miami Marlins to win
+                  - generic [ref=f7e270]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e271]:
+                  - strong [ref=f7e272]: 53.7%
+                  - generic [ref=f7e273]: "@ 1.886"
+                - button "Add leg" [ref=f7e274] [cursor=pointer]
+              - article [ref=f7e554]:
+                - generic [ref=f7e555]: CS2
+                - generic [ref=f7e556]:
+                  - generic [ref=f7e557]: GamerLegion vs JiJieHao · Match winner
+                  - generic [ref=f7e558]: JiJieHao to win
+                  - generic [ref=f7e559]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e560]:
+                  - strong [ref=f7e561]: 53.7%
+                  - generic [ref=f7e562]: PRICE PENDING
+                - button "Add leg" [ref=f7e563] [cursor=pointer]
+              - article [ref=f7e565]:
+                - generic [ref=f7e566]: CS2
+                - generic [ref=f7e567]:
+                  - generic [ref=f7e568]: MOUZ vs Lynn Vision Gaming · Match winner
+                  - generic [ref=f7e569]: MOUZ to win
+                  - generic [ref=f7e570]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e571]:
+                  - strong [ref=f7e572]: 53.4%
+                  - generic [ref=f7e573]: PRICE PENDING
+                - button "Add leg" [ref=f7e574] [cursor=pointer]
+              - article [ref=f7e276]:
+                - generic [ref=f7e277]: MLB
+                - generic [ref=f7e278]:
+                  - generic [ref=f7e279]: Houston Astros @ San Francisco Giants · Moneyline
+                  - generic [ref=f7e280]: Houston Astros to win
+                  - generic [ref=f7e281]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e282]:
+                  - strong [ref=f7e283]: 53.1%
+                  - generic [ref=f7e284]: "@ 1.719"
+                - button "Add leg" [ref=f7e285] [cursor=pointer]
+              - article [ref=f7e576]:
+                - generic [ref=f7e577]: NFL
+                - generic [ref=f7e578]:
+                  - generic [ref=f7e579]: Buffalo Bills @ Houston Texans · Moneyline
+                  - generic [ref=f7e580]: Buffalo Bills to win
+                  - generic [ref=f7e581]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e582]:
+                  - strong [ref=f7e583]: 52.9%
+                  - generic [ref=f7e584]: PRICE PENDING
+                - button "Add leg" [ref=f7e585] [cursor=pointer]
+              - article [ref=f7e587]:
+                - generic [ref=f7e588]: NFL
+                - generic [ref=f7e589]:
+                  - generic [ref=f7e590]: Green Bay Packers @ Minnesota Vikings · Moneyline
+                  - generic [ref=f7e591]: Green Bay Packers to win
+                  - generic [ref=f7e592]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e593]:
+                  - strong [ref=f7e594]: 52.9%
+                  - generic [ref=f7e595]: PRICE PENDING
+                - button "Add leg" [ref=f7e596] [cursor=pointer]
+              - article [ref=f7e598]:
+                - generic [ref=f7e599]: NFL
+                - generic [ref=f7e600]:
+                  - generic [ref=f7e601]: Carolina Panthers @ Atlanta Falcons · Moneyline
+                  - generic [ref=f7e602]: Carolina Panthers to win
+                  - generic [ref=f7e603]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e604]:
+                  - strong [ref=f7e605]: 52.9%
+                  - generic [ref=f7e606]: PRICE PENDING
+                - button "Add leg" [ref=f7e607] [cursor=pointer]
+              - article [ref=f7e287]:
+                - generic [ref=f7e288]: MLB
+                - generic [ref=f7e289]:
+                  - generic [ref=f7e290]: Milwaukee Brewers @ San Diego Padres · Moneyline
+                  - generic [ref=f7e291]: Milwaukee Brewers to win
+                  - generic [ref=f7e292]: PRODUCTION ELIGIBLE
+                - generic [ref=f7e293]:
+                  - strong [ref=f7e294]: 52.4%
+                  - generic [ref=f7e295]: "@ 1.886"
+                - button "Add leg" [ref=f7e296] [cursor=pointer]
+              - article [ref=f7e609]:
+                - generic [ref=f7e610]: CS2
+                - generic [ref=f7e611]:
+                  - generic [ref=f7e612]: Astralis vs Team Falcons · Match winner
+                  - generic [ref=f7e613]: Team Falcons to win
+                  - generic [ref=f7e614]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e615]:
+                  - strong [ref=f7e616]: 51.7%
+                  - generic [ref=f7e617]: PRICE PENDING
+                - button "Add leg" [ref=f7e618] [cursor=pointer]
+              - article [ref=f7e620]:
+                - generic [ref=f7e621]: VAL
+                - generic [ref=f7e622]:
+                  - generic [ref=f7e623]: HIMMERS vs SEN Otters · Match winner
+                  - generic [ref=f7e624]: SEN Otters to win
+                  - generic [ref=f7e625]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e626]:
+                  - strong [ref=f7e627]: 51.7%
+                  - generic [ref=f7e628]: PRICE PENDING
+                - button "Add leg" [ref=f7e629] [cursor=pointer]
+              - article [ref=f7e631]:
+                - generic [ref=f7e632]: CS2
+                - generic [ref=f7e633]:
+                  - generic [ref=f7e634]: Aurora Gaming vs M80 · Match winner
+                  - generic [ref=f7e635]: Aurora Gaming to win
+                  - generic [ref=f7e636]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e637]:
+                  - strong [ref=f7e638]: 51.7%
+                  - generic [ref=f7e639]: PRICE PENDING
+                - button "Add leg" [ref=f7e640] [cursor=pointer]
+              - article [ref=f7e642]:
+                - generic [ref=f7e643]: CS2
+                - generic [ref=f7e644]:
+                  - generic [ref=f7e645]: Luminosity Gaming vs Team Spirit · Match winner
+                  - generic [ref=f7e646]: Luminosity Gaming to win
+                  - generic [ref=f7e647]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e648]:
+                  - strong [ref=f7e649]: 51.7%
+                  - generic [ref=f7e650]: PRICE PENDING
+                - button "Add leg" [ref=f7e651] [cursor=pointer]
+              - article [ref=f7e653]:
+                - generic [ref=f7e654]: NFL
+                - generic [ref=f7e655]:
+                  - generic [ref=f7e656]: Cincinnati Bengals @ Houston Texans · Moneyline
+                  - generic [ref=f7e657]: Houston Texans to win
+                  - generic [ref=f7e658]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e659]:
+                  - strong [ref=f7e660]: 51.3%
+                  - generic [ref=f7e661]: PRICE PENDING
+                - button "Add leg" [ref=f7e662] [cursor=pointer]
+              - article [ref=f7e664]:
+                - generic [ref=f7e665]: NFL
+                - generic [ref=f7e666]:
+                  - generic [ref=f7e667]: Jacksonville Jaguars @ Denver Broncos · Moneyline
+                  - generic [ref=f7e668]: Denver Broncos to win
+                  - generic [ref=f7e669]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e670]:
+                  - strong [ref=f7e671]: 51.3%
+                  - generic [ref=f7e672]: PRICE PENDING
+                - button "Add leg" [ref=f7e673] [cursor=pointer]
+              - article [ref=f7e675]:
+                - generic [ref=f7e676]: NFL
+                - generic [ref=f7e677]:
+                  - generic [ref=f7e678]: San Francisco 49ers @ Los Angeles Rams · Moneyline
+                  - generic [ref=f7e679]: Los Angeles Rams to win
+                  - generic [ref=f7e680]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e681]:
+                  - strong [ref=f7e682]: 51.1%
+                  - generic [ref=f7e683]: PRICE PENDING
+                - button "Add leg" [ref=f7e684] [cursor=pointer]
+              - article [ref=f7e686]:
+                - generic [ref=f7e687]: NFL
+                - generic [ref=f7e688]:
+                  - generic [ref=f7e689]: New York Jets @ Tennessee Titans · Moneyline
+                  - generic [ref=f7e690]: Tennessee Titans to win
+                  - generic [ref=f7e691]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e692]:
+                  - strong [ref=f7e693]: 51.1%
+                  - generic [ref=f7e694]: PRICE PENDING
+                - button "Add leg" [ref=f7e695] [cursor=pointer]
+              - article [ref=f7e697]:
+                - generic [ref=f7e698]: NFL
+                - generic [ref=f7e699]:
+                  - generic [ref=f7e700]: Miami Dolphins @ Las Vegas Raiders · Moneyline
+                  - generic [ref=f7e701]: Las Vegas Raiders to win
+                  - generic [ref=f7e702]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e703]:
+                  - strong [ref=f7e704]: 51.1%
+                  - generic [ref=f7e705]: PRICE PENDING
+                - button "Add leg" [ref=f7e706] [cursor=pointer]
+              - article [ref=f7e708]:
+                - generic [ref=f7e709]: NFL
+                - generic [ref=f7e710]:
+                  - generic [ref=f7e711]: Denver Broncos @ Kansas City Chiefs · Moneyline
+                  - generic [ref=f7e712]: Kansas City Chiefs to win
+                  - generic [ref=f7e713]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e714]:
+                  - strong [ref=f7e715]: 51.1%
+                  - generic [ref=f7e716]: PRICE PENDING
+                - button "Add leg" [ref=f7e717] [cursor=pointer]
+              - article [ref=f7e719]:
+                - generic [ref=f7e720]: NFL
+                - generic [ref=f7e721]:
+                  - generic [ref=f7e722]: Minnesota Vikings @ Chicago Bears · Moneyline
+                  - generic [ref=f7e723]: Chicago Bears to win
+                  - generic [ref=f7e724]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e725]:
+                  - strong [ref=f7e726]: 51.1%
+                  - generic [ref=f7e727]: PRICE PENDING
+                - button "Add leg" [ref=f7e728] [cursor=pointer]
+              - article [ref=f7e730]:
+                - generic [ref=f7e731]: NFL
+                - generic [ref=f7e732]:
+                  - generic [ref=f7e733]: Washington Commanders @ Dallas Cowboys · Moneyline
+                  - generic [ref=f7e734]: Dallas Cowboys to win
+                  - generic [ref=f7e735]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e736]:
+                  - strong [ref=f7e737]: 51.1%
+                  - generic [ref=f7e738]: PRICE PENDING
+                - button "Add leg" [ref=f7e739] [cursor=pointer]
+              - article [ref=f7e741]:
+                - generic [ref=f7e742]: VAL
+                - generic [ref=f7e743]:
+                  - generic [ref=f7e744]: PCIFIC Esports vs Joblife · Match winner
+                  - generic [ref=f7e745]: Joblife to win
+                  - generic [ref=f7e746]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e747]:
+                  - strong [ref=f7e748]: 50.0%
+                  - generic [ref=f7e749]: PRICE PENDING
+                - button "Add leg" [ref=f7e750] [cursor=pointer]
+              - article [ref=f7e752]:
+                - generic [ref=f7e753]: VAL
+                - generic [ref=f7e754]:
+                  - generic [ref=f7e755]: Sharper Esports vs Rex Regum Qeon · Match winner
+                  - generic [ref=f7e756]: Rex Regum Qeon to win
+                  - generic [ref=f7e757]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e758]:
+                  - strong [ref=f7e759]: 50.0%
+                  - generic [ref=f7e760]: PRICE PENDING
+                - button "Add leg" [ref=f7e761] [cursor=pointer]
+              - article [ref=f7e763]:
+                - generic [ref=f7e764]: VAL
+                - generic [ref=f7e765]:
+                  - generic [ref=f7e766]: ONSIDE GAMING vs DRX · Match winner
+                  - generic [ref=f7e767]: DRX to win
+                  - generic [ref=f7e768]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e769]:
+                  - strong [ref=f7e770]: 50.0%
+                  - generic [ref=f7e771]: PRICE PENDING
+                - button "Add leg" [ref=f7e772] [cursor=pointer]
+              - article [ref=f7e774]:
+                - generic [ref=f7e775]: VAL
+                - generic [ref=f7e776]:
+                  - generic [ref=f7e777]: FUSION X vs MYVRA GC · Match winner
+                  - generic [ref=f7e778]: MYVRA GC to win
+                  - generic [ref=f7e779]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e780]:
+                  - strong [ref=f7e781]: 50.0%
+                  - generic [ref=f7e782]: PRICE PENDING
+                - button "Add leg" [ref=f7e783] [cursor=pointer]
+              - article [ref=f7e785]:
+                - generic [ref=f7e786]: VAL
+                - generic [ref=f7e787]:
+                  - generic [ref=f7e788]: The Spiders vs MVSK Secret · Match winner
+                  - generic [ref=f7e789]: MVSK Secret to win
+                  - generic [ref=f7e790]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e791]:
+                  - strong [ref=f7e792]: 50.0%
+                  - generic [ref=f7e793]: PRICE PENDING
+                - button "Add leg" [ref=f7e794] [cursor=pointer]
+              - article [ref=f7e796]:
+                - generic [ref=f7e797]: VAL
+                - generic [ref=f7e798]:
+                  - generic [ref=f7e799]: Los Chudeles vs Cloud9 GC · Match winner
+                  - generic [ref=f7e800]: Cloud9 GC to win
+                  - generic [ref=f7e801]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e802]:
+                  - strong [ref=f7e803]: 50.0%
+                  - generic [ref=f7e804]: PRICE PENDING
+                - button "Add leg" [ref=f7e805] [cursor=pointer]
+              - article [ref=f7e807]:
+                - generic [ref=f7e808]: VAL
+                - generic [ref=f7e809]:
+                  - generic [ref=f7e810]: ORA Temper vs Catface · Match winner
+                  - generic [ref=f7e811]: Catface to win
+                  - generic [ref=f7e812]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e813]:
+                  - strong [ref=f7e814]: 50.0%
+                  - generic [ref=f7e815]: PRICE PENDING
+                - button "Add leg" [ref=f7e816] [cursor=pointer]
+              - article [ref=f7e818]:
+                - generic [ref=f7e819]: VAL
+                - generic [ref=f7e820]:
+                  - generic [ref=f7e821]: SaD GC vs Axolotl · Match winner
+                  - generic [ref=f7e822]: Axolotl to win
+                  - generic [ref=f7e823]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e824]:
+                  - strong [ref=f7e825]: 50.0%
+                  - generic [ref=f7e826]: PRICE PENDING
+                - button "Add leg" [ref=f7e827] [cursor=pointer]
+              - article [ref=f7e829]:
+                - generic [ref=f7e830]: VAL
+                - generic [ref=f7e831]:
+                  - generic [ref=f7e832]: Natus Vincere vs Team Heretics · Match winner
+                  - generic [ref=f7e833]: Team Heretics to win
+                  - generic [ref=f7e834]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e835]:
+                  - strong [ref=f7e836]: 50.0%
+                  - generic [ref=f7e837]: PRICE PENDING
+                - button "Add leg" [ref=f7e838] [cursor=pointer]
+              - article [ref=f7e840]:
+                - generic [ref=f7e841]: CS2
+                - generic [ref=f7e842]:
+                  - generic [ref=f7e843]: Legacy vs FaZe Clan · Match winner
+                  - generic [ref=f7e844]: FaZe Clan to win
+                  - generic [ref=f7e845]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e846]:
+                  - strong [ref=f7e847]: 50.0%
+                  - generic [ref=f7e848]: PRICE PENDING
+                - button "Add leg" [ref=f7e849] [cursor=pointer]
+              - article [ref=f7e851]:
+                - generic [ref=f7e852]: CS2
+                - generic [ref=f7e853]:
+                  - generic [ref=f7e854]: PaiN Gaming vs 9z Team · Match winner
+                  - generic [ref=f7e855]: 9z Team to win
+                  - generic [ref=f7e856]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e857]:
+                  - strong [ref=f7e858]: 50.0%
+                  - generic [ref=f7e859]: PRICE PENDING
+                - button "Add leg" [ref=f7e860] [cursor=pointer]
+              - article [ref=f7e862]:
+                - generic [ref=f7e863]: CS2
+                - generic [ref=f7e864]:
+                  - generic [ref=f7e865]: FURIA vs Wildcard · Match winner
+                  - generic [ref=f7e866]: Wildcard to win
+                  - generic [ref=f7e867]: AUDIT CANDIDATE · NOT WAGER ELIGIBLE
+                - generic [ref=f7e868]:
+                  - strong [ref=f7e869]: 50.0%
+                  - generic [ref=f7e870]: PRICE PENDING
+                - button "Add leg" [ref=f7e871] [cursor=pointer]
+              - article [ref=f7e873]:
+                - generic [ref=f7e874]: LOL
+                - generic [ref=f7e875]:
+                  - generic [ref=f7e876]: CITA Kaizen vs Meavedron · Match winner
+                  - generic [ref=f7e877]: Meavedron to win
+                  - generic [ref=f7e878]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e879]:
+                  - strong [ref=f7e880]: 50.0%
+                  - generic [ref=f7e881]: PRICE PENDING
+                - button "Add leg" [ref=f7e882] [cursor=pointer]
+              - article [ref=f7e884]:
+                - generic [ref=f7e885]: LOL
+                - generic [ref=f7e886]:
+                  - generic [ref=f7e887]: JSK Esports vs Disruptors · Match winner
+                  - generic [ref=f7e888]: Disruptors to win
+                  - generic [ref=f7e889]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e890]:
+                  - strong [ref=f7e891]: 50.0%
+                  - generic [ref=f7e892]: PRICE PENDING
+                - button "Add leg" [ref=f7e893] [cursor=pointer]
+              - article [ref=f7e895]:
+                - generic [ref=f7e896]: LOL
+                - generic [ref=f7e897]:
+                  - generic [ref=f7e898]: The Secret Club vs SPIKE Syndicate · Match winner
+                  - generic [ref=f7e899]: SPIKE Syndicate to win
+                  - generic [ref=f7e900]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e901]:
+                  - strong [ref=f7e902]: 50.0%
+                  - generic [ref=f7e903]: PRICE PENDING
+                - button "Add leg" [ref=f7e904] [cursor=pointer]
+              - article [ref=f7e906]:
+                - generic [ref=f7e907]: LOL
+                - generic [ref=f7e908]:
+                  - generic [ref=f7e909]: TLN Pirates vs Ici Japon Corp. Esport · Match winner
+                  - generic [ref=f7e910]: Ici Japon Corp. Esport to win
+                  - generic [ref=f7e911]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e912]:
+                  - strong [ref=f7e913]: 50.0%
+                  - generic [ref=f7e914]: PRICE PENDING
+                - button "Add leg" [ref=f7e915] [cursor=pointer]
+              - article [ref=f7e917]:
+                - generic [ref=f7e918]: LOL
+                - generic [ref=f7e919]:
+                  - generic [ref=f7e920]: Rich Gang Esports vs Volda E-Sport · Match winner
+                  - generic [ref=f7e921]: Volda E-Sport to win
+                  - generic [ref=f7e922]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e923]:
+                  - strong [ref=f7e924]: 50.0%
+                  - generic [ref=f7e925]: PRICE PENDING
+                - button "Add leg" [ref=f7e926] [cursor=pointer]
+              - article [ref=f7e928]:
+                - generic [ref=f7e929]: LOL
+                - generic [ref=f7e930]:
+                  - generic [ref=f7e931]: Universitat de Barcelona vs Barça eSports · Match winner
+                  - generic [ref=f7e932]: Barça eSports to win
+                  - generic [ref=f7e933]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e934]:
+                  - strong [ref=f7e935]: 50.0%
+                  - generic [ref=f7e936]: PRICE PENDING
+                - button "Add leg" [ref=f7e937] [cursor=pointer]
+              - article [ref=f7e939]:
+                - generic [ref=f7e940]: LOL
+                - generic [ref=f7e941]:
+                  - generic [ref=f7e942]: E WIE EINFACH E-SPORTS vs Eintracht Spandau · Match winner
+                  - generic [ref=f7e943]: Eintracht Spandau to win
+                  - generic [ref=f7e944]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e945]:
+                  - strong [ref=f7e946]: 50.0%
+                  - generic [ref=f7e947]: PRICE PENDING
+                - button "Add leg" [ref=f7e948] [cursor=pointer]
+              - article [ref=f7e950]:
+                - generic [ref=f7e951]: LOL
+                - generic [ref=f7e952]:
+                  - generic [ref=f7e953]: Anonymo Esports vs Bomba Team · Match winner
+                  - generic [ref=f7e954]: Bomba Team to win
+                  - generic [ref=f7e955]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e956]:
+                  - strong [ref=f7e957]: 50.0%
+                  - generic [ref=f7e958]: PRICE PENDING
+                - button "Add leg" [ref=f7e959] [cursor=pointer]
+              - article [ref=f7e961]:
+                - generic [ref=f7e962]: LOL
+                - generic [ref=f7e963]:
+                  - generic [ref=f7e964]: SU Esports vs Shark Attack · Match winner
+                  - generic [ref=f7e965]: Shark Attack to win
+                  - generic [ref=f7e966]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e967]:
+                  - strong [ref=f7e968]: 50.0%
+                  - generic [ref=f7e969]: PRICE PENDING
+                - button "Add leg" [ref=f7e970] [cursor=pointer]
+              - article [ref=f7e972]:
+                - generic [ref=f7e973]: LOL
+                - generic [ref=f7e974]:
+                  - generic [ref=f7e975]: ESuba vs Onion Team · Match winner
+                  - generic [ref=f7e976]: Onion Team to win
+                  - generic [ref=f7e977]: LIVE SHADOW · NOT WAGER ELIGIBLE
+                - generic [ref=f7e978]:
+                  - strong [ref=f7e979]: 50.0%
+                  - generic [ref=f7e980]: PRICE PENDING
+                - button "Add leg" [ref=f7e981] [cursor=pointer]
+              - article [ref=f7e983]:
+                - generic [ref=f7e984]: FTB
+                - generic [ref=f7e985]:
+                  - generic [ref=f7e986]: Stuttgart @ Bayern Munich · 1X2
+                  - generic [ref=f7e987]: 1 · Bayern Munich
+                  - generic [ref=f7e988]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e989]:
+                  - strong [ref=f7e990]: 46.6%
+                  - generic [ref=f7e991]: PRICE PENDING
+                - button "Add leg" [ref=f7e992] [cursor=pointer]
+              - article [ref=f7e994]:
+                - generic [ref=f7e995]: FTB
+                - generic [ref=f7e996]:
+                  - generic [ref=f7e997]: Strasbourg @ Marseille · 1X2
+                  - generic [ref=f7e998]: 1 · Marseille
+                  - generic [ref=f7e999]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e1000]:
+                  - strong [ref=f7e1001]: 39.7%
+                  - generic [ref=f7e1002]: PRICE PENDING
+                - button "Add leg" [ref=f7e1003] [cursor=pointer]
+              - article [ref=f7e1005]:
+                - generic [ref=f7e1006]: FTB
+                - generic [ref=f7e1007]:
+                  - generic [ref=f7e1008]: West Bromwich Albion @ Newcastle United · 1X2
+                  - generic [ref=f7e1009]: 1 · Newcastle United
+                  - generic [ref=f7e1010]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e1011]:
+                  - strong [ref=f7e1012]: 38.5%
+                  - generic [ref=f7e1013]: PRICE PENDING
+                - button "Add leg" [ref=f7e1014] [cursor=pointer]
+              - article [ref=f7e1016]:
+                - generic [ref=f7e1017]: FTB
+                - generic [ref=f7e1018]:
+                  - generic [ref=f7e1019]: Catania @ Parma · 1X2
+                  - generic [ref=f7e1020]: 2 · Catania
+                  - generic [ref=f7e1021]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e1022]:
+                  - strong [ref=f7e1023]: 37.8%
+                  - generic [ref=f7e1024]: PRICE PENDING
+                - button "Add leg" [ref=f7e1025] [cursor=pointer]
+              - article [ref=f7e1027]:
+                - generic [ref=f7e1028]: FTB
+                - generic [ref=f7e1029]:
+                  - generic [ref=f7e1030]: Como @ Udinese · 1X2
+                  - generic [ref=f7e1031]: 2 · Como
+                  - generic [ref=f7e1032]: SHADOW ONLY · NOT WAGER ELIGIBLE
+                - generic [ref=f7e1033]:
+                  - strong [ref=f7e1034]: 36.3%
+                  - generic [ref=f7e1035]: PRICE PENDING
+                - button "Add leg" [ref=f7e1036] [cursor=pointer]
+          - complementary [ref=f7e112]:
+            - generic [ref=f7e114]:
+              - generic [ref=f7e115]: CARD / 00
+              - generic [ref=f7e116]: Combined build
+            - generic [ref=f7e117]:
+              - generic [ref=f7e122]: Add an audited leg
+              - paragraph [ref=f7e123]: Eligible markets from every unlocked sport will share this tray.
+            - generic [ref=f7e124]:
+              - generic [ref=f7e125]:
+                - generic [ref=f7e126]:
+                  - term [ref=f7e127]: LEGS
+                  - definition [ref=f7e128]: "0"
+                - generic [ref=f7e129]:
+                  - term [ref=f7e130]: EVENTS
+                  - definition [ref=f7e131]: "0"
+                - generic [ref=f7e132]:
+                  - term [ref=f7e133]: JOINT MODEL
+                  - definition [ref=f7e134]: —
+                - generic [ref=f7e135]:
+                  - term [ref=f7e136]: DECIMAL ODDS
+                  - definition [ref=f7e137]: —
+              - paragraph [ref=f7e138]: No wager is placed from this research surface.

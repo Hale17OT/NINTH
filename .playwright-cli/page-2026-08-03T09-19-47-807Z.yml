@@ -1,0 +1,44 @@
+- generic [ref=f22e3]:
+  - banner [ref=f22e4]:
+    - generic [ref=f22e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f22e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f22e7]
+        - generic [ref=f22e8]:
+          - generic [ref=f22e9]: NINTH
+          - generic [ref=f22e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f22e11] [cursor=pointer]:
+        - generic [ref=f22e12]: DAY
+      - button "Search" [ref=f22e18] [cursor=pointer]
+      - button "Menu" [ref=f22e22] [cursor=pointer]
+    - generic [ref=f22e24]:
+      - generic [ref=f22e25]: TODAY
+      - generic [ref=f22e27]: Official scoreboard syncing
+  - main [ref=f22e28]:
+    - generic [ref=f22e30]:
+      - generic [ref=f22e31]:
+        - generic [ref=f22e32]:
+          - generic [ref=f22e33]: NINTH / OFFICIAL MLB SCOREBOARD
+          - heading [level=1] [ref=f22e35]:
+            - text: Every live game.
+            - emphasis [ref=f22e36]: One pulse.
+          - paragraph [ref=f22e37]: Choose a game for pitch tracking, counts, baserunners, and official play-by-play.
+        - generic [ref=f22e38]:
+          - strong [ref=f22e39]: "0"
+          - generic [ref=f22e40]: GAMES LIVE
+      - status [ref=f22e41]:
+        - generic [ref=f22e42]: "N"
+        - generic [ref=f22e46]:
+          - strong [ref=f22e47]: Loading the live scoreboard
+          - generic [ref=f22e48]: Checking every official MLB game currently in progress.
+  - generic [ref=f22e53]:
+    - link "Games" [ref=f22e54] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f22e58] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f22e66] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f22e69] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f22e77] [cursor=pointer]:
+      - /url: /teams

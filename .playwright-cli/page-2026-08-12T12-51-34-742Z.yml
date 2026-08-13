@@ -1,0 +1,132 @@
+- generic [ref=f2e3]:
+  - complementary [ref=f2e4]:
+    - link "NINTH all sports" [ref=f2e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f2e6]
+    - navigation "Sport workspaces" [ref=f2e7]:
+      - link "MLB" [ref=f2e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f2e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f2e18] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f2e22] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f2e29] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f2e33] [cursor=pointer]:
+      - generic [ref=f2e34]: D
+      - generic [ref=f2e35]: MODE
+  - generic [ref=f2e36]:
+    - banner [ref=f2e37]:
+      - generic [ref=f2e38]:
+        - generic [ref=f2e39]:
+          - generic [ref=f2e40]: TOP FIVE LEAGUES
+          - generic [ref=f2e41]: Football
+          - emphasis [ref=f2e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f2e43]:
+          - link "Overview" [ref=f2e44] [cursor=pointer]:
+            - /url: /football
+          - link "Leagues" [ref=f2e45] [cursor=pointer]:
+            - /url: /football/leagues
+          - link "Games" [ref=f2e46] [cursor=pointer]:
+            - /url: /football/games
+          - link "Teams" [ref=f2e47] [cursor=pointer]:
+            - /url: /football/teams
+          - link "Players" [ref=f2e48] [cursor=pointer]:
+            - /url: /football/players
+          - link "Models" [ref=f2e49] [cursor=pointer]:
+            - /url: /football/models
+          - link "Data" [ref=f2e50] [cursor=pointer]:
+            - /url: /football/data
+    - main [ref=f2e51]:
+      - generic [ref=f2e53]:
+        - generic [ref=f2e54]:
+          - generic [ref=f2e55]:
+            - text: FTB / GAMES
+            - heading "Games." [level=1] [ref=f2e56]
+          - paragraph [ref=f2e57]: Live presentation data for Football, separated from model training and stamped with its source coverage.
+          - generic [ref=f2e58]: 02/01
+        - generic [ref=f2e59]:
+          - generic [ref=f2e60]:
+            - textbox "2 RESULTS" [ref=f2e64]:
+              - /placeholder: Find a match
+            - generic [ref=f2e65]: 2 RESULTS
+          - combobox [ref=f2e66]:
+            - option "All competitions"
+            - option "Premier League"
+            - option "La Liga"
+            - option "Bundesliga"
+            - option "Serie A"
+            - option "Ligue 1"
+            - option "UEFA Champions League" [selected]
+            - option "UEFA Europa League"
+            - option "UEFA Conference League"
+            - option "FA Cup"
+            - option "EFL Cup"
+            - option "Copa del Rey"
+            - option "DFB-Pokal"
+            - option "Coppa Italia"
+            - option "Coupe de France"
+        - generic [ref=f2e67]:
+          - article [ref=f2e68]:
+            - generic [ref=f2e69]: "01"
+            - generic [ref=f2e70]: Fixture and kickoff
+            - generic [ref=f2e71]: OPERATIONAL DATA FIELD
+          - article [ref=f2e72]:
+            - generic [ref=f2e73]: "02"
+            - generic [ref=f2e74]: Projected score matrix
+            - generic [ref=f2e75]: OPERATIONAL DATA FIELD
+          - article [ref=f2e76]:
+            - generic [ref=f2e77]: "03"
+            - generic [ref=f2e78]: 1X2 / totals / BTTS
+            - generic [ref=f2e79]: OPERATIONAL DATA FIELD
+          - article [ref=f2e80]:
+            - generic [ref=f2e81]: "04"
+            - generic [ref=f2e82]: Lineup availability
+            - generic [ref=f2e83]: OPERATIONAL DATA FIELD
+        - generic [ref=f2e84]:
+          - generic [ref=f2e85]:
+            - generic [ref=f2e86]: GAMES INDEX
+            - generic [ref=f2e87]: SOURCE / TheSportsDB
+            - emphasis [ref=f2e88]: 2 LIVE ROWS
+          - generic [ref=f2e89]:
+            - article [ref=f2e90]:
+              - generic [ref=f2e91]:
+                - strong [ref=f2e92]: 08-11
+                - generic [ref=f2e93]: 19:00:00
+              - generic [ref=f2e94]:
+                - generic [ref=f2e95]: UCL · 400
+                - generic [ref=f2e96]: UEFA Champions League
+              - generic [ref=f2e97]:
+                - generic [ref=f2e98]:
+                  - generic [ref=f2e100]: Sparta Prague
+                  - emphasis [ref=f2e101]: "0"
+                - generic [ref=f2e102]:
+                  - generic [ref=f2e104]: Lyon
+                  - emphasis [ref=f2e105]: "3"
+              - generic [ref=f2e106]:
+                - generic [ref=f2e107]: FT
+                - generic [ref=f2e108]: Groupama Stadium
+            - article [ref=f2e109]:
+              - generic [ref=f2e110]:
+                - strong [ref=f2e111]: 08-18
+                - generic [ref=f2e112]: 19:00:00
+              - generic [ref=f2e113]:
+                - generic [ref=f2e114]: UCL · 0
+                - generic [ref=f2e115]: UEFA Champions League
+              - generic [ref=f2e116]:
+                - generic [ref=f2e117]:
+                  - generic [ref=f2e119]: Lyon
+                  - emphasis [ref=f2e120]: —
+                - generic [ref=f2e121]:
+                  - generic [ref=f2e123]: Fenerbahçe
+                  - emphasis [ref=f2e124]: —
+              - generic [ref=f2e125]:
+                - generic [ref=f2e126]: Scheduled
+                - generic [ref=f2e127]: Chobani Stadyumu
+        - generic [ref=f2e128]:
+          - generic [ref=f2e133]:
+            - text: Public free-tier coverage
+            - paragraph [ref=f2e134]: Presentation data is not used to train or promote betting models. The public key limits response depth; a premium key unlocks complete league rosters and schedules.
+          - emphasis [ref=f2e135]: 8/12/2026, 3:51:34 PM

@@ -1,0 +1,107 @@
+- generic [ref=f7e3]:
+  - complementary [ref=f7e4]:
+    - link "NINTH all sports" [ref=f7e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f7e6]
+    - navigation "Sport workspaces" [ref=f7e7]:
+      - link "MLB" [ref=f7e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f7e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f7e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f7e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f7e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f7e32] [cursor=pointer]:
+      - generic [ref=f7e33]: D
+      - generic [ref=f7e34]: MODE
+  - generic [ref=f7e35]:
+    - banner [ref=f7e36]:
+      - generic [ref=f7e37]:
+        - generic [ref=f7e38]:
+          - generic [ref=f7e39]: DECISION SYSTEM
+          - generic [ref=f7e40]: All sports
+        - navigation "Workspace navigation" [ref=f7e41]:
+          - link "Platform" [ref=f7e42] [cursor=pointer]:
+            - /url: /
+          - link "All-sports builder" [ref=f7e43] [cursor=pointer]:
+            - /url: /build
+    - main [ref=f7e44]:
+      - generic [ref=f7e46]:
+        - generic [ref=f7e47]:
+          - generic [ref=f7e48]:
+            - text: NINTH / ALL-SPORTS BUILDER
+            - heading "One card. Every arena." [level=1] [ref=f7e49]: One card.Every arena.
+            - paragraph [ref=f7e50]: A shared construction surface with separate model eligibility. Baseball can contribute production legs now; every other sport unlocks automatically only after its own evidence gate passes.
+          - complementary [ref=f7e51]:
+            - generic [ref=f7e56]: PORTFOLIO CONTRACT
+            - generic [ref=f7e57]: Combined does not mean blended.
+            - paragraph [ref=f7e58]: Probabilities come from sport-native models. The builder only joins eligible outputs and then controls event, team, market and directional exposure across the final card.
+        - generic [ref=f7e59]:
+          - button "00 ALL 0 READY" [ref=f7e60] [cursor=pointer]:
+            - generic [ref=f7e61]: "00"
+            - generic [ref=f7e62]: ALL
+            - generic [ref=f7e63]: 0 READY
+          - button "01 MLB LIVE BOARD" [ref=f7e64] [cursor=pointer]:
+            - generic [ref=f7e65]: "01"
+            - generic [ref=f7e66]: MLB
+            - generic [ref=f7e67]: LIVE BOARD
+          - button "02 FTB RESEARCH LOCKED" [ref=f7e68] [cursor=pointer]:
+            - generic [ref=f7e69]: "02"
+            - generic [ref=f7e70]: FTB
+            - generic [ref=f7e71]: RESEARCH LOCKED
+          - button "03 NFL RESEARCH LOCKED" [ref=f7e72] [cursor=pointer]:
+            - generic [ref=f7e73]: "03"
+            - generic [ref=f7e74]: NFL
+            - generic [ref=f7e75]: RESEARCH LOCKED
+          - button "04 NBA RESEARCH LOCKED" [ref=f7e76] [cursor=pointer]:
+            - generic [ref=f7e77]: "04"
+            - generic [ref=f7e78]: NBA
+            - generic [ref=f7e79]: RESEARCH LOCKED
+          - button "05 ESP RESEARCH LOCKED" [ref=f7e80] [cursor=pointer]:
+            - generic [ref=f7e81]: "05"
+            - generic [ref=f7e82]: ESP
+            - generic [ref=f7e83]: RESEARCH LOCKED
+        - region "Builder evidence mode" [ref=f7e84]:
+          - button "PRODUCTION Only audited, automatically eligible legs" [ref=f7e85] [cursor=pointer]:
+            - generic [ref=f7e86]: PRODUCTION
+            - generic [ref=f7e87]: Only audited, automatically eligible legs
+          - button "RESEARCH SHADOW Preview locked Football, NFL and Esports forecasts" [ref=f7e88] [cursor=pointer]:
+            - generic [ref=f7e89]: RESEARCH SHADOW
+            - generic [ref=f7e90]: Preview locked Football, NFL and Esports forecasts
+        - generic [ref=f7e91]:
+          - generic [ref=f7e92]:
+            - generic [ref=f7e93]:
+              - generic [ref=f7e94]:
+                - text: ELIGIBLE INVENTORY
+                - heading "Today’s audited legs" [level=2] [ref=f7e95]
+              - generic [ref=f7e96]:
+                - button "REFRESH" [ref=f7e97] [cursor=pointer]
+                - button "ADD BEST 5" [disabled] [ref=f7e103] [cursor=pointer]
+            - generic [ref=f7e104]:
+              - generic [ref=f7e110]: Syncing sport adapters
+              - generic [ref=f7e111]: Reading immutable production boards.
+          - complementary [ref=f7e112]:
+            - generic [ref=f7e114]:
+              - generic [ref=f7e115]: CARD / 00
+              - generic [ref=f7e116]: Combined build
+            - generic [ref=f7e117]:
+              - generic [ref=f7e122]: Add an audited leg
+              - paragraph [ref=f7e123]: Eligible markets from every unlocked sport will share this tray.
+            - generic [ref=f7e124]:
+              - generic [ref=f7e125]:
+                - generic [ref=f7e126]:
+                  - term [ref=f7e127]: LEGS
+                  - definition [ref=f7e128]: "0"
+                - generic [ref=f7e129]:
+                  - term [ref=f7e130]: EVENTS
+                  - definition [ref=f7e131]: "0"
+                - generic [ref=f7e132]:
+                  - term [ref=f7e133]: JOINT MODEL
+                  - definition [ref=f7e134]: —
+                - generic [ref=f7e135]:
+                  - term [ref=f7e136]: DECIMAL ODDS
+                  - definition [ref=f7e137]: —
+              - paragraph [ref=f7e138]: No wager is placed from this research surface.

@@ -1,0 +1,100 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - link "NINTH all sports" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=e6]
+    - navigation "Sport workspaces" [ref=e7]:
+      - link "MLB" [ref=e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=e33] [cursor=pointer]:
+      - generic [ref=e34]: D
+      - generic [ref=e35]: MODE
+  - generic [ref=e36]:
+    - banner [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - generic [ref=e40]: VALORANT + CS2 + LOL
+          - generic [ref=e41]: Esports
+          - emphasis [ref=e42]: RESEARCH LAB
+        - button "Open workspace navigation" [ref=e43] [cursor=pointer]
+    - main [ref=e45]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - text: VALORANT + CS2 + LOL / NINTH RESEARCH LAB
+            - heading "Esports intelligence." [level=1] [ref=e50]: Esportsintelligence.
+            - paragraph [ref=e51]: Series-native Valorant, CS2 and League of Legends intelligence joined by one roster, map and matchup lab.
+            - generic [ref=e52]: LIVE DATA · SHADOW MODELS
+          - complementary [ref=e54]:
+            - generic [ref=e61]: MODEL STATE
+            - generic [ref=e62]: Evidence before exposure.
+            - paragraph [ref=e63]: No selection enters the all-sports builder until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.
+        - generic [ref=e64]:
+          - generic [ref=e65]: Valorant
+          - generic [ref=e66]: Counter-Strike 2
+          - generic [ref=e67]: League of Legends
+        - generic [ref=e68]:
+          - article [ref=e69]:
+            - generic [ref=e70]:
+              - generic [ref=e71]: VAL
+              - generic [ref=e72]: VCT International + Challengers
+            - heading "Valorant" [level=2] [ref=e73]
+            - paragraph [ref=e74]: Patch-aware map ratings, agent-role strength, side splits and veto simulation.
+            - generic [ref=e75]:
+              - generic [ref=e76]: Liquipedia MediaWiki API
+              - emphasis [ref=e77]: SEPARATE MODEL LEDGER
+          - article [ref=e78]:
+            - generic [ref=e79]:
+              - generic [ref=e80]: CS2
+              - generic [ref=e81]: Tier-one + tier-two circuits
+            - heading "Counter-Strike 2" [level=2] [ref=e82]
+            - paragraph [ref=e83]: Map pools, economy conversion, opening duels, LAN context and veto simulation.
+            - generic [ref=e84]:
+              - generic [ref=e85]: Liquipedia MediaWiki API / CS API
+              - emphasis [ref=e86]: SEPARATE MODEL LEDGER
+          - article [ref=e87]:
+            - generic [ref=e88]:
+              - generic [ref=e89]: LOL
+              - generic [ref=e90]: LCK + LPL + LEC + LCS + international events
+            - heading "League of Legends" [level=2] [ref=e91]
+            - paragraph [ref=e92]: Patch-aware team ratings, side strength, roster continuity, objective control and series simulation.
+            - generic [ref=e93]:
+              - generic [ref=e94]: Liquipedia MediaWiki API
+              - emphasis [ref=e95]: SEPARATE MODEL LEDGER
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - text: SPORT-NATIVE ARCHITECTURE
+            - heading "Built around how esports is actually played." [level=2] [ref=e98]
+          - generic [ref=e99]:
+            - article [ref=e100]:
+              - generic [ref=e101]: "01"
+              - heading "Series engine" [level=3] [ref=e104]
+              - paragraph [ref=e105]: Separate Valorant, CS2 and League of Legends ratings with chronological time decay
+            - article [ref=e106]:
+              - generic [ref=e107]: "02"
+              - heading "Context layer" [level=3] [ref=e110]
+              - paragraph [ref=e111]: Roster continuity, map or side strength, patch context and conditional pick-ban trees
+            - article [ref=e112]:
+              - generic [ref=e113]: "03"
+              - heading "Markets" [level=3] [ref=e116]
+              - paragraph [ref=e117]: Live shadow match winners now; map winners, handicaps and totals stay separately gated
+        - generic [ref=e118]:
+          - generic [ref=e124]:
+            - generic [ref=e125]: PRODUCTION CONTRACT
+            - generic [ref=e126]: Locked before it is trusted.
+          - list [ref=e127]:
+            - listitem [ref=e128]: Expanding-window, season-separated validation
+            - listitem [ref=e132]: Brier, log loss, calibration error and Wilson bounds
+            - listitem [ref=e136]: Immutable pre-event prediction ledger and live shadow period
+        - generic [ref=e140]:
+          - generic [ref=e141]: /ESPORTS
+          - link "ALL-SPORTS BUILDER" [ref=e142] [cursor=pointer]:
+            - /url: /build

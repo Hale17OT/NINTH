@@ -1,0 +1,126 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - link "NINTH all sports" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=e6]
+    - navigation "Sport workspaces" [ref=e7]:
+      - link "MLB" [ref=e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=e32] [cursor=pointer]:
+      - generic [ref=e33]: D
+      - generic [ref=e34]: MODE
+  - generic [ref=e35]:
+    - banner [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: DECISION SYSTEM
+          - generic [ref=e40]: All sports
+        - navigation "Workspace navigation" [ref=e41]:
+          - link "Platform" [ref=e42] [cursor=pointer]:
+            - /url: /
+          - link "All-sports builder" [ref=e43] [cursor=pointer]:
+            - /url: /build
+    - main [ref=e44]:
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]:
+            - text: NINTH / MULTI-SPORT DECISION SYSTEM
+            - heading "Read the game. Price the uncertainty." [level=1] [ref=e49]: Read the game.Price the uncertainty.
+            - paragraph [ref=e50]: Five arenas. Separate intelligence. One uncompromising evidence standard.
+            - link "OPEN ALL-SPORTS BUILDER" [ref=e51] [cursor=pointer]:
+              - /url: /build
+          - generic [ref=e54]:
+            - generic [ref=e57]: "9"
+            - generic [ref=e58]: DECISION ENGINE
+          - complementary [ref=e59]:
+            - generic [ref=e60]: LIVE SYSTEM
+            - strong [ref=e61]: "01"
+            - generic [ref=e62]: production sport
+            - paragraph [ref=e63]: Baseball is live. Football, American Football, Basketball and Esports remain visible but evidence-locked.
+        - generic [ref=e64]:
+          - generic [ref=e65]: THE PLATFORM
+          - heading "Not a skin over one model. A federation of specialist labs." [level=2] [ref=e66]: Not a skin over one model.A federation of specialist labs.
+          - paragraph [ref=e67]: The interface joins the work. It never erases how possessions, drives, scorelines, maps and innings behave differently.
+        - region "NINTH sport workspaces" [ref=e68]:
+          - link "01 PRODUCTION Baseball Pregame, live, totals and player-prop intelligence with immutable audits. MLB PRODUCTION" [ref=e69] [cursor=pointer]:
+            - /url: /baseball
+            - generic [ref=e70]: "01"
+            - generic [ref=e71]:
+              - text: PRODUCTION
+              - heading "Baseball" [level=3] [ref=e72]
+            - paragraph [ref=e73]: Pregame, live, totals and player-prop intelligence with immutable audits.
+            - generic [ref=e74]: MLB
+            - emphasis [ref=e76]: PRODUCTION
+          - link "02 TOP FIVE LEAGUES Football Scoreline distributions, xG-adjusted team strength and lineup-aware markets. Premier League La Liga Bundesliga Serie A Ligue 1 RESEARCH LAB" [ref=e80] [cursor=pointer]:
+            - /url: /football
+            - generic [ref=e81]: "02"
+            - generic [ref=e82]:
+              - text: TOP FIVE LEAGUES
+              - heading "Football" [level=3] [ref=e83]
+            - paragraph [ref=e84]: Scoreline distributions, xG-adjusted team strength and lineup-aware markets.
+            - generic [ref=e85]:
+              - generic [ref=e86]: Premier League
+              - generic [ref=e87]: La Liga
+              - generic [ref=e88]: Bundesliga
+              - generic [ref=e89]: Serie A
+              - generic [ref=e90]: Ligue 1
+            - emphasis [ref=e91]: RESEARCH LAB
+          - link "03 NFL American Football EPA, success rate, quarterback value, injuries and drive-level simulation. NFL RESEARCH LAB" [ref=e95] [cursor=pointer]:
+            - /url: /american-football
+            - generic [ref=e96]: "03"
+            - generic [ref=e97]:
+              - text: NFL
+              - heading "American Football" [level=3] [ref=e98]
+            - paragraph [ref=e99]: EPA, success rate, quarterback value, injuries and drive-level simulation.
+            - generic [ref=e100]: NFL
+            - emphasis [ref=e102]: RESEARCH LAB
+          - link "04 NBA Basketball Possession forecasts, lineup impact, rest, availability and pace distributions. NBA RESEARCH LAB" [ref=e106] [cursor=pointer]:
+            - /url: /basketball
+            - generic [ref=e107]: "04"
+            - generic [ref=e108]:
+              - text: NBA
+              - heading "Basketball" [level=3] [ref=e109]
+            - paragraph [ref=e110]: Possession forecasts, lineup impact, rest, availability and pace distributions.
+            - generic [ref=e111]: NBA
+            - emphasis [ref=e113]: RESEARCH LAB
+          - link "05 VALORANT + CS2 Esports Map-native Valorant and CS2 intelligence joined by one roster, veto and series lab. Valorant Counter-Strike 2 RESEARCH LAB" [ref=e117] [cursor=pointer]:
+            - /url: /esports
+            - generic [ref=e118]: "05"
+            - generic [ref=e119]:
+              - text: VALORANT + CS2
+              - heading "Esports" [level=3] [ref=e120]
+            - paragraph [ref=e121]: Map-native Valorant and CS2 intelligence joined by one roster, veto and series lab.
+            - generic [ref=e122]:
+              - generic [ref=e123]: Valorant
+              - generic [ref=e124]: Counter-Strike 2
+            - emphasis [ref=e125]: RESEARCH LAB
+        - generic [ref=e129]:
+          - generic [ref=e130]: ONE CARD / MULTIPLE SPORTS
+          - heading "Build across every unlocked model." [level=2] [ref=e136]
+          - paragraph [ref=e137]: The universal tray preserves each sport’s native probability, then manages shared exposure across events, teams, markets and direction.
+          - link "LAUNCH BUILDER" [ref=e138] [cursor=pointer]:
+            - /url: /build
+        - generic [ref=e141]:
+          - article [ref=e142]:
+            - generic [ref=e147]: "01"
+            - generic [ref=e148]:
+              - text: Point-in-time data
+              - paragraph [ref=e149]: Only information available before the event enters a training row.
+          - article [ref=e150]:
+            - generic [ref=e156]: "02"
+            - generic [ref=e157]:
+              - text: Sport-native models
+              - paragraph [ref=e158]: Possessions, drives, scorelines, maps and innings retain separate engines.
+          - article [ref=e159]:
+            - generic [ref=e163]: "03"
+            - generic [ref=e164]:
+              - text: Evidence-gated release
+              - paragraph [ref=e165]: Research becomes production only after locked chronological and live audits.

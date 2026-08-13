@@ -428,6 +428,12 @@ export const dataService = {
   async playerProps(startDate, days, refresh = false) {
     return mlbStatsProvider.playerProps(startDate || isoDate(), days || 1, refresh);
   },
+  async playerPropGuarantees(minimumSamples, search, propTypes) {
+    return mlbStatsProvider.playerPropGuarantees(minimumSamples, search, propTypes);
+  },
+  async recordPlayerPropBuild(payload) {
+    return mlbStatsProvider.recordPlayerPropBuild(payload);
+  },
   async dashboard() {
     const [today, yesterday, teams, projectionBoard] = await Promise.all([
       providerGames(),
@@ -591,6 +597,7 @@ export const dataService = {
       } catch {}
     return {
       id: String(detail.game_id),
+      partial: Boolean(detail.partial),
       status: detail.status,
       statusCode: detail.status_code,
       time: timeLabel(detail.datetime),
@@ -636,6 +643,7 @@ export const dataService = {
             : null,
         )
         .filter(Boolean),
+      pitchingMatchup: detail.pitching_matchup || {},
       recentForm: {
         away: detail.recent_form?.away || [],
         home: detail.recent_form?.home || [],
@@ -783,6 +791,15 @@ export const dataService = {
   },
   async importSlip(payload) {
     return mlbStatsProvider.importSlip(payload);
+  },
+  async alterEgo() {
+    return mlbStatsProvider.alterEgo();
+  },
+  async importMelbetHistory(payload) {
+    return mlbStatsProvider.importMelbetHistory(payload);
+  },
+  async importMelbetHistoryBatch(payload) {
+    return mlbStatsProvider.importMelbetHistoryBatch(payload);
   },
   async team(id) {
     const all = await mlbStatsProvider.teams(),

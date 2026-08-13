@@ -1,0 +1,98 @@
+- generic [ref=f2e3]:
+  - complementary [ref=f2e4]:
+    - link "NINTH all sports" [ref=f2e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f2e6]
+    - navigation "Sport workspaces" [ref=f2e7]:
+      - link "MLB" [ref=f2e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f2e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f2e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f2e22] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f2e29] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f2e33] [cursor=pointer]:
+      - generic [ref=f2e34]: D
+      - generic [ref=f2e35]: MODE
+  - generic [ref=f2e36]:
+    - banner [ref=f2e37]:
+      - generic [ref=f2e38]:
+        - generic [ref=f2e39]:
+          - generic [ref=f2e40]: NFL
+          - generic [ref=f2e41]: American Football
+          - emphasis [ref=f2e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f2e43]:
+          - link "Overview" [ref=f2e44] [cursor=pointer]:
+            - /url: /american-football
+          - link "Leagues" [ref=f2e45] [cursor=pointer]:
+            - /url: /american-football/leagues
+          - link "Games" [ref=f2e46] [cursor=pointer]:
+            - /url: /american-football/games
+          - link "Teams" [ref=f2e47] [cursor=pointer]:
+            - /url: /american-football/teams
+          - link "Players" [ref=f2e48] [cursor=pointer]:
+            - /url: /american-football/players
+          - link "Models" [ref=f2e49] [cursor=pointer]:
+            - /url: /american-football/models
+          - link "Data" [ref=f2e50] [cursor=pointer]:
+            - /url: /american-football/data
+    - main [ref=f2e51]:
+      - generic [ref=f2e53]:
+        - generic [ref=f2e54]:
+          - generic [ref=f2e55]:
+            - text: NFL / NINTH RESEARCH LAB
+            - heading "American Football intelligence." [level=1] [ref=f2e56]: American Footballintelligence.
+            - paragraph [ref=f2e57]: EPA, success rate, quarterback value, injuries and drive-level simulation.
+            - generic [ref=f2e58]: SHADOW FOUNDATION · NOT YET PRODUCTION ELIGIBLE
+          - complementary [ref=f2e60]:
+            - generic [ref=f2e67]: MODEL STATE
+            - generic [ref=f2e68]: Evidence before exposure.
+            - paragraph [ref=f2e69]: No selection enters the all-sports builder until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.
+        - generic [ref=f2e70]:
+          - generic [ref=f2e71]:
+            - text: MODEL LAB / LIVE REGISTRY
+            - heading "Candidate families and promotion gates." [level=2] [ref=f2e72]
+            - paragraph [ref=f2e73]: This page reports the actual source and release state. It never invents accuracy metrics before a chronological prediction ledger exists.
+            - button "REFRESH STATUS" [ref=f2e74] [cursor=pointer]
+          - generic [ref=f2e80]:
+            - article [ref=f2e81]:
+              - generic [ref=f2e82]: SHADOW / UNTOUCHED AUDIT COMPLETE
+              - heading "Home win" [level=3] [ref=f2e83]
+              - paragraph [ref=f2e84]: regularized logistic · trained through 2019-12-15
+              - generic [ref=f2e85]:
+                - generic [ref=f2e86]:
+                  - term [ref=f2e87]: UNSEEN BRIER
+                  - definition [ref=f2e88]: "0.211"
+                - generic [ref=f2e89]:
+                  - term [ref=f2e90]: CALIBRATION
+                  - definition [ref=f2e91]: 4.6%
+                - generic [ref=f2e92]:
+                  - term [ref=f2e93]: TEST SAMPLES
+                  - definition [ref=f2e94]: "873"
+              - generic [ref=f2e95]:
+                - generic [ref=f2e96]: UNSEEN ACCURACY 68.0%
+                - emphasis [ref=f2e97]: SHADOW LOCKED
+            - article [ref=f2e98]:
+              - generic [ref=f2e99]: SHADOW / UNTOUCHED AUDIT COMPLETE
+              - heading "Game total" [level=3] [ref=f2e100]
+              - paragraph [ref=f2e101]: regularized logistic · trained through 2019-12-15
+              - generic [ref=f2e102]:
+                - generic [ref=f2e103]:
+                  - term [ref=f2e104]: UNSEEN BRIER
+                  - definition [ref=f2e105]: "0.252"
+                - generic [ref=f2e106]:
+                  - term [ref=f2e107]: CALIBRATION
+                  - definition [ref=f2e108]: 3.1%
+                - generic [ref=f2e109]:
+                  - term [ref=f2e110]: TEST SAMPLES
+                  - definition [ref=f2e111]: "873"
+              - generic [ref=f2e112]:
+                - generic [ref=f2e113]: UNSEEN ACCURACY 50.1%
+                - emphasis [ref=f2e114]: SHADOW LOCKED
+        - generic [ref=f2e115]:
+          - generic [ref=f2e116]: /AMERICAN-FOOTBALL/MODELS
+          - link "ALL-SPORTS BUILDER" [ref=f2e117] [cursor=pointer]:
+            - /url: /build

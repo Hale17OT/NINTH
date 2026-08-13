@@ -1,0 +1,105 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: NINTH
+          - generic [ref=e10]: BASEBALL / DECISION LAB
+      - navigation [ref=e11]:
+        - link "Games" [ref=e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=e70] [cursor=pointer]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: DISPLAY / 09
+          - generic [ref=e73]: DAY
+    - generic [ref=e78]:
+      - generic [ref=e79]: TODAY
+      - generic [ref=e81]: Official scoreboard syncing
+      - generic [ref=e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=e84]:
+    - generic [ref=e86]:
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - text: NINTH / SLIP LAB
+          - heading [level=1] [ref=e89]:
+            - text: Build today's card.
+            - emphasis [ref=e90]: See the real risk.
+          - paragraph [ref=e91]: Build moneyline, total-runs, or mixed cards from market-free probabilities. Mixed mode chooses the stronger model per matchup while enforcing one selection per game.
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - generic [ref=e94]: MODEL
+            - generic [ref=e95]:
+              - link "MONEYLINE" [ref=e96] [cursor=pointer]:
+                - /url: /builder?market=moneyline
+              - link "TOTALS" [ref=e97] [cursor=pointer]:
+                - /url: /builder?market=totals
+              - link "MIXED" [ref=e98] [cursor=pointer]:
+                - /url: /builder?market=combined
+              - link "PLAYER PROPS" [ref=e99] [cursor=pointer]:
+                - /url: /props-builder
+          - generic [ref=e100]:
+            - generic [ref=e101]:
+              - generic [ref=e102]: SLATE
+              - generic [ref=e103]:
+                - button "DAILY" [ref=e104] [cursor=pointer]
+                - button "MULTI-DAY" [ref=e105] [cursor=pointer]
+            - generic [ref=e106]:
+              - generic [ref=e107]: Game date
+              - button "Aug 3, 2026" [ref=e108] [cursor=pointer]
+            - generic [ref=e114]:
+              - generic [ref=e115]: Target legs
+              - button "5 legs" [ref=e116] [cursor=pointer]
+            - generic [ref=e120]:
+              - generic [ref=e121]: Minimum MelBet odds
+              - button "1.50+" [ref=e122] [cursor=pointer]
+            - generic [ref=e126]:
+              - generic [ref=e127]: DATA
+              - button "REFRESH" [disabled] [ref=e128]
+      - generic [ref=e134]:
+        - generic [ref=e136]:
+          - strong [ref=e137]: "0.0"
+          - text: "%"
+        - generic [ref=e138]:
+          - text: MULTIPLICATIVE MODEL SLIP CONFIDENCE
+          - heading "ADD LEGS TO SCORE" [level=2] [ref=e139]
+          - paragraph [ref=e140]: Estimated chance that all 0 legs win. Leg probabilities are multiplied—never added—and each uses its own moneyline or total-runs model plus official-input coverage.
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - generic [ref=e143]: LEGS / TARGET
+            - generic [ref=e144]: 0 / 5
+          - generic [ref=e145]:
+            - generic [ref=e146]: MODEL PRODUCT
+            - generic [ref=e147]: 0.0%
+          - generic [ref=e148]:
+            - generic [ref=e149]: RAW PRODUCT
+            - generic [ref=e150]: 0.0%
+          - generic [ref=e151]:
+            - generic [ref=e152]: TYPICAL LEG
+            - generic [ref=e153]: 0.0%
+        - generic [ref=e154]:
+          - button "BUILD BEST 5" [disabled] [ref=e155]
+          - button "SEND TO MELBET" [disabled] [ref=e158]
+          - button "CLEAR" [disabled] [ref=e162]
+      - status [ref=e166]:
+        - generic [ref=e167]: "N"
+        - generic [ref=e171]:
+          - strong [ref=e172]: Building the projection board
+          - generic [ref=e173]: Loading the slate and synchronizing every available matchup projection.

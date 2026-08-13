@@ -1,0 +1,325 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: NINTH
+          - generic [ref=e10]: BASEBALL / DECISION LAB
+      - navigation [ref=e11]:
+        - link "Games" [ref=e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=e70] [cursor=pointer]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: DISPLAY / 09
+          - generic [ref=e73]: DAY
+    - generic [ref=e78]:
+      - generic [ref=e79]: TODAY
+      - generic [ref=e81]: Official scoreboard syncing
+      - generic [ref=e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=e84]:
+    - generic [ref=e86]:
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - text: NINTH / PLAYER LAB
+          - heading "Build from the player up." [level=1] [ref=e89]
+          - paragraph [ref=e90]: Start with a matchup, inspect its available player markets, then add only the legs you want to the card.
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - generic [ref=e93]: MODEL
+            - generic [ref=e94]:
+              - link "MONEYLINE" [ref=e95] [cursor=pointer]:
+                - /url: /builder?market=moneyline
+              - link "TOTALS" [ref=e96] [cursor=pointer]:
+                - /url: /builder?market=totals
+              - link "MIXED" [ref=e97] [cursor=pointer]:
+                - /url: /builder?market=combined
+              - link "PLAYER PROPS" [ref=e98] [cursor=pointer]:
+                - /url: /props-builder
+          - generic [ref=e99]:
+            - generic [ref=e100]:
+              - generic [ref=e101]: SLATE
+              - generic [ref=e102]:
+                - button "DAILY" [ref=e103] [cursor=pointer]
+                - button "MULTI-DAY" [ref=e104] [cursor=pointer]
+            - generic [ref=e105]:
+              - generic [ref=e106]: Game date
+              - button "Aug 2, 2026" [ref=e107] [cursor=pointer]
+            - generic [ref=e113]:
+              - generic [ref=e114]: Target legs
+              - button "5 legs" [ref=e115] [cursor=pointer]
+            - generic [ref=e119]:
+              - generic [ref=e120]: Minimum MelBet odds
+              - button "1.50+" [ref=e121] [cursor=pointer]
+            - generic [ref=e125]:
+              - generic [ref=e126]: DATA
+              - button "REFRESH" [ref=e127] [cursor=pointer]
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - generic [ref=e135]: Included player props
+              - button "All 7 selected 7" [ref=e136] [cursor=pointer]:
+                - generic [ref=e137]: All 7 selected
+                - generic [ref=e138]: "7"
+            - generic [ref=e141]:
+              - generic [ref=e142]: BUILD DIRECTION
+              - group "Automatic player prop build direction" [ref=e143]:
+                - button "BOTH" [pressed] [ref=e144] [cursor=pointer]
+                - button "OVER" [ref=e145] [cursor=pointer]
+                - button "UNDER" [ref=e146] [cursor=pointer]
+      - generic [ref=e147]:
+        - generic [ref=e149]:
+          - strong [ref=e150]: "0.0"
+          - text: "%"
+        - generic [ref=e151]:
+          - text: SAMPLE-SIZE ADJUSTED SLIP CONFIDENCE
+          - heading "ADD LEGS TO SCORE" [level=2] [ref=e152]
+          - paragraph [ref=e153]: Estimated chance that every selected prop lands. Short player histories are pulled toward 50%, and recommended cards use one prop per game at an audited 65% minimum to limit weak legs and hidden same-game correlation.
+          - generic [ref=e154]: MODEL PROBABILITY, NOT A GUARANTEE
+        - generic [ref=e155]:
+          - generic [ref=e156]:
+            - generic [ref=e157]: LEGS
+            - generic [ref=e158]: 0 / 5
+          - generic [ref=e159]:
+            - generic [ref=e160]: ADJUSTED
+            - generic [ref=e161]: 0.0%
+          - generic [ref=e162]:
+            - generic [ref=e163]: RAW PRODUCT
+            - generic [ref=e164]: 0.0%
+          - generic [ref=e165]:
+            - generic [ref=e166]: TYPICAL LEG
+            - generic [ref=e167]: 0.0%
+        - generic [ref=e168]:
+          - button "BUILD BEST 5" [ref=e169] [cursor=pointer]
+          - button "SEND TO MELBET" [disabled] [ref=e172]
+          - button "CLEAR" [disabled] [ref=e176]
+      - generic [ref=e180]:
+        - generic [ref=e181]: 15 GAMES · SUNDAY, AUGUST 2 · 15 WITH CURRENT PLAYER MARKETS · MINIMUM @ 1.50 · AUTO 60S
+        - paragraph [ref=e183]: MelBet decimal odds are displayed and used only as a selection floor. They never enter or modify the player-prop models.
+      - generic [ref=e184]:
+        - button "1:35 PM EDT Philadelphia Phillies logo Philadelphia Phillies AWAY AT Baltimore Orioles HOME Baltimore Orioles logo VIEW 20 MATCHING PLAYERS →" [ref=e185] [cursor=pointer]:
+          - generic [ref=e186]: 1:35 PM EDT
+          - generic [ref=e187]:
+            - img "Philadelphia Phillies logo" [ref=e189]
+            - generic [ref=e190]:
+              - generic [ref=e191]: Philadelphia Phillies
+              - generic [ref=e192]: AWAY
+          - generic [ref=e193]: AT
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - generic [ref=e196]: Baltimore Orioles
+              - generic [ref=e197]: HOME
+            - img "Baltimore Orioles logo" [ref=e199]
+          - generic [ref=e200]: VIEW 20 MATCHING PLAYERS →
+        - button "1:35 PM EDT Washington Nationals logo Washington Nationals AWAY AT Atlanta Braves HOME Atlanta Braves logo VIEW 20 MATCHING PLAYERS →" [ref=e201] [cursor=pointer]:
+          - generic [ref=e202]: 1:35 PM EDT
+          - generic [ref=e203]:
+            - img "Washington Nationals logo" [ref=e205]
+            - generic [ref=e206]:
+              - generic [ref=e207]: Washington Nationals
+              - generic [ref=e208]: AWAY
+          - generic [ref=e209]: AT
+          - generic [ref=e210]:
+            - generic [ref=e211]:
+              - generic [ref=e212]: Atlanta Braves
+              - generic [ref=e213]: HOME
+            - img "Atlanta Braves logo" [ref=e215]
+          - generic [ref=e216]: VIEW 20 MATCHING PLAYERS →
+        - button "1:37 PM EDT St. Louis Cardinals logo St. Louis Cardinals AWAY AT Toronto Blue Jays HOME Toronto Blue Jays logo VIEW 20 MATCHING PLAYERS →" [ref=e217] [cursor=pointer]:
+          - generic [ref=e218]: 1:37 PM EDT
+          - generic [ref=e219]:
+            - img "St. Louis Cardinals logo" [ref=e221]
+            - generic [ref=e222]:
+              - generic [ref=e223]: St. Louis Cardinals
+              - generic [ref=e224]: AWAY
+          - generic [ref=e225]: AT
+          - generic [ref=e226]:
+            - generic [ref=e227]:
+              - generic [ref=e228]: Toronto Blue Jays
+              - generic [ref=e229]: HOME
+            - img "Toronto Blue Jays logo" [ref=e231]
+          - generic [ref=e232]: VIEW 20 MATCHING PLAYERS →
+        - button "1:40 PM EDT Arizona Diamondbacks logo Arizona Diamondbacks AWAY AT Cleveland Guardians HOME Cleveland Guardians logo VIEW 20 MATCHING PLAYERS →" [ref=e233] [cursor=pointer]:
+          - generic [ref=e234]: 1:40 PM EDT
+          - generic [ref=e235]:
+            - img "Arizona Diamondbacks logo" [ref=e237]
+            - generic [ref=e238]:
+              - generic [ref=e239]: Arizona Diamondbacks
+              - generic [ref=e240]: AWAY
+          - generic [ref=e241]: AT
+          - generic [ref=e242]:
+            - generic [ref=e243]:
+              - generic [ref=e244]: Cleveland Guardians
+              - generic [ref=e245]: HOME
+            - img "Cleveland Guardians logo" [ref=e247]
+          - generic [ref=e248]: VIEW 20 MATCHING PLAYERS →
+        - button "1:40 PM EDT Pittsburgh Pirates logo Pittsburgh Pirates AWAY AT Cincinnati Reds HOME Cincinnati Reds logo VIEW 19 MATCHING PLAYERS →" [ref=e249] [cursor=pointer]:
+          - generic [ref=e250]: 1:40 PM EDT
+          - generic [ref=e251]:
+            - img "Pittsburgh Pirates logo" [ref=e253]
+            - generic [ref=e254]:
+              - generic [ref=e255]: Pittsburgh Pirates
+              - generic [ref=e256]: AWAY
+          - generic [ref=e257]: AT
+          - generic [ref=e258]:
+            - generic [ref=e259]:
+              - generic [ref=e260]: Cincinnati Reds
+              - generic [ref=e261]: HOME
+            - img "Cincinnati Reds logo" [ref=e263]
+          - generic [ref=e264]: VIEW 19 MATCHING PLAYERS →
+        - button "1:40 PM EDT Chicago White Sox logo Chicago White Sox AWAY AT Tampa Bay Rays HOME Tampa Bay Rays logo VIEW 20 MATCHING PLAYERS →" [ref=e265] [cursor=pointer]:
+          - generic [ref=e266]: 1:40 PM EDT
+          - generic [ref=e267]:
+            - img "Chicago White Sox logo" [ref=e269]
+            - generic [ref=e270]:
+              - generic [ref=e271]: Chicago White Sox
+              - generic [ref=e272]: AWAY
+          - generic [ref=e273]: AT
+          - generic [ref=e274]:
+            - generic [ref=e275]:
+              - generic [ref=e276]: Tampa Bay Rays
+              - generic [ref=e277]: HOME
+            - img "Tampa Bay Rays logo" [ref=e279]
+          - generic [ref=e280]: VIEW 20 MATCHING PLAYERS →
+        - button "1:40 PM EDT Miami Marlins logo Miami Marlins AWAY AT New York Mets HOME New York Mets logo VIEW 20 MATCHING PLAYERS →" [ref=e281] [cursor=pointer]:
+          - generic [ref=e282]: 1:40 PM EDT
+          - generic [ref=e283]:
+            - img "Miami Marlins logo" [ref=e285]
+            - generic [ref=e286]:
+              - generic [ref=e287]: Miami Marlins
+              - generic [ref=e288]: AWAY
+          - generic [ref=e289]: AT
+          - generic [ref=e290]:
+            - generic [ref=e291]:
+              - generic [ref=e292]: New York Mets
+              - generic [ref=e293]: HOME
+            - img "New York Mets logo" [ref=e295]
+          - generic [ref=e296]: VIEW 20 MATCHING PLAYERS →
+        - button "2:10 PM EDT Texas Rangers logo Texas Rangers AWAY AT Houston Astros HOME Houston Astros logo VIEW 20 MATCHING PLAYERS →" [ref=e297] [cursor=pointer]:
+          - generic [ref=e298]: 2:10 PM EDT
+          - generic [ref=e299]:
+            - img "Texas Rangers logo" [ref=e301]
+            - generic [ref=e302]:
+              - generic [ref=e303]: Texas Rangers
+              - generic [ref=e304]: AWAY
+          - generic [ref=e305]: AT
+          - generic [ref=e306]:
+            - generic [ref=e307]:
+              - generic [ref=e308]: Houston Astros
+              - generic [ref=e309]: HOME
+            - img "Houston Astros logo" [ref=e311]
+          - generic [ref=e312]: VIEW 20 MATCHING PLAYERS →
+        - button "2:20 PM EDT New York Yankees logo New York Yankees AWAY AT Chicago Cubs HOME Chicago Cubs logo VIEW 20 MATCHING PLAYERS →" [ref=e313] [cursor=pointer]:
+          - generic [ref=e314]: 2:20 PM EDT
+          - generic [ref=e315]:
+            - img "New York Yankees logo" [ref=e317]
+            - generic [ref=e318]:
+              - generic [ref=e319]: New York Yankees
+              - generic [ref=e320]: AWAY
+          - generic [ref=e321]: AT
+          - generic [ref=e322]:
+            - generic [ref=e323]:
+              - generic [ref=e324]: Chicago Cubs
+              - generic [ref=e325]: HOME
+            - img "Chicago Cubs logo" [ref=e327]
+          - generic [ref=e328]: VIEW 20 MATCHING PLAYERS →
+        - button "3:10 PM EDT Kansas City Royals logo Kansas City Royals AWAY AT Colorado Rockies HOME Colorado Rockies logo VIEW 20 MATCHING PLAYERS →" [ref=e329] [cursor=pointer]:
+          - generic [ref=e330]: 3:10 PM EDT
+          - generic [ref=e331]:
+            - img "Kansas City Royals logo" [ref=e333]
+            - generic [ref=e334]:
+              - generic [ref=e335]: Kansas City Royals
+              - generic [ref=e336]: AWAY
+          - generic [ref=e337]: AT
+          - generic [ref=e338]:
+            - generic [ref=e339]:
+              - generic [ref=e340]: Colorado Rockies
+              - generic [ref=e341]: HOME
+            - img "Colorado Rockies logo" [ref=e343]
+          - generic [ref=e344]: VIEW 20 MATCHING PLAYERS →
+        - button "3:15 PM EDT Milwaukee Brewers logo Milwaukee Brewers AWAY AT Los Angeles Angels HOME Los Angeles Angels logo VIEW 17 MATCHING PLAYERS →" [ref=e345] [cursor=pointer]:
+          - generic [ref=e346]: 3:15 PM EDT
+          - generic [ref=e347]:
+            - img "Milwaukee Brewers logo" [ref=e349]
+            - generic [ref=e350]:
+              - generic [ref=e351]: Milwaukee Brewers
+              - generic [ref=e352]: AWAY
+          - generic [ref=e353]: AT
+          - generic [ref=e354]:
+            - generic [ref=e355]:
+              - generic [ref=e356]: Los Angeles Angels
+              - generic [ref=e357]: HOME
+            - img "Los Angeles Angels logo" [ref=e359]
+          - generic [ref=e360]: VIEW 17 MATCHING PLAYERS →
+        - button "4:05 PM EDT Detroit Tigers logo Detroit Tigers AWAY AT Athletics HOME Athletics logo VIEW 14 MATCHING PLAYERS →" [ref=e361] [cursor=pointer]:
+          - generic [ref=e362]: 4:05 PM EDT
+          - generic [ref=e363]:
+            - img "Detroit Tigers logo" [ref=e365]
+            - generic [ref=e366]:
+              - generic [ref=e367]: Detroit Tigers
+              - generic [ref=e368]: AWAY
+          - generic [ref=e369]: AT
+          - generic [ref=e370]:
+            - generic [ref=e371]:
+              - generic [ref=e372]: Athletics
+              - generic [ref=e373]: HOME
+            - img "Athletics logo" [ref=e375]
+          - generic [ref=e376]: VIEW 14 MATCHING PLAYERS →
+        - button "4:10 PM EDT San Francisco Giants logo San Francisco Giants AWAY AT San Diego Padres HOME San Diego Padres logo VIEW 16 MATCHING PLAYERS →" [ref=e377] [cursor=pointer]:
+          - generic [ref=e378]: 4:10 PM EDT
+          - generic [ref=e379]:
+            - img "San Francisco Giants logo" [ref=e381]
+            - generic [ref=e382]:
+              - generic [ref=e383]: San Francisco Giants
+              - generic [ref=e384]: AWAY
+          - generic [ref=e385]: AT
+          - generic [ref=e386]:
+            - generic [ref=e387]:
+              - generic [ref=e388]: San Diego Padres
+              - generic [ref=e389]: HOME
+            - img "San Diego Padres logo" [ref=e391]
+          - generic [ref=e392]: VIEW 16 MATCHING PLAYERS →
+        - button "4:10 PM EDT Minnesota Twins logo Minnesota Twins AWAY AT Seattle Mariners HOME Seattle Mariners logo VIEW 17 MATCHING PLAYERS →" [ref=e393] [cursor=pointer]:
+          - generic [ref=e394]: 4:10 PM EDT
+          - generic [ref=e395]:
+            - img "Minnesota Twins logo" [ref=e397]
+            - generic [ref=e398]:
+              - generic [ref=e399]: Minnesota Twins
+              - generic [ref=e400]: AWAY
+          - generic [ref=e401]: AT
+          - generic [ref=e402]:
+            - generic [ref=e403]:
+              - generic [ref=e404]: Seattle Mariners
+              - generic [ref=e405]: HOME
+            - img "Seattle Mariners logo" [ref=e407]
+          - generic [ref=e408]: VIEW 17 MATCHING PLAYERS →
+        - button "7:20 PM EDT Boston Red Sox logo Boston Red Sox AWAY AT Los Angeles Dodgers HOME Los Angeles Dodgers logo VIEW 20 MATCHING PLAYERS →" [ref=e409] [cursor=pointer]:
+          - generic [ref=e410]: 7:20 PM EDT
+          - generic [ref=e411]:
+            - img "Boston Red Sox logo" [ref=e413]
+            - generic [ref=e414]:
+              - generic [ref=e415]: Boston Red Sox
+              - generic [ref=e416]: AWAY
+          - generic [ref=e417]: AT
+          - generic [ref=e418]:
+            - generic [ref=e419]:
+              - generic [ref=e420]: Los Angeles Dodgers
+              - generic [ref=e421]: HOME
+            - img "Los Angeles Dodgers logo" [ref=e423]
+          - generic [ref=e424]: VIEW 20 MATCHING PLAYERS →

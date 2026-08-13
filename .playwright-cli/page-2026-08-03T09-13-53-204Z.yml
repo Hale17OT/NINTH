@@ -1,0 +1,44 @@
+- generic [ref=f10e3]:
+  - banner [ref=f10e4]:
+    - generic [ref=f10e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f10e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f10e7]
+        - generic [ref=f10e8]:
+          - generic [ref=f10e9]: NINTH
+          - generic [ref=f10e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f10e11]:
+        - link "Games" [ref=f10e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f10e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f10e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f10e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f10e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f10e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f10e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f10e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f10e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f10e70] [cursor=pointer]:
+        - generic [ref=f10e71]:
+          - generic [ref=f10e72]: DISPLAY / 09
+          - generic [ref=f10e73]: DAY
+    - generic [ref=f10e78]:
+      - generic [ref=f10e79]: TODAY
+      - generic [ref=f10e81]: Official scoreboard syncing
+      - generic [ref=f10e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f10e84]:
+    - generic [ref=f10e86]:
+      - button "BACK TO GAMES" [ref=f10e88] [cursor=pointer]
+      - status [ref=f10e91]:
+        - generic [ref=f10e92]: "N"
+        - generic [ref=f10e96]:
+          - strong [ref=f10e97]: Opening matchup intelligence
+          - generic [ref=f10e98]: Loading the official game feed, personnel and current model snapshot.

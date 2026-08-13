@@ -1,0 +1,60 @@
+- generic [ref=f6e3]:
+  - banner [ref=f6e4]:
+    - generic [ref=f6e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f6e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f6e7]
+        - generic [ref=f6e8]:
+          - generic [ref=f6e9]: NINTH
+          - generic [ref=f6e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f6e11]:
+        - link "Games" [ref=f6e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f6e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f6e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f6e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f6e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f6e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f6e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f6e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f6e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f6e70] [cursor=pointer]:
+        - generic [ref=f6e71]:
+          - generic [ref=f6e72]: DISPLAY / 09
+          - generic [ref=f6e73]: DAY
+    - generic [ref=f6e78]:
+      - generic [ref=f6e79]: TODAY
+      - generic [ref=f6e81]: Official scoreboard syncing
+      - generic [ref=f6e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f6e84]:
+    - generic [ref=f6e86]:
+      - generic [ref=f6e87]:
+        - text: OFFICIAL MLB PLAYER INDEX
+        - heading "The league, face to face." [level=1] [ref=f6e88]: The league,face to face.
+        - paragraph [ref=f6e89]: Browse active MLB players by club or position, then open a profile for current-season production.
+      - generic [ref=f6e90]:
+        - textbox [ref=f6e95]:
+          - /placeholder: Search a player, team, or position
+        - button "All 30 teams MLB" [ref=f6e97] [cursor=pointer]:
+          - generic [ref=f6e98]: All 30 teams
+          - generic [ref=f6e99]: MLB
+      - generic [ref=f6e102]:
+        - button "All" [ref=f6e103] [cursor=pointer]
+        - button "Pitchers" [ref=f6e104] [cursor=pointer]
+        - button "Catchers" [ref=f6e105] [cursor=pointer]
+        - button "Infield" [ref=f6e106] [cursor=pointer]
+        - button "Outfield" [ref=f6e107] [cursor=pointer]
+        - generic [ref=f6e108]: 0 PLAYERS
+      - status [ref=f6e109]:
+        - generic [ref=f6e110]: "N"
+        - generic [ref=f6e114]:
+          - strong [ref=f6e115]: Building the player index
+          - generic [ref=f6e116]: Loading active rosters, positions and official player images.

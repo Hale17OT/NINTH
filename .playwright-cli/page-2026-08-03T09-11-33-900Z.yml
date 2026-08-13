@@ -1,0 +1,484 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=e7]
+        - generic [ref=e8]:
+          - generic [ref=e9]: NINTH
+          - generic [ref=e10]: BASEBALL / DECISION LAB
+      - navigation [ref=e11]:
+        - link "Games" [ref=e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=e70] [cursor=pointer]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: DISPLAY / 09
+          - generic [ref=e73]: DAY
+    - generic [ref=e78]:
+      - generic [ref=e79]: TODAY
+      - link "WSH 0 — 0 PHI Scheduled" [ref=e178] [cursor=pointer]:
+        - /url: /games/823431
+        - generic [ref=e179]: WSH
+        - emphasis [ref=e180]: "0"
+        - generic [ref=e181]: —
+        - emphasis [ref=e182]: "0"
+        - generic [ref=e183]: PHI
+        - generic [ref=e184]: Scheduled
+      - link "STL 0 — 0 NYY Scheduled" [ref=e185] [cursor=pointer]:
+        - /url: /games/823520
+        - generic [ref=e186]: STL
+        - emphasis [ref=e187]: "0"
+        - generic [ref=e188]: —
+        - emphasis [ref=e189]: "0"
+        - generic [ref=e190]: NYY
+        - generic [ref=e191]: Scheduled
+      - link "PIT 0 — 0 MIL Scheduled" [ref=e192] [cursor=pointer]:
+        - /url: /games/823757
+        - generic [ref=e193]: PIT
+        - emphasis [ref=e194]: "0"
+        - generic [ref=e195]: —
+        - emphasis [ref=e196]: "0"
+        - generic [ref=e197]: MIL
+        - generic [ref=e198]: Scheduled
+      - link "LAD 0 — 0 CHC Scheduled" [ref=e199] [cursor=pointer]:
+        - /url: /games/824647
+        - generic [ref=e200]: LAD
+        - emphasis [ref=e201]: "0"
+        - generic [ref=e202]: —
+        - emphasis [ref=e203]: "0"
+        - generic [ref=e204]: CHC
+        - generic [ref=e205]: Scheduled
+      - generic [ref=e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=e84]:
+    - generic [ref=e456]:
+      - generic [ref=e457]:
+        - generic [ref=e458]:
+          - text: NINTH / SLIP LAB
+          - heading [level=1] [ref=e459]:
+            - text: Build today's card.
+            - emphasis [ref=e460]: See the real risk.
+          - paragraph [ref=e461]: Build moneyline, total-runs, or mixed cards from market-free probabilities. Mixed mode chooses the stronger model per matchup while enforcing one selection per game.
+        - generic [ref=e462]:
+          - generic [ref=e463]:
+            - generic [ref=e464]: MODEL
+            - generic [ref=e465]:
+              - link "MONEYLINE" [ref=e466] [cursor=pointer]:
+                - /url: /builder?market=moneyline
+              - link "TOTALS" [ref=e467] [cursor=pointer]:
+                - /url: /builder?market=totals
+              - link "MIXED" [ref=e468] [cursor=pointer]:
+                - /url: /builder?market=combined
+              - link "PLAYER PROPS" [ref=e469] [cursor=pointer]:
+                - /url: /props-builder
+          - generic [ref=e470]:
+            - generic [ref=e471]:
+              - generic [ref=e472]: SLATE
+              - generic [ref=e473]:
+                - button "DAILY" [ref=e474] [cursor=pointer]
+                - button "MULTI-DAY" [ref=e475] [cursor=pointer]
+            - generic [ref=e476]:
+              - generic [ref=e477]: Game date
+              - button "Aug 3, 2026" [ref=e478] [cursor=pointer]
+            - generic [ref=e484]:
+              - generic [ref=e485]: Target legs
+              - button "2 legs" [ref=e1068] [cursor=pointer]
+            - generic [ref=e490]:
+              - generic [ref=e491]: Minimum MelBet odds
+              - button "All odds" [ref=e1041] [cursor=pointer]
+            - generic [ref=e496]:
+              - generic [ref=e497]: DATA
+              - button "REFRESH" [ref=e498] [cursor=pointer]
+      - generic [ref=e504]:
+        - generic [ref=e506]:
+          - strong [ref=e507]: "0.0"
+          - text: "%"
+        - generic [ref=e508]:
+          - text: MULTIPLICATIVE MODEL SLIP CONFIDENCE
+          - heading "ADD LEGS TO SCORE" [level=2] [ref=e509]
+          - paragraph [ref=e510]: Estimated chance that all 0 legs win. Leg probabilities are multiplied—never added—and each uses its own moneyline or total-runs model plus official-input coverage.
+        - generic [ref=e511]:
+          - generic [ref=e512]:
+            - generic [ref=e513]: LEGS / TARGET
+            - generic [ref=e514]: 0 / 2
+          - generic [ref=e515]:
+            - generic [ref=e516]: MODEL PRODUCT
+            - generic [ref=e517]: 0.0%
+          - generic [ref=e518]:
+            - generic [ref=e519]: RAW PRODUCT
+            - generic [ref=e520]: 0.0%
+          - generic [ref=e521]:
+            - generic [ref=e522]: TYPICAL LEG
+            - generic [ref=e523]: 0.0%
+        - generic [ref=e524]:
+          - button "BUILD BEST 2" [ref=e1069] [cursor=pointer]
+          - button "SEND TO MELBET" [disabled] [ref=e528]
+          - button "CLEAR" [disabled] [ref=e532]
+      - generic [ref=e540]:
+        - generic [ref=e541]: 8 UPCOMING GAMES · MONDAY, AUGUST 3 · AUTO 15S
+        - paragraph [ref=e1042]: “Best 2” selects exactly 2 highest-probability games that satisfy the All odds setting. Odds only control eligibility and never enter either model.
+      - generic [ref=e544]:
+        - generic [ref=e545]:
+          - generic [ref=e546]: SLATE DAY
+          - heading "Monday, August 3" [level=2] [ref=e547]
+          - generic [ref=e548]: 8 GAMES
+        - generic [ref=e549]:
+          - article [ref=e550]:
+            - generic [ref=e551]:
+              - generic [ref=e552]: 6:40 PM EDT
+              - link "OPEN MATCHUP" [ref=e553] [cursor=pointer]:
+                - /url: /games/823431?from=builder
+            - generic [ref=e554]:
+              - generic [ref=e555]:
+                - img "Washington Nationals logo" [ref=e557]
+                - generic [ref=e558]: Washington Nationals
+                - generic [ref=e559]: AWAY
+              - generic [ref=e560]: AT
+              - generic [ref=e561]:
+                - img "Philadelphia Phillies logo" [ref=e563]
+                - generic [ref=e564]: Philadelphia Phillies
+                - generic [ref=e565]: HOME
+            - generic [ref=e566]:
+              - text: TOTAL RUNS · BEST LISTED LINE 8.5
+              - generic [ref=e567]: 7 CURRENT LINES · PROJECTED 11.3
+            - generic [ref=e569]:
+              - generic [ref=e570]: Currently listed full-game total
+              - button "Total 10.5 Over @ 2.29 · Under @ 1.58" [ref=e960] [cursor=pointer]:
+                - generic [ref=e572]: Total 10.5
+                - generic [ref=e573]: Over @ 2.29 · Under @ 1.58
+            - generic [ref=e576]:
+              - button "OVER 10.5 Higher scoring 63.6% MELBET @ 2.29" [ref=e961] [cursor=pointer]:
+                - generic [ref=e578]:
+                  - generic [ref=e579]: OVER 10.5
+                  - generic [ref=e580]: Higher scoring
+                - strong [ref=e581]:
+                  - text: 63.6%
+                  - generic [ref=e582]: MELBET @ 2.29
+              - button "UNDER 10.5 Lower scoring 36.4% MELBET @ 1.58" [ref=e962] [cursor=pointer]:
+                - generic [ref=e586]:
+                  - generic [ref=e587]: UNDER 10.5
+                  - generic [ref=e588]: Lower scoring
+                - strong [ref=e589]:
+                  - text: 36.4%
+                  - generic [ref=e590]: MELBET @ 1.58
+            - generic [ref=e593]:
+              - generic [ref=e594]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e595]: OVER 8.5 · @ 1.64
+              - generic [ref=e596]: MATCHUP-SYNCED · 12:10:50 PM · ONE PICK PER GAME
+          - article [ref=e597]:
+            - generic [ref=e598]:
+              - generic [ref=e599]: 7:05 PM EDT
+              - link "OPEN MATCHUP" [ref=e600] [cursor=pointer]:
+                - /url: /games/823520?from=builder
+            - generic [ref=e601]:
+              - generic [ref=e602]:
+                - img "St. Louis Cardinals logo" [ref=e604]
+                - generic [ref=e605]: St. Louis Cardinals
+                - generic [ref=e606]: AWAY
+              - generic [ref=e607]: AT
+              - generic [ref=e608]:
+                - img "New York Yankees logo" [ref=e610]
+                - generic [ref=e611]: New York Yankees
+                - generic [ref=e612]: HOME
+            - generic [ref=e613]:
+              - text: TOTAL RUNS · BEST LISTED LINE 7.5
+              - generic [ref=e614]: 7 CURRENT LINES · PROJECTED 10.3
+            - generic [ref=e616]:
+              - generic [ref=e617]: Currently listed full-game total
+              - button "Total 7.5 Over @ 1.866 · Under @ 2.063" [ref=e618] [cursor=pointer]:
+                - generic [ref=e619]: Total 7.5
+                - generic [ref=e620]: Over @ 1.866 · Under @ 2.063
+            - generic [ref=e623]:
+              - button "OVER 7.5 Higher scoring 72.4% MELBET @ 1.866" [ref=e624] [cursor=pointer]:
+                - generic [ref=e625]:
+                  - generic [ref=e626]: OVER 7.5
+                  - generic [ref=e627]: Higher scoring
+                - strong [ref=e628]:
+                  - text: 72.4%
+                  - generic [ref=e629]: MELBET @ 1.866
+              - button "UNDER 7.5 Lower scoring 27.6% MELBET @ 2.063" [ref=e632] [cursor=pointer]:
+                - generic [ref=e633]:
+                  - generic [ref=e634]: UNDER 7.5
+                  - generic [ref=e635]: Lower scoring
+                - strong [ref=e636]:
+                  - text: 27.6%
+                  - generic [ref=e637]: MELBET @ 2.063
+            - generic [ref=e640]:
+              - generic [ref=e641]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e642]: OVER 7.5 · @ 1.866
+              - generic [ref=e643]: MATCHUP-SYNCED · 12:10:40 PM · ONE PICK PER GAME
+          - article [ref=e644]:
+            - generic [ref=e645]:
+              - generic [ref=e646]: 7:40 PM EDT
+              - link "OPEN MATCHUP" [ref=e647] [cursor=pointer]:
+                - /url: /games/823757?from=builder
+            - generic [ref=e648]:
+              - generic [ref=e649]:
+                - img "Pittsburgh Pirates logo" [ref=e651]
+                - generic [ref=e652]: Pittsburgh Pirates
+                - generic [ref=e653]: AWAY
+              - generic [ref=e654]: AT
+              - generic [ref=e655]:
+                - img "Milwaukee Brewers logo" [ref=e657]
+                - generic [ref=e658]: Milwaukee Brewers
+                - generic [ref=e659]: HOME
+            - generic [ref=e660]:
+              - text: TOTAL RUNS · BEST LISTED LINE 7.5
+              - generic [ref=e661]: 7 CURRENT LINES · PROJECTED 10.9
+            - generic [ref=e663]:
+              - generic [ref=e664]: Currently listed full-game total
+              - button "Total 7.5 Over @ 1.7 · Under @ 2.08" [ref=e665] [cursor=pointer]:
+                - generic [ref=e666]: Total 7.5
+                - generic [ref=e667]: Over @ 1.7 · Under @ 2.08
+            - generic [ref=e670]:
+              - button "OVER 7.5 Higher scoring 75.9% MELBET @ 1.7" [ref=e1000] [cursor=pointer]:
+                - generic [ref=e672]:
+                  - generic [ref=e673]: OVER 7.5
+                  - generic [ref=e674]: Higher scoring
+                - strong [ref=e675]:
+                  - text: 75.9%
+                  - generic [ref=e676]: MELBET @ 1.7
+              - button "UNDER 7.5 Lower scoring 24.1% MELBET @ 2.08" [ref=e1001] [cursor=pointer]:
+                - generic [ref=e680]:
+                  - generic [ref=e681]: UNDER 7.5
+                  - generic [ref=e682]: Lower scoring
+                - strong [ref=e683]:
+                  - text: 24.1%
+                  - generic [ref=e684]: MELBET @ 2.08
+            - generic [ref=e687]:
+              - generic [ref=e688]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e689]: OVER 7.5 · @ 1.7
+              - generic [ref=e690]: MATCHUP-SYNCED · 12:10:49 PM · ONE PICK PER GAME
+          - article [ref=e691]:
+            - generic [ref=e692]:
+              - generic [ref=e693]: 8:05 PM EDT
+              - link "OPEN MATCHUP" [ref=e694] [cursor=pointer]:
+                - /url: /games/824647?from=builder
+            - generic [ref=e695]:
+              - generic [ref=e696]:
+                - img "Los Angeles Dodgers logo" [ref=e698]
+                - generic [ref=e699]: Los Angeles Dodgers
+                - generic [ref=e700]: AWAY
+              - generic [ref=e701]: AT
+              - generic [ref=e702]:
+                - img "Chicago Cubs logo" [ref=e704]
+                - generic [ref=e705]: Chicago Cubs
+                - generic [ref=e706]: HOME
+            - generic [ref=e707]:
+              - text: TOTAL RUNS · BEST LISTED LINE 7.5
+              - generic [ref=e708]: 7 CURRENT LINES · PROJECTED 10.9
+            - generic [ref=e710]:
+              - generic [ref=e711]: Currently listed full-game total
+              - button "Total 7.5 Over @ 1.727 · Under @ 2.04" [ref=e712] [cursor=pointer]:
+                - generic [ref=e713]: Total 7.5
+                - generic [ref=e714]: Over @ 1.727 · Under @ 2.04
+            - generic [ref=e717]:
+              - button "OVER 7.5 Higher scoring 76.3% MELBET @ 1.727" [ref=e718] [cursor=pointer]:
+                - generic [ref=e719]:
+                  - generic [ref=e720]: OVER 7.5
+                  - generic [ref=e721]: Higher scoring
+                - strong [ref=e722]:
+                  - text: 76.3%
+                  - generic [ref=e723]: MELBET @ 1.727
+              - button "UNDER 7.5 Lower scoring 23.6% MELBET @ 2.04" [ref=e726] [cursor=pointer]:
+                - generic [ref=e727]:
+                  - generic [ref=e728]: UNDER 7.5
+                  - generic [ref=e729]: Lower scoring
+                - strong [ref=e730]:
+                  - text: 23.6%
+                  - generic [ref=e731]: MELBET @ 2.04
+            - generic [ref=e734]:
+              - generic [ref=e735]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e736]: OVER 7.5 · @ 1.727
+              - generic [ref=e737]: MATCHUP-SYNCED · 12:10:40 PM · ONE PICK PER GAME
+          - article [ref=e738]:
+            - generic [ref=e739]:
+              - generic [ref=e740]: 8:05 PM EDT
+              - link "OPEN MATCHUP" [ref=e741] [cursor=pointer]:
+                - /url: /games/822867?from=builder
+            - generic [ref=e742]:
+              - generic [ref=e743]:
+                - img "San Francisco Giants logo" [ref=e745]
+                - generic [ref=e746]: San Francisco Giants
+                - generic [ref=e747]: AWAY
+              - generic [ref=e748]: AT
+              - generic [ref=e749]:
+                - img "Texas Rangers logo" [ref=e751]
+                - generic [ref=e752]: Texas Rangers
+                - generic [ref=e753]: HOME
+            - generic [ref=e754]:
+              - text: TOTAL RUNS · BEST LISTED LINE 7.5
+              - generic [ref=e755]: 7 CURRENT LINES · PROJECTED 11.6
+            - generic [ref=e757]:
+              - generic [ref=e758]: Currently listed full-game total
+              - button "Total 7.5 Over @ 1.69 · Under @ 2.09" [ref=e759] [cursor=pointer]:
+                - generic [ref=e760]: Total 7.5
+                - generic [ref=e761]: Over @ 1.69 · Under @ 2.09
+            - generic [ref=e764]:
+              - button "OVER 7.5 Higher scoring 79.9% MELBET @ 1.69" [ref=e765] [cursor=pointer]:
+                - generic [ref=e766]:
+                  - generic [ref=e767]: OVER 7.5
+                  - generic [ref=e768]: Higher scoring
+                - strong [ref=e769]:
+                  - text: 79.9%
+                  - generic [ref=e770]: MELBET @ 1.69
+              - button "UNDER 7.5 Lower scoring 20.1% MELBET @ 2.09" [ref=e773] [cursor=pointer]:
+                - generic [ref=e774]:
+                  - generic [ref=e775]: UNDER 7.5
+                  - generic [ref=e776]: Lower scoring
+                - strong [ref=e777]:
+                  - text: 20.1%
+                  - generic [ref=e778]: MELBET @ 2.09
+            - generic [ref=e781]:
+              - generic [ref=e782]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e783]: OVER 7.5 · @ 1.69
+              - generic [ref=e784]: MATCHUP-SYNCED · 12:10:40 PM · ONE PICK PER GAME
+          - article [ref=e785]:
+            - generic [ref=e786]:
+              - generic [ref=e787]: 8:10 PM EDT
+              - link "OPEN MATCHUP" [ref=e788] [cursor=pointer]:
+                - /url: /games/824160?from=builder
+            - generic [ref=e789]:
+              - generic [ref=e790]:
+                - img "Toronto Blue Jays logo" [ref=e792]
+                - generic [ref=e793]: Toronto Blue Jays
+                - generic [ref=e794]: AWAY
+              - generic [ref=e795]: AT
+              - generic [ref=e796]:
+                - img "Houston Astros logo" [ref=e798]
+                - generic [ref=e799]: Houston Astros
+                - generic [ref=e800]: HOME
+            - generic [ref=e801]:
+              - text: TOTAL RUNS · BEST LISTED LINE 8.5
+              - generic [ref=e802]: 7 CURRENT LINES · PROJECTED 11.6
+            - generic [ref=e804]:
+              - generic [ref=e805]: Currently listed full-game total
+              - button "Total 8.5 Over @ 1.66 · Under @ 2.14" [ref=e806] [cursor=pointer]:
+                - generic [ref=e807]: Total 8.5
+                - generic [ref=e808]: Over @ 1.66 · Under @ 2.14
+            - generic [ref=e811]:
+              - button "OVER 8.5 Higher scoring 76.2% MELBET @ 1.66" [ref=e812] [cursor=pointer]:
+                - generic [ref=e813]:
+                  - generic [ref=e814]: OVER 8.5
+                  - generic [ref=e815]: Higher scoring
+                - strong [ref=e816]:
+                  - text: 76.2%
+                  - generic [ref=e817]: MELBET @ 1.66
+              - button "UNDER 8.5 Lower scoring 23.8% MELBET @ 2.14" [ref=e820] [cursor=pointer]:
+                - generic [ref=e821]:
+                  - generic [ref=e822]: UNDER 8.5
+                  - generic [ref=e823]: Lower scoring
+                - strong [ref=e824]:
+                  - text: 23.8%
+                  - generic [ref=e825]: MELBET @ 2.14
+            - generic [ref=e828]:
+              - generic [ref=e829]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e830]: OVER 8.5 · @ 1.66
+              - generic [ref=e831]: MATCHUP-SYNCED · 12:10:50 PM · ONE PICK PER GAME
+          - article [ref=e832]:
+            - generic [ref=e833]:
+              - generic [ref=e834]: 8:40 PM EDT
+              - link "OPEN MATCHUP" [ref=e835] [cursor=pointer]:
+                - /url: /games/824324?from=builder
+            - generic [ref=e836]:
+              - generic [ref=e837]:
+                - img "Tampa Bay Rays logo" [ref=e839]
+                - generic [ref=e840]: Tampa Bay Rays
+                - generic [ref=e841]: AWAY
+              - generic [ref=e842]: AT
+              - generic [ref=e843]:
+                - img "Colorado Rockies logo" [ref=e845]
+                - generic [ref=e846]: Colorado Rockies
+                - generic [ref=e847]: HOME
+            - generic [ref=e848]:
+              - text: TOTAL RUNS · BEST LISTED LINE 10.5
+              - generic [ref=e849]: 7 CURRENT LINES · PROJECTED 12.4
+            - generic [ref=e851]:
+              - generic [ref=e852]: Currently listed full-game total
+              - button "Total 10.5 Over @ 1.65 · Under @ 2.16" [ref=e853] [cursor=pointer]:
+                - generic [ref=e854]: Total 10.5
+                - generic [ref=e855]: Over @ 1.65 · Under @ 2.16
+            - generic [ref=e858]:
+              - button "OVER 10.5 Higher scoring 69.9% MELBET @ 1.65" [ref=e859] [cursor=pointer]:
+                - generic [ref=e860]:
+                  - generic [ref=e861]: OVER 10.5
+                  - generic [ref=e862]: Higher scoring
+                - strong [ref=e863]:
+                  - text: 69.9%
+                  - generic [ref=e864]: MELBET @ 1.65
+              - button "UNDER 10.5 Lower scoring 30.1% MELBET @ 2.16" [ref=e867] [cursor=pointer]:
+                - generic [ref=e868]:
+                  - generic [ref=e869]: UNDER 10.5
+                  - generic [ref=e870]: Lower scoring
+                - strong [ref=e871]:
+                  - text: 30.1%
+                  - generic [ref=e872]: MELBET @ 2.16
+            - generic [ref=e875]:
+              - generic [ref=e876]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e877]: OVER 10.5 · @ 1.65
+              - generic [ref=e878]: MATCHUP-SYNCED · 12:10:49 PM · ONE PICK PER GAME
+          - article [ref=e879]:
+            - generic [ref=e880]:
+              - generic [ref=e881]: 9:40 PM EDT
+              - link "OPEN MATCHUP" [ref=e882] [cursor=pointer]:
+                - /url: /games/825095?from=builder
+            - generic [ref=e883]:
+              - generic [ref=e884]:
+                - img "San Diego Padres logo" [ref=e886]
+                - generic [ref=e887]: San Diego Padres
+                - generic [ref=e888]: AWAY
+              - generic [ref=e889]: AT
+              - generic [ref=e890]:
+                - img "Arizona Diamondbacks logo" [ref=e892]
+                - generic [ref=e893]: Arizona Diamondbacks
+                - generic [ref=e894]: HOME
+            - generic [ref=e895]:
+              - text: TOTAL RUNS · BEST LISTED LINE 7.5
+              - generic [ref=e896]: 7 CURRENT LINES · PROJECTED 13.1
+            - generic [ref=e898]:
+              - generic [ref=e899]: Currently listed full-game total
+              - button "Total 7.5 Over @ 1.61 · Under @ 2.23" [ref=e900] [cursor=pointer]:
+                - generic [ref=e901]: Total 7.5
+                - generic [ref=e902]: Over @ 1.61 · Under @ 2.23
+            - generic [ref=e905]:
+              - button "OVER 7.5 Higher scoring 85.3% MELBET @ 1.61" [ref=e906] [cursor=pointer]:
+                - generic [ref=e907]:
+                  - generic [ref=e908]: OVER 7.5
+                  - generic [ref=e909]: Higher scoring
+                - strong [ref=e910]:
+                  - text: 85.3%
+                  - generic [ref=e911]: MELBET @ 1.61
+              - button "UNDER 7.5 Lower scoring 14.8% MELBET @ 2.23" [ref=e914] [cursor=pointer]:
+                - generic [ref=e915]:
+                  - generic [ref=e916]: UNDER 7.5
+                  - generic [ref=e917]: Lower scoring
+                - strong [ref=e918]:
+                  - text: 14.8%
+                  - generic [ref=e919]: MELBET @ 2.23
+            - generic [ref=e922]:
+              - generic [ref=e923]:
+                - text: BEST ELIGIBLE
+                - generic [ref=e924]: OVER 7.5 · @ 1.61
+              - generic [ref=e925]: MATCHUP-SYNCED · 12:10:41 PM · ONE PICK PER GAME

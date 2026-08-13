@@ -1,0 +1,50 @@
+- generic [ref=f25e3]:
+  - banner [ref=f25e4]:
+    - generic [ref=f25e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f25e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f25e7]
+        - generic [ref=f25e8]:
+          - generic [ref=f25e9]: NINTH
+          - generic [ref=f25e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f25e11] [cursor=pointer]:
+        - generic [ref=f25e12]: DAY
+      - button "Search" [ref=f25e18] [cursor=pointer]
+      - button "Menu" [ref=f25e22] [cursor=pointer]
+    - generic [ref=f25e24]:
+      - generic [ref=f25e25]: TODAY
+      - generic [ref=f25e27]: Official scoreboard syncing
+  - main [ref=f25e28]:
+    - generic [ref=f25e30]:
+      - generic [ref=f25e31]:
+        - text: OFFICIAL MLB PLAYER INDEX
+        - heading "The league, face to face." [level=1] [ref=f25e32]: The league,face to face.
+        - paragraph [ref=f25e33]: Browse active MLB players by club or position, then open a profile for current-season production.
+      - generic [ref=f25e34]:
+        - textbox [ref=f25e39]:
+          - /placeholder: Search a player, team, or position
+        - button "All 30 teams MLB" [ref=f25e41] [cursor=pointer]:
+          - generic [ref=f25e42]: All 30 teams
+          - generic [ref=f25e43]: MLB
+      - generic [ref=f25e46]:
+        - button "All" [ref=f25e47] [cursor=pointer]
+        - button "Pitchers" [ref=f25e48] [cursor=pointer]
+        - button "Catchers" [ref=f25e49] [cursor=pointer]
+        - button "Infield" [ref=f25e50] [cursor=pointer]
+        - button "Outfield" [ref=f25e51] [cursor=pointer]
+      - status [ref=f25e52]:
+        - generic [ref=f25e53]: "N"
+        - generic [ref=f25e57]:
+          - strong [ref=f25e58]: Building the player index
+          - generic [ref=f25e59]: Loading active rosters, positions and official player images.
+  - generic [ref=f25e64]:
+    - link "Games" [ref=f25e65] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f25e69] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f25e77] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f25e80] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f25e88] [cursor=pointer]:
+      - /url: /teams

@@ -1,0 +1,53 @@
+- generic [ref=f13e3]:
+  - banner [ref=f13e4]:
+    - generic [ref=f13e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f13e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f13e7]
+        - generic [ref=f13e8]:
+          - generic [ref=f13e9]: NINTH
+          - generic [ref=f13e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f13e11]:
+        - link "Games" [ref=f13e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f13e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f13e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f13e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f13e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f13e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f13e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f13e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f13e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f13e70] [cursor=pointer]:
+        - generic [ref=f13e71]:
+          - generic [ref=f13e72]: DISPLAY / 09
+          - generic [ref=f13e73]: DAY
+    - generic [ref=f13e78]:
+      - generic [ref=f13e79]: TODAY
+      - generic [ref=f13e81]: Official scoreboard syncing
+      - generic [ref=f13e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f13e84]:
+    - generic [ref=f13e86]:
+      - button "BACK TO HOME" [ref=f13e87] [cursor=pointer]
+      - generic [ref=f13e90]:
+        - text: NINTH / GLOBAL SEARCH
+        - heading "Find anyone in baseball." [level=1] [ref=f13e91]
+        - paragraph [ref=f13e92]: Search active MLB players, all 30 clubs, and official games around today.
+        - generic [ref=f13e93]:
+          - textbox "Search MLB" [active] [ref=f13e97]:
+            - /placeholder: Team, player, stadium, or matchup
+            - text: Phillies
+          - button "SEARCH" [ref=f13e98] [cursor=pointer]
+      - status [ref=f13e99]:
+        - generic [ref=f13e100]: "N"
+        - generic [ref=f13e104]:
+          - strong [ref=f13e105]: Searching official MLB data
+          - generic [ref=f13e106]: Looking across teams, players and games.

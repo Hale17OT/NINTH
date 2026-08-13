@@ -29,6 +29,7 @@ FIELDS = ",".join(
         "caughtStealing", "stolenBases", "plateAppearances", "totalBases", "rbi",
         "hitByPitch", "sacFlies", "numberOfPitches", "outs", "battersFaced",
         "earnedRuns", "pitchesThrown", "gameStatus", "isSubstitute",
+        "wins", "losses",
     )
 )
 THREAD_LOCAL = threading.local()
@@ -81,8 +82,9 @@ def _player_rows(side: dict) -> list[dict]:
                 key: _number(pitching, key)
                 for key in (
                     "gamesStarted", "strikeOuts", "baseOnBalls", "hits",
-                    "homeRuns", "numberOfPitches", "outs", "battersFaced",
+                    "runs", "homeRuns", "numberOfPitches", "outs", "battersFaced",
                     "earnedRuns", "pitchesThrown",
+                    "wins", "losses",
                 )
             }
         rows.append(row)
@@ -134,14 +136,20 @@ def main() -> None:
     parser.add_argument("--workers", type=int, default=12)
     parser.add_argument("--start-season", type=int, default=2018)
     parser.add_argument("--limit", type=int)
+    parser.add_argument(
+        "--refresh-existing", action="store_true",
+        help="Re-fetch cached games and atomically replace rows (used when outcome fields are added).",
+    )
     args = parser.parse_args()
 
     games = [row for row in _read_jsonl(GAMES_PATH) if int(row["season"]) >= args.start_season]
-    completed = {int(row["game_id"]) for row in _read_jsonl(OUTPUT_PATH)}
-    pending = [row for row in games if int(row["game_id"]) not in completed]
+    existing_rows = _read_jsonl(OUTPUT_PATH)
+    completed = {int(row["game_id"]) for row in existing_rows}
+    pending = list(games) if args.refresh_existing else [row for row in games if int(row["game_id"]) not in completed]
     if args.limit:
         pending = pending[: args.limit]
-    print(f"player box scores: {len(completed)} cached, {len(pending)} pending", flush=True)
+    action = "refresh" if args.refresh_existing else "pending"
+    print(f"player box scores: {len(completed)} cached, {len(pending)} {action}", flush=True)
     if not pending:
         return
 
@@ -149,7 +157,10 @@ def main() -> None:
     errors = []
     written = 0
     lock = threading.Lock()
-    with OUTPUT_PATH.open("a", encoding="utf-8", buffering=1) as output:
+    refreshed = []
+    target_path = OUTPUT_PATH.with_suffix(".jsonl.tmp") if args.refresh_existing else OUTPUT_PATH
+    mode = "w" if args.refresh_existing else "a"
+    with target_path.open(mode, encoding="utf-8", buffering=1) as output:
         with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
             futures = {pool.submit(_fetch, game): game for game in pending}
             for future in as_completed(futures):
@@ -157,6 +168,7 @@ def main() -> None:
                     row = future.result()
                     with lock:
                         output.write(json.dumps(row, separators=(",", ":")) + "\n")
+                        refreshed.append(row)
                         written += 1
                         if written % 250 == 0:
                             print(f"collected {written}/{len(pending)}", flush=True)
@@ -164,6 +176,17 @@ def main() -> None:
                     errors.append(str(exc))
                     print(f"WARNING {exc}", flush=True)
     print(f"complete: {written} written, {len(errors)} failed", flush=True)
+    if args.refresh_existing:
+        refreshed_ids = {int(row["game_id"]) for row in refreshed}
+        if args.limit or errors:
+            # A transient API failure must not discard a successful full
+            # refresh. Keep the prior row for only the games that failed, then
+            # a small follow-up refresh can fill those remaining fields.
+            retained = [row for row in existing_rows if int(row["game_id"]) not in refreshed_ids]
+            with target_path.open("a", encoding="utf-8") as output:
+                for row in retained:
+                    output.write(json.dumps(row, separators=(",", ":")) + "\n")
+        target_path.replace(OUTPUT_PATH)
     if errors:
         raise SystemExit(1)
 

@@ -13,12 +13,31 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from ml.features import FEATURE_NAMES,apply_result,fresh_state,reset_season_records,serializable_state
+from ml.lineup_talent import (
+    FEATURE_NAMES as LINEUP_TALENT_FEATURES,
+    apply_boxscore as apply_lineup_boxscore,
+    features as lineup_talent_features,
+    fresh_state as fresh_lineup_talent_state,
+    start_season as start_lineup_talent_season,
+)
 from ml.modeling import CenteredProbabilityShrink,MarginProbabilityModel,ProbabilityBlend
+from ml.player_props_features import BOX_PATH
 from ml.starter_statcast_experiment import RAW,STARTER_CONTEXTS,read_jsonl,starter_matrix
 from ml.v2_experiment import DATA,matrix,score
 
 ROOT=Path(__file__).resolve().parents[1];ARTIFACTS=Path(os.getenv('NINTH_ARTIFACT_DIR',ROOT/'ml'/'artifacts'))
 STARTER_FEATURES=['starter_statcast_long_xwoba_advantage','starter_statcast_long_hard_hit_advantage','starter_statcast_long_barrel_advantage','starter_statcast_long_whiff_advantage','starter_statcast_long_kbb_advantage','starter_statcast_long_velocity_advantage','starter_statcast_joint_reliability','starter_statcast_start_count_difference']
+
+def lineup_talent_matrix(games):
+    contexts={str(row['game_id']):row for row in read_jsonl(STARTER_CONTEXTS)}
+    boxes={str(row['game_id']):row for row in read_jsonl(BOX_PATH)}
+    state=fresh_lineup_talent_state();rows=[]
+    for game in games:
+        start_lineup_talent_season(state,game['season'])
+        rows.append(lineup_talent_features(state,contexts.get(str(game['game_id']))))
+        box=boxes.get(str(game['game_id']))
+        if box:apply_lineup_boxscore(state,box)
+    return np.asarray(rows,float),state,{'contexts':len(contexts),'boxscores':len(boxes)}
 
 def fit(X,y,margins):
     target=np.clip(margins,-8,8);regressor=Pipeline([('scale',StandardScaler()),('ridge',Ridge(alpha=100))]).fit(X,target);fitted=regressor.predict(X);calibrator=LogisticRegression(C=.1,max_iter=2000).fit(fitted.reshape(-1,1),y);margin=MarginProbabilityModel(regressor,calibrator)
@@ -125,8 +144,9 @@ def build_multiday_validation_grid(probabilities,actual,dates):
     return grid
 
 def main():
-    base,_,_,y,years,context_count,_=matrix();starter,coverage=starter_matrix();X=np.column_stack([base,starter[:,6:]])
-    games=sorted(read_jsonl(DATA),key=lambda row:(row['date'],row['game_id']));margins=np.asarray([float(game['home_score']-game['away_score']) for game in games]);probabilities=[];actual=[];oof_dates=[];outer_p=[];outer_y=[];per_year={}
+    base,_,_,y,years,context_count,_=matrix();starter,coverage=starter_matrix()
+    games=sorted(read_jsonl(DATA),key=lambda row:(row['date'],row['game_id']));lineup,lineup_state,lineup_coverage=lineup_talent_matrix(games);X=np.column_stack([base,starter[:,6:],lineup])
+    margins=np.asarray([float(game['home_score']-game['away_score']) for game in games]);probabilities=[];actual=[];oof_dates=[];outer_p=[];outer_y=[];per_year={}
     for year in sorted(set(years)):
         if year<2022 or np.sum(years<year)<4000:continue
         train,test=years<year,years==year;p=fit(X[train],y[train],margins[train]).predict_proba(X[test])[:,1];probabilities.extend(p);actual.extend(y[test]);oof_dates.extend([games[index]['date'] for index in np.flatnonzero(test)]);per_year[str(int(year))]=score(y[test],p)
@@ -142,8 +162,9 @@ def main():
             current=game['season']
         apply_result(state,game,contexts.get(str(game['game_id'])))
     slip_calibration=build_slip_calibration(probabilities,actual,oof_dates);multiday_calibrations=build_multiday_calibrations(probabilities,actual,oof_dates);multiday_grid=build_multiday_validation_grid(probabilities,actual,oof_dates)
-    report={'model':'v5_prior_strength_calibrated_margin_histogram_blend','status':'promoted','market_inputs':False,'point_in_time_context':True,'selection_policy':'Previous-season strength features and the existing 75/25 margin/nonlinear architecture were validated on rolling-origin seasons. The later 2025-2026 audit must improve before promotion.','promotion_note':'Carries full prior-season win and run quality into early-season forecasts, then hands weight to current-season strength as games accumulate.','deployment_training_games':len(games),'training_through_season':int(max(years)),'trained_through_date':games[-1]['date'],'context_games':context_count,'starter_statcast_coverage':coverage,'accuracy':per_year[str(int(max(years)))]['accuracy'],'log_loss':per_year[str(int(max(years)))]['log_loss'],'brier_score':per_year[str(int(max(years)))]['brier_score'],'roc_auc':per_year[str(int(max(years)))]['roc_auc'],'holdout_season':int(max(years)),'holdout_games':int(np.sum(years==max(years))),'walk_forward_seasons':[int(v) for v in sorted(set(years)) if v>=2022],'walk_forward':walk,'development_2022_2024':development,'temporal_audit_2025_2026':locked,'recent_outer':outer,'per_year':per_year,'features':FEATURE_NAMES+STARTER_FEATURES,'selected_features':FEATURE_NAMES+STARTER_FEATURES,'confidence_definition':'Expected straight-up hit rate among similarly decisive walk-forward predictions, adjusted for live input completeness.','confidence_curve':curve,'selective_accuracy':selective,'slip_calibration':slip_calibration,'multiday_slip_calibrations':multiday_calibrations,'multiday_validation_grid':multiday_grid,'qualified_accuracy':walk['qualified_accuracy'],'qualified_coverage':walk['qualified_coverage']}
-    model=fit(X,y,margins);bundle={'model_version':5,'model':model,'confidence_model':confidence,'state':serializable_state(state),'starter_statcast_histories':histories(),'trained_through_date':games[-1]['date'],'features':FEATURE_NAMES+STARTER_FEATURES,'report':report}
+    selected_features=FEATURE_NAMES+STARTER_FEATURES+LINEUP_TALENT_FEATURES
+    report={'model':'v6_multiseason_lineup_talent','status':'promoted','market_inputs':False,'point_in_time_context':True,'selection_policy':'Multi-season hitter talent was added only after improving Brier, accuracy, log loss, and AUC on 2022-2024 development and on 2025 and 2026 separately.','promotion_note':'Carries partially pooled player skill into the confirmed batting order instead of treating early-season hitters as league average.','deployment_training_games':len(games),'training_through_season':int(max(years)),'trained_through_date':games[-1]['date'],'context_games':context_count,'starter_statcast_coverage':coverage,'lineup_talent_coverage':lineup_coverage,'accuracy':per_year[str(int(max(years)))]['accuracy'],'log_loss':per_year[str(int(max(years)))]['log_loss'],'brier_score':per_year[str(int(max(years)))]['brier_score'],'roc_auc':per_year[str(int(max(years)))]['roc_auc'],'holdout_season':int(max(years)),'holdout_games':int(np.sum(years==max(years))),'walk_forward_seasons':[int(v) for v in sorted(set(years)) if v>=2022],'walk_forward':walk,'development_2022_2024':development,'temporal_audit_2025_2026':locked,'recent_outer':outer,'per_year':per_year,'features':selected_features,'selected_features':selected_features,'confidence_definition':'Expected straight-up hit rate among similarly decisive walk-forward predictions, adjusted for live input completeness.','confidence_curve':curve,'selective_accuracy':selective,'slip_calibration':slip_calibration,'multiday_slip_calibrations':multiday_calibrations,'multiday_validation_grid':multiday_grid,'qualified_accuracy':walk['qualified_accuracy'],'qualified_coverage':walk['qualified_coverage']}
+    model=fit(X,y,margins);bundle={'model_version':6,'model':model,'confidence_model':confidence,'state':serializable_state(state),'starter_statcast_histories':histories(),'lineup_talent_state':lineup_state,'trained_through_date':games[-1]['date'],'features':selected_features,'report':report}
     ARTIFACTS.mkdir(parents=True,exist_ok=True);joblib.dump(bundle,ARTIFACTS/'moneyline.joblib');(ARTIFACTS/'report.json').write_text(json.dumps(report,indent=2),encoding='utf8');print(json.dumps(report,indent=2))
 
 if __name__=='__main__':main()

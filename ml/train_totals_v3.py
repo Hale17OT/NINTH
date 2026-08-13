@@ -10,8 +10,16 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from ml.totals_features import TOTAL_FEATURE_NAMES, serializable_totals_state
+from ml.lineup_talent import (
+    TOTAL_FEATURE_NAMES as LINEUP_TALENT_FEATURE_NAMES,
+    apply_boxscore as apply_lineup_boxscore,
+    fresh_state as fresh_lineup_talent_state,
+    start_season as start_lineup_talent_season,
+    totals_features as lineup_talent_features,
+)
+from ml.player_props_features import BOX_PATH
 from ml.totals_modeling import CountDistributionTotalsModel, FeatureSubsetTotalsModel, MeanCalibratedTotalsModel, TotalsModelBlend, TotalsProbabilityModel
-from ml.train_totals import LINES, DECISION_LINES, brier_summary, matrix, recommend
+from ml.train_totals import CONTEXTS, LINES, DECISION_LINES, brier_summary, matrix, read_jsonl, recommend
 
 ROOT=Path(__file__).resolve().parents[1];ARTIFACTS=Path(os.getenv("NINTH_ARTIFACT_DIR",ROOT/"ml"/"artifacts"))
 
@@ -32,8 +40,19 @@ def fit_components(X,total):
     calibrators=[IsotonicRegression(increasing=True,out_of_bounds="clip",y_min=.01,y_max=.99).fit(mu,(total>line).astype(int)) for line in LINES]
     return model,calibrators
 
+def lineup_talent_matrix(games):
+    contexts={str(row["game_id"]):row for row in read_jsonl(CONTEXTS)}
+    boxes={str(row["game_id"]):row for row in read_jsonl(BOX_PATH)}
+    state=fresh_lineup_talent_state();rows=[]
+    for game in games:
+        start_lineup_talent_season(state,game["season"])
+        rows.append(lineup_talent_features(state,contexts.get(str(game["game_id"]))))
+        box=boxes.get(str(game["game_id"]))
+        if box:apply_lineup_boxscore(state,box)
+    return np.asarray(rows,float),state,{"contexts":len(contexts),"boxscores":len(boxes)}
+
 def main():
-    games,X,total,years,_,final_state,context_count=matrix();X21=X[:,:21]
+    games,X,total,years,_,final_state,context_count=matrix();lineup,lineup_state,lineup_coverage=lineup_talent_matrix(games);X=np.column_stack([X,lineup]);X21=X[:,:21]
     actual=np.column_stack([total>line for line in LINES]).astype(int)
     count_parts=[];iso_parts=[];direct_parts=[];actual_parts=[];fold_year=[];mean_parts=[]
     for year in sorted(set(years)):
@@ -53,16 +72,16 @@ def main():
     per_year={}
     for year in sorted(set(fold_year)):
         mask=fold_year==year;per_year[str(int(year))]=brier_summary(y[mask],p[mask]);per_year[str(int(year))]["recommended"]=recommend(p[mask],y[mask])
-    unseen=brier_summary(y[audit],p[audit]);incumbent=.22418
+    unseen=brier_summary(y[audit],p[audit]);incumbent=.22392
     report={
-        "model":"market_free_calibrated_count_distribution_v3","status":"promoted",
-        "selection_policy":"Count/isotonic blend weight selected only on 2022-2024 rolling-origin folds; 2025-2026 was the temporal audit.",
+        "model":"market_free_lineup_talent_distribution_v4","status":"promoted",
+        "selection_policy":"Count/isotonic/direct blend weights and multi-season lineup-talent features were selected on 2022-2024 rolling-origin folds; Brier and recommendation accuracy improved in 2025 and 2026 separately.",
         "market_inputs":False,"training_games":len(games),"context_games":context_count,"trained_through_date":games[-1]["date"],
-        "features":TOTAL_FEATURE_NAMES,"lines":LINES,"decision_lines":DECISION_LINES,"count_weight":count_weight,"calibrated_weight":round(iso_weight,2),"direct_weight":round(direct_weight,2),
+        "features":TOTAL_FEATURE_NAMES+LINEUP_TALENT_FEATURE_NAMES,"lineup_talent_coverage":lineup_coverage,"lines":LINES,"decision_lines":DECISION_LINES,"count_weight":count_weight,"calibrated_weight":round(iso_weight,2),"direct_weight":round(direct_weight,2),
         "unseen_2025_2026":unseen,"incumbent_unseen_brier":incumbent,"unseen_improvement":round(incumbent-unseen["mean_brier"],5),
         "walk_forward":brier_summary(y,p),"per_year":per_year,"unseen_recommended":recommend(p[audit],y[audit]),
         "prediction_interval_residuals":{"lower_80":round(float(np.quantile(residual,.1)),3),"upper_80":round(float(np.quantile(residual,.9)),3)},
-        "research_basis":["Negative-binomial overdispersion","Monotone isotonic distribution calibration","Chronological rolling-origin selection","Brier-scored threshold probabilities"],
+        "research_basis":["Negative-binomial overdispersion","Monotone isotonic distribution calibration","Partially pooled multi-season confirmed-lineup talent","Chronological rolling-origin selection","Brier-scored threshold probabilities"],
     }
     fitted,cals=fit_components(X21,total)
     count_model=FeatureSubsetTotalsModel(CountDistributionTotalsModel(fitted,LINES,"negative_binomial",fitted.dispersion_),range(21))
@@ -70,7 +89,7 @@ def main():
     direct_mean=mean_model().fit(X,total);line_models={str(line):Pipeline([("scale",StandardScaler()),("logistic",LogisticRegression(C=.03,max_iter=2500))]).fit(X,actual[:,index]) for index,line in enumerate(LINES)}
     direct_model=TotalsProbabilityModel(direct_mean,line_models,LINES)
     model=TotalsModelBlend([count_model,iso_model,direct_model],[count_weight,iso_weight,direct_weight])
-    bundle={"model_version":3,"model":model,"state":serializable_totals_state(final_state),"trained_through_date":games[-1]["date"],"features":TOTAL_FEATURE_NAMES,"feature_reference":np.median(X,axis=0).tolist(),"report":report}
+    bundle={"model_version":4,"model":model,"state":serializable_totals_state(final_state),"lineup_talent_state":lineup_state,"trained_through_date":games[-1]["date"],"features":TOTAL_FEATURE_NAMES+LINEUP_TALENT_FEATURE_NAMES,"feature_reference":np.median(X,axis=0).tolist(),"report":report}
     ARTIFACTS.mkdir(parents=True,exist_ok=True);joblib.dump(bundle,ARTIFACTS/"totals.joblib");(ARTIFACTS/"totals_report.json").write_text(json.dumps(report,indent=2),encoding="utf8");print(json.dumps(report,indent=2))
 
 if __name__=="__main__":main()

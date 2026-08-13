@@ -1,0 +1,339 @@
+- generic [ref=f1e3]:
+  - complementary [ref=f1e4]:
+    - link "NINTH all sports" [ref=f1e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f1e6]
+      - generic [ref=f1e7]: NINTH
+    - navigation "Sport workspaces" [ref=f1e8]:
+      - link "MLB" [ref=f1e9] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f1e13] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f1e19] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f1e23] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f1e30] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f1e34] [cursor=pointer]:
+      - generic [ref=f1e35]: D
+      - generic [ref=f1e36]: MODE
+  - generic [ref=f1e37]:
+    - banner [ref=f1e38]:
+      - generic [ref=f1e39]:
+        - button "Choose sport" [ref=f1e40] [cursor=pointer]
+        - link "NINTH logo NINTH" [ref=f1e42] [cursor=pointer]:
+          - /url: /
+          - img "NINTH logo" [ref=f1e43]
+          - generic [ref=f1e44]: NINTH
+        - button "Open workspace navigation" [ref=f1e45] [cursor=pointer]
+    - main [ref=f1e47]:
+      - generic [ref=f1e176]:
+        - generic [ref=f1e177]:
+          - generic [ref=f1e178]:
+            - text: FTB / GAMES
+            - heading "Games." [level=1] [ref=f1e179]
+          - paragraph [ref=f1e180]: Live presentation data for Football, separated from model training and stamped with its source coverage.
+        - generic [ref=f1e181]:
+          - generic [ref=f1e182]:
+            - textbox "15 RESULTS" [ref=f1e186]:
+              - /placeholder: Find a match
+            - generic [ref=f1e187]: 15 RESULTS
+          - combobox [ref=f1e188]:
+            - option "All competitions"
+            - option "Premier League"
+            - option "La Liga"
+            - option "Bundesliga"
+            - option "Serie A"
+            - option "Ligue 1"
+            - option "UEFA Champions League" [selected]
+            - option "UEFA Europa League"
+            - option "UEFA Conference League"
+            - option "FA Cup"
+            - option "EFL Cup"
+            - option "Copa del Rey"
+            - option "DFB-Pokal"
+            - option "Coppa Italia"
+            - option "Coupe de France"
+        - generic [ref=f1e189]:
+          - article [ref=f1e190]:
+            - generic [ref=f1e191]: "01"
+            - generic [ref=f1e192]: Fixture and kickoff
+            - generic [ref=f1e193]: OPERATIONAL DATA FIELD
+          - article [ref=f1e194]:
+            - generic [ref=f1e195]: "02"
+            - generic [ref=f1e196]: Projected score matrix
+            - generic [ref=f1e197]: OPERATIONAL DATA FIELD
+          - article [ref=f1e198]:
+            - generic [ref=f1e199]: "03"
+            - generic [ref=f1e200]: 1X2 / totals / BTTS
+            - generic [ref=f1e201]: OPERATIONAL DATA FIELD
+          - article [ref=f1e202]:
+            - generic [ref=f1e203]: "04"
+            - generic [ref=f1e204]: Lineup availability
+            - generic [ref=f1e205]: OPERATIONAL DATA FIELD
+        - generic [ref=f1e206]:
+          - generic [ref=f1e207]:
+            - generic [ref=f1e208]: GAMES INDEX
+            - emphasis [ref=f1e209]: 15 LIVE ROWS
+          - generic [ref=f1e210]:
+            - article [ref=f1e211]:
+              - generic [ref=f1e212]:
+                - strong [ref=f1e213]: 07-07
+                - generic [ref=f1e214]: 16:00:00
+              - generic [ref=f1e215]:
+                - generic [ref=f1e216]: UCL · 400
+                - generic [ref=f1e217]: UEFA Champions League
+              - generic [ref=f1e218]:
+                - generic [ref=f1e219]:
+                  - generic [ref=f1e221]: Inter Club d'Escaldes
+                  - emphasis [ref=f1e222]: "1"
+                - generic [ref=f1e223]:
+                  - generic [ref=f1e225]: Lincoln Red Imps
+                  - emphasis [ref=f1e226]: "3"
+              - generic [ref=f1e227]:
+                - generic [ref=f1e228]: FT
+                - generic [ref=f1e229]: Europa Point Stadium
+            - article [ref=f1e230]:
+              - generic [ref=f1e231]:
+                - strong [ref=f1e232]: 07-07
+                - generic [ref=f1e233]: 16:00:00
+              - generic [ref=f1e234]:
+                - generic [ref=f1e235]: UCL · 400
+                - generic [ref=f1e236]: UEFA Champions League
+              - generic [ref=f1e237]:
+                - generic [ref=f1e238]:
+                  - generic [ref=f1e240]: Riga FC
+                  - emphasis [ref=f1e241]: "0"
+                - generic [ref=f1e242]:
+                  - generic [ref=f1e244]: Ararat-Armenia
+                  - emphasis [ref=f1e245]: "2"
+              - generic [ref=f1e246]:
+                - generic [ref=f1e247]: FT
+                - generic [ref=f1e248]: Abovyan City Stadium
+            - article [ref=f1e249]:
+              - generic [ref=f1e250]:
+                - strong [ref=f1e251]: 07-07
+                - generic [ref=f1e252]: 16:00:00
+              - generic [ref=f1e253]:
+                - generic [ref=f1e254]: UCL · 400
+                - generic [ref=f1e255]: UEFA Champions League
+              - generic [ref=f1e256]:
+                - generic [ref=f1e257]:
+                  - generic [ref=f1e259]: Drita
+                  - emphasis [ref=f1e260]: "1"
+                - generic [ref=f1e261]:
+                  - generic [ref=f1e263]: Kauno Žalgiris
+                  - emphasis [ref=f1e264]: "1"
+              - generic [ref=f1e265]:
+                - generic [ref=f1e266]: FT
+                - generic [ref=f1e267]: Dariaus ir Girėno stadionas
+            - article [ref=f1e268]:
+              - generic [ref=f1e269]:
+                - strong [ref=f1e270]: 07-07
+                - generic [ref=f1e271]: 16:00:00
+              - generic [ref=f1e272]:
+                - generic [ref=f1e273]: UCL · 400
+                - generic [ref=f1e274]: UEFA Champions League
+              - generic [ref=f1e275]:
+                - generic [ref=f1e276]:
+                  - generic [ref=f1e278]: The New Saints
+                  - emphasis [ref=f1e279]: "0"
+                - generic [ref=f1e280]:
+                  - generic [ref=f1e282]: Sabah Baku
+                  - emphasis [ref=f1e283]: "2"
+              - generic [ref=f1e284]:
+                - generic [ref=f1e285]: FT
+                - generic [ref=f1e286]: Bank Respublika Arena
+            - article [ref=f1e287]:
+              - generic [ref=f1e288]:
+                - strong [ref=f1e289]: 07-07
+                - generic [ref=f1e290]: 17:00:00
+              - generic [ref=f1e291]:
+                - generic [ref=f1e292]: UCL · 400
+                - generic [ref=f1e293]: UEFA Champions League
+              - generic [ref=f1e294]:
+                - generic [ref=f1e295]:
+                  - generic [ref=f1e297]: KuPS
+                  - emphasis [ref=f1e298]: "2"
+                - generic [ref=f1e299]:
+                  - generic [ref=f1e301]: Vardar
+                  - emphasis [ref=f1e302]: "0"
+              - generic [ref=f1e303]:
+                - generic [ref=f1e304]: FT
+                - generic [ref=f1e305]: Toše Proeski Arena
+            - article [ref=f1e306]:
+              - generic [ref=f1e307]:
+                - strong [ref=f1e308]: 07-07
+                - generic [ref=f1e309]: 17:30:00
+              - generic [ref=f1e310]:
+                - generic [ref=f1e311]: UCL · 400
+                - generic [ref=f1e312]: UEFA Champions League
+              - generic [ref=f1e313]:
+                - generic [ref=f1e314]:
+                  - generic [ref=f1e316]: Shamrock Rovers
+                  - emphasis [ref=f1e317]: "0"
+                - generic [ref=f1e318]:
+                  - generic [ref=f1e320]: Floriana
+                  - emphasis [ref=f1e321]: "2"
+              - generic [ref=f1e322]:
+                - generic [ref=f1e323]: FT
+                - generic [ref=f1e324]: Centenary Stadium Ta' Qali
+            - article [ref=f1e325]:
+              - generic [ref=f1e326]:
+                - strong [ref=f1e327]: 07-07
+                - generic [ref=f1e328]: 18:30:00
+              - generic [ref=f1e329]:
+                - generic [ref=f1e330]: UCL · 400
+                - generic [ref=f1e331]: UEFA Champions League
+              - generic [ref=f1e332]:
+                - generic [ref=f1e333]:
+                  - generic [ref=f1e335]: Larne
+                  - emphasis [ref=f1e336]: "1"
+                - generic [ref=f1e337]:
+                  - generic [ref=f1e339]: Tre Fiori
+                  - emphasis [ref=f1e340]: "0"
+              - generic [ref=f1e341]:
+                - generic [ref=f1e342]: FT
+                - generic [ref=f1e343]: San Marino Stadium
+            - article [ref=f1e344]:
+              - generic [ref=f1e345]:
+                - strong [ref=f1e346]: 07-07
+                - generic [ref=f1e347]: 18:30:00
+              - generic [ref=f1e348]:
+                - generic [ref=f1e349]: UCL · 400
+                - generic [ref=f1e350]: UEFA Champions League
+              - generic [ref=f1e351]:
+                - generic [ref=f1e352]:
+                  - generic [ref=f1e354]: Levski Sofia
+                  - emphasis [ref=f1e355]: "1"
+                - generic [ref=f1e356]:
+                  - generic [ref=f1e358]: Borac Banja Luka
+                  - emphasis [ref=f1e359]: "1"
+              - generic [ref=f1e360]:
+                - generic [ref=f1e361]: FT
+                - generic [ref=f1e362]: Gradski stadion Banja Luka
+            - article [ref=f1e363]:
+              - generic [ref=f1e364]:
+                - strong [ref=f1e365]: 07-07
+                - generic [ref=f1e366]: 18:45:00
+              - generic [ref=f1e367]:
+                - generic [ref=f1e368]: UCL · 400
+                - generic [ref=f1e369]: UEFA Champions League
+              - generic [ref=f1e370]:
+                - generic [ref=f1e371]:
+                  - generic [ref=f1e373]: Atert Bissen
+                  - emphasis [ref=f1e374]: "1"
+                - generic [ref=f1e375]:
+                  - generic [ref=f1e377]: KÍ Klaksvík
+                  - emphasis [ref=f1e378]: "2"
+              - generic [ref=f1e379]:
+                - generic [ref=f1e380]: FT
+                - generic [ref=f1e381]: Við Djúpumýrar
+            - article [ref=f1e382]:
+              - generic [ref=f1e383]:
+                - strong [ref=f1e384]: 07-07
+                - generic [ref=f1e385]: 19:00:00
+              - generic [ref=f1e386]:
+                - generic [ref=f1e387]: UCL · 400
+                - generic [ref=f1e388]: UEFA Champions League
+              - generic [ref=f1e389]:
+                - generic [ref=f1e390]:
+                  - generic [ref=f1e392]: Győri ETO
+                  - emphasis [ref=f1e393]: "0"
+                - generic [ref=f1e394]:
+                  - generic [ref=f1e396]: Víkingur Reykjavík
+                  - emphasis [ref=f1e397]: "1"
+              - generic [ref=f1e398]:
+                - generic [ref=f1e399]: FT
+                - generic [ref=f1e400]: Víkingsvöllur
+            - article [ref=f1e401]:
+              - generic [ref=f1e402]:
+                - strong [ref=f1e403]: 07-08
+                - generic [ref=f1e404]: 15:00:00
+              - generic [ref=f1e405]:
+                - generic [ref=f1e406]: UCL · 400
+                - generic [ref=f1e407]: UEFA Champions League
+              - generic [ref=f1e408]:
+                - generic [ref=f1e409]:
+                  - generic [ref=f1e411]: Sutjeska
+                  - emphasis [ref=f1e412]: "1"
+                - generic [ref=f1e413]:
+                  - generic [ref=f1e415]: Kairat Almaty
+                  - emphasis [ref=f1e416]: "2"
+              - generic [ref=f1e417]:
+                - generic [ref=f1e418]: FT
+                - generic [ref=f1e419]: Ortalıq Stadion Almatı
+            - article [ref=f1e420]:
+              - generic [ref=f1e421]:
+                - strong [ref=f1e422]: 07-08
+                - generic [ref=f1e423]: 16:00:00
+              - generic [ref=f1e424]:
+                - generic [ref=f1e425]: UCL · 400
+                - generic [ref=f1e426]: UEFA Champions League
+              - generic [ref=f1e427]:
+                - generic [ref=f1e428]:
+                  - generic [ref=f1e430]: Iberia 1999
+                  - emphasis [ref=f1e431]: "3"
+                - generic [ref=f1e432]:
+                  - generic [ref=f1e434]: Flora Tallinn
+                  - emphasis [ref=f1e435]: "2"
+              - generic [ref=f1e436]:
+                - generic [ref=f1e437]: FT
+                - generic [ref=f1e438]: A. Le Coq Arena
+            - article [ref=f1e439]:
+              - generic [ref=f1e440]:
+                - strong [ref=f1e441]: 07-08
+                - generic [ref=f1e442]: 17:00:00
+              - generic [ref=f1e443]:
+                - generic [ref=f1e444]: UCL · 400
+                - generic [ref=f1e445]: UEFA Champions League
+              - generic [ref=f1e446]:
+                - generic [ref=f1e447]:
+                  - generic [ref=f1e449]: Egnatia
+                  - emphasis [ref=f1e450]: "1"
+                - generic [ref=f1e451]:
+                  - generic [ref=f1e453]: Petrocub Hîncești
+                  - emphasis [ref=f1e454]: "1"
+              - generic [ref=f1e455]:
+                - generic [ref=f1e456]: FT
+                - generic [ref=f1e457]: Stadionul Zimbru
+            - article [ref=f1e458]:
+              - generic [ref=f1e459]:
+                - strong [ref=f1e460]: 07-08
+                - generic [ref=f1e461]: 17:00:00
+              - generic [ref=f1e462]:
+                - generic [ref=f1e463]: UCL · 400
+                - generic [ref=f1e464]: UEFA Champions League
+              - generic [ref=f1e465]:
+                - generic [ref=f1e466]:
+                  - generic [ref=f1e468]: Universitatea Craiova
+                  - emphasis [ref=f1e469]: "4"
+                - generic [ref=f1e470]:
+                  - generic [ref=f1e472]: Maxline Vitebsk
+                  - emphasis [ref=f1e473]: "1"
+              - generic [ref=f1e474]:
+                - generic [ref=f1e475]: FT
+                - generic [ref=f1e476]: Városi Stadion Mezőkövesd
+            - article [ref=f1e477]:
+              - generic [ref=f1e478]:
+                - strong [ref=f1e479]: 07-14
+                - generic [ref=f1e480]: 17:30:00
+              - generic [ref=f1e481]:
+                - generic [ref=f1e482]: UCL · 400
+                - generic [ref=f1e483]: UEFA Champions League
+              - generic [ref=f1e484]:
+                - generic [ref=f1e485]:
+                  - generic [ref=f1e487]: Sabah Baku
+                  - emphasis [ref=f1e488]: "2"
+                - generic [ref=f1e489]:
+                  - generic [ref=f1e491]: The New Saints
+                  - emphasis [ref=f1e492]: "1"
+              - generic [ref=f1e493]:
+                - generic [ref=f1e494]: FT
+                - generic [ref=f1e495]: Park Hall
+        - generic [ref=f1e496]:
+          - generic [ref=f1e501]:
+            - text: Public free-tier coverage
+            - paragraph [ref=f1e502]: Presentation data is not used to train or promote betting models. The public key limits response depth; a premium key unlocks complete league rosters and schedules.
+          - emphasis [ref=f1e503]: 8/12/2026, 3:49:28 PM

@@ -11,7 +11,9 @@ import BuilderMarketTabs from "../components/builder/BuilderMarketTabs.vue";
 import SlateModeToggle from "../components/builder/SlateModeToggle.vue";
 import BuilderRefreshButton from "../components/builder/BuilderRefreshButton.vue";
 import MelbetHandoff from "../components/builder/MelbetHandoff.vue";
+import OddsFloorSelect from "../components/builder/OddsFloorSelect.vue";
 import { Check, Sparkles, Trash2 } from "lucide-vue-next";
+import { selectMixedCandidates, selectTotalsCandidates } from "../services/slipBuilderRecommendations";
 
 const today = new Intl.DateTimeFormat("en-CA", {
   timeZone: "America/New_York",
@@ -51,27 +53,34 @@ const board = ref(null);
 const mode = ref(savedSettings.mode === "multi" ? "multi" : "daily");
 const marketMode = ref(requestedMarket || (["moneyline", "totals", "combined"].includes(savedSettings.marketMode) ? savedSettings.marketMode : "moneyline"));
 const targetLegs = ref(savedSettings.targetLegs || localStorage.getItem("ninth-builder-target") || "5");
+const minimumOdds = ref(savedSettings.minimumOdds === "all" || Number(savedSettings.minimumOdds) >= 1 ? String(savedSettings.minimumOdds) : "1.50");
 const loading = ref(false);
 const error = ref("");
+const recommendationNotice = ref("");
 const picks = ref(readJson("ninth-slip-builder", {}));
 const totalLineChoices = ref({});
 const normalizedPick = (value) => (typeof value === "string" ? { market: "moneyline", side: value } : value);
 const totalThreshold = (game, line) => game.totals_projection?.thresholds?.find((row) => Number(row.line) === Number(line));
-const totalLineForGame = (game) => (normalizedPick(picks.value[String(game.game_id)])?.market === "totals" ? normalizedPick(picks.value[String(game.game_id)]).line : (totalLineChoices.value[String(game.game_id)] ?? game.totals_projection?.recommended_line));
+const totalLineForGame = (game) => (normalizedPick(picks.value[String(game.game_id)])?.market === "totals" ? normalizedPick(picks.value[String(game.game_id)]).line : (totalLineChoices.value[String(game.game_id)] ?? game.totals_projection?.recommended_line ?? game.totals_projection?.thresholds?.[0]?.line));
 const totalProbability = (game, side, line = totalLineForGame(game)) => Number(totalThreshold(game, line)?.[`${side}_probability`] || 0);
+const moneylineOdds = (game, side) => Number(game.moneyline_odds?.[side]) || null;
+const totalOdds = (game, side, line = totalLineForGame(game)) => Number(totalThreshold(game, line)?.melbet_odds?.[side]) || null;
+const selectionOdds = (game, market, side, line = null) => market === "totals" ? totalOdds(game, side, line ?? totalLineForGame(game)) : moneylineOdds(game, side);
+const oddsEligible = odds => minimumOdds.value === "all" || (Number.isFinite(Number(odds)) && Number(odds) >= Number(minimumOdds.value));
+const formatOdds = odds => Number.isFinite(Number(odds)) ? Number(odds).toFixed(3).replace(/0+$/, "").replace(/\.$/, "") : "—";
 const totalPushProbability = (game, line = totalLineForGame(game)) => Number(totalThreshold(game, line)?.push_probability || 0);
 const totalLineOptions = (game) =>
   (game.totals_projection?.thresholds || []).map((row) => ({
     value: String(row.line),
     label: `Total ${row.line}`,
-    meta: Number(row.push_probability) > 0 ? "Listed · push possible" : "Listed · no push",
+    meta: `Over @ ${formatOdds(row.melbet_odds?.over)} · Under @ ${formatOdds(row.melbet_odds?.under)}${Number(row.push_probability) > 0 ? " · push possible" : ""}`,
   }));
 const maxTargetLegs = computed(() => Math.max(1, Number(board.value?.games?.length || targetLegs.value || 5)));
 const legOptions = computed(() => {
   const first = maxTargetLegs.value === 1 ? 1 : 2;
   return Array.from({ length: maxTargetLegs.value - first + 1 }, (_, index) => {
     const value = String(index + first);
-    return { value, label: `${value} ${value === "1" ? "leg" : "legs"}`, meta: Number(value) <= 8 ? "Supported range" : "Extended" };
+    return { value, label: `${value} ${value === "1" ? "leg" : "legs"}` };
   });
 });
 const selectedDays = computed(() => (mode.value === "daily" ? 1 : Math.max(1, Math.min(14, Math.round((new Date(`${dateRange.value.end}T12:00:00Z`) - new Date(`${dateRange.value.start}T12:00:00Z`)) / 86400000) + 1))));
@@ -88,6 +97,7 @@ const legs = computed(() =>
         ...pick,
         team: pick.market === "moneyline" ? game[pick.side] : null,
         probability,
+        decimalOdds: selectionOdds(game, pick.market, pick.side, pick.line),
         inputCompleteness,
       },
     ];
@@ -99,8 +109,8 @@ const melbetEntries = computed(() => legs.value.map((leg) => {
   const bookmakerId = leg.totals_projection?.line_market?.bookmaker_game_id;
   const game = `${leg.away.name} at ${leg.home.name}`;
   const selection = leg.market === "totals"
-    ? `Total runs — ${leg.side.toUpperCase()} ${leg.line}`
-    : `${leg.team?.name || leg[leg.side]?.name} moneyline (${leg.side === "home" ? "W1" : "W2"})`;
+    ? `Total runs — ${leg.side.toUpperCase()} ${leg.line} @ ${formatOdds(leg.decimalOdds)}`
+    : `${leg.team?.name || leg[leg.side]?.name} moneyline (${leg.side === "home" ? "W1" : "W2"}) @ ${formatOdds(leg.decimalOdds)}`;
   return {
     key: `${leg.game_id}:${leg.market}`,
     game,
@@ -130,8 +140,10 @@ const inputAdjustedJoint = computed(() =>
     : 0,
 );
 const calibrationMarket = computed(() => (marketMode.value === "combined" ? "mixed" : marketMode.value));
+const totalsCalibrationCompatible = computed(() => board.value?.market_slip_calibration?.compatible_with_deployed_totals === true);
 const candidateCalibration = computed(() => {
   if (marketMode.value === "moneyline") return null;
+  if (!totalsCalibrationCompatible.value) return null;
   const market = board.value?.market_slip_calibration?.markets?.[calibrationMarket.value];
   return mode.value === "daily" ? market?.daily?.[String(targetLegs.value)] : market?.multiday?.[String(selectedDays.value)]?.[String(targetLegs.value)];
 });
@@ -173,26 +185,39 @@ const confidenceBand = computed(() => {
 const averageStrength = computed(() => (legs.value.length ? Math.pow(jointProbability.value, 1 / legs.value.length) : 0));
 const scoreLabel = computed(() => (calibratedProbability.value >= 0.15 ? "STRONG FOR A MULTI-LEG SLIP" : calibratedProbability.value >= 0.07 ? "MODERATE COMBINATION" : legs.value.length ? "HIGH COMBINATION RISK" : "ADD LEGS TO SCORE"));
 const confidenceMethod = computed(() => (calibrationApplies.value ? "JOINT BACKTEST-ADJUSTED" : legs.value ? "MULTIPLICATIVE MODEL" : "MODEL"));
-const optionForGame = (game) => {
-  const moneyline = {
+const marketOptionsForGame = (game) => {
+  const moneylineOddsValue = moneylineOdds(game, game.recommended_side);
+  const moneyline = oddsEligible(moneylineOddsValue) ? {
     market: "moneyline",
     side: game.recommended_side,
     probability: Number(game.recommended_probability || 0),
-  };
-  const total = game.totals_projection?.available && game.totals_projection?.selection_available !== false
+    odds: moneylineOddsValue,
+  } : null;
+  const total = game.totals_projection?.available
+      && game.totals_projection?.selection_available !== false
+      && (game.totals_projection?.automatic_builder_eligible === true
+        || (game.totals_projection?.automatic_builder_eligible == null
+          && game.totals_projection?.automatic_selection_available === true))
+      && oddsEligible(totalOdds(game, game.totals_projection.recommended_side, game.totals_projection.recommended_line))
     ? {
         market: "totals",
         side: game.totals_projection.recommended_side,
         line: game.totals_projection.recommended_line,
         probability: Number(game.totals_projection.recommended_probability || 0),
+        odds: totalOdds(game, game.totals_projection.recommended_side, game.totals_projection.recommended_line),
       }
     : null;
+  return { moneyline, total };
+};
+const optionForGame = (game) => {
+  const { moneyline, total } = marketOptionsForGame(game);
   if (marketMode.value === "moneyline") return moneyline;
   if (marketMode.value === "totals") return total;
+  if (!moneyline) return total;
   return !total || moneyline.probability >= total.probability ? moneyline : total;
 };
-const eligibleGames = computed(() => (board.value?.games || []).filter((game) => optionForGame(game)));
-const canRecommend = computed(() => eligibleGames.value.length >= Number(targetLegs.value));
+const canRecommend = computed(() => (board.value?.games || []).filter(game => optionForGame(game)).length >= Number(targetLegs.value));
+const eligibleRecommendationCount = computed(() => (board.value?.games || []).filter(game => optionForGame(game)).length);
 const gameDay = (value) =>
   new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/New_York",
@@ -254,6 +279,12 @@ function trimToTarget() {
   const keep = [...legs.value].sort((a, b) => b.probability - a.probability).slice(0, limit);
   picks.value = Object.fromEntries(keep.map((leg) => [String(leg.game_id), { market: leg.market, side: leg.side, line: leg.line }]));
 }
+function pickEligible(game, pick) {
+  if (!game) return false;
+  if (!pick || !["moneyline", "totals"].includes(pick.market)) return false;
+  if (pick.market === "totals" && (!game.totals_projection?.selection_available || !totalThreshold(game, pick.line))) return false;
+  return oddsEligible(selectionOdds(game, pick.market, pick.side, pick.line));
+}
 async function load() {
   const token = ++loadToken;
   loading.value = true;
@@ -266,8 +297,7 @@ async function load() {
     picks.value = Object.fromEntries(Object.entries(picks.value).filter(([id, rawPick]) => {
       const game = available.get(id), pick = normalizedPick(rawPick);
       if (!game) return false;
-      if (pick?.market !== "totals") return true;
-      return game.totals_projection?.selection_available !== false && Boolean(totalThreshold(game, pick.line));
+      return pickEligible(game, pick);
     }));
     trimToTarget();
   } catch (caught) {
@@ -281,7 +311,9 @@ async function load() {
 }
 function isSelected(game, market, side) {
   const pick = normalizedPick(picks.value[String(game.game_id)]);
-  return pick?.market === market && pick?.side === side;
+  return pick?.market === market
+    && pick?.side === side
+    && (market !== "totals" || Number(pick.line) === Number(totalLineForGame(game)));
 }
 function setTotalLine(game, value) {
   const id = String(game.game_id),
@@ -291,6 +323,7 @@ function setTotalLine(game, value) {
   if (pick?.market === "totals") picks.value = { ...picks.value, [id]: { ...pick, line } };
 }
 function select(game, market, side) {
+  recommendationNotice.value = "";
   const id = String(game.game_id);
   if (isSelected(game, market, side)) {
     const next = { ...picks.value };
@@ -298,16 +331,47 @@ function select(game, market, side) {
     picks.value = next;
   } else if (picks.value[id] || legs.value.length < Number(targetLegs.value)) {
     const line = market === "totals" ? Number(totalLineForGame(game)) : null;
+    if (!oddsEligible(selectionOdds(game, market, side, line))) return;
     picks.value = { ...picks.value, [id]: { market, side, line } };
   }
 }
 function recommend() {
-  if (!canRecommend.value) return;
-  const chosen = eligibleGames.value
-    .map((game) => ({ game, option: optionForGame(game) }))
-    .sort((a, b) => b.option.probability - a.option.probability)
-    .slice(0, Number(targetLegs.value));
+  recommendationNotice.value = "";
+  const ranked = (board.value?.games || [])
+    .flatMap((game) => {
+      if (marketMode.value !== "combined") {
+        const option = optionForGame(game);
+        return option ? [{ game, option }] : [];
+      }
+      return Object.values(marketOptionsForGame(game)).filter(Boolean).map(option => ({ game, option }));
+    })
+    .sort((a, b) => b.option.probability - a.option.probability);
+  const chosen = marketMode.value === "combined"
+    ? selectMixedCandidates(ranked, Number(targetLegs.value))
+    : marketMode.value === "totals"
+      ? selectTotalsCandidates(ranked, Number(targetLegs.value))
+      : ranked.slice(0, Number(targetLegs.value));
+  if (!chosen.length) {
+    picks.value = {};
+    recommendationNotice.value = minimumOdds.value === "all"
+      ? `No ${marketMode.value === "totals" ? "model-consistent totals" : "eligible selections"} currently pass the automatic-selection policy.`
+      : `No ${marketMode.value === "totals" ? "model-consistent totals" : "eligible selections"} currently satisfy the selected odds floor and automatic-selection policy.`;
+    return;
+  }
   picks.value = Object.fromEntries(chosen.map(({ game, option }) => [String(game.game_id), { market: option.market, side: option.side, line: option.line }]));
+  totalLineChoices.value = {
+    ...totalLineChoices.value,
+    ...Object.fromEntries(
+      chosen
+        .filter(({ option }) => option.market === "totals")
+        .map(({ game, option }) => [String(game.game_id), Number(option.line)]),
+    ),
+  };
+  if (chosen.length < Number(targetLegs.value)) {
+    recommendationNotice.value = minimumOdds.value === "all"
+      ? `Built ${chosen.length} of ${targetLegs.value} requested legs. Only ${chosen.length} ${marketMode.value === "totals" ? "model-consistent totals" : "eligible games"} currently pass the automatic-selection policy.`
+      : `Built ${chosen.length} of ${targetLegs.value} requested legs. Only ${chosen.length} ${marketMode.value === "totals" ? "model-consistent totals" : "eligible games"} currently satisfy the selected odds floor and automatic-selection policy.`;
+  }
 }
 function clearSlip() {
   picks.value = {};
@@ -321,6 +385,11 @@ watch(
   { deep: true },
 );
 watch([date, mode, () => dateRange.value.start, () => dateRange.value.end], load);
+watch(minimumOdds, () => {
+  if (!board.value) return;
+  const games = new Map(board.value.games.map(game => [String(game.game_id), game]));
+  picks.value = Object.fromEntries(Object.entries(picks.value).filter(([id, rawPick]) => pickEligible(games.get(id), normalizedPick(rawPick))));
+});
 watch(marketMode, () => {
   picks.value = {};
   markVisited();
@@ -337,7 +406,7 @@ watch(targetLegs, (value) => {
 watch(() => board.value?.games?.length, count => {
   if (count && Number(targetLegs.value) > count) targetLegs.value = String(count);
 });
-watch([date, mode, marketMode, targetLegs, () => dateRange.value.start, () => dateRange.value.end], () => {
+watch([date, mode, marketMode, targetLegs, minimumOdds, () => dateRange.value.start, () => dateRange.value.end], () => {
   localStorage.setItem(
     "ninth-builder-settings",
     JSON.stringify({
@@ -345,6 +414,7 @@ watch([date, mode, marketMode, targetLegs, () => dateRange.value.start, () => da
       mode: mode.value,
       marketMode: marketMode.value,
       targetLegs: targetLegs.value,
+      minimumOdds: minimumOdds.value,
       dateRange: { ...dateRange.value },
     }),
   );
@@ -375,7 +445,7 @@ onBeforeUnmount(() => {
       </div>
       <div class="hero-tools">
         <BuilderMarketTabs :active="marketMode" />
-        <div class="slate-toolbar"><SlateModeToggle v-model="mode" /><CustomDatePicker v-if="mode === 'daily'" v-model="date" label="Game date" /><CustomDateRangePicker v-else v-model="dateRange" label="Game range" :max-days="14" /><CustomSelect v-model="targetLegs" label="Target legs" :options="legOptions" /><BuilderRefreshButton :loading="loading" @refresh="load" /></div>
+        <div class="slate-toolbar"><SlateModeToggle v-model="mode" /><CustomDatePicker v-if="mode === 'daily'" v-model="date" label="Game date" /><CustomDateRangePicker v-else v-model="dateRange" label="Game range" :max-days="14" /><CustomSelect v-model="targetLegs" label="Target legs" :options="legOptions" /><OddsFloorSelect v-model="minimumOdds" /><BuilderRefreshButton :loading="loading" @refresh="load" /></div>
       </div>
     </section>
     <section class="scoreboard">
@@ -396,7 +466,7 @@ onBeforeUnmount(() => {
           >.
         </p>
         <small v-if="confidenceBand">Comparable historical cards finished together {{ pct(confidenceBand.observed_all_correct) }} of the time · 95% range {{ pct(confidenceBand.wilson_low) }}–{{ pct(confidenceBand.wilson_high) }}</small
-        ><small v-else-if="marketMode !== 'moneyline' && legs.length && activeCalibration?.promoted === false">This exact {{ calibrationMarket }} × {{ mode === "daily" ? "daily" : `${selectedDays}-day` }} × {{ targetLegs }}-leg cell did not improve temporal-audit Brier, so the displayed score remains the multiplicative model estimate.</small><small v-else-if="legs.length > 8">Backtest adjustment is currently supported only for 2–8 legs. Extended cards remain multiplicative model estimates.</small><small v-else-if="mode === 'multi' && activeCalibration?.promoted === false">The cross-day calibrator did not improve unseen-season Brier score, so it is deliberately not applied.</small><small v-else-if="legs.length">Historical calibration applies only when every selection follows the model's recommended market and side.</small>
+        ><small v-else-if="marketMode !== 'moneyline' && legs.length && !totalsCalibrationCompatible">The previous card calibrator was built from an older totals model, so it is disabled. This score is the current models' multiplicative estimate.</small><small v-else-if="marketMode !== 'moneyline' && legs.length && activeCalibration?.promoted === false">This exact {{ calibrationMarket }} × {{ mode === "daily" ? "daily" : `${selectedDays}-day` }} × {{ targetLegs }}-leg cell did not improve temporal-audit Brier, so the displayed score remains the multiplicative model estimate.</small><small v-else-if="legs.length > 8">Backtest adjustment is currently supported only for 2–8 legs. Extended cards remain multiplicative model estimates.</small><small v-else-if="mode === 'multi' && activeCalibration?.promoted === false">The cross-day calibrator did not improve unseen-season Brier score, so it is deliberately not applied.</small><small v-else-if="legs.length">Historical calibration applies only when every selection follows the model's recommended market and side.</small>
       </div>
       <div class="score-metrics">
         <span
@@ -411,9 +481,10 @@ onBeforeUnmount(() => {
         >
       </div>
       <div class="score-actions">
-        <button class="recommend" type="button" :disabled="!canRecommend" @click="recommend"><Sparkles /> BUILD BEST {{ targetLegs }}</button><MelbetHandoff :entries="melbetEntries" autofill-mode="card" /><button class="clear" type="button" :disabled="!legs.length" @click="clearSlip"><Trash2 /> CLEAR</button>
+        <button class="recommend" type="button" :disabled="loading || !board || !eligibleRecommendationCount" @click="recommend"><Sparkles /> BUILD BEST {{ targetLegs }}</button><MelbetHandoff :entries="melbetEntries" autofill-mode="card" /><button class="clear" type="button" :disabled="!legs.length" @click="clearSlip"><Trash2 /> CLEAR</button>
       </div>
     </section>
+    <small v-if="recommendationNotice" class="recommendation-notice" role="status">{{ recommendationNotice }}</small>
     <section v-if="activeCalibration" class="calibration-audit" :class="{ rejected: activeCalibration.promoted === false }">
       <template v-if="mode === 'daily'"
         ><div>
@@ -465,8 +536,8 @@ onBeforeUnmount(() => {
           {{ mode === "daily" ? dateLabel(date).toUpperCase() : `${dateLabel(dateRange.start).toUpperCase()} – ${dateLabel(dateRange.end).toUpperCase()}` }}
           · AUTO {{ board.refresh_seconds || 15 }}S</span
         >
-        <p v-if="canRecommend">“Best {{ targetLegs }}” selects exactly {{ targetLegs }} highest-probability games in this {{ mode === "daily" ? "daily slate" : `${selectedDays}-day range` }}. Manual selection is capped at the same target.</p>
-        <p v-else>This slate has fewer than {{ targetLegs }} upcoming games. Reduce the leg target or choose another date range.</p>
+        <p v-if="canRecommend">“Best {{ targetLegs }}” selects exactly {{ targetLegs }} highest-probability games that satisfy {{ minimumOdds === 'all' ? 'the All odds setting' : `minimum MelBet decimal odds of ${minimumOdds}` }}.<template v-if="marketMode === 'combined'"> Mixed cards retain at least one eligible moneyline and one eligible total.</template> Moneyline has no probability cutoff; totals use the held-out production calibration. Odds only control eligibility and never enter either model.</p>
+        <p v-else>Only {{ eligibleRecommendationCount }} of {{ targetLegs }} requested games satisfy {{ minimumOdds === 'all' ? 'the automatic-selection policy' : 'the current odds floor and automatic-selection policy' }}. Build Best will select those {{ eligibleRecommendationCount }} instead of doing nothing. Totals remain manual-only when no calibrated or distribution-consistent listed line is available.</p>
       </div>
       <section v-for="group in groupedGames" :key="group[0]" class="day-group">
         <header>
@@ -498,17 +569,17 @@ onBeforeUnmount(() => {
             </div>
             <template v-if="marketMode !== 'totals'"
               ><div class="market-label">MONEYLINE</div>
-              <button type="button" :disabled="legs.length >= Number(targetLegs) && !picks[String(game.game_id)]" :class="{ active: isSelected(game, 'moneyline', 'away') }" @click="select(game, 'moneyline', 'away')">
+              <button type="button" :disabled="!oddsEligible(moneylineOdds(game, 'away')) || (legs.length >= Number(targetLegs) && !picks[String(game.game_id)])" :class="{ active: isSelected(game, 'moneyline', 'away'), unavailable: !oddsEligible(moneylineOdds(game, 'away')) }" @click="select(game, 'moneyline', 'away')">
                 <TeamLogo :team="game.away" :size="42" /><span
                   ><small>AWAY MONEYLINE</small><b>{{ game.away.name }}</b></span
-                ><strong class="mono">{{ pct(game.away_win_probability) }}</strong
+                ><strong class="mono">{{ pct(game.away_win_probability) }}<small>MELBET @ {{ formatOdds(moneylineOdds(game, 'away')) }}</small></strong
                 ><Check />
               </button>
               <div class="versus">VS</div>
-              <button type="button" :disabled="legs.length >= Number(targetLegs) && !picks[String(game.game_id)]" :class="{ active: isSelected(game, 'moneyline', 'home') }" @click="select(game, 'moneyline', 'home')">
+              <button type="button" :disabled="!oddsEligible(moneylineOdds(game, 'home')) || (legs.length >= Number(targetLegs) && !picks[String(game.game_id)])" :class="{ active: isSelected(game, 'moneyline', 'home'), unavailable: !oddsEligible(moneylineOdds(game, 'home')) }" @click="select(game, 'moneyline', 'home')">
                 <TeamLogo :team="game.home" :size="42" /><span
                   ><small>HOME MONEYLINE</small><b>{{ game.home.name }}</b></span
-                ><strong class="mono">{{ pct(game.home_win_probability) }}</strong
+                ><strong class="mono">{{ pct(game.home_win_probability) }}<small>MELBET @ {{ formatOdds(moneylineOdds(game, 'home')) }}</small></strong
                 ><Check /></button
             ></template>
             <template v-if="marketMode !== 'moneyline'"
@@ -522,19 +593,19 @@ onBeforeUnmount(() => {
                 <small v-if="totalPushProbability(game)" class="push-note">{{ pct(totalPushProbability(game)) }} model push probability at this integer line</small>
               </div>
               <div v-if="game.totals_projection?.available && game.totals_projection?.selection_available" class="total-options">
-                <button v-for="side in ['over', 'under']" :key="side" type="button" :disabled="legs.length >= Number(targetLegs) && !picks[String(game.game_id)]" :class="{ active: isSelected(game, 'totals', side) }" @click="select(game, 'totals', side)">
+                <button v-for="side in ['over', 'under']" :key="side" type="button" :disabled="!oddsEligible(totalOdds(game, side)) || (legs.length >= Number(targetLegs) && !picks[String(game.game_id)])" :class="{ active: isSelected(game, 'totals', side), unavailable: !oddsEligible(totalOdds(game, side)) }" @click="select(game, 'totals', side)">
                   <span
                     ><small>{{ side.toUpperCase() }} {{ totalLineForGame(game) }}</small
                     ><b>{{ side === "over" ? "Higher scoring" : "Lower scoring" }}</b></span
-                  ><strong class="mono">{{ pct(totalProbability(game, side)) }}</strong
+                  ><strong class="mono">{{ pct(totalProbability(game, side)) }}<small>MELBET @ {{ formatOdds(totalOdds(game, side)) }}</small></strong
                   ><Check />
                 </button>
               </div>
-              <p v-else class="total-unavailable">No current full-game total is listed for this matchup. MelBet generally publishes only the next 24 hours; odds are never imported.</p></template
+              <p v-else class="total-unavailable">No current full-game total is listed for this matchup. MelBet generally publishes only the next 24 hours.</p></template
             >
             <footer>
               <span
-                >BEST AVAILABLE <b>{{ optionForGame(game)?.market === "totals" ? `${optionForGame(game).side.toUpperCase()} ${optionForGame(game).line}` : game[game.recommended_side].name }}</b></span
+                >BEST ELIGIBLE <b>{{ optionForGame(game)?.market === "totals" ? `${optionForGame(game).side.toUpperCase()} ${optionForGame(game).line}` : optionForGame(game) ? game[game.recommended_side].name : 'NONE' }}<template v-if="optionForGame(game)"> · @ {{ formatOdds(optionForGame(game).odds) }}</template></b></span
               ><span>{{ game.projection_basis === "matchup_synced" ? "MATCHUP-SYNCED" : "EARLY BASELINE" }} · {{ snapshotLabel(game.projection_updated_at) }} · ONE PICK PER GAME</span>
             </footer>
           </article>
@@ -582,7 +653,7 @@ h1 em {
   justify-items: end;
   gap: 14px;
   flex: none;
-  width: min(720px, 52vw);
+  width: min(840px, 58vw);
   min-width: 0;
   max-width: 100%;
 }
@@ -592,21 +663,22 @@ h1 em {
 .slate-toolbar {
   width: 100%;
   display: grid;
-  grid-template-columns: 190px minmax(170px, 1fr) 210px 110px;
+  grid-template-columns: 150px minmax(170px, 1fr) 125px 155px 110px;
   align-items: end;
   justify-content: flex-end;
   gap: 8px;
   min-width: 0;
-  flex-wrap: wrap;
 }
-.hero-tools :deep(.custom-select) {
-  width: 150px;
+.slate-toolbar > * {
+  min-width: 0;
 }
-.hero-tools :deep(.date-picker) {
-  width: 190px;
-}
-.hero-tools :deep(.range-picker) {
-  width: 285px;
+.slate-toolbar :deep(.custom-select),
+.slate-toolbar :deep(.date-picker),
+.slate-toolbar :deep(.range-picker),
+.slate-toolbar :deep(.refresh-control),
+.slate-toolbar :deep(.refresh-control button) {
+  width: 100%;
+  min-width: 0;
 }
 .slate-toolbar > button {
   height: 42px;
@@ -784,6 +856,14 @@ h1 em {
 .clear {
   background: transparent;
   color: var(--paper);
+}
+.recommendation-notice {
+  display: block;
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, #4a5046);
+  color: var(--accent);
+  font: 600 8px/1.5 "DM Mono";
 }
 button:disabled {
   opacity: 0.4;
@@ -964,6 +1044,18 @@ button:disabled {
 .game-pick > button strong {
   font-size: 15px;
 }
+.game-pick > button strong small,
+.total-options button strong small {
+  display: block;
+  margin-top: 4px;
+  font-size: 7px;
+  white-space: nowrap;
+}
+.game-pick > button.unavailable,
+.total-options button.unavailable {
+  opacity: .45;
+  cursor: not-allowed;
+}
 .game-pick > button svg {
   width: 15px;
   opacity: 0;
@@ -1139,6 +1231,15 @@ button:disabled {
     grid-column: 1/-1;
   }
 }
+@media (max-width: 1200px) {
+  .builder-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .hero-tools {
+    width: 100%;
+  }
+}
 @media (max-width: 700px) {
   .builder-hero {
     padding: 25px;
@@ -1152,12 +1253,12 @@ button:disabled {
   .mode-control {
     width: 100%;
   }
-  .slate-toolbar { flex-wrap: wrap; justify-content: stretch; }
-  .slate-toolbar { display: flex; }
-  .hero-tools :deep(.date-picker),
-  .hero-tools :deep(.range-picker) {
-    flex: 1;
-    width: 100%;
+  .slate-toolbar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .slate-toolbar > :last-child {
+    grid-column: 1 / -1;
   }
   .scoreboard {
     grid-template-columns: 1fr;
@@ -1191,6 +1292,14 @@ button:disabled {
   }
   .calibration-audit > p {
     grid-column: 1;
+  }
+}
+@media (max-width: 460px) {
+  .slate-toolbar {
+    grid-template-columns: 1fr;
+  }
+  .slate-toolbar > :last-child {
+    grid-column: auto;
   }
 }
 .calibration-audit {

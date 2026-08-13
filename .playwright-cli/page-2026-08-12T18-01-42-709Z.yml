@@ -1,0 +1,863 @@
+- generic [ref=f3e3]:
+  - complementary [ref=f3e4]:
+    - link "NINTH all sports" [ref=f3e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f3e6]
+    - navigation "Sport workspaces" [ref=f3e7]:
+      - link "MLB" [ref=f3e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f3e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f3e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f3e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f3e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f3e33] [cursor=pointer]:
+      - generic [ref=f3e34]: D
+      - generic [ref=f3e35]: MODE
+  - generic [ref=f3e36]:
+    - banner [ref=f3e37]:
+      - generic [ref=f3e38]:
+        - generic [ref=f3e39]:
+          - generic [ref=f3e40]: VALORANT + CS2 + LOL
+          - generic [ref=f3e41]: Esports
+          - emphasis [ref=f3e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f3e43]:
+          - link "Overview" [ref=f3e44] [cursor=pointer]:
+            - /url: /esports
+          - link "Leagues" [ref=f3e45] [cursor=pointer]:
+            - /url: /esports/leagues
+          - link "Games" [ref=f3e46] [cursor=pointer]:
+            - /url: /esports/games
+          - link "Teams" [ref=f3e47] [cursor=pointer]:
+            - /url: /esports/teams
+          - link "Players" [ref=f3e48] [cursor=pointer]:
+            - /url: /esports/players
+          - link "Models" [ref=f3e49] [cursor=pointer]:
+            - /url: /esports/models
+          - link "Data" [ref=f3e50] [cursor=pointer]:
+            - /url: /esports/data
+    - main [ref=f3e51]:
+      - generic [ref=f3e53]:
+        - generic [ref=f3e54]:
+          - generic [ref=f3e55]:
+            - text: ESP / TEAMS
+            - heading "Teams." [level=1] [ref=f3e56]
+          - paragraph [ref=f3e57]: Live presentation data for Esports, separated from model training and stamped with its source coverage.
+          - generic [ref=f3e58]: 05/02
+        - generic [ref=f3e59]:
+          - generic [ref=f3e60]:
+            - textbox "168 RESULTS" [ref=f3e64]:
+              - /placeholder: Find a team
+            - generic [ref=f3e65]: 168 RESULTS
+          - combobox [ref=f3e66]:
+            - option "All competitions" [selected]
+            - option "Valorant"
+            - option "Counter-Strike 2"
+            - option "League of Legends"
+          - combobox [ref=f3e67]:
+            - option "Valorant + CS2 + LoL" [selected]
+            - option "Valorant"
+            - option "Counter-Strike 2"
+            - option "League of Legends"
+        - generic [ref=f3e68]:
+          - article [ref=f3e69]:
+            - generic [ref=f3e70]: "01"
+            - generic [ref=f3e71]: Map pool strength
+            - generic [ref=f3e72]: OPERATIONAL DATA FIELD
+          - article [ref=f3e73]:
+            - generic [ref=f3e74]: "02"
+            - generic [ref=f3e75]: Opponent-adjusted form
+            - generic [ref=f3e76]: OPERATIONAL DATA FIELD
+          - article [ref=f3e77]:
+            - generic [ref=f3e78]: "03"
+            - generic [ref=f3e79]: Roster continuity
+            - generic [ref=f3e80]: OPERATIONAL DATA FIELD
+          - article [ref=f3e81]:
+            - generic [ref=f3e82]: "04"
+            - generic [ref=f3e83]: LAN and region context
+            - generic [ref=f3e84]: OPERATIONAL DATA FIELD
+        - generic [ref=f3e85]:
+          - generic [ref=f3e86]:
+            - generic [ref=f3e87]: TEAMS INDEX
+            - generic [ref=f3e88]: SOURCE / Liquipedia MediaWiki API + CS API supplement
+            - emphasis [ref=f3e89]: 168 LIVE ROWS
+          - generic [ref=f3e90]:
+            - article [ref=f3e91]:
+              - generic [ref=f3e92]: TH
+              - generic [ref=f3e94]: Valorant
+              - heading "Team Heretics" [level=2] [ref=f3e95]
+              - paragraph [ref=f3e96]: Esports circuit
+              - generic [ref=f3e97]:
+                - generic [ref=f3e98]: ELO 1500
+                - emphasis [ref=f3e99]: International
+            - article [ref=f3e100]:
+              - generic [ref=f3e101]: NV
+              - generic [ref=f3e103]: Valorant
+              - heading "Natus Vincere" [level=2] [ref=f3e104]
+              - paragraph [ref=f3e105]: Esports circuit
+              - generic [ref=f3e106]:
+                - generic [ref=f3e107]: ELO 1500
+                - emphasis [ref=f3e108]: International
+            - article [ref=f3e109]:
+              - generic [ref=f3e110]: SO
+              - generic [ref=f3e112]: Valorant
+              - heading "SEN Otters" [level=2] [ref=f3e113]
+              - paragraph [ref=f3e114]: Esports circuit
+              - generic [ref=f3e115]:
+                - generic [ref=f3e116]: ELO 1500
+                - emphasis [ref=f3e117]: International
+            - article [ref=f3e118]:
+              - generic [ref=f3e119]: H
+              - generic [ref=f3e121]: Valorant
+              - heading "HIMMERS" [level=2] [ref=f3e122]
+              - paragraph [ref=f3e123]: Esports circuit
+              - generic [ref=f3e124]:
+                - generic [ref=f3e125]: ELO 1488
+                - emphasis [ref=f3e126]: 0-1 SERIES
+            - article [ref=f3e127]:
+              - generic [ref=f3e128]: A
+              - generic [ref=f3e130]: Valorant
+              - heading "Axolotl" [level=2] [ref=f3e131]
+              - paragraph [ref=f3e132]: Esports circuit
+              - generic [ref=f3e133]:
+                - generic [ref=f3e134]: ELO 1500
+                - emphasis [ref=f3e135]: International
+            - article [ref=f3e136]:
+              - generic [ref=f3e137]: SG
+              - generic [ref=f3e139]: Valorant
+              - heading "SaD GC" [level=2] [ref=f3e140]
+              - paragraph [ref=f3e141]: Esports circuit
+              - generic [ref=f3e142]:
+                - generic [ref=f3e143]: ELO 1500
+                - emphasis [ref=f3e144]: International
+            - article [ref=f3e145]:
+              - generic [ref=f3e146]: MS
+              - generic [ref=f3e148]: Valorant
+              - heading "MVSK Secret" [level=2] [ref=f3e149]
+              - paragraph [ref=f3e150]: Esports circuit
+              - generic [ref=f3e151]:
+                - generic [ref=f3e152]: ELO 1500
+                - emphasis [ref=f3e153]: International
+            - article [ref=f3e154]:
+              - generic [ref=f3e155]: TS
+              - generic [ref=f3e157]: Valorant
+              - heading "The Spiders" [level=2] [ref=f3e158]
+              - paragraph [ref=f3e159]: Esports circuit
+              - generic [ref=f3e160]:
+                - generic [ref=f3e161]: ELO 1500
+                - emphasis [ref=f3e162]: International
+            - article [ref=f3e163]:
+              - generic [ref=f3e164]: CG
+              - generic [ref=f3e166]: Valorant
+              - heading "Cloud9 GC" [level=2] [ref=f3e167]
+              - paragraph [ref=f3e168]: Esports circuit
+              - generic [ref=f3e169]:
+                - generic [ref=f3e170]: ELO 1500
+                - emphasis [ref=f3e171]: International
+            - article [ref=f3e172]:
+              - generic [ref=f3e173]: LC
+              - generic [ref=f3e175]: Valorant
+              - heading "Los Chudeles" [level=2] [ref=f3e176]
+              - paragraph [ref=f3e177]: Esports circuit
+              - generic [ref=f3e178]:
+                - generic [ref=f3e179]: ELO 1500
+                - emphasis [ref=f3e180]: International
+            - article [ref=f3e181]:
+              - generic [ref=f3e182]: C
+              - generic [ref=f3e184]: Valorant
+              - heading "Catface" [level=2] [ref=f3e185]
+              - paragraph [ref=f3e186]: Esports circuit
+              - generic [ref=f3e187]:
+                - generic [ref=f3e188]: ELO 1500
+                - emphasis [ref=f3e189]: International
+            - article [ref=f3e190]:
+              - generic [ref=f3e191]: OT
+              - generic [ref=f3e193]: Valorant
+              - heading "ORA Temper" [level=2] [ref=f3e194]
+              - paragraph [ref=f3e195]: Esports circuit
+              - generic [ref=f3e196]:
+                - generic [ref=f3e197]: ELO 1500
+                - emphasis [ref=f3e198]: International
+            - article [ref=f3e199]:
+              - generic [ref=f3e200]: MG
+              - generic [ref=f3e202]: Valorant
+              - heading "MYVRA GC" [level=2] [ref=f3e203]
+              - paragraph [ref=f3e204]: Esports circuit
+              - generic [ref=f3e205]:
+                - generic [ref=f3e206]: ELO 1500
+                - emphasis [ref=f3e207]: International
+            - article [ref=f3e208]:
+              - generic [ref=f3e209]: FX
+              - generic [ref=f3e211]: Valorant
+              - heading "FUSION X" [level=2] [ref=f3e212]
+              - paragraph [ref=f3e213]: Esports circuit
+              - generic [ref=f3e214]:
+                - generic [ref=f3e215]: ELO 1500
+                - emphasis [ref=f3e216]: International
+            - article [ref=f3e217]:
+              - generic [ref=f3e218]: D
+              - generic [ref=f3e220]: Valorant
+              - heading "DRX" [level=2] [ref=f3e221]
+              - paragraph [ref=f3e222]: Esports circuit
+              - generic [ref=f3e223]:
+                - generic [ref=f3e224]: ELO 1500
+                - emphasis [ref=f3e225]: International
+            - article [ref=f3e226]:
+              - generic [ref=f3e227]: OG
+              - generic [ref=f3e229]: Valorant
+              - heading "ONSIDE GAMING" [level=2] [ref=f3e230]
+              - paragraph [ref=f3e231]: Esports circuit
+              - generic [ref=f3e232]:
+                - generic [ref=f3e233]: ELO 1500
+                - emphasis [ref=f3e234]: International
+            - article [ref=f3e235]:
+              - generic [ref=f3e236]: RRQ
+              - generic [ref=f3e238]: Valorant
+              - heading "Rex Regum Qeon" [level=2] [ref=f3e239]
+              - paragraph [ref=f3e240]: Esports circuit
+              - generic [ref=f3e241]:
+                - generic [ref=f3e242]: ELO 1500
+                - emphasis [ref=f3e243]: International
+            - article [ref=f3e244]:
+              - generic [ref=f3e245]: SE
+              - generic [ref=f3e247]: Valorant
+              - heading "Sharper Esports" [level=2] [ref=f3e248]
+              - paragraph [ref=f3e249]: Esports circuit
+              - generic [ref=f3e250]:
+                - generic [ref=f3e251]: ELO 1500
+                - emphasis [ref=f3e252]: International
+            - article [ref=f3e253]:
+              - generic [ref=f3e254]: J
+              - generic [ref=f3e256]: Valorant
+              - heading "Joblife" [level=2] [ref=f3e257]
+              - paragraph [ref=f3e258]: Esports circuit
+              - generic [ref=f3e259]:
+                - generic [ref=f3e260]: ELO 1500
+                - emphasis [ref=f3e261]: International
+            - article [ref=f3e262]:
+              - generic [ref=f3e263]: PE
+              - generic [ref=f3e265]: Valorant
+              - heading "PCIFIC Esports" [level=2] [ref=f3e266]
+              - paragraph [ref=f3e267]: Esports circuit
+              - generic [ref=f3e268]:
+                - generic [ref=f3e269]: ELO 1500
+                - emphasis [ref=f3e270]: International
+            - article [ref=f3e271]:
+              - generic [ref=f3e272]: GM
+              - generic [ref=f3e274]: Valorant
+              - heading "Gentle Mates" [level=2] [ref=f3e275]
+              - paragraph [ref=f3e276]: Esports circuit
+              - generic [ref=f3e277]:
+                - generic [ref=f3e278]: ELO 1488
+                - emphasis [ref=f3e279]: 0-1 SERIES
+            - article [ref=f3e280]:
+              - generic [ref=f3e281]: EF
+              - generic [ref=f3e283]: Valorant
+              - heading "Eintracht Frankfurt" [level=2] [ref=f3e284]
+              - paragraph [ref=f3e285]: Esports circuit
+              - generic [ref=f3e286]:
+                - generic [ref=f3e287]: ELO 1512
+                - emphasis [ref=f3e288]: 1-0 SERIES
+            - article [ref=f3e289]:
+              - generic [ref=f3e290]: JG
+              - generic [ref=f3e292]: Valorant
+              - heading "JD Gaming" [level=2] [ref=f3e293]
+              - paragraph [ref=f3e294]: Esports circuit
+              - generic [ref=f3e295]:
+                - generic [ref=f3e296]: ELO 1500
+                - emphasis [ref=f3e297]: 1-1 SERIES
+            - article [ref=f3e298]:
+              - generic [ref=f3e299]: TE
+              - generic [ref=f3e301]: Valorant
+              - heading "Trace Esports" [level=2] [ref=f3e302]
+              - paragraph [ref=f3e303]: Esports circuit
+              - generic [ref=f3e304]:
+                - generic [ref=f3e305]: ELO 1524
+                - emphasis [ref=f3e306]: 2-0 SERIES
+            - article [ref=f3e307]:
+              - generic [ref=f3e308]: AG
+              - generic [ref=f3e310]: Valorant
+              - heading "All Gamers" [level=2] [ref=f3e311]
+              - paragraph [ref=f3e312]: Esports circuit
+              - generic [ref=f3e313]:
+                - generic [ref=f3e314]: ELO 1488
+                - emphasis [ref=f3e315]: 0-1 SERIES
+            - article [ref=f3e316]:
+              - generic [ref=f3e317]: TEC
+              - generic [ref=f3e319]: Valorant
+              - heading "Titan Esports Club" [level=2] [ref=f3e320]
+              - paragraph [ref=f3e321]: Esports circuit
+              - generic [ref=f3e322]:
+                - generic [ref=f3e323]: ELO 1512
+                - emphasis [ref=f3e324]: 1-0 SERIES
+            - article [ref=f3e325]:
+              - generic [ref=f3e326]: AEB
+              - generic [ref=f3e328]: Valorant
+              - heading "Akave Esports Black" [level=2] [ref=f3e329]
+              - paragraph [ref=f3e330]: Esports circuit
+              - generic [ref=f3e331]:
+                - generic [ref=f3e332]: ELO 1512
+                - emphasis [ref=f3e333]: 1-0 SERIES
+            - article [ref=f3e334]:
+              - generic [ref=f3e335]: NSB
+              - generic [ref=f3e337]: Valorant
+              - heading "No Sweat Blossom" [level=2] [ref=f3e338]
+              - paragraph [ref=f3e339]: Esports circuit
+              - generic [ref=f3e340]:
+                - generic [ref=f3e341]: ELO 1488
+                - emphasis [ref=f3e342]: 0-1 SERIES
+            - article [ref=f3e343]:
+              - generic [ref=f3e344]: KB
+              - generic [ref=f3e346]: Valorant
+              - heading "KRÜ Blaze" [level=2] [ref=f3e347]
+              - paragraph [ref=f3e348]: Esports circuit
+              - generic [ref=f3e349]:
+                - generic [ref=f3e350]: ELO 1512
+                - emphasis [ref=f3e351]: 1-0 SERIES
+            - article [ref=f3e352]:
+              - generic [ref=f3e353]: LFL
+              - generic [ref=f3e355]: Valorant
+              - heading "Looking For Laburo" [level=2] [ref=f3e356]
+              - paragraph [ref=f3e357]: Esports circuit
+              - generic [ref=f3e358]:
+                - generic [ref=f3e359]: ELO 1488
+                - emphasis [ref=f3e360]: 0-1 SERIES
+            - article [ref=f3e361]:
+              - generic [ref=f3e362]: EGG
+              - generic [ref=f3e364]: Valorant
+              - heading "Evil Geniuses GC" [level=2] [ref=f3e365]
+              - paragraph [ref=f3e366]: Esports circuit
+              - generic [ref=f3e367]:
+                - generic [ref=f3e368]: ELO 1512
+                - emphasis [ref=f3e369]: 1-0 SERIES
+            - article [ref=f3e370]:
+              - generic [ref=f3e371]: AG
+              - generic [ref=f3e373]: Valorant
+              - heading "Arashi GC" [level=2] [ref=f3e374]
+              - paragraph [ref=f3e375]: Esports circuit
+              - generic [ref=f3e376]:
+                - generic [ref=f3e377]: ELO 1488
+                - emphasis [ref=f3e378]: 0-1 SERIES
+            - article [ref=f3e379]:
+              - generic [ref=f3e380]: TLB
+              - generic [ref=f3e382]: Valorant
+              - heading "Team Liquid Brazil" [level=2] [ref=f3e383]
+              - paragraph [ref=f3e384]: Esports circuit
+              - generic [ref=f3e385]:
+                - generic [ref=f3e386]: ELO 1512
+                - emphasis [ref=f3e387]: 1-0 SERIES
+            - article [ref=f3e388]:
+              - generic [ref=f3e389]: EOD
+              - generic [ref=f3e391]: Valorant
+              - heading "Evils of Delusion" [level=2] [ref=f3e392]
+              - paragraph [ref=f3e393]: Esports circuit
+              - generic [ref=f3e394]:
+                - generic [ref=f3e395]: ELO 1488
+                - emphasis [ref=f3e396]: 0-1 SERIES
+            - article [ref=f3e397]:
+              - generic [ref=f3e398]: DRG
+              - generic [ref=f3e400]: Valorant
+              - heading "Dragon Ranger Gaming" [level=2] [ref=f3e401]
+              - paragraph [ref=f3e402]: Esports circuit
+              - generic [ref=f3e403]:
+                - generic [ref=f3e404]: ELO 1488
+                - emphasis [ref=f3e405]: 0-1 SERIES
+            - article [ref=f3e406]:
+              - generic [ref=f3e407]: EG
+              - generic [ref=f3e409]: Valorant
+              - heading "EDward Gaming" [level=2] [ref=f3e410]
+              - paragraph [ref=f3e411]: Esports circuit
+              - generic [ref=f3e412]:
+                - generic [ref=f3e413]: ELO 1488
+                - emphasis [ref=f3e414]: 0-1 SERIES
+            - article [ref=f3e415]:
+              - generic [ref=f3e416]: SB
+              - generic [ref=f3e418]: Valorant
+              - heading "SwimTrek Blue" [level=2] [ref=f3e419]
+              - paragraph [ref=f3e420]: Esports circuit
+              - generic [ref=f3e421]:
+                - generic [ref=f3e422]: ELO 1512
+                - emphasis [ref=f3e423]: 1-0 SERIES
+            - article [ref=f3e424]:
+              - generic [ref=f3e425]: W
+              - generic [ref=f3e427]: Counter-Strike 2
+              - heading "Wildcard" [level=2] [ref=f3e428]
+              - paragraph [ref=f3e429]: Esports circuit
+              - generic [ref=f3e430]:
+                - generic [ref=f3e431]: ELO 1500
+                - emphasis [ref=f3e432]: International
+            - article [ref=f3e433]:
+              - generic [ref=f3e434]: F
+              - generic [ref=f3e436]: Counter-Strike 2
+              - heading "FURIA" [level=2] [ref=f3e437]
+              - paragraph [ref=f3e438]: Esports circuit
+              - generic [ref=f3e439]:
+                - generic [ref=f3e440]: ELO 1500
+                - emphasis [ref=f3e441]: International
+            - article [ref=f3e442]:
+              - generic [ref=f3e443]: TV
+              - generic [ref=f3e445]: Counter-Strike 2
+              - heading "Team Vitality" [level=2] [ref=f3e446]
+              - paragraph [ref=f3e447]: Esports circuit
+              - generic [ref=f3e448]:
+                - generic [ref=f3e449]: ELO 1500
+                - emphasis [ref=f3e450]: International
+            - article [ref=f3e451]:
+              - generic [ref=f3e452]: 1T
+              - generic [ref=f3e454]: Counter-Strike 2
+              - heading "100 Thieves" [level=2] [ref=f3e455]
+              - paragraph [ref=f3e456]: Esports circuit
+              - generic [ref=f3e457]:
+                - generic [ref=f3e458]: ELO 1537
+                - emphasis [ref=f3e459]: 3-0 SERIES
+            - article [ref=f3e460]:
+              - generic [ref=f3e461]: 9T
+              - generic [ref=f3e463]: Counter-Strike 2
+              - heading "9z Team" [level=2] [ref=f3e464]
+              - paragraph [ref=f3e465]: Esports circuit
+              - generic [ref=f3e466]:
+                - generic [ref=f3e467]: ELO 1500
+                - emphasis [ref=f3e468]: International
+            - article [ref=f3e469]:
+              - generic [ref=f3e470]: PG
+              - generic [ref=f3e472]: Counter-Strike 2
+              - heading "PaiN Gaming" [level=2] [ref=f3e473]
+              - paragraph [ref=f3e474]: Esports circuit
+              - generic [ref=f3e475]:
+                - generic [ref=f3e476]: ELO 1500
+                - emphasis [ref=f3e477]: International
+            - article [ref=f3e478]:
+              - generic [ref=f3e479]: LVG
+              - generic [ref=f3e481]: Counter-Strike 2
+              - heading "Lynn Vision Gaming" [level=2] [ref=f3e482]
+              - paragraph [ref=f3e483]: Esports circuit
+              - generic [ref=f3e484]:
+                - generic [ref=f3e485]: ELO 1500
+                - emphasis [ref=f3e486]: International
+            - article [ref=f3e487]:
+              - generic [ref=f3e488]: M
+              - generic [ref=f3e490]: Counter-Strike 2
+              - heading "MOUZ" [level=2] [ref=f3e491]
+              - paragraph [ref=f3e492]: Esports circuit
+              - generic [ref=f3e493]:
+                - generic [ref=f3e494]: ELO 1524
+                - emphasis [ref=f3e495]: 2-0 SERIES
+            - article [ref=f3e496]:
+              - generic [ref=f3e497]: J
+              - generic [ref=f3e499]: Counter-Strike 2
+              - heading "JiJieHao" [level=2] [ref=f3e500]
+              - paragraph [ref=f3e501]: Esports circuit
+              - generic [ref=f3e502]:
+                - generic [ref=f3e503]: ELO 1526
+                - emphasis [ref=f3e504]: 4-2 SERIES
+            - article [ref=f3e505]:
+              - generic [ref=f3e506]: G
+              - generic [ref=f3e508]: Counter-Strike 2
+              - heading "GamerLegion" [level=2] [ref=f3e509]
+              - paragraph [ref=f3e510]: Esports circuit
+              - generic [ref=f3e511]:
+                - generic [ref=f3e512]: ELO 1500
+                - emphasis [ref=f3e513]: International
+            - article [ref=f3e514]:
+              - generic [ref=f3e515]: GE
+              - generic [ref=f3e517]: Counter-Strike 2
+              - heading "G2 Esports" [level=2] [ref=f3e518]
+              - paragraph [ref=f3e519]: Esports circuit
+              - generic [ref=f3e520]:
+                - generic [ref=f3e521]: ELO 1512
+                - emphasis [ref=f3e522]: 1-0 SERIES
+            - article [ref=f3e523]:
+              - generic [ref=f3e524]: B
+              - generic [ref=f3e526]: Counter-Strike 2
+              - heading "BIG" [level=2] [ref=f3e527]
+              - paragraph [ref=f3e528]: Esports circuit
+              - generic [ref=f3e529]:
+                - generic [ref=f3e530]: ELO 1547
+                - emphasis [ref=f3e531]: 4-0 SERIES
+            - article [ref=f3e532]:
+              - generic [ref=f3e533]: TS
+              - generic [ref=f3e535]: Counter-Strike 2
+              - heading "Team Spirit" [level=2] [ref=f3e536]
+              - paragraph [ref=f3e537]: Esports circuit
+              - generic [ref=f3e538]:
+                - generic [ref=f3e539]: ELO 1488
+                - emphasis [ref=f3e540]: 0-1 SERIES
+            - article [ref=f3e541]:
+              - generic [ref=f3e542]: LG
+              - generic [ref=f3e544]: Counter-Strike 2
+              - heading "Luminosity Gaming" [level=2] [ref=f3e545]
+              - paragraph [ref=f3e546]: Esports circuit
+              - generic [ref=f3e547]:
+                - generic [ref=f3e548]: ELO 1500
+                - emphasis [ref=f3e549]: International
+            - article [ref=f3e550]:
+              - generic [ref=f3e551]: M
+              - generic [ref=f3e553]: Counter-Strike 2
+              - heading "M80" [level=2] [ref=f3e554]
+              - paragraph [ref=f3e555]: Esports circuit
+              - generic [ref=f3e556]:
+                - generic [ref=f3e557]: ELO 1488
+                - emphasis [ref=f3e558]: 0-1 SERIES
+            - article [ref=f3e559]:
+              - generic [ref=f3e560]: AG
+              - generic [ref=f3e562]: Counter-Strike 2
+              - heading "Aurora Gaming" [level=2] [ref=f3e563]
+              - paragraph [ref=f3e564]: Esports circuit
+              - generic [ref=f3e565]:
+                - generic [ref=f3e566]: ELO 1500
+                - emphasis [ref=f3e567]: International
+            - article [ref=f3e568]:
+              - generic [ref=f3e569]: TF
+              - generic [ref=f3e571]: Counter-Strike 2
+              - heading "Team Falcons" [level=2] [ref=f3e572]
+              - paragraph [ref=f3e573]: Esports circuit
+              - generic [ref=f3e574]:
+                - generic [ref=f3e575]: ELO 1513
+                - emphasis [ref=f3e576]: 1-0 SERIES
+            - article [ref=f3e577]:
+              - generic [ref=f3e578]: A
+              - generic [ref=f3e580]: Counter-Strike 2
+              - heading "Astralis" [level=2] [ref=f3e581]
+              - paragraph [ref=f3e582]: Esports circuit
+              - generic [ref=f3e583]:
+                - generic [ref=f3e584]: ELO 1501
+                - emphasis [ref=f3e585]: 1-1 SERIES
+            - article [ref=f3e586]:
+              - generic [ref=f3e587]: FC
+              - generic [ref=f3e589]: Counter-Strike 2
+              - heading "FaZe Clan" [level=2] [ref=f3e590]
+              - paragraph [ref=f3e591]: Esports circuit
+              - generic [ref=f3e592]:
+                - generic [ref=f3e593]: ELO 1512
+                - emphasis [ref=f3e594]: 1-0 SERIES
+            - article [ref=f3e595]:
+              - generic [ref=f3e596]: L
+              - generic [ref=f3e598]: Counter-Strike 2
+              - heading "Legacy" [level=2] [ref=f3e599]
+              - paragraph [ref=f3e600]: Esports circuit
+              - generic [ref=f3e601]:
+                - generic [ref=f3e602]: ELO 1512
+                - emphasis [ref=f3e603]: 1-0 SERIES
+            - article [ref=f3e604]:
+              - generic [ref=f3e605]: NV
+              - generic [ref=f3e607]: Counter-Strike 2
+              - heading "Natus Vincere" [level=2] [ref=f3e608]
+              - paragraph [ref=f3e609]: Esports circuit
+              - generic [ref=f3e610]:
+                - generic [ref=f3e611]: ELO 1512
+                - emphasis [ref=f3e612]: 1-0 SERIES
+            - article [ref=f3e613]:
+              - generic [ref=f3e614]: "3"
+              - generic [ref=f3e616]: Counter-Strike 2
+              - heading "3DMAX" [level=2] [ref=f3e617]
+              - paragraph [ref=f3e618]: Esports circuit
+              - generic [ref=f3e619]:
+                - generic [ref=f3e620]: ELO 1488
+                - emphasis [ref=f3e621]: 0-1 SERIES
+            - article [ref=f3e622]:
+              - generic [ref=f3e623]: M
+              - generic [ref=f3e625]: Counter-Strike 2
+              - heading "MIBR" [level=2] [ref=f3e626]
+              - paragraph [ref=f3e627]: Esports circuit
+              - generic [ref=f3e628]:
+                - generic [ref=f3e629]: ELO 1511
+                - emphasis [ref=f3e630]: 2-1 SERIES
+            - article [ref=f3e631]:
+              - generic [ref=f3e632]: BT
+              - generic [ref=f3e634]: Counter-Strike 2
+              - heading "BetBoom Team" [level=2] [ref=f3e635]
+              - paragraph [ref=f3e636]: Esports circuit
+              - generic [ref=f3e637]:
+                - generic [ref=f3e638]: ELO 1488
+                - emphasis [ref=f3e639]: 0-1 SERIES
+            - article [ref=f3e640]:
+              - generic [ref=f3e641]: P
+              - generic [ref=f3e643]: Counter-Strike 2
+              - heading "PARIVISION" [level=2] [ref=f3e644]
+              - paragraph [ref=f3e645]: Esports circuit
+              - generic [ref=f3e646]:
+                - generic [ref=f3e647]: ELO 1488
+                - emphasis [ref=f3e648]: 0-1 SERIES
+            - article [ref=f3e649]:
+              - generic [ref=f3e650]: B
+              - generic [ref=f3e652]: Counter-Strike 2
+              - heading "B8" [level=2] [ref=f3e653]
+              - paragraph [ref=f3e654]: Esports circuit
+              - generic [ref=f3e655]:
+                - generic [ref=f3e656]: ELO 1512
+                - emphasis [ref=f3e657]: 1-0 SERIES
+            - article [ref=f3e658]:
+              - generic [ref=f3e659]: K
+              - generic [ref=f3e661]: Counter-Strike 2
+              - heading "K27" [level=2] [ref=f3e662]
+              - paragraph [ref=f3e663]: Esports circuit
+              - generic [ref=f3e664]:
+                - generic [ref=f3e665]: ELO 1524
+                - emphasis [ref=f3e666]: 3-1 SERIES
+            - article [ref=f3e667]:
+              - generic [ref=f3e668]: NIP
+              - generic [ref=f3e670]: Counter-Strike 2
+              - heading "Ninjas in Pyjamas" [level=2] [ref=f3e671]
+              - paragraph [ref=f3e672]: Esports circuit
+              - generic [ref=f3e673]:
+                - generic [ref=f3e674]: ELO 1488
+                - emphasis [ref=f3e675]: 0-1 SERIES
+            - article [ref=f3e676]:
+              - generic [ref=f3e677]: M
+              - generic [ref=f3e679]: Counter-Strike 2
+              - heading "Magic" [level=2] [ref=f3e680]
+              - paragraph [ref=f3e681]: Esports circuit
+              - generic [ref=f3e682]:
+                - generic [ref=f3e683]: ELO 1488
+                - emphasis [ref=f3e684]: 0-1 SERIES
+            - article [ref=f3e685]:
+              - generic [ref=f3e686]: TM
+              - generic [ref=f3e688]: Counter-Strike 2
+              - heading "The MongolZ" [level=2] [ref=f3e689]
+              - paragraph [ref=f3e690]: Esports circuit
+              - generic [ref=f3e691]:
+                - generic [ref=f3e692]: ELO 1512
+                - emphasis [ref=f3e693]: 1-0 SERIES
+            - article [ref=f3e694]:
+              - generic [ref=f3e695]: FE
+              - generic [ref=f3e697]: Counter-Strike 2
+              - heading "FUT Esports" [level=2] [ref=f3e698]
+              - paragraph [ref=f3e699]: Esports circuit
+              - generic [ref=f3e700]:
+                - generic [ref=f3e701]: ELO 1512
+                - emphasis [ref=f3e702]: 1-0 SERIES
+            - article [ref=f3e703]:
+              - generic [ref=f3e704]: T
+              - generic [ref=f3e706]: Counter-Strike 2
+              - heading "TYLOO" [level=2] [ref=f3e707]
+              - paragraph [ref=f3e708]: Esports circuit
+              - generic [ref=f3e709]:
+                - generic [ref=f3e710]: ELO 1488
+                - emphasis [ref=f3e711]: 0-1 SERIES
+            - article [ref=f3e712]:
+              - generic [ref=f3e713]: EF
+              - generic [ref=f3e715]: Counter-Strike 2
+              - heading "Eternal Fire" [level=2] [ref=f3e716]
+              - paragraph [ref=f3e717]: Esports circuit
+              - generic [ref=f3e718]:
+                - generic [ref=f3e719]: ELO 1476
+                - emphasis [ref=f3e720]: 0-2 SERIES
+            - article [ref=f3e721]:
+              - generic [ref=f3e722]: G
+              - generic [ref=f3e724]: Counter-Strike 2
+              - heading "GenOne" [level=2] [ref=f3e725]
+              - paragraph [ref=f3e726]: Esports circuit
+              - generic [ref=f3e727]:
+                - generic [ref=f3e728]: ELO 1487
+                - emphasis [ref=f3e729]: 3-4 SERIES
+            - article [ref=f3e730]:
+              - generic [ref=f3e731]: S
+              - generic [ref=f3e733]: Counter-Strike 2
+              - heading "Sashi" [level=2] [ref=f3e734]
+              - paragraph [ref=f3e735]: Esports circuit
+              - generic [ref=f3e736]:
+                - generic [ref=f3e737]: ELO 1543
+                - emphasis [ref=f3e738]: 7-3 SERIES
+            - article [ref=f3e739]:
+              - generic [ref=f3e740]: L
+              - generic [ref=f3e742]: Counter-Strike 2
+              - heading "Liquid" [level=2] [ref=f3e743]
+              - paragraph [ref=f3e744]: Esports circuit
+              - generic [ref=f3e745]:
+                - generic [ref=f3e746]: ELO 1522
+                - emphasis [ref=f3e747]: 4-2 SERIES
+            - article [ref=f3e748]:
+              - generic [ref=f3e749]: "1"
+              - generic [ref=f3e751]: Counter-Strike 2
+              - heading "1win" [level=2] [ref=f3e752]
+              - paragraph [ref=f3e753]: Esports circuit
+              - generic [ref=f3e754]:
+                - generic [ref=f3e755]: ELO 1522
+                - emphasis [ref=f3e756]: 5-3 SERIES
+            - article [ref=f3e757]:
+              - generic [ref=f3e758]: IC
+              - generic [ref=f3e760]: Counter-Strike 2
+              - heading "Inner Circle" [level=2] [ref=f3e761]
+              - paragraph [ref=f3e762]: Esports circuit
+              - generic [ref=f3e763]:
+                - generic [ref=f3e764]: ELO 1512
+                - emphasis [ref=f3e765]: 2-1 SERIES
+            - article [ref=f3e766]:
+              - generic [ref=f3e767]: IS
+              - generic [ref=f3e769]: Counter-Strike 2
+              - heading "Iberian Soul" [level=2] [ref=f3e770]
+              - paragraph [ref=f3e771]: Esports circuit
+              - generic [ref=f3e772]:
+                - generic [ref=f3e773]: ELO 1488
+                - emphasis [ref=f3e774]: 0-1 SERIES
+            - article [ref=f3e775]:
+              - generic [ref=f3e776]: H
+              - generic [ref=f3e778]: Counter-Strike 2
+              - heading "HOTU" [level=2] [ref=f3e779]
+              - paragraph [ref=f3e780]: Esports circuit
+              - generic [ref=f3e781]:
+                - generic [ref=f3e782]: ELO 1522
+                - emphasis [ref=f3e783]: 3-1 SERIES
+            - article [ref=f3e784]:
+              - generic [ref=f3e785]: H
+              - generic [ref=f3e787]: Counter-Strike 2
+              - heading "HEROIC" [level=2] [ref=f3e788]
+              - paragraph [ref=f3e789]: Esports circuit
+              - generic [ref=f3e790]:
+                - generic [ref=f3e791]: ELO 1511
+                - emphasis [ref=f3e792]: 2-1 SERIES
+            - article [ref=f3e793]:
+              - generic [ref=f3e794]: A
+              - generic [ref=f3e796]: Counter-Strike 2
+              - heading "ASTRAL" [level=2] [ref=f3e797]
+              - paragraph [ref=f3e798]: Esports circuit
+              - generic [ref=f3e799]:
+                - generic [ref=f3e800]: ELO 1477
+                - emphasis [ref=f3e801]: 0-2 SERIES
+            - article [ref=f3e802]:
+              - generic [ref=f3e803]: F
+              - generic [ref=f3e805]: Counter-Strike 2
+              - heading "fnatic" [level=2] [ref=f3e806]
+              - paragraph [ref=f3e807]: Esports circuit
+              - generic [ref=f3e808]:
+                - generic [ref=f3e809]: ELO 1522
+                - emphasis [ref=f3e810]: 4-2 SERIES
+            - article [ref=f3e811]:
+              - generic [ref=f3e812]: D
+              - generic [ref=f3e814]: Counter-Strike 2
+              - heading "DENDELE" [level=2] [ref=f3e815]
+              - paragraph [ref=f3e816]: Esports circuit
+              - generic [ref=f3e817]:
+                - generic [ref=f3e818]: ELO 1487
+                - emphasis [ref=f3e819]: 0-1 SERIES
+            - article [ref=f3e820]:
+              - generic [ref=f3e821]: "9"
+              - generic [ref=f3e823]: Counter-Strike 2
+              - heading "9INE" [level=2] [ref=f3e824]
+              - paragraph [ref=f3e825]: Esports circuit
+              - generic [ref=f3e826]:
+                - generic [ref=f3e827]: ELO 1466
+                - emphasis [ref=f3e828]: 1-4 SERIES
+            - article [ref=f3e829]:
+              - generic [ref=f3e830]: E
+              - generic [ref=f3e832]: Counter-Strike 2
+              - heading "EYEBALLERS" [level=2] [ref=f3e833]
+              - paragraph [ref=f3e834]: Esports circuit
+              - generic [ref=f3e835]:
+                - generic [ref=f3e836]: ELO 1511
+                - emphasis [ref=f3e837]: 2-1 SERIES
+            - article [ref=f3e838]:
+              - generic [ref=f3e839]: S
+              - generic [ref=f3e841]: Counter-Strike 2
+              - heading "SINNERS" [level=2] [ref=f3e842]
+              - paragraph [ref=f3e843]: Esports circuit
+              - generic [ref=f3e844]:
+                - generic [ref=f3e845]: ELO 1488
+                - emphasis [ref=f3e846]: 2-3 SERIES
+            - article [ref=f3e847]:
+              - generic [ref=f3e848]: I
+              - generic [ref=f3e850]: Counter-Strike 2
+              - heading "INFINITE" [level=2] [ref=f3e851]
+              - paragraph [ref=f3e852]: Esports circuit
+              - generic [ref=f3e853]:
+                - generic [ref=f3e854]: ELO 1478
+                - emphasis [ref=f3e855]: 0-2 SERIES
+            - article [ref=f3e856]:
+              - generic [ref=f3e857]: B
+              - generic [ref=f3e859]: Counter-Strike 2
+              - heading "BC.Game" [level=2] [ref=f3e860]
+              - paragraph [ref=f3e861]: Esports circuit
+              - generic [ref=f3e862]:
+                - generic [ref=f3e863]: ELO 1522
+                - emphasis [ref=f3e864]: 3-1 SERIES
+            - article [ref=f3e865]:
+              - generic [ref=f3e866]: V
+              - generic [ref=f3e868]: Counter-Strike 2
+              - heading "Virtus.pro" [level=2] [ref=f3e869]
+              - paragraph [ref=f3e870]: Esports circuit
+              - generic [ref=f3e871]:
+                - generic [ref=f3e872]: ELO 1500
+                - emphasis [ref=f3e873]: 1-1 SERIES
+            - article [ref=f3e874]:
+              - generic [ref=f3e875]: F
+              - generic [ref=f3e877]: Counter-Strike 2
+              - heading "Fluxo" [level=2] [ref=f3e878]
+              - paragraph [ref=f3e879]: Esports circuit
+              - generic [ref=f3e880]:
+                - generic [ref=f3e881]: ELO 1466
+                - emphasis [ref=f3e882]: 0-3 SERIES
+            - article [ref=f3e883]:
+              - generic [ref=f3e884]: A
+              - generic [ref=f3e886]: Counter-Strike 2
+              - heading "Acend" [level=2] [ref=f3e887]
+              - paragraph [ref=f3e888]: Esports circuit
+              - generic [ref=f3e889]:
+                - generic [ref=f3e890]: ELO 1478
+                - emphasis [ref=f3e891]: 1-3 SERIES
+            - article [ref=f3e892]:
+              - generic [ref=f3e893]: B
+              - generic [ref=f3e895]: Counter-Strike 2
+              - heading "Betclic" [level=2] [ref=f3e896]
+              - paragraph [ref=f3e897]: Esports circuit
+              - generic [ref=f3e898]:
+                - generic [ref=f3e899]: ELO 1545
+                - emphasis [ref=f3e900]: 6-2 SERIES
+            - article [ref=f3e901]:
+              - generic [ref=f3e902]: P
+              - generic [ref=f3e904]: Counter-Strike 2
+              - heading "Phantom" [level=2] [ref=f3e905]
+              - paragraph [ref=f3e906]: Esports circuit
+              - generic [ref=f3e907]:
+                - generic [ref=f3e908]: ELO 1479
+                - emphasis [ref=f3e909]: 1-3 SERIES
+            - article [ref=f3e910]:
+              - generic [ref=f3e911]: O
+              - generic [ref=f3e913]: Counter-Strike 2
+              - heading "OG" [level=2] [ref=f3e914]
+              - paragraph [ref=f3e915]: Esports circuit
+              - generic [ref=f3e916]:
+                - generic [ref=f3e917]: ELO 1489
+                - emphasis [ref=f3e918]: 0-1 SERIES
+            - article [ref=f3e919]:
+              - generic [ref=f3e920]: "N"
+              - generic [ref=f3e922]: Counter-Strike 2
+              - heading "NRG" [level=2] [ref=f3e923]
+              - paragraph [ref=f3e924]: Esports circuit
+              - generic [ref=f3e925]:
+                - generic [ref=f3e926]: ELO 1500
+                - emphasis [ref=f3e927]: 2-2 SERIES
+            - article [ref=f3e928]:
+              - generic [ref=f3e929]: M
+              - generic [ref=f3e931]: Counter-Strike 2
+              - heading "Metizport" [level=2] [ref=f3e932]
+              - paragraph [ref=f3e933]: Esports circuit
+              - generic [ref=f3e934]:
+                - generic [ref=f3e935]: ELO 1476
+                - emphasis [ref=f3e936]: 1-3 SERIES
+            - article [ref=f3e937]:
+              - generic [ref=f3e938]: BB
+              - generic [ref=f3e940]: Counter-Strike 2
+              - heading "BASEMENT BOYS" [level=2] [ref=f3e941]
+              - paragraph [ref=f3e942]: Esports circuit
+              - generic [ref=f3e943]:
+                - generic [ref=f3e944]: ELO 1476
+                - emphasis [ref=f3e945]: 0-2 SERIES
+            - article [ref=f3e946]:
+              - generic [ref=f3e947]: F
+              - generic [ref=f3e949]: Counter-Strike 2
+              - heading "FOKUS" [level=2] [ref=f3e950]
+              - paragraph [ref=f3e951]: Esports circuit
+              - generic [ref=f3e952]:
+                - generic [ref=f3e953]: ELO 1514
+                - emphasis [ref=f3e954]: 1-0 SERIES
+          - button "SHOW 96 MORE 72 REMAINING" [ref=f3e955] [cursor=pointer]:
+            - text: SHOW 96 MORE
+            - generic [ref=f3e956]: 72 REMAINING
+        - generic [ref=f3e957]:
+          - generic [ref=f3e962]:
+            - text: Keyless Valorant, CS2 and League of Legends schedules, results, teams, players and shadow forecasts
+            - paragraph [ref=f3e963]: Forecasts are live shadow outputs and remain builder-locked until the chronological audit gate passes.
+          - emphasis [ref=f3e964]: 8/12/2026, 9:01:42 PM

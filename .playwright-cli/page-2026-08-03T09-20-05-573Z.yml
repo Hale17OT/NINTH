@@ -1,0 +1,39 @@
+- generic [ref=f23e3]:
+  - banner [ref=f23e4]:
+    - generic [ref=f23e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f23e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f23e7]
+        - generic [ref=f23e8]:
+          - generic [ref=f23e9]: NINTH
+          - generic [ref=f23e10]: BASEBALL / DECISION LAB
+      - button "Use dark theme" [ref=f23e11] [cursor=pointer]:
+        - generic [ref=f23e12]: DAY
+      - button "Search" [ref=f23e18] [cursor=pointer]
+      - button "Menu" [ref=f23e22] [cursor=pointer]
+    - generic [ref=f23e24]:
+      - generic [ref=f23e25]: TODAY
+      - generic [ref=f23e27]: Official scoreboard syncing
+  - main [ref=f23e28]:
+    - generic [ref=f23e30]:
+      - generic [ref=f23e31]:
+        - generic [ref=f23e32]: NINTH / OFFICIAL MLB TABLE
+        - heading "The shape of the league." [level=1] [ref=f23e33]: The shapeof the league.
+        - paragraph [ref=f23e34]: Overall, league, and divisional standings from the current MLB record feed. Ties are ordered by run differential for display only.
+      - navigation "Standings scope" [ref=f23e35]:
+        - button "Overall" [ref=f23e36] [cursor=pointer]
+        - button "American League" [ref=f23e37] [cursor=pointer]
+        - button "National League" [ref=f23e38] [cursor=pointer]
+        - button "By division" [ref=f23e39] [cursor=pointer]
+      - generic [ref=f23e40]: LOADING OFFICIAL STANDINGS…
+  - generic [ref=f23e41]:
+    - link "Games" [ref=f23e42] [cursor=pointer]:
+      - /url: /schedule
+    - link "Live" [ref=f23e46] [cursor=pointer]:
+      - /url: /live
+    - link "Builder" [ref=f23e54] [cursor=pointer]:
+      - /url: /builder
+    - link "Standings" [ref=f23e57] [cursor=pointer]:
+      - /url: /standings
+    - link "Teams" [ref=f23e65] [cursor=pointer]:
+      - /url: /teams

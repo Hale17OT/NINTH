@@ -1,0 +1,76 @@
+- generic [ref=f6e3]:
+  - complementary [ref=f6e4]:
+    - link "NINTH all sports" [ref=f6e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f6e6]
+    - navigation "Sport workspaces" [ref=f6e7]:
+      - link "MLB" [ref=f6e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f6e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f6e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f6e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f6e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f6e33] [cursor=pointer]:
+      - generic [ref=f6e34]: D
+      - generic [ref=f6e35]: MODE
+  - generic [ref=f6e36]:
+    - banner [ref=f6e37]:
+      - generic [ref=f6e38]:
+        - generic [ref=f6e39]:
+          - generic [ref=f6e40]: VALORANT + CS2 + LOL
+          - generic [ref=f6e41]: Esports
+          - emphasis [ref=f6e42]: RESEARCH LAB
+        - navigation "Workspace navigation" [ref=f6e43]:
+          - link "Overview" [ref=f6e44] [cursor=pointer]:
+            - /url: /esports
+          - link "Leagues" [ref=f6e45] [cursor=pointer]:
+            - /url: /esports/leagues
+          - link "Games" [ref=f6e46] [cursor=pointer]:
+            - /url: /esports/games
+          - link "Teams" [ref=f6e47] [cursor=pointer]:
+            - /url: /esports/teams
+          - link "Players" [ref=f6e48] [cursor=pointer]:
+            - /url: /esports/players
+          - link "Models" [ref=f6e49] [cursor=pointer]:
+            - /url: /esports/models
+          - link "Data" [ref=f6e50] [cursor=pointer]:
+            - /url: /esports/data
+    - main [ref=f6e51]:
+      - generic [ref=f6e53]:
+        - generic [ref=f6e54]:
+          - generic [ref=f6e55]:
+            - text: VALORANT + CS2 + LOL / NINTH RESEARCH LAB
+            - heading "Esports intelligence." [level=1] [ref=f6e56]: Esportsintelligence.
+            - paragraph [ref=f6e57]: Series-native Valorant, CS2 and League of Legends intelligence joined by one roster, map and matchup lab.
+            - generic [ref=f6e58]: LIVE DATA · SHADOW MODELS
+          - complementary [ref=f6e60]:
+            - generic [ref=f6e67]: MODEL STATE
+            - generic [ref=f6e68]: Evidence before exposure.
+            - paragraph [ref=f6e69]: No selection enters the all-sports builder until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.
+        - generic [ref=f6e70]:
+          - generic [ref=f6e71]:
+            - text: DATA LINEAGE / LIVE STATUS
+            - heading "Every input needs a source and an availability time." [level=2] [ref=f6e72]
+            - paragraph [ref=f6e73]: Event-time and knowledge-time are stored separately so late injury, lineup or veto information cannot leak backward into training.
+            - button "REFRESH STATUS" [ref=f6e74] [cursor=pointer]
+          - generic [ref=f6e80]:
+            - article [ref=f6e81]:
+              - generic [ref=f6e86]:
+                - generic [ref=f6e87]: Liquipedia MediaWiki API / No key
+                - generic [ref=f6e88]: Valorant, CS2 and League of Legends fixtures, results and directories
+                - paragraph [ref=f6e89]: API-only access with attribution, strict rate limiting and caching; normal HTML pages are not scraped.
+              - emphasis [ref=f6e90]: ready
+            - article [ref=f6e91]:
+              - generic [ref=f6e96]:
+                - generic [ref=f6e97]: CS API / No key
+                - generic [ref=f6e98]: CS2 results, rankings and player performance
+                - paragraph [ref=f6e99]: Keyless professional CS2 history and current ranking evidence.
+              - emphasis [ref=f6e100]: ready
+        - generic [ref=f6e101]:
+          - generic [ref=f6e102]: /ESPORTS/DATA
+          - link "ALL-SPORTS BUILDER" [ref=f6e103] [cursor=pointer]:
+            - /url: /build

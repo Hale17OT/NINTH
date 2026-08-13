@@ -1,0 +1,48 @@
+- generic [ref=f4e3]:
+  - banner [ref=f4e4]:
+    - generic [ref=f4e5]:
+      - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=f4e6] [cursor=pointer]:
+        - /url: /
+        - img "NINTH logo" [ref=f4e7]
+        - generic [ref=f4e8]:
+          - generic [ref=f4e9]: NINTH
+          - generic [ref=f4e10]: BASEBALL / DECISION LAB
+      - navigation [ref=f4e11]:
+        - link "Games" [ref=f4e12] [cursor=pointer]:
+          - /url: /schedule
+        - link "Live" [ref=f4e16] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f4e24] [cursor=pointer]:
+          - /url: /builder
+        - link "Standings" [ref=f4e27] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f4e35] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f4e39] [cursor=pointer]:
+          - /url: /players
+        - link "Model" [ref=f4e46] [cursor=pointer]:
+          - /url: /model
+        - link "My slips" [ref=f4e60] [cursor=pointer]:
+          - /url: /slips
+      - textbox "Search MLB" [ref=f4e69]:
+        - /placeholder: Search teams, players, games
+      - button "Use dark theme" [ref=f4e70] [cursor=pointer]:
+        - generic [ref=f4e71]:
+          - generic [ref=f4e72]: DISPLAY / 09
+          - generic [ref=f4e73]: DAY
+    - generic [ref=f4e78]:
+      - generic [ref=f4e79]: TODAY
+      - generic [ref=f4e81]: Official scoreboard syncing
+      - generic [ref=f4e82]: OFFICIAL FEEDS CONNECTED
+  - main [ref=f4e84]:
+    - generic [ref=f4e86]:
+      - generic [ref=f4e87]:
+        - generic [ref=f4e88]: NINTH / OFFICIAL MLB TABLE
+        - heading "The shape of the league." [level=1] [ref=f4e89]: The shapeof the league.
+        - paragraph [ref=f4e90]: Overall, league, and divisional standings from the current MLB record feed. Ties are ordered by run differential for display only.
+      - navigation "Standings scope" [ref=f4e91]:
+        - button "Overall" [ref=f4e92] [cursor=pointer]
+        - button "American League" [ref=f4e93] [cursor=pointer]
+        - button "National League" [ref=f4e94] [cursor=pointer]
+        - button "By division" [ref=f4e95] [cursor=pointer]
+      - generic [ref=f4e96]: LOADING OFFICIAL STANDINGS…

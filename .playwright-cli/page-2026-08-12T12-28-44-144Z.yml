@@ -1,0 +1,137 @@
+- generic [ref=f3e3]:
+  - complementary [ref=f3e4]:
+    - link "NINTH all sports" [ref=f3e5] [cursor=pointer]:
+      - /url: /
+      - img "NINTH logo" [ref=f3e6]
+    - navigation "Sport workspaces" [ref=f3e7]:
+      - link "MLB" [ref=f3e8] [cursor=pointer]:
+        - /url: /baseball
+      - link "FTB" [ref=f3e12] [cursor=pointer]:
+        - /url: /football
+      - link "NFL" [ref=f3e17] [cursor=pointer]:
+        - /url: /american-football
+      - link "NBA" [ref=f3e21] [cursor=pointer]:
+        - /url: /basketball
+      - link "ESP" [ref=f3e28] [cursor=pointer]:
+        - /url: /esports
+    - button "Use dark theme" [ref=f3e32] [cursor=pointer]:
+      - generic [ref=f3e33]: D
+      - generic [ref=f3e34]: MODE
+  - generic [ref=f3e35]:
+    - banner [ref=f3e36]:
+      - generic [ref=f3e37]:
+        - generic [ref=f3e38]:
+          - generic [ref=f3e39]: DECISION SYSTEM
+          - generic [ref=f3e40]: All sports
+        - navigation "Workspace navigation" [ref=f3e41]:
+          - link "Platform" [ref=f3e42] [cursor=pointer]:
+            - /url: /
+          - link "All-sports builder" [ref=f3e43] [cursor=pointer]:
+            - /url: /build
+    - main [ref=f3e44]:
+      - generic [ref=f3e46]:
+        - generic [ref=f3e47]:
+          - generic [ref=f3e48]:
+            - text: NINTH / ALL-SPORTS BUILDER
+            - heading "One card. Every arena." [level=1] [ref=f3e49]: One card.Every arena.
+            - paragraph [ref=f3e50]: A shared construction surface with separate model eligibility. Baseball can contribute production legs now; every other sport unlocks automatically only after its own evidence gate passes.
+          - complementary [ref=f3e51]:
+            - generic [ref=f3e56]: PORTFOLIO CONTRACT
+            - generic [ref=f3e57]: Combined does not mean blended.
+            - paragraph [ref=f3e58]: Probabilities come from sport-native models. The builder only joins eligible outputs and then controls event, team, market and directional exposure across the final card.
+        - generic [ref=f3e59]:
+          - button "00 ALL 15 READY" [ref=f3e132] [cursor=pointer]:
+            - generic [ref=f3e61]: "00"
+            - generic [ref=f3e62]: ALL
+            - generic [ref=f3e63]: 15 READY
+          - button "01 MLB LIVE BOARD" [ref=f3e64] [cursor=pointer]:
+            - generic [ref=f3e65]: "01"
+            - generic [ref=f3e66]: MLB
+            - generic [ref=f3e67]: LIVE BOARD
+          - button "02 FTB RESEARCH LOCKED" [active] [ref=f3e68] [cursor=pointer]:
+            - generic [ref=f3e69]: "02"
+            - generic [ref=f3e70]: FTB
+            - generic [ref=f3e71]: RESEARCH LOCKED
+          - button "03 NFL RESEARCH LOCKED" [ref=f3e72] [cursor=pointer]:
+            - generic [ref=f3e73]: "03"
+            - generic [ref=f3e74]: NFL
+            - generic [ref=f3e75]: RESEARCH LOCKED
+          - button "04 NBA RESEARCH LOCKED" [ref=f3e76] [cursor=pointer]:
+            - generic [ref=f3e77]: "04"
+            - generic [ref=f3e78]: NBA
+            - generic [ref=f3e79]: RESEARCH LOCKED
+          - button "05 ESP RESEARCH LOCKED" [ref=f3e80] [cursor=pointer]:
+            - generic [ref=f3e81]: "05"
+            - generic [ref=f3e82]: ESP
+            - generic [ref=f3e83]: RESEARCH LOCKED
+        - generic [ref=f3e84]:
+          - generic [ref=f3e85]:
+            - generic [ref=f3e86]:
+              - generic [ref=f3e87]:
+                - text: ELIGIBLE INVENTORY
+                - heading "Today’s audited legs" [level=2] [ref=f3e88]
+              - generic [ref=f3e89]:
+                - button "REFRESH" [ref=f3e90] [cursor=pointer]
+                - button "ADD BEST 5" [ref=f3e96] [cursor=pointer]
+            - generic [ref=f3e349]:
+              - generic [ref=f3e354]: Football is evidence-locked
+              - generic [ref=f3e355]: Games, teams and players can be explored now. Builder legs remain unavailable until the sport’s live shadow threshold and calibration gates pass.
+              - link "VIEW MODEL LAB" [ref=f3e356] [cursor=pointer]:
+                - /url: /football/models
+          - complementary [ref=f3e105]:
+            - generic [ref=f3e106]:
+              - generic [ref=f3e107]:
+                - generic [ref=f3e108]: CARD / 05
+                - generic [ref=f3e109]: Combined build
+              - button [ref=f3e309] [cursor=pointer]
+            - generic [ref=f3e313]:
+              - article [ref=f3e314]:
+                - generic [ref=f3e315]: "01"
+                - generic [ref=f3e316]:
+                  - generic [ref=f3e317]: MLB · Moneyline
+                  - generic [ref=f3e318]: Tampa Bay Rays to win
+                  - emphasis [ref=f3e319]: Tampa Bay Rays @ Athletics
+                - button "×" [ref=f3e320] [cursor=pointer]
+              - article [ref=f3e321]:
+                - generic [ref=f3e322]: "02"
+                - generic [ref=f3e323]:
+                  - generic [ref=f3e324]: MLB · Moneyline
+                  - generic [ref=f3e325]: Los Angeles Dodgers to win
+                  - emphasis [ref=f3e326]: Kansas City Royals @ Los Angeles Dodgers
+                - button "×" [ref=f3e327] [cursor=pointer]
+              - article [ref=f3e328]:
+                - generic [ref=f3e329]: "03"
+                - generic [ref=f3e330]:
+                  - generic [ref=f3e331]: MLB · Moneyline
+                  - generic [ref=f3e332]: Arizona Diamondbacks to win
+                  - emphasis [ref=f3e333]: Colorado Rockies @ Arizona Diamondbacks
+                - button "×" [ref=f3e334] [cursor=pointer]
+              - article [ref=f3e335]:
+                - generic [ref=f3e336]: "04"
+                - generic [ref=f3e337]:
+                  - generic [ref=f3e338]: MLB · Moneyline
+                  - generic [ref=f3e339]: Atlanta Braves to win
+                  - emphasis [ref=f3e340]: New York Mets @ Atlanta Braves
+                - button "×" [ref=f3e341] [cursor=pointer]
+              - article [ref=f3e342]:
+                - generic [ref=f3e343]: "05"
+                - generic [ref=f3e344]:
+                  - generic [ref=f3e345]: MLB · Moneyline
+                  - generic [ref=f3e346]: Boston Red Sox to win
+                  - emphasis [ref=f3e347]: Boston Red Sox @ Toronto Blue Jays
+                - button "×" [ref=f3e348] [cursor=pointer]
+            - generic [ref=f3e117]:
+              - generic [ref=f3e118]:
+                - generic [ref=f3e119]:
+                  - term [ref=f3e120]: LEGS
+                  - definition [ref=f3e121]: "5"
+                - generic [ref=f3e122]:
+                  - term [ref=f3e123]: EVENTS
+                  - definition [ref=f3e124]: "5"
+                - generic [ref=f3e125]:
+                  - term [ref=f3e126]: JOINT MODEL
+                  - definition [ref=f3e127]: 11.0%
+                - generic [ref=f3e128]:
+                  - term [ref=f3e129]: DECIMAL ODDS
+                  - definition [ref=f3e130]: "11.12"
+              - paragraph [ref=f3e131]: No wager is placed from this research surface.

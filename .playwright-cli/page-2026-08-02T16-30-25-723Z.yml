@@ -1,0 +1,1044 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - link "NINTH logo NINTH BASEBALL / DECISION LAB" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "NINTH logo" [ref=e7]
+          - generic [ref=e8]:
+            - generic [ref=e9]: NINTH
+            - generic [ref=e10]: BASEBALL / DECISION LAB
+        - navigation [ref=e11]:
+          - link "Games" [ref=e12] [cursor=pointer]:
+            - /url: /schedule
+          - link "Live" [ref=e16] [cursor=pointer]:
+            - /url: /live
+          - link "Builder" [ref=e24] [cursor=pointer]:
+            - /url: /builder
+          - link "Standings" [ref=e27] [cursor=pointer]:
+            - /url: /standings
+          - link "Teams" [ref=e35] [cursor=pointer]:
+            - /url: /teams
+          - link "Players" [ref=e39] [cursor=pointer]:
+            - /url: /players
+          - link "Model" [ref=e46] [cursor=pointer]:
+            - /url: /model
+          - link "My slips" [ref=e60] [cursor=pointer]:
+            - /url: /slips
+        - textbox "Search MLB" [ref=e69]:
+          - /placeholder: Search teams, players, games
+        - button "Use dark theme" [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: DISPLAY / 09
+            - generic [ref=e73]: DAY
+      - generic [ref=e78]:
+        - generic [ref=e79]: TODAY
+        - link "PHI 0 — 0 BAL Pre-Game" [ref=e425] [cursor=pointer]:
+          - /url: /games/824807
+          - generic [ref=e426]: PHI
+          - emphasis [ref=e427]: "0"
+          - generic [ref=e428]: —
+          - emphasis [ref=e429]: "0"
+          - generic [ref=e430]: BAL
+          - generic [ref=e431]: Pre-Game
+        - link "WSH 0 — 0 ATL Pre-Game" [ref=e432] [cursor=pointer]:
+          - /url: /games/824891
+          - generic [ref=e433]: WSH
+          - emphasis [ref=e434]: "0"
+          - generic [ref=e435]: —
+          - emphasis [ref=e436]: "0"
+          - generic [ref=e437]: ATL
+          - generic [ref=e438]: Pre-Game
+        - link "STL 0 — 0 TOR Pre-Game" [ref=e439] [cursor=pointer]:
+          - /url: /games/822783
+          - generic [ref=e440]: STL
+          - emphasis [ref=e441]: "0"
+          - generic [ref=e442]: —
+          - emphasis [ref=e443]: "0"
+          - generic [ref=e444]: TOR
+          - generic [ref=e445]: Pre-Game
+        - link "AZ 0 — 0 CLE Pre-Game" [ref=e446] [cursor=pointer]:
+          - /url: /games/824404
+          - generic [ref=e447]: AZ
+          - emphasis [ref=e448]: "0"
+          - generic [ref=e449]: —
+          - emphasis [ref=e450]: "0"
+          - generic [ref=e451]: CLE
+          - generic [ref=e452]: Pre-Game
+        - generic [ref=e82]: OFFICIAL FEEDS CONNECTED
+    - main [ref=e84]:
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - text: NINTH / PLAYER LAB
+            - heading "Build from the player up." [level=1] [ref=e89]
+            - paragraph [ref=e90]: Start with a matchup, inspect its available player markets, then add only the legs you want to the card.
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - generic [ref=e93]: MODEL
+              - generic [ref=e94]:
+                - link "MONEYLINE" [ref=e95] [cursor=pointer]:
+                  - /url: /builder?market=moneyline
+                - link "TOTALS" [ref=e96] [cursor=pointer]:
+                  - /url: /builder?market=totals
+                - link "MIXED" [ref=e97] [cursor=pointer]:
+                  - /url: /builder?market=combined
+                - link "PLAYER PROPS" [ref=e98] [cursor=pointer]:
+                  - /url: /props-builder
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - generic [ref=e101]: SLATE
+                - generic [ref=e102]:
+                  - button "DAILY" [ref=e103] [cursor=pointer]
+                  - button "MULTI-DAY" [ref=e104] [cursor=pointer]
+              - generic [ref=e105]:
+                - generic [ref=e106]: Game date
+                - button "Aug 2, 2026" [ref=e107] [cursor=pointer]
+              - generic [ref=e113]:
+                - generic [ref=e114]: Target legs
+                - button "5 legs" [ref=e115] [cursor=pointer]
+              - generic [ref=e119]:
+                - generic [ref=e120]: Minimum MelBet odds
+                - button "1.50+" [ref=e121] [cursor=pointer]
+              - generic [ref=e125]:
+                - generic [ref=e126]: DATA
+                - button "REFRESH" [ref=e127] [cursor=pointer]
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - generic [ref=e135]: Included player props
+                - button "All 7 selected 7" [ref=e136] [cursor=pointer]:
+                  - generic [ref=e137]: All 7 selected
+                  - generic [ref=e138]: "7"
+              - generic [ref=e141]:
+                - generic [ref=e142]: BUILD DIRECTION
+                - group "Automatic player prop build direction" [ref=e143]:
+                  - button "BOTH" [pressed] [ref=e144] [cursor=pointer]
+                  - button "OVER" [ref=e145] [cursor=pointer]
+                  - button "UNDER" [ref=e146] [cursor=pointer]
+        - generic [ref=e147]:
+          - generic [ref=e149]:
+            - strong [ref=e150]: "0.0"
+            - text: "%"
+          - generic [ref=e151]:
+            - text: SAMPLE-SIZE ADJUSTED SLIP CONFIDENCE
+            - heading "ADD LEGS TO SCORE" [level=2] [ref=e152]
+            - paragraph [ref=e153]: Estimated chance that every selected prop lands. Short player histories are pulled toward 50%, and recommended cards use one prop per game at an audited 65% minimum to limit weak legs and hidden same-game correlation.
+            - generic [ref=e154]: MODEL PROBABILITY, NOT A GUARANTEE
+          - generic [ref=e155]:
+            - generic [ref=e156]:
+              - generic [ref=e157]: LEGS
+              - generic [ref=e158]: 0 / 5
+            - generic [ref=e159]:
+              - generic [ref=e160]: ADJUSTED
+              - generic [ref=e161]: 0.0%
+            - generic [ref=e162]:
+              - generic [ref=e163]: RAW PRODUCT
+              - generic [ref=e164]: 0.0%
+            - generic [ref=e165]:
+              - generic [ref=e166]: TYPICAL LEG
+              - generic [ref=e167]: 0.0%
+          - generic [ref=e168]:
+            - button "BUILD BEST 5" [ref=e169] [cursor=pointer]
+            - button "SEND TO MELBET" [disabled] [ref=e172]
+            - button "CLEAR" [disabled] [ref=e176]
+        - generic [ref=e180]:
+          - generic [ref=e181]: 15 GAMES · SUNDAY, AUGUST 2 · 15 WITH CURRENT PLAYER MARKETS · MINIMUM @ 1.50 · AUTO 60S
+          - paragraph [ref=e183]: MelBet decimal odds are displayed and used only as a selection floor. They never enter or modify the player-prop models.
+        - generic [ref=e184]:
+          - button "1:35 PM EDT Philadelphia Phillies logo Philadelphia Phillies AWAY AT Baltimore Orioles HOME Baltimore Orioles logo VIEW 20 MATCHING PLAYERS →" [active] [ref=e185] [cursor=pointer]:
+            - generic [ref=e186]: 1:35 PM EDT
+            - generic [ref=e187]:
+              - img "Philadelphia Phillies logo" [ref=e189]
+              - generic [ref=e190]:
+                - generic [ref=e191]: Philadelphia Phillies
+                - generic [ref=e192]: AWAY
+            - generic [ref=e193]: AT
+            - generic [ref=e194]:
+              - generic [ref=e195]:
+                - generic [ref=e196]: Baltimore Orioles
+                - generic [ref=e197]: HOME
+              - img "Baltimore Orioles logo" [ref=e199]
+            - generic [ref=e200]: VIEW 20 MATCHING PLAYERS →
+          - button "1:35 PM EDT Washington Nationals logo Washington Nationals AWAY AT Atlanta Braves HOME Atlanta Braves logo VIEW 20 MATCHING PLAYERS →" [ref=e201] [cursor=pointer]:
+            - generic [ref=e202]: 1:35 PM EDT
+            - generic [ref=e203]:
+              - img "Washington Nationals logo" [ref=e205]
+              - generic [ref=e206]:
+                - generic [ref=e207]: Washington Nationals
+                - generic [ref=e208]: AWAY
+            - generic [ref=e209]: AT
+            - generic [ref=e210]:
+              - generic [ref=e211]:
+                - generic [ref=e212]: Atlanta Braves
+                - generic [ref=e213]: HOME
+              - img "Atlanta Braves logo" [ref=e215]
+            - generic [ref=e216]: VIEW 20 MATCHING PLAYERS →
+          - button "1:37 PM EDT St. Louis Cardinals logo St. Louis Cardinals AWAY AT Toronto Blue Jays HOME Toronto Blue Jays logo VIEW 20 MATCHING PLAYERS →" [ref=e217] [cursor=pointer]:
+            - generic [ref=e218]: 1:37 PM EDT
+            - generic [ref=e219]:
+              - img "St. Louis Cardinals logo" [ref=e221]
+              - generic [ref=e222]:
+                - generic [ref=e223]: St. Louis Cardinals
+                - generic [ref=e224]: AWAY
+            - generic [ref=e225]: AT
+            - generic [ref=e226]:
+              - generic [ref=e227]:
+                - generic [ref=e228]: Toronto Blue Jays
+                - generic [ref=e229]: HOME
+              - img "Toronto Blue Jays logo" [ref=e231]
+            - generic [ref=e232]: VIEW 20 MATCHING PLAYERS →
+          - button "1:40 PM EDT Arizona Diamondbacks logo Arizona Diamondbacks AWAY AT Cleveland Guardians HOME Cleveland Guardians logo VIEW 20 MATCHING PLAYERS →" [ref=e233] [cursor=pointer]:
+            - generic [ref=e234]: 1:40 PM EDT
+            - generic [ref=e235]:
+              - img "Arizona Diamondbacks logo" [ref=e237]
+              - generic [ref=e238]:
+                - generic [ref=e239]: Arizona Diamondbacks
+                - generic [ref=e240]: AWAY
+            - generic [ref=e241]: AT
+            - generic [ref=e242]:
+              - generic [ref=e243]:
+                - generic [ref=e244]: Cleveland Guardians
+                - generic [ref=e245]: HOME
+              - img "Cleveland Guardians logo" [ref=e247]
+            - generic [ref=e248]: VIEW 20 MATCHING PLAYERS →
+          - button "1:40 PM EDT Pittsburgh Pirates logo Pittsburgh Pirates AWAY AT Cincinnati Reds HOME Cincinnati Reds logo VIEW 19 MATCHING PLAYERS →" [ref=e249] [cursor=pointer]:
+            - generic [ref=e250]: 1:40 PM EDT
+            - generic [ref=e251]:
+              - img "Pittsburgh Pirates logo" [ref=e253]
+              - generic [ref=e254]:
+                - generic [ref=e255]: Pittsburgh Pirates
+                - generic [ref=e256]: AWAY
+            - generic [ref=e257]: AT
+            - generic [ref=e258]:
+              - generic [ref=e259]:
+                - generic [ref=e260]: Cincinnati Reds
+                - generic [ref=e261]: HOME
+              - img "Cincinnati Reds logo" [ref=e263]
+            - generic [ref=e264]: VIEW 19 MATCHING PLAYERS →
+          - button "1:40 PM EDT Chicago White Sox logo Chicago White Sox AWAY AT Tampa Bay Rays HOME Tampa Bay Rays logo VIEW 20 MATCHING PLAYERS →" [ref=e265] [cursor=pointer]:
+            - generic [ref=e266]: 1:40 PM EDT
+            - generic [ref=e267]:
+              - img "Chicago White Sox logo" [ref=e269]
+              - generic [ref=e270]:
+                - generic [ref=e271]: Chicago White Sox
+                - generic [ref=e272]: AWAY
+            - generic [ref=e273]: AT
+            - generic [ref=e274]:
+              - generic [ref=e275]:
+                - generic [ref=e276]: Tampa Bay Rays
+                - generic [ref=e277]: HOME
+              - img "Tampa Bay Rays logo" [ref=e279]
+            - generic [ref=e280]: VIEW 20 MATCHING PLAYERS →
+          - button "1:40 PM EDT Miami Marlins logo Miami Marlins AWAY AT New York Mets HOME New York Mets logo VIEW 20 MATCHING PLAYERS →" [ref=e281] [cursor=pointer]:
+            - generic [ref=e282]: 1:40 PM EDT
+            - generic [ref=e283]:
+              - img "Miami Marlins logo" [ref=e285]
+              - generic [ref=e286]:
+                - generic [ref=e287]: Miami Marlins
+                - generic [ref=e288]: AWAY
+            - generic [ref=e289]: AT
+            - generic [ref=e290]:
+              - generic [ref=e291]:
+                - generic [ref=e292]: New York Mets
+                - generic [ref=e293]: HOME
+              - img "New York Mets logo" [ref=e295]
+            - generic [ref=e296]: VIEW 20 MATCHING PLAYERS →
+          - button "2:10 PM EDT Texas Rangers logo Texas Rangers AWAY AT Houston Astros HOME Houston Astros logo VIEW 20 MATCHING PLAYERS →" [ref=e297] [cursor=pointer]:
+            - generic [ref=e298]: 2:10 PM EDT
+            - generic [ref=e299]:
+              - img "Texas Rangers logo" [ref=e301]
+              - generic [ref=e302]:
+                - generic [ref=e303]: Texas Rangers
+                - generic [ref=e304]: AWAY
+            - generic [ref=e305]: AT
+            - generic [ref=e306]:
+              - generic [ref=e307]:
+                - generic [ref=e308]: Houston Astros
+                - generic [ref=e309]: HOME
+              - img "Houston Astros logo" [ref=e311]
+            - generic [ref=e312]: VIEW 20 MATCHING PLAYERS →
+          - button "2:20 PM EDT New York Yankees logo New York Yankees AWAY AT Chicago Cubs HOME Chicago Cubs logo VIEW 20 MATCHING PLAYERS →" [ref=e313] [cursor=pointer]:
+            - generic [ref=e314]: 2:20 PM EDT
+            - generic [ref=e315]:
+              - img "New York Yankees logo" [ref=e317]
+              - generic [ref=e318]:
+                - generic [ref=e319]: New York Yankees
+                - generic [ref=e320]: AWAY
+            - generic [ref=e321]: AT
+            - generic [ref=e322]:
+              - generic [ref=e323]:
+                - generic [ref=e324]: Chicago Cubs
+                - generic [ref=e325]: HOME
+              - img "Chicago Cubs logo" [ref=e327]
+            - generic [ref=e328]: VIEW 20 MATCHING PLAYERS →
+          - button "3:10 PM EDT Kansas City Royals logo Kansas City Royals AWAY AT Colorado Rockies HOME Colorado Rockies logo VIEW 20 MATCHING PLAYERS →" [ref=e329] [cursor=pointer]:
+            - generic [ref=e330]: 3:10 PM EDT
+            - generic [ref=e331]:
+              - img "Kansas City Royals logo" [ref=e333]
+              - generic [ref=e334]:
+                - generic [ref=e335]: Kansas City Royals
+                - generic [ref=e336]: AWAY
+            - generic [ref=e337]: AT
+            - generic [ref=e338]:
+              - generic [ref=e339]:
+                - generic [ref=e340]: Colorado Rockies
+                - generic [ref=e341]: HOME
+              - img "Colorado Rockies logo" [ref=e343]
+            - generic [ref=e344]: VIEW 20 MATCHING PLAYERS →
+          - button "3:15 PM EDT Milwaukee Brewers logo Milwaukee Brewers AWAY AT Los Angeles Angels HOME Los Angeles Angels logo VIEW 17 MATCHING PLAYERS →" [ref=e345] [cursor=pointer]:
+            - generic [ref=e346]: 3:15 PM EDT
+            - generic [ref=e347]:
+              - img "Milwaukee Brewers logo" [ref=e349]
+              - generic [ref=e350]:
+                - generic [ref=e351]: Milwaukee Brewers
+                - generic [ref=e352]: AWAY
+            - generic [ref=e353]: AT
+            - generic [ref=e354]:
+              - generic [ref=e355]:
+                - generic [ref=e356]: Los Angeles Angels
+                - generic [ref=e357]: HOME
+              - img "Los Angeles Angels logo" [ref=e359]
+            - generic [ref=e360]: VIEW 17 MATCHING PLAYERS →
+          - button "4:05 PM EDT Detroit Tigers logo Detroit Tigers AWAY AT Athletics HOME Athletics logo VIEW 14 MATCHING PLAYERS →" [ref=e361] [cursor=pointer]:
+            - generic [ref=e362]: 4:05 PM EDT
+            - generic [ref=e363]:
+              - img "Detroit Tigers logo" [ref=e365]
+              - generic [ref=e366]:
+                - generic [ref=e367]: Detroit Tigers
+                - generic [ref=e368]: AWAY
+            - generic [ref=e369]: AT
+            - generic [ref=e370]:
+              - generic [ref=e371]:
+                - generic [ref=e372]: Athletics
+                - generic [ref=e373]: HOME
+              - img "Athletics logo" [ref=e375]
+            - generic [ref=e376]: VIEW 14 MATCHING PLAYERS →
+          - button "4:10 PM EDT San Francisco Giants logo San Francisco Giants AWAY AT San Diego Padres HOME San Diego Padres logo VIEW 16 MATCHING PLAYERS →" [ref=e377] [cursor=pointer]:
+            - generic [ref=e378]: 4:10 PM EDT
+            - generic [ref=e379]:
+              - img "San Francisco Giants logo" [ref=e381]
+              - generic [ref=e382]:
+                - generic [ref=e383]: San Francisco Giants
+                - generic [ref=e384]: AWAY
+            - generic [ref=e385]: AT
+            - generic [ref=e386]:
+              - generic [ref=e387]:
+                - generic [ref=e388]: San Diego Padres
+                - generic [ref=e389]: HOME
+              - img "San Diego Padres logo" [ref=e391]
+            - generic [ref=e392]: VIEW 16 MATCHING PLAYERS →
+          - button "4:10 PM EDT Minnesota Twins logo Minnesota Twins AWAY AT Seattle Mariners HOME Seattle Mariners logo VIEW 17 MATCHING PLAYERS →" [ref=e393] [cursor=pointer]:
+            - generic [ref=e394]: 4:10 PM EDT
+            - generic [ref=e395]:
+              - img "Minnesota Twins logo" [ref=e397]
+              - generic [ref=e398]:
+                - generic [ref=e399]: Minnesota Twins
+                - generic [ref=e400]: AWAY
+            - generic [ref=e401]: AT
+            - generic [ref=e402]:
+              - generic [ref=e403]:
+                - generic [ref=e404]: Seattle Mariners
+                - generic [ref=e405]: HOME
+              - img "Seattle Mariners logo" [ref=e407]
+            - generic [ref=e408]: VIEW 17 MATCHING PLAYERS →
+          - button "7:20 PM EDT Boston Red Sox logo Boston Red Sox AWAY AT Los Angeles Dodgers HOME Los Angeles Dodgers logo VIEW 20 MATCHING PLAYERS →" [ref=e409] [cursor=pointer]:
+            - generic [ref=e410]: 7:20 PM EDT
+            - generic [ref=e411]:
+              - img "Boston Red Sox logo" [ref=e413]
+              - generic [ref=e414]:
+                - generic [ref=e415]: Boston Red Sox
+                - generic [ref=e416]: AWAY
+            - generic [ref=e417]: AT
+            - generic [ref=e418]:
+              - generic [ref=e419]:
+                - generic [ref=e420]: Los Angeles Dodgers
+                - generic [ref=e421]: HOME
+              - img "Los Angeles Dodgers logo" [ref=e423]
+            - generic [ref=e424]: VIEW 20 MATCHING PLAYERS →
+  - dialog "Philadelphia Phillies at Baltimore Orioles player props" [ref=e454]:
+    - banner [ref=e455]:
+      - generic [ref=e456]:
+        - img "Philadelphia Phillies logo" [ref=e458]
+        - generic [ref=e459]:
+          - generic [ref=e460]: 1:35 PM EDT
+          - generic [ref=e461]:
+            - text: Philadelphia Phillies
+            - emphasis [ref=e462]: at
+            - text: Baltimore Orioles
+        - img "Baltimore Orioles logo" [ref=e464]
+      - button "Close player props" [ref=e465] [cursor=pointer]
+    - generic [ref=e469]:
+      - generic [ref=e470]:
+        - text: AVAILABLE PLAYER PROPS
+        - paragraph [ref=e471]: Select a player, market and line. One leg is allowed from each game.
+      - generic [ref=e472]:
+        - button "ALL" [ref=e473] [cursor=pointer]
+        - button "BATTER" [ref=e474] [cursor=pointer]
+        - button "PITCHER" [ref=e475] [cursor=pointer]
+    - generic [ref=e477]:
+      - article [ref=e478]:
+        - generic [ref=e479]:
+          - img "Justin Crawford headshot" [ref=e482]
+          - generic [ref=e483]:
+            - generic [ref=e484]: BATTER · CONFIRMED
+            - generic [ref=e485]: Justin Crawford
+            - emphasis [ref=e486]: "Projected batting order #8 · 50 tracked games"
+        - generic [ref=e487]:
+          - generic [ref=e488]:
+            - generic [ref=e489]: Prop
+            - 'button "Home runs Last 10: 0" [ref=e490] [cursor=pointer]':
+              - generic [ref=e491]: Home runs
+              - generic [ref=e492]: "Last 10: 0"
+          - generic [ref=e495]:
+            - generic [ref=e496]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 14" [ref=e497] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e498]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 14
+        - generic [ref=e501]:
+          - button "OVER 0.5 @ 14 / 1 OR MORE @ 14 Batters. Total Home Runs NINTH MODEL 3.7%" [ref=e502] [cursor=pointer]:
+            - generic [ref=e503]:
+              - generic [ref=e504]: OVER 0.5 @ 14 / 1 OR MORE @ 14
+              - generic [ref=e505]: Batters. Total Home Runs
+            - generic [ref=e506]:
+              - generic [ref=e507]: NINTH MODEL
+              - strong [ref=e508]: 3.7%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e509]:
+            - generic [ref=e510]:
+              - generic [ref=e511]: UNDER NOT LISTED
+              - generic [ref=e512]: Home runs
+        - generic [ref=e513]:
+          - text: LAST 10 AVG 0
+          - generic [ref=e514]: High confidence · 96/100
+      - article [ref=e515]:
+        - generic [ref=e516]:
+          - img "Zack Wheeler headshot" [ref=e519]
+          - generic [ref=e520]:
+            - generic [ref=e521]: PITCHER · CONFIRMED
+            - generic [ref=e522]: Zack Wheeler
+            - emphasis [ref=e523]: Starting pitcher · 50 tracked games
+        - generic [ref=e524]:
+          - generic [ref=e525]:
+            - generic [ref=e526]: Prop
+            - 'button "Strikeouts Last 10: 8.3" [ref=e527] [cursor=pointer]':
+              - generic [ref=e528]: Strikeouts
+              - generic [ref=e529]: "Last 10: 8.3"
+          - generic [ref=e532]:
+            - generic [ref=e533]: Line
+            - button "Strikeouts — O/U 7.5 / 8+ Pitchers. Total Strikeouts / Pitchers. Extra Total Strikeouts · best @ 1.87" [ref=e534] [cursor=pointer]:
+              - generic: Strikeouts — O/U 7.5 / 8+
+              - generic [ref=e535]: Pitchers. Total Strikeouts / Pitchers. Extra Total Strikeouts · best @ 1.87
+        - generic [ref=e538]:
+          - button "OVER 7.5 @ 1.87 / 8 OR MORE @ 1.87 Pitchers. Total Strikeouts NINTH MODEL 48.1%" [ref=e539] [cursor=pointer]:
+            - generic [ref=e540]:
+              - generic [ref=e541]: OVER 7.5 @ 1.87 / 8 OR MORE @ 1.87
+              - generic [ref=e542]: Pitchers. Total Strikeouts
+            - generic [ref=e543]:
+              - generic [ref=e544]: NINTH MODEL
+              - strong [ref=e545]: 48.1%
+          - button "UNDER 7.5 @ 1.87 Pitchers. Total Strikeouts NINTH MODEL 51.9%" [ref=e546] [cursor=pointer]:
+            - generic [ref=e547]:
+              - generic [ref=e548]: UNDER 7.5 @ 1.87
+              - generic [ref=e549]: Pitchers. Total Strikeouts
+            - generic [ref=e550]:
+              - generic [ref=e551]: NINTH MODEL
+              - strong [ref=e552]: 51.9%
+        - generic [ref=e553]:
+          - text: LAST 10 AVG 8.3
+          - generic [ref=e554]: Moderate confidence · 65/100
+      - article [ref=e555]:
+        - generic [ref=e556]:
+          - img "Kyle Bradish headshot" [ref=e559]
+          - generic [ref=e560]:
+            - generic [ref=e561]: PITCHER · CONFIRMED
+            - generic [ref=e562]: Kyle Bradish
+            - emphasis [ref=e563]: Starting pitcher · 50 tracked games
+        - generic [ref=e564]:
+          - generic [ref=e565]:
+            - generic [ref=e566]: Prop
+            - 'button "Strikeouts Last 10: 5.3" [ref=e567] [cursor=pointer]':
+              - generic [ref=e568]: Strikeouts
+              - generic [ref=e569]: "Last 10: 5.3"
+          - generic [ref=e572]:
+            - generic [ref=e573]: Line
+            - button "Strikeouts — O/U 5.5 / 6+ Pitchers. Total Strikeouts / Pitchers. Extra Total Strikeouts · best @ 1.952" [ref=e574] [cursor=pointer]:
+              - generic: Strikeouts — O/U 5.5 / 6+
+              - generic [ref=e575]: Pitchers. Total Strikeouts / Pitchers. Extra Total Strikeouts · best @ 1.952
+        - generic [ref=e578]:
+          - button "OVER 5.5 @ 1.952 / 6 OR MORE @ 1.952 Pitchers. Total Strikeouts NINTH MODEL 48.1%" [ref=e579] [cursor=pointer]:
+            - generic [ref=e580]:
+              - generic [ref=e581]: OVER 5.5 @ 1.952 / 6 OR MORE @ 1.952
+              - generic [ref=e582]: Pitchers. Total Strikeouts
+            - generic [ref=e583]:
+              - generic [ref=e584]: NINTH MODEL
+              - strong [ref=e585]: 48.1%
+          - button "UNDER 5.5 @ 1.769 Pitchers. Total Strikeouts NINTH MODEL 51.9%" [ref=e586] [cursor=pointer]:
+            - generic [ref=e587]:
+              - generic [ref=e588]: UNDER 5.5 @ 1.769
+              - generic [ref=e589]: Pitchers. Total Strikeouts
+            - generic [ref=e590]:
+              - generic [ref=e591]: NINTH MODEL
+              - strong [ref=e592]: 51.9%
+        - generic [ref=e593]:
+          - text: LAST 10 AVG 5.3
+          - generic [ref=e594]: Cautious confidence · 52/100
+      - article [ref=e595]:
+        - generic [ref=e596]:
+          - img "Jackson Holliday headshot" [ref=e599]
+          - generic [ref=e600]:
+            - generic [ref=e601]: BATTER · CONFIRMED
+            - generic [ref=e602]: Jackson Holliday
+            - emphasis [ref=e603]: "Projected batting order #5 · 50 tracked games"
+        - generic [ref=e604]:
+          - generic [ref=e605]:
+            - generic [ref=e606]: Prop
+            - 'button "Home runs Last 10: 0" [ref=e607] [cursor=pointer]':
+              - generic [ref=e608]: Home runs
+              - generic [ref=e609]: "Last 10: 0"
+          - generic [ref=e612]:
+            - generic [ref=e613]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 9" [ref=e614] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e615]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 9
+        - generic [ref=e618]:
+          - button "OVER 0.5 @ 9 / 1 OR MORE @ 9 Batters. Total Home Runs NINTH MODEL 7.0%" [ref=e619] [cursor=pointer]:
+            - generic [ref=e620]:
+              - generic [ref=e621]: OVER 0.5 @ 9 / 1 OR MORE @ 9
+              - generic [ref=e622]: Batters. Total Home Runs
+            - generic [ref=e623]:
+              - generic [ref=e624]: NINTH MODEL
+              - strong [ref=e625]: 7.0%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e626]:
+            - generic [ref=e627]:
+              - generic [ref=e628]: UNDER NOT LISTED
+              - generic [ref=e629]: Home runs
+        - generic [ref=e630]:
+          - text: LAST 10 AVG 0
+          - generic [ref=e631]: High confidence · 93/100
+      - article [ref=e632]:
+        - generic [ref=e633]:
+          - img "Leody Taveras headshot" [ref=e636]
+          - generic [ref=e637]:
+            - generic [ref=e638]: BATTER · CONFIRMED
+            - generic [ref=e639]: Leody Taveras
+            - emphasis [ref=e640]: "Projected batting order #7 · 50 tracked games"
+        - generic [ref=e641]:
+          - generic [ref=e642]:
+            - generic [ref=e643]: Prop
+            - 'button "Home runs Last 10: 0.2" [ref=e644] [cursor=pointer]':
+              - generic [ref=e645]: Home runs
+              - generic [ref=e646]: "Last 10: 0.2"
+          - generic [ref=e649]:
+            - generic [ref=e650]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 9" [ref=e651] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e652]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 9
+        - generic [ref=e655]:
+          - button "OVER 0.5 @ 9 / 1 OR MORE @ 9 Batters. Total Home Runs NINTH MODEL 9.2%" [ref=e656] [cursor=pointer]:
+            - generic [ref=e657]:
+              - generic [ref=e658]: OVER 0.5 @ 9 / 1 OR MORE @ 9
+              - generic [ref=e659]: Batters. Total Home Runs
+            - generic [ref=e660]:
+              - generic [ref=e661]: NINTH MODEL
+              - strong [ref=e662]: 9.2%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e663]:
+            - generic [ref=e664]:
+              - generic [ref=e665]: UNDER NOT LISTED
+              - generic [ref=e666]: Home runs
+        - generic [ref=e667]:
+          - text: LAST 10 AVG 0.2
+          - generic [ref=e668]: High confidence · 91/100
+      - article [ref=e669]:
+        - generic [ref=e670]:
+          - img "Colton Cowser headshot" [ref=e673]
+          - generic [ref=e674]:
+            - generic [ref=e675]: BATTER · CONFIRMED
+            - generic [ref=e676]: Colton Cowser
+            - emphasis [ref=e677]: "Projected batting order #8 · 50 tracked games"
+        - generic [ref=e678]:
+          - generic [ref=e679]:
+            - generic [ref=e680]: Prop
+            - 'button "Home runs Last 10: 0" [ref=e681] [cursor=pointer]':
+              - generic [ref=e682]: Home runs
+              - generic [ref=e683]: "Last 10: 0"
+          - generic [ref=e686]:
+            - generic [ref=e687]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 8" [ref=e688] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e689]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 8
+        - generic [ref=e692]:
+          - button "OVER 0.5 @ 8 / 1 OR MORE @ 8 Batters. Total Home Runs NINTH MODEL 9.3%" [ref=e693] [cursor=pointer]:
+            - generic [ref=e694]:
+              - generic [ref=e695]: OVER 0.5 @ 8 / 1 OR MORE @ 8
+              - generic [ref=e696]: Batters. Total Home Runs
+            - generic [ref=e697]:
+              - generic [ref=e698]: NINTH MODEL
+              - strong [ref=e699]: 9.3%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e700]:
+            - generic [ref=e701]:
+              - generic [ref=e702]: UNDER NOT LISTED
+              - generic [ref=e703]: Home runs
+        - generic [ref=e704]:
+          - text: LAST 10 AVG 0
+          - generic [ref=e705]: High confidence · 91/100
+      - article [ref=e706]:
+        - generic [ref=e707]:
+          - img "Bryson Stott headshot" [ref=e710]
+          - generic [ref=e711]:
+            - generic [ref=e712]: BATTER · CONFIRMED
+            - generic [ref=e713]: Bryson Stott
+            - emphasis [ref=e714]: "Projected batting order #7 · 50 tracked games"
+        - generic [ref=e715]:
+          - generic [ref=e716]:
+            - generic [ref=e717]: Prop
+            - 'button "Home runs Last 10: 0.1" [ref=e718] [cursor=pointer]':
+              - generic [ref=e719]: Home runs
+              - generic [ref=e720]: "Last 10: 0.1"
+          - generic [ref=e723]:
+            - generic [ref=e724]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 8" [ref=e725] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e726]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 8
+        - generic [ref=e729]:
+          - button "OVER 0.5 @ 8 / 1 OR MORE @ 8 Batters. Total Home Runs NINTH MODEL 9.4%" [ref=e730] [cursor=pointer]:
+            - generic [ref=e731]:
+              - generic [ref=e732]: OVER 0.5 @ 8 / 1 OR MORE @ 8
+              - generic [ref=e733]: Batters. Total Home Runs
+            - generic [ref=e734]:
+              - generic [ref=e735]: NINTH MODEL
+              - strong [ref=e736]: 9.4%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e737]:
+            - generic [ref=e738]:
+              - generic [ref=e739]: UNDER NOT LISTED
+              - generic [ref=e740]: Home runs
+        - generic [ref=e741]:
+          - text: LAST 10 AVG 0.1
+          - generic [ref=e742]: High confidence · 91/100
+      - article [ref=e743]:
+        - generic [ref=e744]:
+          - img "Dylan Beavers headshot" [ref=e747]
+          - generic [ref=e748]:
+            - generic [ref=e749]: BATTER · CONFIRMED
+            - generic [ref=e750]: Dylan Beavers
+            - emphasis [ref=e751]: "Projected batting order #1 · 50 tracked games"
+        - generic [ref=e752]:
+          - generic [ref=e753]:
+            - generic [ref=e754]: Prop
+            - 'button "Home runs Last 10: 0" [ref=e755] [cursor=pointer]':
+              - generic [ref=e756]: Home runs
+              - generic [ref=e757]: "Last 10: 0"
+          - generic [ref=e760]:
+            - generic [ref=e761]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 6.5" [ref=e762] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e763]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 6.5
+        - generic [ref=e766]:
+          - button "OVER 0.5 @ 6.5 / 1 OR MORE @ 6.25 Batters. Total Home Runs NINTH MODEL 11.0%" [ref=e767] [cursor=pointer]:
+            - generic [ref=e768]:
+              - generic [ref=e769]: OVER 0.5 @ 6.5 / 1 OR MORE @ 6.25
+              - generic [ref=e770]: Batters. Total Home Runs
+            - generic [ref=e771]:
+              - generic [ref=e772]: NINTH MODEL
+              - strong [ref=e773]: 11.0%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e774]:
+            - generic [ref=e775]:
+              - generic [ref=e776]: UNDER NOT LISTED
+              - generic [ref=e777]: Home runs
+        - generic [ref=e778]:
+          - text: LAST 10 AVG 0
+          - generic [ref=e779]: High confidence · 89/100
+      - article [ref=e780]:
+        - generic [ref=e781]:
+          - img "Gunnar Henderson headshot" [ref=e784]
+          - generic [ref=e785]:
+            - generic [ref=e786]: BATTER · CONFIRMED
+            - generic [ref=e787]: Gunnar Henderson
+            - emphasis [ref=e788]: "Projected batting order #3 · 50 tracked games"
+        - generic [ref=e789]:
+          - generic [ref=e790]:
+            - generic [ref=e791]: Prop
+            - 'button "Home runs Last 10: 0.1" [ref=e792] [cursor=pointer]':
+              - generic [ref=e793]: Home runs
+              - generic [ref=e794]: "Last 10: 0.1"
+          - generic [ref=e797]:
+            - generic [ref=e798]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 5.25" [ref=e799] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e800]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 5.25
+        - generic [ref=e803]:
+          - button "OVER 0.5 @ 5.25 / 1 OR MORE @ 4.9 Batters. Total Home Runs NINTH MODEL 11.5%" [ref=e804] [cursor=pointer]:
+            - generic [ref=e805]:
+              - generic [ref=e806]: OVER 0.5 @ 5.25 / 1 OR MORE @ 4.9
+              - generic [ref=e807]: Batters. Total Home Runs
+            - generic [ref=e808]:
+              - generic [ref=e809]: NINTH MODEL
+              - strong [ref=e810]: 11.5%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e811]:
+            - generic [ref=e812]:
+              - generic [ref=e813]: UNDER NOT LISTED
+              - generic [ref=e814]: Home runs
+        - generic [ref=e815]:
+          - text: LAST 10 AVG 0.1
+          - generic [ref=e816]: High confidence · 89/100
+      - article [ref=e817]:
+        - generic [ref=e818]:
+          - img "J.T. Realmuto headshot" [ref=e821]
+          - generic [ref=e822]:
+            - generic [ref=e823]: BATTER · CONFIRMED
+            - generic [ref=e824]: J.T. Realmuto
+            - emphasis [ref=e825]: "Projected batting order #6 · 50 tracked games"
+        - generic [ref=e826]:
+          - generic [ref=e827]:
+            - generic [ref=e828]: Prop
+            - 'button "Home runs Last 10: 0" [ref=e829] [cursor=pointer]':
+              - generic [ref=e830]: Home runs
+              - generic [ref=e831]: "Last 10: 0"
+          - generic [ref=e834]:
+            - generic [ref=e835]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 9.5" [ref=e836] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e837]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 9.5
+        - generic [ref=e840]:
+          - button "OVER 0.5 @ 9.5 / 1 OR MORE @ 9 Batters. Total Home Runs NINTH MODEL 12.5%" [ref=e841] [cursor=pointer]:
+            - generic [ref=e842]:
+              - generic [ref=e843]: OVER 0.5 @ 9.5 / 1 OR MORE @ 9
+              - generic [ref=e844]: Batters. Total Home Runs
+            - generic [ref=e845]:
+              - generic [ref=e846]: NINTH MODEL
+              - strong [ref=e847]: 12.5%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e848]:
+            - generic [ref=e849]:
+              - generic [ref=e850]: UNDER NOT LISTED
+              - generic [ref=e851]: Home runs
+        - generic [ref=e852]:
+          - text: LAST 10 AVG 0
+          - generic [ref=e853]: High confidence · 87/100
+      - article [ref=e854]:
+        - generic [ref=e855]:
+          - img "Brandon Marsh headshot" [ref=e858]
+          - generic [ref=e859]:
+            - generic [ref=e860]: BATTER · CONFIRMED
+            - generic [ref=e861]: Brandon Marsh
+            - emphasis [ref=e862]: "Projected batting order #5 · 50 tracked games"
+        - generic [ref=e863]:
+          - generic [ref=e864]:
+            - generic [ref=e865]: Prop
+            - 'button "Home runs Last 10: 0.1" [ref=e866] [cursor=pointer]':
+              - generic [ref=e867]: Home runs
+              - generic [ref=e868]: "Last 10: 0.1"
+          - generic [ref=e871]:
+            - generic [ref=e872]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 6.75" [ref=e873] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e874]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 6.75
+        - generic [ref=e877]:
+          - button "OVER 0.5 @ 6.75 / 1 OR MORE @ 6.75 Batters. Total Home Runs NINTH MODEL 13.3%" [ref=e878] [cursor=pointer]:
+            - generic [ref=e879]:
+              - generic [ref=e880]: OVER 0.5 @ 6.75 / 1 OR MORE @ 6.75
+              - generic [ref=e881]: Batters. Total Home Runs
+            - generic [ref=e882]:
+              - generic [ref=e883]: NINTH MODEL
+              - strong [ref=e884]: 13.3%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e885]:
+            - generic [ref=e886]:
+              - generic [ref=e887]: UNDER NOT LISTED
+              - generic [ref=e888]: Home runs
+        - generic [ref=e889]:
+          - text: LAST 10 AVG 0.1
+          - generic [ref=e890]: High confidence · 87/100
+      - article [ref=e891]:
+        - generic [ref=e892]:
+          - img "Taylor Ward headshot" [ref=e895]
+          - generic [ref=e896]:
+            - generic [ref=e897]: BATTER · CONFIRMED
+            - generic [ref=e898]: Taylor Ward
+            - emphasis [ref=e899]: "Projected batting order #4 · 50 tracked games"
+        - generic [ref=e900]:
+          - generic [ref=e901]:
+            - generic [ref=e902]: Prop
+            - 'button "Home runs Last 10: 0.1" [ref=e903] [cursor=pointer]':
+              - generic [ref=e904]: Home runs
+              - generic [ref=e905]: "Last 10: 0.1"
+          - generic [ref=e908]:
+            - generic [ref=e909]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 10" [ref=e910] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e911]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 10
+        - generic [ref=e914]:
+          - button "OVER 0.5 @ 10 / 1 OR MORE @ 10 Batters. Total Home Runs NINTH MODEL 13.3%" [ref=e915] [cursor=pointer]:
+            - generic [ref=e916]:
+              - generic [ref=e917]: OVER 0.5 @ 10 / 1 OR MORE @ 10
+              - generic [ref=e918]: Batters. Total Home Runs
+            - generic [ref=e919]:
+              - generic [ref=e920]: NINTH MODEL
+              - strong [ref=e921]: 13.3%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e922]:
+            - generic [ref=e923]:
+              - generic [ref=e924]: UNDER NOT LISTED
+              - generic [ref=e925]: Home runs
+        - generic [ref=e926]:
+          - text: LAST 10 AVG 0.1
+          - generic [ref=e927]: High confidence · 87/100
+      - article [ref=e928]:
+        - generic [ref=e929]:
+          - img "Alec Bohm headshot" [ref=e932]
+          - generic [ref=e933]:
+            - generic [ref=e934]: BATTER · CONFIRMED
+            - generic [ref=e935]: Alec Bohm
+            - emphasis [ref=e936]: "Projected batting order #4 · 50 tracked games"
+        - generic [ref=e937]:
+          - generic [ref=e938]:
+            - generic [ref=e939]: Prop
+            - 'button "Home runs Last 10: 0.2" [ref=e940] [cursor=pointer]':
+              - generic [ref=e941]: Home runs
+              - generic [ref=e942]: "Last 10: 0.2"
+          - generic [ref=e945]:
+            - generic [ref=e946]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 10" [ref=e947] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e948]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 10
+        - generic [ref=e951]:
+          - button "OVER 0.5 @ 10 / 1 OR MORE @ 9.5 Batters. Total Home Runs NINTH MODEL 14.5%" [ref=e952] [cursor=pointer]:
+            - generic [ref=e953]:
+              - generic [ref=e954]: OVER 0.5 @ 10 / 1 OR MORE @ 9.5
+              - generic [ref=e955]: Batters. Total Home Runs
+            - generic [ref=e956]:
+              - generic [ref=e957]: NINTH MODEL
+              - strong [ref=e958]: 14.5%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e959]:
+            - generic [ref=e960]:
+              - generic [ref=e961]: UNDER NOT LISTED
+              - generic [ref=e962]: Home runs
+        - generic [ref=e963]:
+          - text: LAST 10 AVG 0.2
+          - generic [ref=e964]: High confidence · 85/100
+      - article [ref=e965]:
+        - generic [ref=e966]:
+          - img "Trea Turner headshot" [ref=e969]
+          - generic [ref=e970]:
+            - generic [ref=e971]: BATTER · CONFIRMED
+            - generic [ref=e972]: Trea Turner
+            - emphasis [ref=e973]: "Projected batting order #1 · 50 tracked games"
+        - generic [ref=e974]:
+          - generic [ref=e975]:
+            - generic [ref=e976]: Prop
+            - 'button "Home runs Last 10: 0.4" [ref=e977] [cursor=pointer]':
+              - generic [ref=e978]: Home runs
+              - generic [ref=e979]: "Last 10: 0.4"
+          - generic [ref=e982]:
+            - generic [ref=e983]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 7.5" [ref=e984] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e985]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 7.5
+        - generic [ref=e988]:
+          - button "OVER 0.5 @ 7.5 / 1 OR MORE @ 7.5 Batters. Total Home Runs NINTH MODEL 15.6%" [ref=e989] [cursor=pointer]:
+            - generic [ref=e990]:
+              - generic [ref=e991]: OVER 0.5 @ 7.5 / 1 OR MORE @ 7.5
+              - generic [ref=e992]: Batters. Total Home Runs
+            - generic [ref=e993]:
+              - generic [ref=e994]: NINTH MODEL
+              - strong [ref=e995]: 15.6%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e996]:
+            - generic [ref=e997]:
+              - generic [ref=e998]: UNDER NOT LISTED
+              - generic [ref=e999]: Home runs
+        - generic [ref=e1000]:
+          - text: LAST 10 AVG 0.4
+          - generic [ref=e1001]: High confidence · 84/100
+      - article [ref=e1002]:
+        - generic [ref=e1003]:
+          - img "Bryce Harper headshot" [ref=e1006]
+          - generic [ref=e1007]:
+            - generic [ref=e1008]: BATTER · CONFIRMED
+            - generic [ref=e1009]: Bryce Harper
+            - emphasis [ref=e1010]: "Projected batting order #3 · 50 tracked games"
+        - generic [ref=e1011]:
+          - generic [ref=e1012]:
+            - generic [ref=e1013]: Prop
+            - 'button "Home runs Last 10: 0.2" [ref=e1014] [cursor=pointer]':
+              - generic [ref=e1015]: Home runs
+              - generic [ref=e1016]: "Last 10: 0.2"
+          - generic [ref=e1019]:
+            - generic [ref=e1020]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 5" [ref=e1021] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e1022]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 5
+        - generic [ref=e1025]:
+          - button "OVER 0.5 @ 5 / 1 OR MORE @ 5 Batters. Total Home Runs NINTH MODEL 15.6%" [ref=e1026] [cursor=pointer]:
+            - generic [ref=e1027]:
+              - generic [ref=e1028]: OVER 0.5 @ 5 / 1 OR MORE @ 5
+              - generic [ref=e1029]: Batters. Total Home Runs
+            - generic [ref=e1030]:
+              - generic [ref=e1031]: NINTH MODEL
+              - strong [ref=e1032]: 15.6%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e1033]:
+            - generic [ref=e1034]:
+              - generic [ref=e1035]: UNDER NOT LISTED
+              - generic [ref=e1036]: Home runs
+        - generic [ref=e1037]:
+          - text: LAST 10 AVG 0.2
+          - generic [ref=e1038]: High confidence · 84/100
+      - article [ref=e1039]:
+        - generic [ref=e1040]:
+          - img "Bryan De La Cruz headshot" [ref=e1043]
+          - generic [ref=e1044]:
+            - generic [ref=e1045]: BATTER · CONFIRMED
+            - generic [ref=e1046]: Bryan De La Cruz
+            - emphasis [ref=e1047]: "Projected batting order #9 · 50 tracked games"
+        - generic [ref=e1048]:
+          - generic [ref=e1049]:
+            - generic [ref=e1050]: Prop
+            - 'button "Runs Last 10: 0.2" [ref=e1051] [cursor=pointer]':
+              - generic [ref=e1052]: Runs
+              - generic [ref=e1053]: "Last 10: 0.2"
+          - generic [ref=e1056]:
+            - generic [ref=e1057]: Line
+            - button "Runs — O/U 0.5 / 1+ Batters. Total Runs / Batters. Extra Total Runs · best @ 2.61" [ref=e1058] [cursor=pointer]:
+              - generic: Runs — O/U 0.5 / 1+
+              - generic [ref=e1059]: Batters. Total Runs / Batters. Extra Total Runs · best @ 2.61
+        - generic [ref=e1062]:
+          - button "OVER 0.5 @ 2.61 / 1 OR MORE @ 2.61 Batters. Total Runs NINTH MODEL 19.7%" [ref=e1063] [cursor=pointer]:
+            - generic [ref=e1064]:
+              - generic [ref=e1065]: OVER 0.5 @ 2.61 / 1 OR MORE @ 2.61
+              - generic [ref=e1066]: Batters. Total Runs
+            - generic [ref=e1067]:
+              - generic [ref=e1068]: NINTH MODEL
+              - strong [ref=e1069]: 19.7%
+          - button "UNDER NOT LISTED Runs" [disabled] [ref=e1070]:
+            - generic [ref=e1071]:
+              - generic [ref=e1072]: UNDER NOT LISTED
+              - generic [ref=e1073]: Runs
+        - generic [ref=e1074]:
+          - text: LAST 10 AVG 0.2
+          - generic [ref=e1075]: High confidence · 80/100
+      - article [ref=e1076]:
+        - generic [ref=e1077]:
+          - img "Kyle Schwarber headshot" [ref=e1080]
+          - generic [ref=e1081]:
+            - generic [ref=e1082]: BATTER · CONFIRMED
+            - generic [ref=e1083]: Kyle Schwarber
+            - emphasis [ref=e1084]: "Projected batting order #2 · 50 tracked games"
+        - generic [ref=e1085]:
+          - generic [ref=e1086]:
+            - generic [ref=e1087]: Prop
+            - 'button "Home runs Last 10: 0.1" [ref=e1088] [cursor=pointer]':
+              - generic [ref=e1089]: Home runs
+              - generic [ref=e1090]: "Last 10: 0.1"
+          - generic [ref=e1093]:
+            - generic [ref=e1094]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 3.45" [ref=e1095] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e1096]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 3.45
+        - generic [ref=e1099]:
+          - button "OVER 0.5 @ 3.45 / 1 OR MORE @ 3.25 Batters. Total Home Runs NINTH MODEL 21.0%" [ref=e1100] [cursor=pointer]:
+            - generic [ref=e1101]:
+              - generic [ref=e1102]: OVER 0.5 @ 3.45 / 1 OR MORE @ 3.25
+              - generic [ref=e1103]: Batters. Total Home Runs
+            - generic [ref=e1104]:
+              - generic [ref=e1105]: NINTH MODEL
+              - strong [ref=e1106]: 21.0%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e1107]:
+            - generic [ref=e1108]:
+              - generic [ref=e1109]: UNDER NOT LISTED
+              - generic [ref=e1110]: Home runs
+        - generic [ref=e1111]:
+          - text: LAST 10 AVG 0.1
+          - generic [ref=e1112]: High confidence · 79/100
+      - article [ref=e1113]:
+        - generic [ref=e1114]:
+          - img "Pete Alonso headshot" [ref=e1117]
+          - generic [ref=e1118]:
+            - generic [ref=e1119]: BATTER · CONFIRMED
+            - generic [ref=e1120]: Pete Alonso
+            - emphasis [ref=e1121]: "Projected batting order #2 · 50 tracked games"
+        - generic [ref=e1122]:
+          - generic [ref=e1123]:
+            - generic [ref=e1124]: Prop
+            - 'button "Home runs Last 10: 0.1" [ref=e1125] [cursor=pointer]':
+              - generic [ref=e1126]: Home runs
+              - generic [ref=e1127]: "Last 10: 0.1"
+          - generic [ref=e1130]:
+            - generic [ref=e1131]: Line
+            - button "Home runs — O/U 0.5 / 1+ Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 5" [ref=e1132] [cursor=pointer]:
+              - generic: Home runs — O/U 0.5 / 1+
+              - generic [ref=e1133]: Batters. Total Home Runs / Batters. Extra Total Home Runs · best @ 5
+        - generic [ref=e1136]:
+          - button "OVER 0.5 @ 5 / 1 OR MORE @ 4.9 Batters. Total Home Runs NINTH MODEL 22.3%" [ref=e1137] [cursor=pointer]:
+            - generic [ref=e1138]:
+              - generic [ref=e1139]: OVER 0.5 @ 5 / 1 OR MORE @ 4.9
+              - generic [ref=e1140]: Batters. Total Home Runs
+            - generic [ref=e1141]:
+              - generic [ref=e1142]: NINTH MODEL
+              - strong [ref=e1143]: 22.3%
+          - button "UNDER NOT LISTED Home runs" [disabled] [ref=e1144]:
+            - generic [ref=e1145]:
+              - generic [ref=e1146]: UNDER NOT LISTED
+              - generic [ref=e1147]: Home runs
+        - generic [ref=e1148]:
+          - text: LAST 10 AVG 0.1
+          - generic [ref=e1149]: High confidence · 78/100
+      - article [ref=e1150]:
+        - generic [ref=e1151]:
+          - img "Jake Rogers headshot" [ref=e1154]
+          - generic [ref=e1155]:
+            - generic [ref=e1156]: BATTER · CONFIRMED
+            - generic [ref=e1157]: Jake Rogers
+            - emphasis [ref=e1158]: "Projected batting order #9 · 50 tracked games"
+        - generic [ref=e1159]:
+          - generic [ref=e1160]:
+            - generic [ref=e1161]: Prop
+            - 'button "Runs Last 10: 0.5" [ref=e1162] [cursor=pointer]':
+              - generic [ref=e1163]: Runs
+              - generic [ref=e1164]: "Last 10: 0.5"
+          - generic [ref=e1167]:
+            - generic [ref=e1168]: Line
+            - button "Runs — O/U 0.5 / 1+ Batters. Total Runs / Batters. Extra Total Runs · best @ 3.19" [ref=e1169] [cursor=pointer]:
+              - generic: Runs — O/U 0.5 / 1+
+              - generic [ref=e1170]: Batters. Total Runs / Batters. Extra Total Runs · best @ 3.19
+        - generic [ref=e1173]:
+          - button "OVER 0.5 @ 3.19 / 1 OR MORE @ 3.18 Batters. Total Runs NINTH MODEL 23.3%" [ref=e1174] [cursor=pointer]:
+            - generic [ref=e1175]:
+              - generic [ref=e1176]: OVER 0.5 @ 3.19 / 1 OR MORE @ 3.18
+              - generic [ref=e1177]: Batters. Total Runs
+            - generic [ref=e1178]:
+              - generic [ref=e1179]: NINTH MODEL
+              - strong [ref=e1180]: 23.3%
+          - button "UNDER NOT LISTED Runs" [disabled] [ref=e1181]:
+            - generic [ref=e1182]:
+              - generic [ref=e1183]: UNDER NOT LISTED
+              - generic [ref=e1184]: Runs
+        - generic [ref=e1185]:
+          - text: LAST 10 AVG 0.5
+          - generic [ref=e1186]: High confidence · 77/100
+      - article [ref=e1187]:
+        - generic [ref=e1188]:
+          - img "Christian Encarnacion-Strand headshot" [ref=e1191]
+          - generic [ref=e1192]:
+            - generic [ref=e1193]: BATTER · CONFIRMED
+            - generic [ref=e1194]: Christian Encarnacion-Strand
+            - emphasis [ref=e1195]: "Projected batting order #6 · 50 tracked games"
+        - generic [ref=e1196]:
+          - generic [ref=e1197]:
+            - generic [ref=e1198]: Prop
+            - 'button "Runs Last 10: 0.3" [ref=e1199] [cursor=pointer]':
+              - generic [ref=e1200]: Runs
+              - generic [ref=e1201]: "Last 10: 0.3"
+          - generic [ref=e1204]:
+            - generic [ref=e1205]: Line
+            - button "Runs — O/U 0.5 / 1+ Batters. Total Runs / Batters. Extra Total Runs · best @ 2.9" [ref=e1206] [cursor=pointer]:
+              - generic: Runs — O/U 0.5 / 1+
+              - generic [ref=e1207]: Batters. Total Runs / Batters. Extra Total Runs · best @ 2.9
+        - generic [ref=e1210]:
+          - button "OVER 0.5 @ 2.9 / 1 OR MORE @ 2.9 Batters. Total Runs NINTH MODEL 34.3%" [ref=e1211] [cursor=pointer]:
+            - generic [ref=e1212]:
+              - generic [ref=e1213]: OVER 0.5 @ 2.9 / 1 OR MORE @ 2.9
+              - generic [ref=e1214]: Batters. Total Runs
+            - generic [ref=e1215]:
+              - generic [ref=e1216]: NINTH MODEL
+              - strong [ref=e1217]: 34.3%
+          - button "UNDER NOT LISTED Runs" [disabled] [ref=e1218]:
+            - generic [ref=e1219]:
+              - generic [ref=e1220]: UNDER NOT LISTED
+              - generic [ref=e1221]: Runs
+        - generic [ref=e1222]:
+          - text: LAST 10 AVG 0.3
+          - generic [ref=e1223]: Moderate confidence · 66/100

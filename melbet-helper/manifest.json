@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "NINTH MelBet Helper",
-  "version": "0.7.2",
-  "description": "Transfers validated NINTH moneyline, total, and player-prop selections without placing a wager.",
+  "version": "1.1.1",
+  "description": "Transfers validated NINTH selections and imports selected MelBet history slips without placing a wager.",
   "icons": {
     "16": "icon-16.png",
     "32": "icon-32.png",
@@ -19,7 +19,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://localhost/*", "http://127.0.0.1/*"],
+      "matches": ["http://localhost/*", "http://127.0.0.1/*", "http://192.168.1.9/*", "http://192.168.137.1/*", "http://172.18.80.1/*"],
       "js": ["ninth-bridge.js"],
       "run_at": "document_start"
     },
