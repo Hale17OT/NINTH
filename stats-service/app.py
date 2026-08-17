@@ -55,6 +55,7 @@ _projection_enrichment_lock = threading.Lock()
 _summary_cache = {}
 _teams_cache = None
 _players_cache = None
+_player_peer_cache = None
 _team_detail_cache = {}
 _model_history_cache = {}
 _projection_last = {}
@@ -74,12 +75,16 @@ _weather_cache = {}
 _weather_backoff_until = 0.0
 _weather_locks = {}
 _weather_locks_guard = threading.Lock()
-_melbet_totals_cache = {"updated_at": None, "last_attempt_at": None, "markets": [], "error": None}
+_league_rankings_cache = {}
+_league_rankings_lock = threading.Lock()
+_inning_distribution_cache = {}
+_inning_distribution_lock = threading.Lock()
+_melbet_totals_cache = {"updated_at": None, "last_attempt_at": None, "markets": [], "error": None, "consecutive_failures": 0, "retry_after": None}
 _melbet_totals_lock = threading.Lock()
 _melbet_totals_snapshot_lock = threading.Lock()
 _melbet_totals_snapshot_last = {}
 _melbet_totals_snapshot_loaded = False
-_melbet_player_props_cache = {"updated_at": None, "last_attempt_at": None, "markets": [], "error": None}
+_melbet_player_props_cache = {"updated_at": None, "last_attempt_at": None, "markets": [], "error": None, "consecutive_failures": 0, "retry_after": None}
 _melbet_player_props_lock = threading.Lock()
 _player_props_bundle = None
 _player_props_bundle_lock = threading.Lock()
@@ -101,10 +106,10 @@ _slip_refresh_running = False
 _slip_refresh_state = {"running": False, "last_started_at": None, "last_finished_at": None, "last_error": None}
 _detail_locks = {}
 _detail_locks_guard = threading.Lock()
-_projection_monitor = {"running": False, "pregame_seconds": 60, "live_seconds": 10, "last_discovery_at": None, "last_refresh_at": None, "tracked_games": 0, "last_error": None}
+_projection_monitor = {"running": False, "pregame_seconds": 300, "live_seconds": 10, "last_discovery_at": None, "last_refresh_at": None, "tracked_games": 0, "last_error": None}
 _player_prop_monitor = {
     "running": False,
-    "refresh_seconds": 60,
+    "refresh_seconds": 300,
     "last_attempt_at": None,
     "last_success_at": None,
     "archived_games": 0,
@@ -121,6 +126,62 @@ MELBET_BASES = (MELBET_PRIMARY_BASE, MELBET_PROXY_BASE)
 MELBET_CHAMP_PATH = "/service-api/LineFeed/GetChampZip"
 MELBET_GAME_PATH = "/service-api/LineFeed/GetGameZip"
 MELBET_MLB_CHAMP_ID = 166775
+
+
+def _melbet_refresh_seconds(cache=None, games=None, now=None):
+    """Use a quiet cadence normally and tighten it only around first pitch."""
+    now = now or datetime.now(timezone.utc)
+    standard = max(60, int(os.getenv("NINTH_MELBET_REFRESH_SECONDS", "300")))
+    near_start = max(30, int(os.getenv("NINTH_MELBET_NEAR_START_SECONDS", "60")))
+    window = max(5, int(os.getenv("NINTH_MELBET_NEAR_START_MINUTES", "30")))
+    rows = games if games is not None else (cache or {}).get("markets", [])
+    for row in rows or []:
+        value = row.get("starts_at") or row.get("datetime") or row.get("game_datetime")
+        try:
+            starts_at = datetime.fromisoformat(str(value or "").replace("Z", "+00:00"))
+            if starts_at.tzinfo is None:
+                starts_at = starts_at.replace(tzinfo=timezone.utc)
+        except (TypeError, ValueError):
+            continue
+        seconds = (starts_at - now).total_seconds()
+        if -15 * 60 <= seconds <= window * 60:
+            return near_start
+    return standard
+
+
+def _melbet_cache_fresh(cache, force=False, games=None, now=None):
+    if force:
+        return False
+    now = now or datetime.now(timezone.utc)
+    retry_after = cache.get("retry_after")
+    if retry_after and now < retry_after:
+        return True
+    cached_at = cache.get("updated_at")
+    refresh_seconds = _melbet_refresh_seconds(cache, games, now)
+    cache["refresh_seconds"] = refresh_seconds
+    return bool(cached_at and (now - cached_at).total_seconds() < refresh_seconds)
+
+
+def _record_melbet_success(cache, now, markets, **values):
+    refresh_seconds = _melbet_refresh_seconds(cache, markets, now)
+    cache.update({
+        "updated_at": now, "markets": markets, "error": None,
+        "consecutive_failures": 0, "retry_after": None,
+        "refresh_seconds": refresh_seconds, **values,
+    })
+
+
+def _record_melbet_failure(cache, now, error):
+    failures = int(cache.get("consecutive_failures") or 0) + 1
+    base = _melbet_refresh_seconds(cache, now=now)
+    maximum = max(base, int(os.getenv("NINTH_MELBET_MAX_BACKOFF_SECONDS", "1800")))
+    delay = min(maximum, base * (2 ** min(failures - 1, 4)))
+    cache.update({
+        "error": str(error), "consecutive_failures": failures,
+        "retry_after": now + timedelta(seconds=delay), "refresh_seconds": delay,
+    })
+    if not cache.get("markets") and not cache.get("updated_at"):
+        cache["updated_at"] = now
 PLAYER_PROPS_REPORT = os.path.join(os.path.dirname(MODEL_REPORT), "player_props_report.json")
 LIVE_PLAYER_PROPS_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "live_player_prop_audit.json")
 LIVE_PLAYER_PROP_BUILD_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "live_player_prop_build_audit.json")
@@ -537,12 +598,12 @@ def _props_game(game, bundle):
     }
 
 
-def player_props_board(start_date, days=1, force=False, defer_refresh=False):
+def player_props_board(start_date, days=1, force=False, defer_refresh=False, force_market=False):
     days = max(1, min(7, int(days))); key = f"{start_date}:{days}"
     with _player_props_cache_lock:
         cached = _player_props_board_cache.get(key)
         if cached and (not force or defer_refresh):
-            cache_ttl = max(10, min(60, int(cached[1].get("refresh_seconds", 60))))
+            cache_ttl = max(10, min(300, int(cached[1].get("refresh_seconds", 300))))
             should_refresh = defer_refresh or time.monotonic() - cached[0] >= cache_ttl
             if should_refresh and key not in _player_props_refreshing:
                 _player_props_refreshing.add(key)
@@ -552,7 +613,7 @@ def player_props_board(start_date, days=1, force=False, defer_refresh=False):
                         with _player_props_cache_lock: _player_props_refreshing.discard(key)
                 threading.Thread(target=refresh, name=f"player-props-{key}", daemon=True).start()
             if should_refresh or key in _player_props_refreshing:
-                return {**cached[1], "refresh_in_progress": True, "refresh_seconds": 10}
+                return {**cached[1], "refresh_in_progress": True, "refresh_seconds": 60}
             return cached[1]
     first = datetime.fromisoformat(start_date).date(); last = first + timedelta(days=days - 1)
     schedule_rows = statsapi.schedule(start_date=first.isoformat(), end_date=last.isoformat(), sportId=1)
@@ -562,7 +623,9 @@ def player_props_board(start_date, days=1, force=False, defer_refresh=False):
     ]
     bundle = player_props_bundle()
     with ThreadPoolExecutor(max_workers=min(7, max(2, len(eligible) + 1))) as pool:
-        market_future = pool.submit(melbet_player_prop_markets, force)
+        # Rebuilding projections must not force a new sportsbook request. The
+        # MelBet cache owns its five-minute/near-start cadence and backoff.
+        market_future = pool.submit(melbet_player_prop_markets, force_market)
         games = list(pool.map(lambda row: _props_game(row, bundle), eligible))
     candidate_groups = {}
     for game in games:
@@ -590,9 +653,12 @@ def player_props_board(start_date, days=1, force=False, defer_refresh=False):
         }
         if market and market.get("partial"):
             partial_market_games += 1
+    refresh_seconds = _melbet_refresh_seconds(market_snapshot, games)
+    if market_snapshot.get("error"):
+        refresh_seconds = max(refresh_seconds, int(market_snapshot.get("refresh_seconds") or refresh_seconds))
     payload = {
         "start_date": first.isoformat(), "days": days, "updated_at": datetime.now(timezone.utc).isoformat(),
-        "refresh_seconds": 15 if partial_market_games else 60, "method": "Market-free calibrated player-game distributions restricted by current MelBet selections; decimal odds are display/filter metadata only",
+        "refresh_seconds": refresh_seconds, "method": "Market-free calibrated player-game distributions restricted by current MelBet selections; decimal odds are display/filter metadata only",
         "automatic_recommendation_policy": player_prop_automatic_policy(),
         "games": games,
         "player_prop_line_feed": {
@@ -600,7 +666,8 @@ def player_props_board(start_date, days=1, force=False, defer_refresh=False):
             "odds_available": True, "odds_format": "decimal", "odds_model_inputs": False,
             "observed_at": market_snapshot.get("updated_at").isoformat() if market_snapshot.get("updated_at") else None,
             "listed_games": len(market_snapshot.get("markets", [])), "partial_games": partial_market_games,
-            "error": market_snapshot.get("error"),
+            "error": market_snapshot.get("error"), "refresh_seconds": refresh_seconds,
+            "consecutive_failures": int(market_snapshot.get("consecutive_failures") or 0),
         },
     }
     record_player_prop_snapshots(games)
@@ -769,6 +836,15 @@ def record_player_prop_build(payload):
         kind = str(entry.get("kind") or "").lower()
         if side not in ("over", "under") or kind not in ("batter", "pitcher"):
             raise ValueError("Build snapshot entries require a valid player kind and side")
+        selection_source = str(entry.get("selection_source") or (
+            "guarantee" if str(payload.get("prop_preset") or "").lower() == "guarantee" else "model"
+        )).lower()
+        if selection_source not in ("model", "guarantee"):
+            raise ValueError("Build snapshot entries require a valid selection source")
+        guarantee_samples = max(0, int(entry.get("guarantee_samples") or 0))
+        guarantee_correct = max(0, int(entry.get("guarantee_correct") or 0))
+        if guarantee_correct > guarantee_samples:
+            raise ValueError("Guarantee correct selections cannot exceed its sample count")
         clean_entries.append({
             "game_id": int(entry["game_id"]),
             "official_date": str(entry.get("official_date") or "")[:10] or None,
@@ -811,6 +887,14 @@ def record_player_prop_build(payload):
             "selection_action": str(entry.get("selection_action") or payload.get("selection_action") or "build_best")[:30],
             "replaced_selection": entry.get("replaced_selection") if isinstance(entry.get("replaced_selection"), dict) else None,
             "post_selection_samples": max(0, int(entry.get("post_selection_samples") or 0)),
+            "selection_source": selection_source,
+            "guarantee_samples": guarantee_samples,
+            "guarantee_correct": guarantee_correct,
+            "guarantee_accuracy": float(entry["guarantee_accuracy"]) if entry.get("guarantee_accuracy") is not None else None,
+            "guarantee_wilson_lower": float(entry["guarantee_wilson_lower"]) if entry.get("guarantee_wilson_lower") is not None else None,
+            "guarantee_evidence": str(entry.get("guarantee_evidence") or "")[:30] or None,
+            "guarantee_score": float(entry["guarantee_score"]) if entry.get("guarantee_score") is not None else None,
+            "guarantee_robust_floor": float(entry["guarantee_robust_floor"]) if entry.get("guarantee_robust_floor") is not None else None,
         })
     if any(
         not 0 <= row["model_probability"] <= 1
@@ -818,6 +902,10 @@ def record_player_prop_build(payload):
         or not 0 <= row["robust_probability"] <= 1
         or not 0 <= row["process_probability"] <= 1
         or (row["sportsbook_probability"] is not None and not 0 <= row["sportsbook_probability"] <= 1)
+        or (row["guarantee_accuracy"] is not None and not 0 <= row["guarantee_accuracy"] <= 1)
+        or (row["guarantee_wilson_lower"] is not None and not 0 <= row["guarantee_wilson_lower"] <= 1)
+        or (row["guarantee_score"] is not None and not 0 <= row["guarantee_score"] <= 1)
+        or (row["guarantee_robust_floor"] is not None and not 0 <= row["guarantee_robust_floor"] <= 1)
         for row in clean_entries
     ):
         raise ValueError("Build snapshot probabilities must be between zero and one")
@@ -833,6 +921,11 @@ def record_player_prop_build(payload):
         "recommendation_cutoff": str(payload.get("recommendation_cutoff") or "0.65")[:20],
         "portfolio_mode": str(payload.get("portfolio_mode") or "best")[:20],
         "prop_preset": str(payload.get("prop_preset") or "included")[:20],
+        "guarantee_robust_floor": (
+            float(payload["guarantee_robust_floor"])
+            if payload.get("guarantee_robust_floor") is not None
+            else .6 if str(payload.get("prop_preset") or "").lower() == "guarantee" else None
+        ),
         "rotation_depth": max(0, int(payload.get("rotation_depth") or 0)),
         "selection_action": str(payload.get("selection_action") or "build_best")[:30],
         "shadow_test": bool(payload.get("shadow_test")),
@@ -848,6 +941,8 @@ def record_player_prop_build(payload):
         "entries": clean_entries,
         "snapshot_rule": "Exact Build Best selections before first pitch",
     }
+    if record["guarantee_robust_floor"] is not None and not 0 <= record["guarantee_robust_floor"] <= 1:
+        raise ValueError("Guarantee robust floor must be between zero and one")
     with _player_prop_build_snapshot_lock:
         os.makedirs(os.path.dirname(PLAYER_PROP_BUILD_LOG), exist_ok=True)
         with open(PLAYER_PROP_BUILD_LOG, "a", encoding="utf-8") as handle:
@@ -874,12 +969,14 @@ def refresh_player_prop_archive():
 
 def player_prop_archive_loop():
     """Keep the deployment ledger populated even when the builder is never opened."""
-    interval = max(60, int(os.getenv("NINTH_PLAYER_PROP_REFRESH_SECONDS", "60")))
+    interval = max(60, int(os.getenv("NINTH_PLAYER_PROP_REFRESH_SECONDS", "300")))
     _player_prop_monitor.update({"running": True, "refresh_seconds": interval})
     while True:
         started = time.monotonic()
         try:
             today, payload = refresh_player_prop_archive()
+            interval = max(60, int(payload.get("refresh_seconds") or interval))
+            _player_prop_monitor["refresh_seconds"] = interval
             listed = payload.get("player_prop_line_feed", {}).get("listed_games", 0)
             print(f"[player-props] archived {today} with {listed} listed games", flush=True)
         except Exception as exc:
@@ -948,7 +1045,7 @@ def pending_game_detail(game_id):
         "status_code": status_code,
         "partial": True,
         "context_updated_at": None,
-        "projection_refresh_seconds": 5 if status_code == "Live" else 10,
+        "projection_refresh_seconds": 10 if status_code == "Live" else max(60, int(os.getenv("NINTH_PREGAME_REFRESH_SECONDS", "300"))),
         "projection": {"available": False, "message": "The matchup projection is calculating in the background."},
         "totals_projection": {"available": False, "selection_available": False, "message": "The totals projection is calculating in the background."},
         "model_context": {
@@ -1022,7 +1119,7 @@ def _game_detail(game_id, bypass_cache=False):
         game_time = data.get("datetime", {}).get("dateTime")
         team_ids = [teams.get("away", {}).get("id"), teams.get("home", {}).get("id")]
         status_code = status_data.get("abstractGameState", "Preview")
-        with ThreadPoolExecutor(max_workers=6) as pool:
+        with ThreadPoolExecutor(max_workers=7) as pool:
             away_pitcher = pool.submit(
                 pitcher_profile, probable.get("away"), game_time, game_id,
             )
@@ -1040,10 +1137,14 @@ def _game_detail(game_id, bypass_cache=False):
                     teams.get("home", {}).get("name"), teams.get("away", {}).get("name"), game_time,
                 )
             )
+            league_context_future = pool.submit(
+                matchup_league_context, team_ids, game_time, game_id,
+            )
             pitcher_profiles = {"away": away_pitcher.result(), "home": home_pitcher.result()}
             recent_results = [away_recent.result(), home_recent.result()]
             bullpen_results = bullpen_future.result()
             totals_market = totals_market_future.result() if totals_market_future else None
+            league_context = league_context_future.result()
         pitching_matchup = {}
         for side, team_id in (("away", team_ids[0]), ("home", team_ids[1])):
             starter = pitcher_profiles.get(side) or {}
@@ -1077,7 +1178,7 @@ def _game_detail(game_id, bypass_cache=False):
             "status": status_data.get("detailedState", "Unknown"),
             "status_code": status_code,
             "context_updated_at": projection.get("snapshot_at") or context.get("updated_at"),
-            "projection_refresh_seconds": 10 if status_code == "Live" else 0 if status_code == "Final" else 60,
+            "projection_refresh_seconds": 10 if status_code == "Live" else 0 if status_code == "Final" else max(60, int(os.getenv("NINTH_PREGAME_REFRESH_SECONDS", "300"))),
             "totals_projection": totals_projection,
             "datetime": data.get("datetime", {}).get("dateTime"),
             "venue": {
@@ -1112,6 +1213,7 @@ def _game_detail(game_id, bypass_cache=False):
             },
             "probable_pitchers": pitcher_profiles,
             "pitching_matchup": pitching_matchup,
+            "league_context": league_context,
             "model_context": context,
             "recent_form": {"away": recent_results[0], "home": recent_results[1]},
             "projection": projection,
@@ -1291,23 +1393,128 @@ def team_detail(team_id):
     team = next((item for item in teams_data() if item["id"] == team_id), None)
     if team is None:
         raise NotFoundError("Team not found")
-    raw_stats = statsapi.get("team_stats", {"teamId": team_id, "stats": "season", "group": "hitting,pitching", "season": 2026})
+    today = datetime.now(timezone.utc).date()
+    season = today.year
+    with ThreadPoolExecutor(max_workers=5) as pool:
+        stats_future = pool.submit(statsapi.get, "team_stats", {
+            "teamId": team_id, "stats": "season", "group": "hitting,pitching", "season": season,
+        })
+        roster_future = pool.submit(statsapi.get, "team_roster", {
+            "teamId": team_id,
+            "rosterType": "active",
+            "season": season,
+            "hydrate": f"person(stats(group=[hitting,pitching],type=[season],season={season}))",
+        })
+        schedule_future = pool.submit(team_season_schedule, team_id, season)
+        rankings_future = pool.submit(matchup_league_rankings, season, today.isoformat())
+        innings_future = pool.submit(team_inning_distribution, team_id, season, today.isoformat())
+
+        raw_stats = stats_future.result()
+        roster = roster_future.result().get("roster", [])
+        try:
+            schedule = schedule_future.result()
+        except Exception:
+            schedule = []
+        try:
+            rankings = rankings_future.result().get(team_id, {})
+        except Exception:
+            rankings = {}
+        try:
+            inning_distribution = innings_future.result()
+        except Exception:
+            inning_distribution = {"available": False, "sample_games": 0}
     stat_groups = {}
     for group in raw_stats.get("stats", []):
         split = group.get("splits", [])
         stat_groups[group.get("group", {}).get("displayName")] = split[0].get("stat", {}) if split else {}
-    roster = statsapi.get("team_roster", {
-        "teamId": team_id,
-        "rosterType": "active",
-        "season": 2026,
-        "hydrate": "person(stats(group=[hitting,pitching],type=[season],season=2026))",
-    }).get("roster", [])
-    today = datetime.now(timezone.utc).date()
-    recent = statsapi.schedule(start_date=(today - timedelta(days=14)).isoformat(), end_date=today.isoformat(), team=team_id)
-    recent = [game for game in recent if "Final" in game.get("status", "")][-10:]
-    result = {"team": team, "stats": stat_groups, "roster": roster, "recent": recent}
+    recent = [game for game in schedule if game.get("is_final")][-10:]
+    result = {
+        "team": team,
+        "season": season,
+        "through": today.isoformat(),
+        "stats": stat_groups,
+        "roster": roster,
+        "recent": recent,
+        "schedule": schedule,
+        "league_rankings": rankings.get("rankings") or [],
+        "league_team_count": max((row.get("teams", 0) for row in rankings.get("rankings") or []), default=0),
+        "inning_distribution": inning_distribution,
+    }
     _team_detail_cache[team_id] = (datetime.now(timezone.utc), result)
     return result
+
+
+def normalize_team_schedule(payload, team_id):
+    """Reduce a season schedule to complete, linkable team-game rows."""
+    output = []
+    for date_row in (payload or {}).get("dates", []) or []:
+        for game in date_row.get("games", []) or []:
+            # Keep the team history linkable inside the MLB entity graph.  The
+            # schedule feed can also contain spring and international
+            # exhibitions whose opponents are not MLB team-detail entities.
+            if game.get("gameType") not in {"R", "F", "D", "L", "W"}:
+                continue
+            teams = game.get("teams") or {}
+            away = teams.get("away") or {}
+            home = teams.get("home") or {}
+            away_team = away.get("team") or {}
+            home_team = home.get("team") or {}
+            is_home = int(home_team.get("id") or 0) == int(team_id)
+            club, opponent = (home, away) if is_home else (away, home)
+            club_team, opponent_team = club.get("team") or {}, opponent.get("team") or {}
+            status = game.get("status") or {}
+            detailed_status = status.get("detailedState") or status.get("abstractGameState") or "Scheduled"
+            is_disrupted = bool(re.search(r"postponed|cancelled|suspended", detailed_status, re.IGNORECASE))
+            is_final = not is_disrupted and (
+                status.get("abstractGameState") == "Final" or detailed_status in ("Final", "Game Over")
+            )
+            team_score = club.get("score") if is_final else None
+            opponent_score = opponent.get("score") if is_final else None
+            result = None
+            if is_final and team_score is not None and opponent_score is not None:
+                result = "W" if int(team_score) > int(opponent_score) else "L" if int(team_score) < int(opponent_score) else "T"
+            output.append({
+                "game_id": int(game.get("gamePk") or 0),
+                "date": str(date_row.get("date") or str(game.get("gameDate") or "")[:10]),
+                "datetime": game.get("gameDate"),
+                "game_type": game.get("gameType"),
+                "status": detailed_status,
+                "status_code": status.get("statusCode"),
+                "is_final": is_final,
+                "is_home": is_home,
+                "team_id": int(club_team.get("id") or team_id),
+                "team_name": club_team.get("name"),
+                "opponent_id": int(opponent_team.get("id") or 0),
+                "opponent": opponent_team.get("name") or "Unknown opponent",
+                "team_score": team_score,
+                "opponent_score": opponent_score,
+                "result": result,
+                "venue_id": int((game.get("venue") or {}).get("id") or 0) or None,
+                "venue": (game.get("venue") or {}).get("name"),
+                "series": game.get("seriesDescription"),
+                "game_number": int(game.get("gameNumber") or 1),
+                "doubleheader": game.get("doubleHeader"),
+                "team_starter_id": int((club.get("probablePitcher") or {}).get("id") or 0) or None,
+                "team_starter": (club.get("probablePitcher") or {}).get("fullName"),
+                "opponent_starter_id": int((opponent.get("probablePitcher") or {}).get("id") or 0) or None,
+                "opponent_starter": (opponent.get("probablePitcher") or {}).get("fullName"),
+            })
+    return sorted(output, key=lambda row: (row.get("datetime") or row.get("date") or "", row["game_id"]))
+
+
+def team_season_schedule(team_id, season):
+    response = requests.get(
+        "https://statsapi.mlb.com/api/v1/schedule",
+        params={
+            "sportId": 1,
+            "teamId": int(team_id),
+            "season": int(season),
+            "hydrate": "probablePitcher",
+        },
+        timeout=20,
+    )
+    response.raise_for_status()
+    return normalize_team_schedule(response.json(), team_id)
 
 
 def recent_form(team_id, before_datetime, exclude_game_id):
@@ -1351,6 +1558,319 @@ def _innings_pitched(value):
     whole, _, fraction = text.partition(".")
     outs = int(fraction[:1]) if fraction[:1].isdigit() else 0
     return max(0.0, _float(whole) + min(2, outs) / 3.0)
+
+
+def _metric_display(value, style):
+    if value is None or not math.isfinite(float(value)):
+        return "—"
+    value = float(value)
+    if style == "rate":
+        return f"{value:.1f}%"
+    if style == "ops":
+        return f"{value:.3f}".lstrip("0")
+    return f"{value:.2f}"
+
+
+def _rank_team_metric(profiles, key, higher_is_better):
+    available = [
+        (team_id, float(profile[key]))
+        for team_id, profile in profiles.items()
+        if profile.get(key) is not None and math.isfinite(float(profile[key]))
+    ]
+    available.sort(key=lambda item: item[1], reverse=higher_is_better)
+    ranks = {}
+    previous = None
+    previous_rank = 0
+    for index, (team_id, value) in enumerate(available, 1):
+        if previous is None or not math.isclose(value, previous, rel_tol=1e-9, abs_tol=1e-9):
+            previous_rank = index
+            previous = value
+        ranks[team_id] = previous_rank
+    return ranks, len(available)
+
+
+def build_team_league_rankings(hitting_splits, pitching_splits):
+    """Create comparable MLB ranks from the official all-team season splits."""
+    profiles = {}
+    for split in hitting_splits or []:
+        team_id = int((split.get("team") or {}).get("id") or 0)
+        if not team_id:
+            continue
+        stat = split.get("stat") or {}
+        games = max(1.0, _float(stat.get("gamesPlayed"), 1))
+        plate_appearances = max(1.0, _float(stat.get("plateAppearances"), 1))
+        average = _float(stat.get("avg"))
+        slugging = _float(stat.get("slg"))
+        profiles.setdefault(team_id, {}).update({
+            "team_id": team_id,
+            "team_name": (split.get("team") or {}).get("name"),
+            "runs_per_game": _float(stat.get("runs")) / games,
+            "batting_average": average,
+            "on_base_percentage": _float(stat.get("obp")),
+            "slugging_percentage": slugging,
+            "ops": _float(stat.get("ops")),
+            "isolated_power": slugging - average,
+            "home_runs_per_game": _float(stat.get("homeRuns")) / games,
+            "hitter_k_rate": 100 * _float(stat.get("strikeOuts")) / plate_appearances,
+            "walk_rate": 100 * _float(stat.get("baseOnBalls")) / plate_appearances,
+        })
+    for split in pitching_splits or []:
+        team_id = int((split.get("team") or {}).get("id") or 0)
+        if not team_id:
+            continue
+        stat = split.get("stat") or {}
+        games = max(1.0, _float(stat.get("gamesPlayed"), 1))
+        innings = max(1 / 3, _innings_pitched(stat.get("inningsPitched")))
+        batters_faced = max(1.0, _float(stat.get("battersFaced"), 1))
+        profiles.setdefault(team_id, {}).update({
+            "team_id": team_id,
+            "team_name": (split.get("team") or {}).get("name"),
+            "staff_era": _float(stat.get("era")),
+            "staff_whip": _float(stat.get("whip")),
+            "pitcher_k9": _float(stat.get("strikeoutsPer9Inn")) or 9 * _float(stat.get("strikeOuts")) / innings,
+            "pitcher_k_rate": 100 * _float(stat.get("strikeOuts")) / batters_faced,
+            "pitcher_walk_rate": 100 * _float(stat.get("baseOnBalls")) / batters_faced,
+            "home_runs_allowed_per_9": 9 * _float(stat.get("homeRuns")) / innings,
+            "runs_allowed_per_game": _float(stat.get("runs")) / games,
+        })
+
+    definitions = [
+        ("runs_per_game", "Runs per game", "OFFENSE", True, "number"),
+        ("batting_average", "Batting average", "OFFENSE", True, "ops"),
+        ("on_base_percentage", "On-base percentage", "OFFENSE", True, "ops"),
+        ("slugging_percentage", "Slugging percentage", "OFFENSE", True, "ops"),
+        ("ops", "OPS", "OFFENSE", True, "ops"),
+        ("isolated_power", "Isolated power", "OFFENSE", True, "ops"),
+        ("home_runs_per_game", "Home runs per game", "OFFENSE", True, "number"),
+        ("hitter_k_rate", "Hitter K rate", "OFFENSE", False, "rate"),
+        ("walk_rate", "Walk rate", "OFFENSE", True, "rate"),
+        ("staff_era", "Staff ERA", "RUN PREVENTION", False, "number"),
+        ("staff_whip", "Staff WHIP", "RUN PREVENTION", False, "number"),
+        ("pitcher_k9", "Pitcher K / 9", "RUN PREVENTION", True, "number"),
+        ("pitcher_k_rate", "Pitcher K rate", "RUN PREVENTION", True, "rate"),
+        ("pitcher_walk_rate", "Pitcher walk rate", "RUN PREVENTION", False, "rate"),
+        ("home_runs_allowed_per_9", "Home runs allowed / 9", "RUN PREVENTION", False, "number"),
+        ("runs_allowed_per_game", "Runs allowed / game", "RUN PREVENTION", False, "number"),
+    ]
+    rank_maps = {
+        key: _rank_team_metric(profiles, key, higher)
+        for key, _, _, higher, _ in definitions
+    }
+    output = {}
+    for team_id, profile in profiles.items():
+        rows = []
+        for key, label, group, higher, style in definitions:
+            value = profile.get(key)
+            rank, total = rank_maps[key]
+            if value is None or team_id not in rank:
+                continue
+            percentile = 100 if total <= 1 else 100 * (total - rank[team_id]) / (total - 1)
+            rows.append({
+                "key": key,
+                "label": label,
+                "group": group,
+                "value": round(float(value), 4),
+                "display": _metric_display(value, style),
+                "rank": rank[team_id],
+                "teams": total,
+                "percentile": round(percentile, 1),
+                "higher_is_better": higher,
+            })
+        output[team_id] = {
+            "team_id": team_id,
+            "team_name": profile.get("team_name"),
+            "rankings": rows,
+        }
+    return output
+
+
+def summarize_inning_distribution(schedule_payload, team_id, excluded_game_id=None):
+    """Aggregate each inning's run contribution per completed team game."""
+    scored = [0.0] * 10
+    allowed = [0.0] * 10
+    scored_games = [0] * 10
+    allowed_games = [0] * 10
+    games = 0
+    for date_row in (schedule_payload or {}).get("dates", []) or []:
+        for game in date_row.get("games", []) or []:
+            if excluded_game_id and int(game.get("gamePk") or 0) == int(excluded_game_id):
+                continue
+            if (game.get("status") or {}).get("abstractGameState") != "Final":
+                continue
+            teams = game.get("teams") or {}
+            away_id = int((((teams.get("away") or {}).get("team") or {}).get("id")) or 0)
+            home_id = int((((teams.get("home") or {}).get("team") or {}).get("id")) or 0)
+            if int(team_id) == away_id:
+                side, opponent = "away", "home"
+            elif int(team_id) == home_id:
+                side, opponent = "home", "away"
+            else:
+                continue
+            innings = (game.get("linescore") or {}).get("innings") or []
+            if not innings:
+                continue
+            game_scored = [0.0] * 10
+            game_allowed = [0.0] * 10
+            games += 1
+            for inning in innings:
+                inning_number = max(1, int(inning.get("num") or 1))
+                index = min(9, inning_number - 1)
+                game_scored[index] += _float((inning.get(side) or {}).get("runs"))
+                game_allowed[index] += _float((inning.get(opponent) or {}).get("runs"))
+            for index in range(10):
+                scored[index] += game_scored[index]
+                allowed[index] += game_allowed[index]
+                if game_scored[index] > 0:
+                    scored_games[index] += 1
+                if game_allowed[index] > 0:
+                    allowed_games[index] += 1
+
+    labels = [str(inning) for inning in range(1, 10)] + ["10+"]
+    if not games:
+        return {
+            "available": False,
+            "sample_games": 0,
+            "labels": labels,
+            "scored_per_game": [],
+            "allowed_per_game": [],
+            "phases": [],
+        }
+    scored_per_game = [round(value / games, 3) for value in scored]
+    allowed_per_game = [round(value / games, 3) for value in allowed]
+    total_scored = sum(scored)
+    total_allowed = sum(allowed)
+    phase_definitions = [
+        ("EARLY", [0, 1, 2]),
+        ("MIDDLE", [3, 4, 5]),
+        ("LATE", [6, 7, 8]),
+        ("EXTRAS", [9]),
+    ]
+    phases = []
+    for label, indexes in phase_definitions:
+        phase_scored = sum(scored[index] for index in indexes)
+        phase_allowed = sum(allowed[index] for index in indexes)
+        phases.append({
+            "label": label,
+            "innings": "10+" if label == "EXTRAS" else f"{indexes[0] + 1}–{indexes[-1] + 1}",
+            "scored_per_game": round(phase_scored / games, 2),
+            "allowed_per_game": round(phase_allowed / games, 2),
+            "scored_share": round(100 * phase_scored / total_scored, 1) if total_scored else 0,
+            "allowed_share": round(100 * phase_allowed / total_allowed, 1) if total_allowed else 0,
+        })
+    return {
+        "available": True,
+        "sample_games": games,
+        "labels": labels,
+        "scored_per_game": scored_per_game,
+        "allowed_per_game": allowed_per_game,
+        "scoring_game_rate": [round(100 * value / games, 1) for value in scored_games],
+        "allowing_game_rate": [round(100 * value / games, 1) for value in allowed_games],
+        "runs_scored_per_game": round(total_scored / games, 2),
+        "runs_allowed_per_game": round(total_allowed / games, 2),
+        "phases": phases,
+    }
+
+
+def matchup_league_rankings(season, through_date):
+    cache_key = (int(season), str(through_date))
+    with _league_rankings_lock:
+        cached = _league_rankings_cache.get(cache_key)
+    if cached:
+        return cached
+    params = {
+        "stats": "byDateRange",
+        "sportIds": 1,
+        "startDate": f"{int(season)}-03-01",
+        "endDate": str(through_date),
+    }
+
+    def fetch(group):
+        response = requests.get(
+            "https://statsapi.mlb.com/api/v1/teams/stats",
+            params={**params, "group": group}, timeout=15,
+        )
+        response.raise_for_status()
+        stats = response.json().get("stats") or []
+        return (stats[0].get("splits") or []) if stats else []
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        hitting_future = pool.submit(fetch, "hitting")
+        pitching_future = pool.submit(fetch, "pitching")
+        result = build_team_league_rankings(hitting_future.result(), pitching_future.result())
+    with _league_rankings_lock:
+        _league_rankings_cache[cache_key] = result
+    return result
+
+
+def team_inning_distribution(team_id, season, through_date, excluded_game_id=None):
+    cache_key = (int(team_id), int(season), str(through_date))
+    with _inning_distribution_lock:
+        cached = _inning_distribution_cache.get(cache_key)
+    if cached:
+        return cached
+    response = requests.get(
+        "https://statsapi.mlb.com/api/v1/schedule",
+        params={
+            "sportId": 1,
+            "teamId": int(team_id),
+            "startDate": f"{int(season)}-03-01",
+            "endDate": str(through_date),
+            "gameType": "R",
+            "hydrate": "linescore",
+        },
+        timeout=20,
+    )
+    response.raise_for_status()
+    result = summarize_inning_distribution(response.json(), team_id, excluded_game_id)
+    with _inning_distribution_lock:
+        _inning_distribution_cache[cache_key] = result
+    return result
+
+
+def matchup_league_context(team_ids, game_time, game_id):
+    try:
+        matchup_date = datetime.fromisoformat(str(game_time).replace("Z", "+00:00")).date()
+    except (TypeError, ValueError):
+        matchup_date = datetime.now(timezone.utc).date()
+    through_date = matchup_date - timedelta(days=1)
+    season = matchup_date.year
+    try:
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            rankings_future = pool.submit(matchup_league_rankings, season, through_date.isoformat())
+            away_future = pool.submit(team_inning_distribution, team_ids[0], season, through_date.isoformat(), game_id)
+            home_future = pool.submit(team_inning_distribution, team_ids[1], season, through_date.isoformat(), game_id)
+            rankings = rankings_future.result()
+            distributions = {"away": away_future.result(), "home": home_future.result()}
+        teams = {}
+        matchup_keys = {
+            "runs_per_game", "ops", "hitter_k_rate", "walk_rate",
+            "staff_era", "staff_whip", "pitcher_k9", "runs_allowed_per_game",
+        }
+        for side, team_id in (("away", team_ids[0]), ("home", team_ids[1])):
+            ranked = rankings.get(int(team_id), {})
+            teams[side] = {
+                "team_id": int(team_id),
+                "team_name": ranked.get("team_name"),
+                "rankings": [row for row in ranked.get("rankings") or [] if row.get("key") in matchup_keys],
+                "inning_distribution": distributions[side],
+            }
+        return {
+            "available": any(team.get("rankings") for team in teams.values()),
+            "season": season,
+            "through": through_date.isoformat(),
+            "team_count": max((row.get("teams", 0) for team in teams.values() for row in team.get("rankings", [])), default=0),
+            "teams": teams,
+            "source": "MLB Stats API team by-date-range statistics and hydrated final linescores",
+        }
+    except Exception as exc:
+        return {
+            "available": False,
+            "season": season,
+            "through": through_date.isoformat(),
+            "team_count": 0,
+            "teams": {},
+            "message": f"League context is temporarily unavailable: {exc}",
+        }
 
 
 def _bullpen_game_line(game, side):
@@ -1817,15 +2337,10 @@ def _safe_fetch_melbet_game_player_props(game):
 def melbet_player_prop_markets(force=False):
     """Return currently displayed MLB player thresholds, never sportsbook prices."""
     now = datetime.now(timezone.utc)
-    cached_at = _melbet_player_props_cache.get("updated_at")
-    if not force and cached_at and now - cached_at < timedelta(seconds=60):
-        return _melbet_player_props_cache
-    last_attempt = _melbet_player_props_cache.get("last_attempt_at")
-    if not force and _melbet_player_props_cache.get("error") and last_attempt and now - last_attempt < timedelta(minutes=1):
+    if _melbet_cache_fresh(_melbet_player_props_cache, force=force, now=now):
         return _melbet_player_props_cache
     with _melbet_player_props_lock:
-        cached_at = _melbet_player_props_cache.get("updated_at")
-        if not force and cached_at and now - cached_at < timedelta(seconds=60):
+        if _melbet_cache_fresh(_melbet_player_props_cache, force=force, now=now):
             return _melbet_player_props_cache
         _melbet_player_props_cache["last_attempt_at"] = now
         try:
@@ -1888,14 +2403,12 @@ def melbet_player_prop_markets(force=False):
                 "selection_types": sorted(value["selection_types"]),
             } for _, value in sorted(unknown.items())]
             _player_prop_monitor["unmapped_market_groups"] = unmapped_groups
-            _melbet_player_props_cache.update({
-                "updated_at": now, "markets": markets, "sources": sources,
-                "unmapped_market_groups": unmapped_groups, "error": None,
-            })
+            _record_melbet_success(
+                _melbet_player_props_cache, now, markets, sources=sources,
+                unmapped_market_groups=unmapped_groups,
+            )
         except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
-            _melbet_player_props_cache["error"] = str(exc)
-            if not _melbet_player_props_cache.get("markets"):
-                _melbet_player_props_cache["updated_at"] = now
+            _record_melbet_failure(_melbet_player_props_cache, now, exc)
             print(f"[melbet-player-props] current listings unavailable: {exc}", flush=True)
     return _melbet_player_props_cache
 
@@ -2126,11 +2639,7 @@ def record_melbet_totals_snapshots(markets, observed_at):
 def melbet_totals_markets(force=False, defer_refresh=False):
     """Return current full-game lines and display-only decimal odds."""
     now = datetime.now(timezone.utc)
-    cached_at = _melbet_totals_cache.get("updated_at")
-    if not force and cached_at and now - cached_at < timedelta(minutes=2):
-        return _melbet_totals_cache
-    last_attempt = _melbet_totals_cache.get("last_attempt_at")
-    if not force and _melbet_totals_cache.get("error") and last_attempt and now - last_attempt < timedelta(minutes=1):
+    if _melbet_cache_fresh(_melbet_totals_cache, force=force, now=now):
         return _melbet_totals_cache
     if defer_refresh:
         with _melbet_totals_lock:
@@ -2149,8 +2658,7 @@ def melbet_totals_markets(force=False, defer_refresh=False):
         threading.Thread(target=refresh, name="melbet-totals-refresh", daemon=True).start()
         return _melbet_totals_cache
     with _melbet_totals_lock:
-        cached_at = _melbet_totals_cache.get("updated_at")
-        if not force and cached_at and now - cached_at < timedelta(minutes=2):
+        if _melbet_cache_fresh(_melbet_totals_cache, force=force, now=now):
             return _melbet_totals_cache
         _melbet_totals_cache["last_attempt_at"] = now
         try:
@@ -2174,12 +2682,10 @@ def melbet_totals_markets(force=False, defer_refresh=False):
             # a totals market. Moneyline handoff still needs the event ID.
             markets = [item if item else {**game, "lines": []} for game, item in zip(games, fetched)]
             sources = sorted({item.get("feed_host") for item in markets if item.get("feed_host")})
-            _melbet_totals_cache.update({"updated_at": now, "markets": markets, "sources": sources, "error": None})
+            _record_melbet_success(_melbet_totals_cache, now, markets, sources=sources)
             record_melbet_totals_snapshots(markets, now)
         except (requests.RequestException, ValueError, TypeError, KeyError) as exc:
-            _melbet_totals_cache["error"] = str(exc)
-            if not _melbet_totals_cache.get("markets"):
-                _melbet_totals_cache["updated_at"] = now
+            _record_melbet_failure(_melbet_totals_cache, now, exc)
             print(f"[melbet-totals] current lines unavailable: {exc}", flush=True)
     return _melbet_totals_cache
 
@@ -2960,7 +3466,7 @@ def projection_board(start_date, days=7):
     days = max(1, min(int(days or 7), 14))
     cache_key = f"{first_day.isoformat()}:{days}"
     cached = _projection_board_cache.get(cache_key)
-    cached_ttl = min(55, int(cached[1].get("refresh_seconds", 60))) if cached else 55
+    cached_ttl = max(5, min(300, int(cached[1].get("refresh_seconds", 300)))) if cached else 300
     if cached and datetime.now(timezone.utc) - cached[0] < timedelta(seconds=cached_ttl):
         return cached[1]
     final_day = first_day + timedelta(days=days - 1)
@@ -3113,7 +3619,7 @@ def projection_board(start_date, days=7):
         "multiday_validation_grid": multiday_validation_grid,
         "totals_model": totals_report,
         "market_slip_calibration": market_slip_calibration,
-        "market_inputs": False, "refresh_seconds": 3 if enrichment_pending or baseline_pending else 15,
+        "market_inputs": False, "refresh_seconds": 10 if enrichment_pending or baseline_pending else 300,
         "enrichment_pending": enrichment_pending + baseline_pending,
         "projection_pending": baseline_pending,
         "scheduled_games": len(upcoming_games),
@@ -3123,6 +3629,8 @@ def projection_board(start_date, days=7):
             "observed_at": totals_market_snapshot.get("updated_at").isoformat() if totals_market_snapshot.get("updated_at") else None,
             "listed_games": len(totals_market_snapshot.get("markets", [])),
             "error": totals_market_snapshot.get("error"),
+            "refresh_seconds": int(totals_market_snapshot.get("refresh_seconds") or _melbet_refresh_seconds(totals_market_snapshot, upcoming_games)),
+            "consecutive_failures": int(totals_market_snapshot.get("consecutive_failures") or 0),
         },
     }
     _projection_board_cache[cache_key] = (datetime.now(timezone.utc), payload)
@@ -3816,8 +4324,132 @@ def player_search(query):
     return statsapi.lookup_player(query)[:10]
 
 
+def _player_peer_profiles():
+    global _player_peer_cache
+    if _player_peer_cache is not None:
+        return _player_peer_cache
+    groups = {}
+    def number(value):
+        try:
+            return float(value or 0)
+        except (TypeError, ValueError):
+            return 0.0
+    for group in ("hitting", "pitching"):
+        payload = statsapi.get("stats", {"stats": "season", "group": group, "season": 2026, "playerPool": "ALL", "limit": 2000})
+        splits = next((item.get("splits", []) for item in payload.get("stats", []) if item.get("group", {}).get("displayName") == group), [])
+        rows = []
+        for split in splits:
+            stat, person = split.get("stat", {}), split.get("player", {})
+            player_key = person.get("id")
+            if not player_key:
+                continue
+            if group == "hitting":
+                pa = number(stat.get("plateAppearances"))
+                metrics = {
+                    "AVG": number(stat.get("avg")), "OBP": number(stat.get("obp")),
+                    "SLG": number(stat.get("slg")), "OPS": number(stat.get("ops")),
+                    "BB rate": number(stat.get("baseOnBalls")) / pa if pa else None,
+                    "K rate": number(stat.get("strikeOuts")) / pa if pa else None,
+                    "Isolated power": number(stat.get("slg")) - number(stat.get("avg")),
+                }
+                qualified = pa >= 25
+            else:
+                batters = number(stat.get("battersFaced"))
+                metrics = {
+                    "ERA": number(stat.get("era")), "WHIP": number(stat.get("whip")),
+                    "K rate": number(stat.get("strikeOuts")) / batters if batters else None,
+                    "BB rate": number(stat.get("baseOnBalls")) / batters if batters else None,
+                    "HR rate": number(stat.get("homeRuns")) / batters if batters else None,
+                }
+                qualified = batters >= 20
+            rows.append({"id": int(player_key), "metrics": metrics, "qualified": qualified})
+        peers = [row for row in rows if row["qualified"]]
+        lower_better = {"K rate"} if group == "hitting" else {"ERA", "WHIP", "BB rate", "HR rate"}
+        for row in rows:
+            profile = []
+            for label, value in row["metrics"].items():
+                sample = [peer["metrics"].get(label) for peer in peers]
+                sample = [number for number in sample if number is not None and math.isfinite(number)]
+                percentile = None
+                if value is not None and sample:
+                    favorable = sum(number >= value for number in sample) if label in lower_better else sum(number <= value for number in sample)
+                    percentile = round(favorable / len(sample) * 100)
+                profile.append({"key": label.lower().replace(" ", "_"), "label": label, "value": round(value, 3) if value is not None else None, "percentile": percentile,
+                    "definition": {"AVG":"Hits divided by at-bats.","OBP":"Rate of reaching base excluding errors and fielder choices.","SLG":"Total bases divided by at-bats.","OPS":"On-base percentage plus slugging percentage.","BB rate":"Walks divided by plate appearances or batters faced.","K rate":"Strikeouts divided by plate appearances or batters faced.","Isolated power":"Slugging percentage minus batting average.","ERA":"Earned runs allowed per nine innings.","WHIP":"Walks plus hits allowed per inning.","HR rate":"Home runs allowed divided by batters faced."}.get(label, "Official season rate.")})
+            groups[row["id"]] = {"group": group, "sample": len(peers), "metrics": profile}
+    _player_peer_cache = groups
+    return groups
+
+
+def normalize_player_game_logs(payload):
+    """Preserve game identity and every official per-game stat for player pages."""
+    people = (payload or {}).get("people") or []
+    output = []
+    if not people:
+        return output
+    for section in people[0].get("stats", []) or []:
+        group = (section.get("group") or {}).get("displayName")
+        if group not in ("hitting", "pitching", "fielding"):
+            continue
+        for split in section.get("splits", []) or []:
+            game = split.get("game") or {}
+            game_id = int(game.get("gamePk") or 0)
+            if not game_id:
+                continue
+            stat = split.get("stat") or {}
+            team = split.get("team") or {}
+            opponent = split.get("opponent") or {}
+            decision = None
+            if group == "pitching":
+                decision = "W" if int(stat.get("wins") or 0) else "L" if int(stat.get("losses") or 0) else "S" if int(stat.get("saves") or 0) else "ND"
+            output.append({
+                "game_id": game_id,
+                "date": split.get("date"),
+                "season": split.get("season"),
+                "group": group,
+                "game_type": split.get("gameType"),
+                "game_number": int(game.get("gameNumber") or 1),
+                "day_night": game.get("dayNight"),
+                "is_home": bool(split.get("isHome")),
+                "team_win": bool(split.get("isWin")),
+                "decision": decision,
+                "team_id": int(team.get("id") or 0) or None,
+                "team": team.get("name"),
+                "opponent_id": int(opponent.get("id") or 0) or None,
+                "opponent": opponent.get("name") or "Unknown opponent",
+                "positions": [position.get("abbreviation") for position in split.get("positionsPlayed", []) or [] if position.get("abbreviation")],
+                "summary": stat.get("summary"),
+                "stats": stat,
+            })
+    return sorted(output, key=lambda row: (row.get("date") or "", row["game_id"], row["group"]))
+
+
+def player_game_logs(player_id, season):
+    raw = statsapi.get("person", {
+        "personId": int(player_id),
+        "hydrate": (
+            "stats(group=[hitting,pitching,fielding],type=gameLog,"
+            f"season={int(season)},sportId=1),currentTeam"
+        ),
+    })
+    return normalize_player_game_logs(raw)
+
+
 def player_detail(player_id):
-    return statsapi.player_stat_data(int(player_id), group="[hitting,pitching,fielding]", type="season")
+    player_id = int(player_id)
+    current_season = datetime.now(timezone.utc).year
+    season = statsapi.player_stat_data(
+        player_id, group="[hitting,pitching,fielding]", type="season", season=current_season,
+    )
+    try:
+        season["game_log"] = player_game_logs(player_id, current_season)
+    except Exception:
+        season["game_log"] = []
+    try:
+        season["peer_profile"] = _player_peer_profiles().get(player_id)
+    except Exception:
+        season["peer_profile"] = None
+    return season
 
 
 def _pitcher_game_line(split):
@@ -4005,6 +4637,7 @@ def pitcher_profile(person, game_datetime=None, current_game_id=None):
     result = {
         "id": person.get("id"), "name": person.get("fullName"),
         "team": (profile.get("currentTeam") or {}).get("name"),
+        "team_id": (profile.get("currentTeam") or {}).get("id"),
         "position": (profile.get("primaryPosition") or {}).get("abbreviation"),
         "era": pitching.get("era"), "whip": pitching.get("whip"),
         "innings": pitching.get("inningsPitched"), "innings_decimal": innings,
@@ -4156,9 +4789,9 @@ def projection_refresh_loop():
     """Refresh imminent and live game projections independently of page traffic."""
     if os.getenv("NINTH_PROJECTION_MONITOR_ENABLED", "1").lower() in ("0", "false", "no"):
         return
-    pregame_seconds = max(30, int(os.getenv("NINTH_PREGAME_REFRESH_SECONDS", "60")))
+    pregame_seconds = max(60, int(os.getenv("NINTH_PREGAME_REFRESH_SECONDS", "300")))
     live_seconds = max(5, int(os.getenv("NINTH_LIVE_REFRESH_SECONDS", "10")))
-    discovery_seconds = max(15, int(os.getenv("NINTH_GAME_DISCOVERY_SECONDS", "30")))
+    discovery_seconds = max(30, int(os.getenv("NINTH_GAME_DISCOVERY_SECONDS", "60")))
     monitor_hours = max(2, int(os.getenv("NINTH_PREGAME_MONITOR_HOURS", "24")))
     _projection_monitor.update({"running": True, "pregame_seconds": pregame_seconds, "live_seconds": live_seconds})
     tracked, next_due = {}, {}
@@ -4187,7 +4820,11 @@ def projection_refresh_loop():
                     previous_live = tracked.get(game_id, {}).get("is_live", False)
                     discovered[game_id] = {"is_live": is_live, "starts_at": starts_at.isoformat(), "status": status}
                     if game_id not in next_due or (is_live and not previous_live):
-                        next_due[game_id] = 0.0
+                        # Live state is urgent. Ordinary pregame work is spread
+                        # across its five-minute window so a cold start cannot
+                        # launch the entire slate at once.
+                        stagger = 0 if is_live else (game_id * 97) % pregame_seconds
+                        next_due[game_id] = monotonic_now + stagger
                 tracked = discovered
                 next_due = {game_id: due for game_id, due in next_due.items() if game_id in tracked}
                 _projection_monitor.update({"last_discovery_at": now.isoformat(), "tracked_games": len(tracked), "last_error": None})
@@ -4226,11 +4863,17 @@ def projection_refresh_loop():
 
 
 def maintenance_loop():
-    """Run the guarded data/model maintenance check without blocking requests."""
+    """Run guarded data/model maintenance once nightly, never at startup."""
     if os.getenv("NINTH_MAINTENANCE_ENABLED", "1").lower() in ("0", "false", "no"):
         return
-    interval = max(900, int(os.getenv("NINTH_MAINTENANCE_CHECK_SECONDS", "3600")))
     while True:
+        now = datetime.now().astimezone()
+        hour = max(0, min(23, int(os.getenv("NINTH_MAINTENANCE_HOUR", "3"))))
+        minute = max(0, min(59, int(os.getenv("NINTH_MAINTENANCE_MINUTE", "15"))))
+        next_run = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+        if next_run <= now:
+            next_run += timedelta(days=1)
+        time.sleep(max(1, (next_run - now).total_seconds()))
         try:
             result = subprocess.run(
                 [sys.executable, "-m", "ml.maintenance", "--once"],
@@ -4242,7 +4885,6 @@ def maintenance_loop():
                 print(f"[model-maintenance] {output}", flush=True)
         except Exception as exc:
             print(f"[model-maintenance] check failed: {exc}", flush=True)
-        time.sleep(interval)
 
 
 if __name__ == "__main__":

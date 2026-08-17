@@ -1,0 +1,3593 @@
+- generic [ref=f3e3]:
+  - banner [ref=f3e5]:
+    - generic [ref=f3e6]:
+      - link "NINTH home" [ref=f3e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f3e8]: NINTH
+      - navigation "Sport workspaces" [ref=f3e9]:
+        - link "00 Platform" [ref=f3e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f3e11]: "00"
+          - generic [ref=f3e12]: Platform
+        - link "01 MLB" [ref=f3e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=f3e14]: "01"
+          - generic [ref=f3e15]: MLB
+        - link "02 FTB" [ref=f3e17] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=f3e18]: "02"
+          - generic [ref=f3e19]: FTB
+        - link "03 NFL" [ref=f3e20] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=f3e21]: "03"
+          - generic [ref=f3e22]: NFL
+        - link "04 NBA" [ref=f3e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=f3e24]: "04"
+          - generic [ref=f3e25]: NBA
+        - link "05 ESP" [ref=f3e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=f3e27]: "05"
+          - generic [ref=f3e28]: ESP
+      - generic [ref=f3e29]:
+        - textbox "Search MLB" [ref=f3e34]
+        - button "Use light theme" [ref=f3e35] [cursor=pointer]
+    - generic [ref=f3e42]:
+      - generic [ref=f3e43]:
+        - generic [ref=f3e44]: PRODUCTION
+        - generic [ref=f3e45]: Baseball
+        - emphasis [ref=f3e46]: PRODUCTION
+      - navigation "Workspace navigation" [ref=f3e47]:
+        - link "Overview" [ref=f3e48] [cursor=pointer]:
+          - /url: /baseball
+        - link "Games" [ref=f3e49] [cursor=pointer]:
+          - /url: /schedule
+        - link "Standings" [ref=f3e50] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=f3e51] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=f3e52] [cursor=pointer]:
+          - /url: /players
+        - link "Live" [ref=f3e53] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=f3e54] [cursor=pointer]:
+          - /url: /builder
+        - link "Player props" [ref=f3e55] [cursor=pointer]:
+          - /url: /props-builder
+        - link "Models" [ref=f3e56] [cursor=pointer]:
+          - /url: /model
+        - link "Guarantees" [ref=f3e57] [cursor=pointer]:
+          - /url: /baseball/guarantees
+        - link "Alter ego" [ref=f3e58] [cursor=pointer]:
+          - /url: /alter-ego
+    - generic [ref=f3e59]:
+      - generic [ref=f3e60]: TODAY
+      - link "BAL 0 — 0 TB Scheduled" [ref=f3e67] [cursor=pointer]:
+        - /url: /games/822940
+        - generic [ref=f3e68]: BAL
+        - emphasis [ref=f3e69]: "0"
+        - generic [ref=f3e70]: —
+        - emphasis [ref=f3e71]: "0"
+        - generic [ref=f3e72]: TB
+        - generic [ref=f3e73]: Scheduled
+      - link "BOS 0 — 0 PIT Scheduled" [ref=f3e74] [cursor=pointer]:
+        - /url: /games/823344
+        - generic [ref=f3e75]: BOS
+        - emphasis [ref=f3e76]: "0"
+        - generic [ref=f3e77]: —
+        - emphasis [ref=f3e78]: "0"
+        - generic [ref=f3e79]: PIT
+        - generic [ref=f3e80]: Scheduled
+      - link "AZ 0 — 0 ATL Scheduled" [ref=f3e81] [cursor=pointer]:
+        - /url: /games/824880
+        - generic [ref=f3e82]: AZ
+        - emphasis [ref=f3e83]: "0"
+        - generic [ref=f3e84]: —
+        - emphasis [ref=f3e85]: "0"
+        - generic [ref=f3e86]: ATL
+        - generic [ref=f3e87]: Scheduled
+      - link "NYY 0 — 0 TOR Scheduled" [ref=f3e88] [cursor=pointer]:
+        - /url: /games/822774
+        - generic [ref=f3e89]: NYY
+        - emphasis [ref=f3e90]: "0"
+        - generic [ref=f3e91]: —
+        - emphasis [ref=f3e92]: "0"
+        - generic [ref=f3e93]: TOR
+        - generic [ref=f3e94]: Scheduled
+      - generic [ref=f3e63]: FEEDS CONNECTED
+  - main [ref=f3e65]:
+    - generic [ref=f3e1444]:
+      - button "BACK TO GAMES" [ref=f3e1445] [cursor=pointer]
+      - generic [ref=f3e1448]:
+        - generic [ref=f3e1449]:
+          - img "New York Yankees logo" [ref=f3e1451]
+          - generic [ref=f3e1452]:
+            - generic [ref=f3e1453]: American League East · OFFICIAL MLB DATA
+            - heading "New York Yankees" [level=1] [ref=f3e1454]
+            - paragraph [ref=f3e1455]: 68-55 · L3 · RUN DIFF +84
+        - generic [ref=f3e1456]:
+          - generic [ref=f3e1457]: MLB STANDINGS RANK
+          - generic [ref=f3e1458]: "#6"
+      - generic [ref=f3e1459]:
+        - generic [ref=f3e1460]:
+          - generic [ref=f3e1461]: Record
+          - strong [ref=f3e1462]: 68-55
+          - generic [ref=f3e1463]: .553 win pct
+        - generic [ref=f3e1464]:
+          - generic [ref=f3e1465]: Run differential
+          - strong [ref=f3e1466]: "+84"
+          - generic [ref=f3e1467]: 547 RS · 463 RA
+        - generic [ref=f3e1468]:
+          - generic [ref=f3e1469]: Team OPS
+          - strong [ref=f3e1470]: ".716"
+          - generic [ref=f3e1471]: AVG .230
+        - generic [ref=f3e1472]:
+          - generic [ref=f3e1473]: Hitter K rate
+          - strong [ref=f3e1474]: 24.5%
+          - generic [ref=f3e1475]: "#28 of 30 MLB teams"
+        - generic [ref=f3e1476]:
+          - generic [ref=f3e1477]: Team ERA
+          - strong [ref=f3e1478]: "3.28"
+          - generic [ref=f3e1479]: WHIP 1.18
+        - generic [ref=f3e1480]:
+          - generic [ref=f3e1481]: Pitcher K rate
+          - strong [ref=f3e1482]: 24.3%
+          - generic [ref=f3e1483]: "#5 of 30 MLB teams"
+      - generic [ref=f3e1484]:
+        - generic [ref=f3e1485]:
+          - generic [ref=f3e1487]:
+            - generic [ref=f3e1488]: NINTH / DATA
+            - heading "Cumulative run differential · latest 20 completed games" [level=2] [ref=f3e1489]
+          - generic [ref=f3e1490]:
+            - 'img "runs: 20 values" [ref=f3e1492]'
+            - generic [ref=f3e1494]:
+              - generic [ref=f3e1495]: SOURCE NOTE
+              - text: Each point adds the run differential from the next completed game in chronological order. All values come from official MLB feeds.
+        - generic [ref=f3e1496]:
+          - generic [ref=f3e1498]:
+            - generic [ref=f3e1499]: NINTH / DATA
+            - heading "Official standing" [level=2] [ref=f3e1500]
+          - generic [ref=f3e1501]:
+            - generic [ref=f3e1502]:
+              - generic [ref=f3e1503]:
+                - generic [ref=f3e1504]: MLB rank
+                - strong [ref=f3e1505]: "#6"
+              - generic [ref=f3e1508]: "Division rank #2"
+            - generic [ref=f3e1509]:
+              - generic [ref=f3e1510]:
+                - generic [ref=f3e1511]: Winning percentage
+                - strong [ref=f3e1512]: ".553"
+              - generic [ref=f3e1515]: 6.5 GB
+            - generic [ref=f3e1516]:
+              - generic [ref=f3e1517]:
+                - generic [ref=f3e1518]: Last 10
+                - strong [ref=f3e1519]: 5-5
+              - generic [ref=f3e1522]: L3
+      - generic [ref=f3e1523]:
+        - generic [ref=f3e1524]:
+          - generic [ref=f3e1525]: SEASON GAMES
+          - generic [ref=f3e1526]: "166"
+        - generic [ref=f3e1527]:
+          - generic [ref=f3e1528]: COMPLETED
+          - generic [ref=f3e1529]: "127"
+        - generic [ref=f3e1530]:
+          - generic [ref=f3e1531]: UPCOMING
+          - generic [ref=f3e1532]: "39"
+        - generic [ref=f3e1533]:
+          - generic [ref=f3e1534]: HOME / AWAY
+          - generic [ref=f3e1535]: 85 / 81
+        - generic [ref=f3e1536]:
+          - generic [ref=f3e1537]: RANKS THROUGH
+          - generic [ref=f3e1538]: 2026-08-16
+      - generic [ref=f3e1539]:
+        - generic [ref=f3e1541]:
+          - generic [ref=f3e1542]: NINTH / DATA
+          - heading "MLB league standing by metric" [level=2] [ref=f3e1543]
+          - paragraph [ref=f3e1544]: Current season rates ranked against all 30 clubs · lower hitter K rate, ERA, WHIP and run allowance are better
+        - generic [ref=f3e1546]:
+          - generic [ref=f3e1547]:
+            - generic [ref=f3e1548]:
+              - generic [ref=f3e1549]: OFFENSE
+              - generic [ref=f3e1550]: 9 RANKED METRICS
+            - generic [ref=f3e1551]:
+              - article [ref=f3e1552]:
+                - generic [ref=f3e1553]:
+                  - generic [ref=f3e1554]: Runs per game
+                  - generic [ref=f3e1555]: "4.45"
+                - emphasis [ref=f3e1557]
+                - strong [ref=f3e1558]:
+                  - text: "#15"
+                  - generic [ref=f3e1559]: LEAGUE MIDDLE
+              - article [ref=f3e1560]:
+                - generic [ref=f3e1561]:
+                  - generic [ref=f3e1562]: Batting average
+                  - generic [ref=f3e1563]: ".230"
+                - emphasis [ref=f3e1565]
+                - strong [ref=f3e1566]:
+                  - text: "#28"
+                  - generic [ref=f3e1567]: BOTTOM FIVE
+              - article [ref=f3e1568]:
+                - generic [ref=f3e1569]:
+                  - generic [ref=f3e1570]: On-base percentage
+                  - generic [ref=f3e1571]: ".308"
+                - emphasis [ref=f3e1573]
+                - strong [ref=f3e1574]:
+                  - text: "#26"
+                  - generic [ref=f3e1575]: BOTTOM FIVE
+              - article [ref=f3e1576]:
+                - generic [ref=f3e1577]:
+                  - generic [ref=f3e1578]: Slugging percentage
+                  - generic [ref=f3e1579]: ".408"
+                - emphasis [ref=f3e1581]
+                - strong [ref=f3e1582]:
+                  - text: "#9"
+                  - generic [ref=f3e1583]: TOP THIRD
+              - article [ref=f3e1584]:
+                - generic [ref=f3e1585]:
+                  - generic [ref=f3e1586]: OPS
+                  - generic [ref=f3e1587]: ".716"
+                - emphasis [ref=f3e1589]
+                - strong [ref=f3e1590]:
+                  - text: "#17"
+                  - generic [ref=f3e1591]: LEAGUE MIDDLE
+              - article [ref=f3e1592]:
+                - generic [ref=f3e1593]:
+                  - generic [ref=f3e1594]: Isolated power
+                  - generic [ref=f3e1595]: ".178"
+                - emphasis [ref=f3e1597]
+                - strong [ref=f3e1598]:
+                  - text: "#2"
+                  - generic [ref=f3e1599]: MLB ELITE
+              - article [ref=f3e1600]:
+                - generic [ref=f3e1601]:
+                  - generic [ref=f3e1602]: Home runs per game
+                  - generic [ref=f3e1603]: "1.38"
+                - emphasis [ref=f3e1605]
+                - strong [ref=f3e1606]:
+                  - text: "#2"
+                  - generic [ref=f3e1607]: MLB ELITE
+              - article [ref=f3e1608]:
+                - generic [ref=f3e1609]:
+                  - generic [ref=f3e1610]: Hitter K rate
+                  - generic [ref=f3e1611]: 24.5%
+                - emphasis [ref=f3e1613]
+                - strong [ref=f3e1614]:
+                  - text: "#28"
+                  - generic [ref=f3e1615]: BOTTOM FIVE
+              - article [ref=f3e1616]:
+                - generic [ref=f3e1617]:
+                  - generic [ref=f3e1618]: Walk rate
+                  - generic [ref=f3e1619]: 9.7%
+                - emphasis [ref=f3e1621]
+                - strong [ref=f3e1622]:
+                  - text: "#4"
+                  - generic [ref=f3e1623]: MLB ELITE
+          - generic [ref=f3e1624]:
+            - generic [ref=f3e1625]:
+              - generic [ref=f3e1626]: RUN PREVENTION
+              - generic [ref=f3e1627]: 7 RANKED METRICS
+            - generic [ref=f3e1628]:
+              - article [ref=f3e1629]:
+                - generic [ref=f3e1630]:
+                  - generic [ref=f3e1631]: Staff ERA
+                  - generic [ref=f3e1632]: "3.28"
+                - emphasis [ref=f3e1634]
+                - strong [ref=f3e1635]:
+                  - text: "#1"
+                  - generic [ref=f3e1636]: MLB ELITE
+              - article [ref=f3e1637]:
+                - generic [ref=f3e1638]:
+                  - generic [ref=f3e1639]: Staff WHIP
+                  - generic [ref=f3e1640]: "1.18"
+                - emphasis [ref=f3e1642]
+                - strong [ref=f3e1643]:
+                  - text: "#4"
+                  - generic [ref=f3e1644]: MLB ELITE
+              - article [ref=f3e1645]:
+                - generic [ref=f3e1646]:
+                  - generic [ref=f3e1647]: Pitcher K / 9
+                  - generic [ref=f3e1648]: "9.08"
+                - emphasis [ref=f3e1650]
+                - strong [ref=f3e1651]:
+                  - text: "#8"
+                  - generic [ref=f3e1652]: TOP THIRD
+              - article [ref=f3e1653]:
+                - generic [ref=f3e1654]:
+                  - generic [ref=f3e1655]: Pitcher K rate
+                  - generic [ref=f3e1656]: 24.3%
+                - emphasis [ref=f3e1658]
+                - strong [ref=f3e1659]:
+                  - text: "#5"
+                  - generic [ref=f3e1660]: MLB ELITE
+              - article [ref=f3e1661]:
+                - generic [ref=f3e1662]:
+                  - generic [ref=f3e1663]: Pitcher walk rate
+                  - generic [ref=f3e1664]: 8.3%
+                - emphasis [ref=f3e1666]
+                - strong [ref=f3e1667]:
+                  - text: "#10"
+                  - generic [ref=f3e1668]: TOP THIRD
+              - article [ref=f3e1669]:
+                - generic [ref=f3e1670]:
+                  - generic [ref=f3e1671]: Home runs allowed / 9
+                  - generic [ref=f3e1672]: "1.00"
+                - emphasis [ref=f3e1674]
+                - strong [ref=f3e1675]:
+                  - text: "#5"
+                  - generic [ref=f3e1676]: MLB ELITE
+              - article [ref=f3e1677]:
+                - generic [ref=f3e1678]:
+                  - generic [ref=f3e1679]: Runs allowed / game
+                  - generic [ref=f3e1680]: "3.76"
+                - emphasis [ref=f3e1682]
+                - strong [ref=f3e1683]:
+                  - text: "#2"
+                  - generic [ref=f3e1684]: MLB ELITE
+      - generic [ref=f3e1685]:
+        - generic [ref=f3e1687]:
+          - generic [ref=f3e1688]: NINTH / DATA
+          - heading "Run distribution by inning" [level=2] [ref=f3e1689]
+          - paragraph [ref=f3e1690]: 123 completed regular-season games · scoring and prevention shown per team game
+        - generic [ref=f3e1692]:
+          - 'img "Runs scored: 10 values; Runs allowed: 10 values" [ref=f3e1694]'
+          - generic [ref=f3e1696]:
+            - generic [ref=f3e1697]:
+              - generic [ref=f3e1698]: EARLY · INN 1–3
+              - generic [ref=f3e1699]: 1.59 FOR / 1.25 AGAINST
+              - emphasis [ref=f3e1700]: 35.6% of offense · 33.3% allowed
+            - generic [ref=f3e1701]:
+              - generic [ref=f3e1702]: MIDDLE · INN 4–6
+              - generic [ref=f3e1703]: 1.27 FOR / 1.22 AGAINST
+              - emphasis [ref=f3e1704]: 28.5% of offense · 32.4% allowed
+            - generic [ref=f3e1705]:
+              - generic [ref=f3e1706]: LATE · INN 7–9
+              - generic [ref=f3e1707]: 1.52 FOR / 1.14 AGAINST
+              - emphasis [ref=f3e1708]: 34.2% of offense · 30.2% allowed
+      - generic [ref=f3e1709]:
+        - generic [ref=f3e1711]:
+          - generic [ref=f3e1712]: NINTH / DATA
+          - heading "Complete 2026 schedule and results" [level=2] [ref=f3e1713]
+          - paragraph [ref=f3e1714]: Regular season and postseason · every official game currently returned by MLB
+        - generic [ref=f3e1715]:
+          - generic [ref=f3e1716]:
+            - group "Team game filter" [ref=f3e1717]:
+              - button "ALL" [ref=f3e1718] [cursor=pointer]
+              - button "COMPLETED" [ref=f3e1719] [cursor=pointer]
+              - button "UPCOMING" [ref=f3e1720] [cursor=pointer]
+            - generic [ref=f3e1721]: 166 GAMES SHOWN
+          - table [ref=f3e1723]:
+            - rowgroup [ref=f3e1724]:
+              - row [ref=f3e1725]:
+                - columnheader "Date" [ref=f3e1726]
+                - columnheader "Opponent" [ref=f3e1727]
+                - columnheader "Site" [ref=f3e1728]
+                - columnheader "Result / status" [ref=f3e1729]
+                - columnheader "Starting pitchers" [ref=f3e1730]
+                - columnheader "Venue" [ref=f3e1731]
+                - columnheader "Series" [ref=f3e1732]
+            - rowgroup [ref=f3e1733]:
+              - row [ref=f3e1734]:
+                - cell [ref=f3e1735]:
+                  - link "Mar 25" [ref=f3e1736] [cursor=pointer]:
+                    - /url: /games/823244
+                - cell [ref=f3e1737]:
+                  - link "San Francisco Giants" [ref=f3e1738] [cursor=pointer]:
+                    - /url: /teams/137
+                - cell "AWAY" [ref=f3e1739]
+                - cell "W 7–0" [ref=f3e1740]
+                - cell [ref=f3e1742]:
+                  - generic [ref=f3e1743]:
+                    - link "Max Fried" [ref=f3e1744] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e1745]: vs
+                    - link "Logan Webb" [ref=f3e1746] [cursor=pointer]:
+                      - /url: /players/657277
+                - cell "Oracle Park" [ref=f3e1747]
+                - cell "Regular Season" [ref=f3e1748]
+              - row [ref=f3e1749]:
+                - cell [ref=f3e1750]:
+                  - link "Mar 27" [ref=f3e1751] [cursor=pointer]:
+                    - /url: /games/823243
+                - cell [ref=f3e1752]:
+                  - link "San Francisco Giants" [ref=f3e1753] [cursor=pointer]:
+                    - /url: /teams/137
+                - cell "AWAY" [ref=f3e1754]
+                - cell "W 3–0" [ref=f3e1755]
+                - cell [ref=f3e1757]:
+                  - generic [ref=f3e1758]:
+                    - link "Cam Schlittler" [ref=f3e1759] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e1760]: vs
+                    - link "Robbie Ray" [ref=f3e1761] [cursor=pointer]:
+                      - /url: /players/592662
+                - cell "Oracle Park" [ref=f3e1762]
+                - cell "Regular Season" [ref=f3e1763]
+              - row [ref=f3e1764]:
+                - cell [ref=f3e1765]:
+                  - link "Mar 28" [ref=f3e1766] [cursor=pointer]:
+                    - /url: /games/823241
+                - cell [ref=f3e1767]:
+                  - link "San Francisco Giants" [ref=f3e1768] [cursor=pointer]:
+                    - /url: /teams/137
+                - cell "AWAY" [ref=f3e1769]
+                - cell "W 3–1" [ref=f3e1770]
+                - cell [ref=f3e1772]:
+                  - generic [ref=f3e1773]:
+                    - link "Will Warren" [ref=f3e1774] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e1775]: vs
+                    - link "Tyler Mahle" [ref=f3e1776] [cursor=pointer]:
+                      - /url: /players/641816
+                - cell "Oracle Park" [ref=f3e1777]
+                - cell "Regular Season" [ref=f3e1778]
+              - row [ref=f3e1779]:
+                - cell [ref=f3e1780]:
+                  - link "Mar 30" [ref=f3e1781] [cursor=pointer]:
+                    - /url: /games/823159
+                - cell [ref=f3e1782]:
+                  - link "Seattle Mariners" [ref=f3e1783] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "AWAY" [ref=f3e1784]
+                - cell "L 1–2" [ref=f3e1785]
+                - cell [ref=f3e1787]:
+                  - generic [ref=f3e1788]:
+                    - link "Ryan Weathers" [ref=f3e1789] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e1790]: vs
+                    - link "Luis Castillo" [ref=f3e1791] [cursor=pointer]:
+                      - /url: /players/622491
+                - cell "T-Mobile Park" [ref=f3e1792]
+                - cell "Regular Season" [ref=f3e1793]
+              - row [ref=f3e1794]:
+                - cell [ref=f3e1795]:
+                  - link "Mar 31" [ref=f3e1796] [cursor=pointer]:
+                    - /url: /games/823158
+                - cell [ref=f3e1797]:
+                  - link "Seattle Mariners" [ref=f3e1798] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "AWAY" [ref=f3e1799]
+                - cell "W 5–0" [ref=f3e1800]
+                - cell [ref=f3e1802]:
+                  - generic [ref=f3e1803]:
+                    - link "Max Fried" [ref=f3e1804] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e1805]: vs
+                    - link "Logan Gilbert" [ref=f3e1806] [cursor=pointer]:
+                      - /url: /players/669302
+                - cell "T-Mobile Park" [ref=f3e1807]
+                - cell "Regular Season" [ref=f3e1808]
+              - row [ref=f3e1809]:
+                - cell [ref=f3e1810]:
+                  - link "Apr 1" [ref=f3e1811] [cursor=pointer]:
+                    - /url: /games/823157
+                - cell [ref=f3e1812]:
+                  - link "Seattle Mariners" [ref=f3e1813] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "AWAY" [ref=f3e1814]
+                - cell "W 5–3" [ref=f3e1815]
+                - cell [ref=f3e1817]:
+                  - generic [ref=f3e1818]:
+                    - link "Cam Schlittler" [ref=f3e1819] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e1820]: vs
+                    - link "George Kirby" [ref=f3e1821] [cursor=pointer]:
+                      - /url: /players/669923
+                - cell "T-Mobile Park" [ref=f3e1822]
+                - cell "Regular Season" [ref=f3e1823]
+              - row [ref=f3e1824]:
+                - cell [ref=f3e1825]:
+                  - link "Apr 3" [ref=f3e1826] [cursor=pointer]:
+                    - /url: /games/823568
+                - cell [ref=f3e1827]:
+                  - link "Miami Marlins" [ref=f3e1828] [cursor=pointer]:
+                    - /url: /teams/146
+                - cell "HOME" [ref=f3e1829]
+                - cell "W 8–2" [ref=f3e1830]
+                - cell [ref=f3e1832]:
+                  - generic [ref=f3e1833]:
+                    - link "Will Warren" [ref=f3e1834] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e1835]: vs
+                    - link "Eury Pérez" [ref=f3e1836] [cursor=pointer]:
+                      - /url: /players/691587
+                - cell "Yankee Stadium" [ref=f3e1837]
+                - cell "Regular Season" [ref=f3e1838]
+              - row [ref=f3e1839]:
+                - cell [ref=f3e1840]:
+                  - link "Apr 4" [ref=f3e1841] [cursor=pointer]:
+                    - /url: /games/823569
+                - cell [ref=f3e1842]:
+                  - link "Miami Marlins" [ref=f3e1843] [cursor=pointer]:
+                    - /url: /teams/146
+                - cell "HOME" [ref=f3e1844]
+                - cell "W 9–7" [ref=f3e1845]
+                - cell [ref=f3e1847]:
+                  - generic [ref=f3e1848]:
+                    - link "Ryan Weathers" [ref=f3e1849] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e1850]: vs
+                    - link "Max Meyer" [ref=f3e1851] [cursor=pointer]:
+                      - /url: /players/676974
+                - cell "Yankee Stadium" [ref=f3e1852]
+                - cell "Regular Season" [ref=f3e1853]
+              - row [ref=f3e1854]:
+                - cell [ref=f3e1855]:
+                  - link "Apr 5" [ref=f3e1856] [cursor=pointer]:
+                    - /url: /games/823566
+                - cell [ref=f3e1857]:
+                  - link "Miami Marlins" [ref=f3e1858] [cursor=pointer]:
+                    - /url: /teams/146
+                - cell "HOME" [ref=f3e1859]
+                - cell "L 6–7" [ref=f3e1860]
+                - cell [ref=f3e1862]:
+                  - generic [ref=f3e1863]:
+                    - link "Max Fried" [ref=f3e1864] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e1865]: vs
+                    - link "Pete Fairbanks" [ref=f3e1866] [cursor=pointer]:
+                      - /url: /players/664126
+                - cell "Yankee Stadium" [ref=f3e1867]
+                - cell "Regular Season" [ref=f3e1868]
+              - row [ref=f3e1869]:
+                - cell [ref=f3e1870]:
+                  - link "Apr 7" [ref=f3e1871] [cursor=pointer]:
+                    - /url: /games/823567
+                - cell [ref=f3e1872]:
+                  - link "Athletics" [ref=f3e1873] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "HOME" [ref=f3e1874]
+                - cell "W 5–3" [ref=f3e1875]
+                - cell [ref=f3e1877]:
+                  - generic [ref=f3e1878]:
+                    - link "Cam Schlittler" [ref=f3e1879] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e1880]: vs
+                    - link "Aaron Civale" [ref=f3e1881] [cursor=pointer]:
+                      - /url: /players/650644
+                - cell "Yankee Stadium" [ref=f3e1882]
+                - cell "Regular Season" [ref=f3e1883]
+              - row [ref=f3e1884]:
+                - cell [ref=f3e1885]:
+                  - link "Apr 8" [ref=f3e1886] [cursor=pointer]:
+                    - /url: /games/823564
+                - cell [ref=f3e1887]:
+                  - link "Athletics" [ref=f3e1888] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "HOME" [ref=f3e1889]
+                - cell "L 2–3" [ref=f3e1890]
+                - cell [ref=f3e1892]:
+                  - generic [ref=f3e1893]:
+                    - link "Will Warren" [ref=f3e1894] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e1895]: vs
+                    - link "Luis Severino" [ref=f3e1896] [cursor=pointer]:
+                      - /url: /players/622663
+                - cell "Yankee Stadium" [ref=f3e1897]
+                - cell "Regular Season" [ref=f3e1898]
+              - row [ref=f3e1899]:
+                - cell [ref=f3e1900]:
+                  - link "Apr 9" [ref=f3e1901] [cursor=pointer]:
+                    - /url: /games/823565
+                - cell [ref=f3e1902]:
+                  - link "Athletics" [ref=f3e1903] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "HOME" [ref=f3e1904]
+                - cell "L 0–1" [ref=f3e1905]
+                - cell [ref=f3e1907]:
+                  - generic [ref=f3e1908]:
+                    - link "Ryan Weathers" [ref=f3e1909] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e1910]: vs
+                    - link "Jeffrey Springs" [ref=f3e1911] [cursor=pointer]:
+                      - /url: /players/605488
+                - cell "Yankee Stadium" [ref=f3e1912]
+                - cell "Regular Season" [ref=f3e1913]
+              - row [ref=f3e1914]:
+                - cell [ref=f3e1915]:
+                  - link "Apr 10" [ref=f3e1916] [cursor=pointer]:
+                    - /url: /games/822997
+                - cell [ref=f3e1917]:
+                  - link "Tampa Bay Rays" [ref=f3e1918] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "AWAY" [ref=f3e1919]
+                - cell "L 3–5" [ref=f3e1920]
+                - cell [ref=f3e1922]:
+                  - generic [ref=f3e1923]:
+                    - link "Luis Gil" [ref=f3e1924] [cursor=pointer]:
+                      - /url: /players/661563
+                    - emphasis [ref=f3e1925]: vs
+                    - link "Steven Matz" [ref=f3e1926] [cursor=pointer]:
+                      - /url: /players/571927
+                - cell "Tropicana Field" [ref=f3e1927]
+                - cell "Regular Season" [ref=f3e1928]
+              - row [ref=f3e1929]:
+                - cell [ref=f3e1930]:
+                  - link "Apr 11" [ref=f3e1931] [cursor=pointer]:
+                    - /url: /games/822996
+                - cell [ref=f3e1932]:
+                  - link "Tampa Bay Rays" [ref=f3e1933] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "AWAY" [ref=f3e1934]
+                - cell "L 4–5" [ref=f3e1935]
+                - cell [ref=f3e1937]:
+                  - generic [ref=f3e1938]:
+                    - link "Max Fried" [ref=f3e1939] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e1940]: vs
+                    - link "Nick Martinez" [ref=f3e1941] [cursor=pointer]:
+                      - /url: /players/607259
+                - cell "Tropicana Field" [ref=f3e1942]
+                - cell "Regular Season" [ref=f3e1943]
+              - row [ref=f3e1944]:
+                - cell [ref=f3e1945]:
+                  - link "Apr 12" [ref=f3e1946] [cursor=pointer]:
+                    - /url: /games/822998
+                - cell [ref=f3e1947]:
+                  - link "Tampa Bay Rays" [ref=f3e1948] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "AWAY" [ref=f3e1949]
+                - cell "L 4–5" [ref=f3e1950]
+                - cell [ref=f3e1952]:
+                  - generic [ref=f3e1953]:
+                    - link "Cam Schlittler" [ref=f3e1954] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e1955]: vs
+                    - link "Drew Rasmussen" [ref=f3e1956] [cursor=pointer]:
+                      - /url: /players/656876
+                - cell "Tropicana Field" [ref=f3e1957]
+                - cell "Regular Season" [ref=f3e1958]
+              - row [ref=f3e1959]:
+                - cell [ref=f3e1960]:
+                  - link "Apr 13" [ref=f3e1961] [cursor=pointer]:
+                    - /url: /games/823563
+                - cell [ref=f3e1962]:
+                  - link "Los Angeles Angels" [ref=f3e1963] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "HOME" [ref=f3e1964]
+                - cell "W 11–10" [ref=f3e1965]
+                - cell [ref=f3e1967]:
+                  - generic [ref=f3e1968]:
+                    - link "Will Warren" [ref=f3e1969] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e1970]: vs
+                    - link "Yusei Kikuchi" [ref=f3e1971] [cursor=pointer]:
+                      - /url: /players/579328
+                - cell "Yankee Stadium" [ref=f3e1972]
+                - cell "Regular Season" [ref=f3e1973]
+              - row [ref=f3e1974]:
+                - cell [ref=f3e1975]:
+                  - link "Apr 14" [ref=f3e1976] [cursor=pointer]:
+                    - /url: /games/823562
+                - cell [ref=f3e1977]:
+                  - link "Los Angeles Angels" [ref=f3e1978] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "HOME" [ref=f3e1979]
+                - cell "L 1–7" [ref=f3e1980]
+                - cell [ref=f3e1982]:
+                  - generic [ref=f3e1983]:
+                    - link "Ryan Weathers" [ref=f3e1984] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e1985]: vs
+                    - link "Reid Detmers" [ref=f3e1986] [cursor=pointer]:
+                      - /url: /players/672282
+                - cell "Yankee Stadium" [ref=f3e1987]
+                - cell "Regular Season" [ref=f3e1988]
+              - row [ref=f3e1989]:
+                - cell [ref=f3e1990]:
+                  - link "Apr 15" [ref=f3e1991] [cursor=pointer]:
+                    - /url: /games/823561
+                - cell [ref=f3e1992]:
+                  - link "Los Angeles Angels" [ref=f3e1993] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "HOME" [ref=f3e1994]
+                - cell "W 5–4" [ref=f3e1995]
+                - cell [ref=f3e1997]:
+                  - generic [ref=f3e1998]:
+                    - link "Luis Gil" [ref=f3e1999] [cursor=pointer]:
+                      - /url: /players/661563
+                    - emphasis [ref=f3e2000]: vs
+                    - link "Jack Kochanowicz" [ref=f3e2001] [cursor=pointer]:
+                      - /url: /players/686799
+                - cell "Yankee Stadium" [ref=f3e2002]
+                - cell "Regular Season" [ref=f3e2003]
+              - row [ref=f3e2004]:
+                - cell [ref=f3e2005]:
+                  - link "Apr 16" [ref=f3e2006] [cursor=pointer]:
+                    - /url: /games/823560
+                - cell [ref=f3e2007]:
+                  - link "Los Angeles Angels" [ref=f3e2008] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "HOME" [ref=f3e2009]
+                - cell "L 4–11" [ref=f3e2010]
+                - cell [ref=f3e2012]:
+                  - generic [ref=f3e2013]:
+                    - link "Max Fried" [ref=f3e2014] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e2015]: vs
+                    - link "Brent Suter" [ref=f3e2016] [cursor=pointer]:
+                      - /url: /players/608718
+                - cell "Yankee Stadium" [ref=f3e2017]
+                - cell "Regular Season" [ref=f3e2018]
+              - row [ref=f3e2019]:
+                - cell [ref=f3e2020]:
+                  - link "Apr 17" [ref=f3e2021] [cursor=pointer]:
+                    - /url: /games/823559
+                - cell [ref=f3e2022]:
+                  - link "Kansas City Royals" [ref=f3e2023] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "HOME" [ref=f3e2024]
+                - cell "W 4–2" [ref=f3e2025]
+                - cell [ref=f3e2027]:
+                  - generic [ref=f3e2028]:
+                    - link "Cam Schlittler" [ref=f3e2029] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2030]: vs
+                    - link "Michael Wacha" [ref=f3e2031] [cursor=pointer]:
+                      - /url: /players/608379
+                - cell "Yankee Stadium" [ref=f3e2032]
+                - cell "Regular Season" [ref=f3e2033]
+              - row [ref=f3e2034]:
+                - cell [ref=f3e2035]:
+                  - link "Apr 18" [ref=f3e2036] [cursor=pointer]:
+                    - /url: /games/823558
+                - cell [ref=f3e2037]:
+                  - link "Kansas City Royals" [ref=f3e2038] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "HOME" [ref=f3e2039]
+                - cell "W 13–4" [ref=f3e2040]
+                - cell [ref=f3e2042]:
+                  - generic [ref=f3e2043]:
+                    - link "Will Warren" [ref=f3e2044] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2045]: vs
+                    - link "Noah Cameron" [ref=f3e2046] [cursor=pointer]:
+                      - /url: /players/702070
+                - cell "Yankee Stadium" [ref=f3e2047]
+                - cell "Regular Season" [ref=f3e2048]
+              - row [ref=f3e2049]:
+                - cell [ref=f3e2050]:
+                  - link "Apr 19" [ref=f3e2051] [cursor=pointer]:
+                    - /url: /games/823556
+                - cell [ref=f3e2052]:
+                  - link "Kansas City Royals" [ref=f3e2053] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "HOME" [ref=f3e2054]
+                - cell "W 7–0" [ref=f3e2055]
+                - cell [ref=f3e2057]:
+                  - generic [ref=f3e2058]:
+                    - link "Ryan Weathers" [ref=f3e2059] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2060]: vs
+                    - link "Cole Ragans" [ref=f3e2061] [cursor=pointer]:
+                      - /url: /players/666142
+                - cell "Yankee Stadium" [ref=f3e2062]
+                - cell "Regular Season" [ref=f3e2063]
+              - row [ref=f3e2064]:
+                - cell [ref=f3e2065]:
+                  - link "Apr 21" [ref=f3e2066] [cursor=pointer]:
+                    - /url: /games/824773
+                - cell [ref=f3e2067]:
+                  - link "Boston Red Sox" [ref=f3e2068] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "AWAY" [ref=f3e2069]
+                - cell "W 4–0" [ref=f3e2070]
+                - cell [ref=f3e2072]:
+                  - generic [ref=f3e2073]:
+                    - link "Luis Gil" [ref=f3e2074] [cursor=pointer]:
+                      - /url: /players/661563
+                    - emphasis [ref=f3e2075]: vs
+                    - link "Connelly Early" [ref=f3e2076] [cursor=pointer]:
+                      - /url: /players/813349
+                - cell "Fenway Park" [ref=f3e2077]
+                - cell "Regular Season" [ref=f3e2078]
+              - row [ref=f3e2079]:
+                - cell [ref=f3e2080]:
+                  - link "Apr 22" [ref=f3e2081] [cursor=pointer]:
+                    - /url: /games/824774
+                - cell [ref=f3e2082]:
+                  - link "Boston Red Sox" [ref=f3e2083] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "AWAY" [ref=f3e2084]
+                - cell "W 4–1" [ref=f3e2085]
+                - cell [ref=f3e2087]:
+                  - generic [ref=f3e2088]:
+                    - link "Max Fried" [ref=f3e2089] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e2090]: vs
+                    - link "Ranger Suarez" [ref=f3e2091] [cursor=pointer]:
+                      - /url: /players/624133
+                - cell "Fenway Park" [ref=f3e2092]
+                - cell "Regular Season" [ref=f3e2093]
+              - row [ref=f3e2094]:
+                - cell [ref=f3e2095]:
+                  - link "Apr 23" [ref=f3e2096] [cursor=pointer]:
+                    - /url: /games/824770
+                - cell [ref=f3e2097]:
+                  - link "Boston Red Sox" [ref=f3e2098] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "AWAY" [ref=f3e2099]
+                - cell "W 4–2" [ref=f3e2100]
+                - cell [ref=f3e2102]:
+                  - generic [ref=f3e2103]:
+                    - link "Cam Schlittler" [ref=f3e2104] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2105]: vs
+                    - link "Payton Tolle" [ref=f3e2106] [cursor=pointer]:
+                      - /url: /players/801139
+                - cell "Fenway Park" [ref=f3e2107]
+                - cell "Regular Season" [ref=f3e2108]
+              - row [ref=f3e2109]:
+                - cell [ref=f3e2110]:
+                  - link "Apr 24" [ref=f3e2111] [cursor=pointer]:
+                    - /url: /games/824204
+                - cell [ref=f3e2112]:
+                  - link "Houston Astros" [ref=f3e2113] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "AWAY" [ref=f3e2114]
+                - cell "W 12–4" [ref=f3e2115]
+                - cell [ref=f3e2117]:
+                  - generic [ref=f3e2118]:
+                    - link "Will Warren" [ref=f3e2119] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2120]: vs
+                    - link "Lance McCullers Jr." [ref=f3e2121] [cursor=pointer]:
+                      - /url: /players/621121
+                - cell "Daikin Park" [ref=f3e2122]
+                - cell "Regular Season" [ref=f3e2123]
+              - row [ref=f3e2124]:
+                - cell [ref=f3e2125]:
+                  - link "Apr 25" [ref=f3e2126] [cursor=pointer]:
+                    - /url: /games/824203
+                - cell [ref=f3e2127]:
+                  - link "Houston Astros" [ref=f3e2128] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "AWAY" [ref=f3e2129]
+                - cell "W 8–3" [ref=f3e2130]
+                - cell [ref=f3e2132]:
+                  - generic [ref=f3e2133]:
+                    - link "Ryan Weathers" [ref=f3e2134] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2135]: vs
+                    - link "Mike Burrows" [ref=f3e2136] [cursor=pointer]:
+                      - /url: /players/681347
+                - cell "Daikin Park" [ref=f3e2137]
+                - cell "Regular Season" [ref=f3e2138]
+              - row [ref=f3e2139]:
+                - cell [ref=f3e2140]:
+                  - link "Apr 26" [ref=f3e2141] [cursor=pointer]:
+                    - /url: /games/824202
+                - cell [ref=f3e2142]:
+                  - link "Houston Astros" [ref=f3e2143] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "AWAY" [ref=f3e2144]
+                - cell "L 4–7" [ref=f3e2145]
+                - cell [ref=f3e2147]:
+                  - generic [ref=f3e2148]:
+                    - link "Luis Gil" [ref=f3e2149] [cursor=pointer]:
+                      - /url: /players/661563
+                    - emphasis [ref=f3e2150]: vs
+                    - link "Spencer Arrighetti" [ref=f3e2151] [cursor=pointer]:
+                      - /url: /players/681293
+                - cell "Daikin Park" [ref=f3e2152]
+                - cell "Regular Season" [ref=f3e2153]
+              - row [ref=f3e2154]:
+                - cell [ref=f3e2155]:
+                  - link "Apr 27" [ref=f3e2156] [cursor=pointer]:
+                    - /url: /games/822906
+                - cell [ref=f3e2157]:
+                  - link "Texas Rangers" [ref=f3e2158] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "AWAY" [ref=f3e2159]
+                - cell "W 4–2" [ref=f3e2160]
+                - cell [ref=f3e2162]:
+                  - generic [ref=f3e2163]:
+                    - link "Max Fried" [ref=f3e2164] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e2165]: vs
+                    - link "Jack Leiter" [ref=f3e2166] [cursor=pointer]:
+                      - /url: /players/683004
+                - cell "Globe Life Field" [ref=f3e2167]
+                - cell "Regular Season" [ref=f3e2168]
+              - row [ref=f3e2169]:
+                - cell [ref=f3e2170]:
+                  - link "Apr 28" [ref=f3e2171] [cursor=pointer]:
+                    - /url: /games/822908
+                - cell [ref=f3e2172]:
+                  - link "Texas Rangers" [ref=f3e2173] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "AWAY" [ref=f3e2174]
+                - cell "W 3–2" [ref=f3e2175]
+                - cell [ref=f3e2177]:
+                  - generic [ref=f3e2178]:
+                    - link "Cam Schlittler" [ref=f3e2179] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2180]: vs
+                    - link "Jacob deGrom" [ref=f3e2181] [cursor=pointer]:
+                      - /url: /players/594798
+                - cell "Globe Life Field" [ref=f3e2182]
+                - cell "Regular Season" [ref=f3e2183]
+              - row [ref=f3e2184]:
+                - cell [ref=f3e2185]:
+                  - link "Apr 29" [ref=f3e2186] [cursor=pointer]:
+                    - /url: /games/822907
+                - cell [ref=f3e2187]:
+                  - link "Texas Rangers" [ref=f3e2188] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "AWAY" [ref=f3e2189]
+                - cell "L 0–3" [ref=f3e2190]
+                - cell [ref=f3e2192]:
+                  - generic [ref=f3e2193]:
+                    - link "Elmer Rodríguez" [ref=f3e2194] [cursor=pointer]:
+                      - /url: /players/695684
+                    - emphasis [ref=f3e2195]: vs
+                    - link "Nathan Eovaldi" [ref=f3e2196] [cursor=pointer]:
+                      - /url: /players/543135
+                - cell "Globe Life Field" [ref=f3e2197]
+                - cell "Regular Season" [ref=f3e2198]
+              - row [ref=f3e2199]:
+                - cell [ref=f3e2200]:
+                  - link "May 1" [ref=f3e2201] [cursor=pointer]:
+                    - /url: /games/823557
+                - cell [ref=f3e2202]:
+                  - link "Baltimore Orioles" [ref=f3e2203] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "HOME" [ref=f3e2204]
+                - cell "W 7–2" [ref=f3e2205]
+                - cell [ref=f3e2207]:
+                  - generic [ref=f3e2208]:
+                    - link "Will Warren" [ref=f3e2209] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2210]: vs
+                    - link "Cade Povich" [ref=f3e2211] [cursor=pointer]:
+                      - /url: /players/700249
+                - cell "Yankee Stadium" [ref=f3e2212]
+                - cell "Regular Season" [ref=f3e2213]
+              - row [ref=f3e2214]:
+                - cell [ref=f3e2215]:
+                  - link "May 2" [ref=f3e2216] [cursor=pointer]:
+                    - /url: /games/823554
+                - cell [ref=f3e2217]:
+                  - link "Baltimore Orioles" [ref=f3e2218] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "HOME" [ref=f3e2219]
+                - cell "W 9–4" [ref=f3e2220]
+                - cell [ref=f3e2222]:
+                  - generic [ref=f3e2223]:
+                    - link "Ryan Weathers" [ref=f3e2224] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2225]: vs
+                    - link "Kyle Bradish" [ref=f3e2226] [cursor=pointer]:
+                      - /url: /players/680694
+                - cell "Yankee Stadium" [ref=f3e2227]
+                - cell "Regular Season" [ref=f3e2228]
+              - row [ref=f3e2229]:
+                - cell [ref=f3e2230]:
+                  - link "May 3" [ref=f3e2231] [cursor=pointer]:
+                    - /url: /games/823555
+                - cell [ref=f3e2232]:
+                  - link "Baltimore Orioles" [ref=f3e2233] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "HOME" [ref=f3e2234]
+                - cell "W 11–3" [ref=f3e2235]
+                - cell [ref=f3e2237]:
+                  - generic [ref=f3e2238]:
+                    - link "Max Fried" [ref=f3e2239] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e2240]: vs
+                    - link "Trey Gibson" [ref=f3e2241] [cursor=pointer]:
+                      - /url: /players/694346
+                - cell "Yankee Stadium" [ref=f3e2242]
+                - cell "Regular Season" [ref=f3e2243]
+              - row [ref=f3e2244]:
+                - cell [ref=f3e2245]:
+                  - link "May 4" [ref=f3e2246] [cursor=pointer]:
+                    - /url: /games/823552
+                - cell [ref=f3e2247]:
+                  - link "Baltimore Orioles" [ref=f3e2248] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "HOME" [ref=f3e2249]
+                - cell "W 12–1" [ref=f3e2250]
+                - cell [ref=f3e2252]:
+                  - generic [ref=f3e2253]:
+                    - link "Cam Schlittler" [ref=f3e2254] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2255]: vs
+                    - link "Shane Baz" [ref=f3e2256] [cursor=pointer]:
+                      - /url: /players/669358
+                - cell "Yankee Stadium" [ref=f3e2257]
+                - cell "Regular Season" [ref=f3e2258]
+              - row [ref=f3e2259]:
+                - cell [ref=f3e2260]:
+                  - link "May 5" [ref=f3e2261] [cursor=pointer]:
+                    - /url: /games/823553
+                - cell [ref=f3e2262]:
+                  - link "Texas Rangers" [ref=f3e2263] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "HOME" [ref=f3e2264]
+                - cell "W 7–4" [ref=f3e2265]
+                - cell [ref=f3e2267]:
+                  - generic [ref=f3e2268]:
+                    - link "Elmer Rodríguez" [ref=f3e2269] [cursor=pointer]:
+                      - /url: /players/695684
+                    - emphasis [ref=f3e2270]: vs
+                    - link "Jacob deGrom" [ref=f3e2271] [cursor=pointer]:
+                      - /url: /players/594798
+                - cell "Yankee Stadium" [ref=f3e2272]
+                - cell "Regular Season" [ref=f3e2273]
+              - row [ref=f3e2274]:
+                - cell [ref=f3e2275]:
+                  - link "May 6" [ref=f3e2276] [cursor=pointer]:
+                    - /url: /games/823550
+                - cell [ref=f3e2277]:
+                  - link "Texas Rangers" [ref=f3e2278] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "HOME" [ref=f3e2279]
+                - cell "L 1–6" [ref=f3e2280]
+                - cell [ref=f3e2282]:
+                  - generic [ref=f3e2283]:
+                    - link "Will Warren" [ref=f3e2284] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2285]: vs
+                    - link "Nathan Eovaldi" [ref=f3e2286] [cursor=pointer]:
+                      - /url: /players/543135
+                - cell "Yankee Stadium" [ref=f3e2287]
+                - cell "Regular Season" [ref=f3e2288]
+              - row [ref=f3e2289]:
+                - cell [ref=f3e2290]:
+                  - link "May 7" [ref=f3e2291] [cursor=pointer]:
+                    - /url: /games/823551
+                - cell [ref=f3e2292]:
+                  - link "Texas Rangers" [ref=f3e2293] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "HOME" [ref=f3e2294]
+                - cell "W 9–2" [ref=f3e2295]
+                - cell [ref=f3e2297]:
+                  - generic [ref=f3e2298]:
+                    - link "Paul Blackburn" [ref=f3e2299] [cursor=pointer]:
+                      - /url: /players/621112
+                    - emphasis [ref=f3e2300]: vs
+                    - link "MacKenzie Gore" [ref=f3e2301] [cursor=pointer]:
+                      - /url: /players/669022
+                - cell "Yankee Stadium" [ref=f3e2302]
+                - cell "Regular Season" [ref=f3e2303]
+              - row [ref=f3e2304]:
+                - cell [ref=f3e2305]:
+                  - link "May 8" [ref=f3e2306] [cursor=pointer]:
+                    - /url: /games/823794
+                - cell [ref=f3e2307]:
+                  - link "Milwaukee Brewers" [ref=f3e2308] [cursor=pointer]:
+                    - /url: /teams/158
+                - cell "AWAY" [ref=f3e2309]
+                - cell "L 0–6" [ref=f3e2310]
+                - cell [ref=f3e2312]:
+                  - generic [ref=f3e2313]:
+                    - link "Max Fried" [ref=f3e2314] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e2315]: vs
+                    - link "Jacob Misiorowski" [ref=f3e2316] [cursor=pointer]:
+                      - /url: /players/694819
+                - cell "American Family Field" [ref=f3e2317]
+                - cell "Regular Season" [ref=f3e2318]
+              - row [ref=f3e2319]:
+                - cell [ref=f3e2320]:
+                  - link "May 9" [ref=f3e2321] [cursor=pointer]:
+                    - /url: /games/823792
+                - cell [ref=f3e2322]:
+                  - link "Milwaukee Brewers" [ref=f3e2323] [cursor=pointer]:
+                    - /url: /teams/158
+                - cell "AWAY" [ref=f3e2324]
+                - cell "L 3–4" [ref=f3e2325]
+                - cell [ref=f3e2327]:
+                  - generic [ref=f3e2328]:
+                    - link "Cam Schlittler" [ref=f3e2329] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2330]: vs
+                    - link "Kyle Harrison" [ref=f3e2331] [cursor=pointer]:
+                      - /url: /players/690986
+                - cell "American Family Field" [ref=f3e2332]
+                - cell "Regular Season" [ref=f3e2333]
+              - row [ref=f3e2334]:
+                - cell [ref=f3e2335]:
+                  - link "May 10" [ref=f3e2336] [cursor=pointer]:
+                    - /url: /games/823793
+                - cell [ref=f3e2337]:
+                  - link "Milwaukee Brewers" [ref=f3e2338] [cursor=pointer]:
+                    - /url: /teams/158
+                - cell "AWAY" [ref=f3e2339]
+                - cell "L 3–4" [ref=f3e2340]
+                - cell [ref=f3e2342]:
+                  - generic [ref=f3e2343]:
+                    - link "Carlos Rodón" [ref=f3e2344] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e2345]: vs
+                    - link "Logan Henderson" [ref=f3e2346] [cursor=pointer]:
+                      - /url: /players/701656
+                - cell "American Family Field" [ref=f3e2347]
+                - cell "Regular Season" [ref=f3e2348]
+              - row [ref=f3e2349]:
+                - cell [ref=f3e2350]:
+                  - link "May 11" [ref=f3e2351] [cursor=pointer]:
+                    - /url: /games/824844
+                - cell [ref=f3e2352]:
+                  - link "Baltimore Orioles" [ref=f3e2353] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "AWAY" [ref=f3e2354]
+                - cell "L 2–3" [ref=f3e2355]
+                - cell [ref=f3e2357]:
+                  - generic [ref=f3e2358]:
+                    - link "Ryan Weathers" [ref=f3e2359] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2360]: vs
+                    - link "Brandon Young" [ref=f3e2361] [cursor=pointer]:
+                      - /url: /players/687064
+                - cell "Oriole Park at Camden Yards" [ref=f3e2362]
+                - cell "Regular Season" [ref=f3e2363]
+              - row [ref=f3e2364]:
+                - cell [ref=f3e2365]:
+                  - link "May 12" [ref=f3e2366] [cursor=pointer]:
+                    - /url: /games/824843
+                - cell [ref=f3e2367]:
+                  - link "Baltimore Orioles" [ref=f3e2368] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "AWAY" [ref=f3e2369]
+                - cell "W 6–2" [ref=f3e2370]
+                - cell [ref=f3e2372]:
+                  - generic [ref=f3e2373]:
+                    - link "Will Warren" [ref=f3e2374] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2375]: vs
+                    - link "Trevor Rogers" [ref=f3e2376] [cursor=pointer]:
+                      - /url: /players/669432
+                - cell "Oriole Park at Camden Yards" [ref=f3e2377]
+                - cell "Regular Season" [ref=f3e2378]
+              - row [ref=f3e2379]:
+                - cell [ref=f3e2380]:
+                  - link "May 13" [ref=f3e2381] [cursor=pointer]:
+                    - /url: /games/824841
+                - cell [ref=f3e2382]:
+                  - link "Baltimore Orioles" [ref=f3e2383] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "AWAY" [ref=f3e2384]
+                - cell "L 0–7" [ref=f3e2385]
+                - cell [ref=f3e2387]:
+                  - generic [ref=f3e2388]:
+                    - link "Max Fried" [ref=f3e2389] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e2390]: vs
+                    - link "Kyle Bradish" [ref=f3e2391] [cursor=pointer]:
+                      - /url: /players/680694
+                - cell "Oriole Park at Camden Yards" [ref=f3e2392]
+                - cell "Regular Season" [ref=f3e2393]
+              - row [ref=f3e2394]:
+                - cell [ref=f3e2395]:
+                  - link "May 15" [ref=f3e2396] [cursor=pointer]:
+                    - /url: /games/823629
+                - cell [ref=f3e2397]:
+                  - link "New York Mets" [ref=f3e2398] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "AWAY" [ref=f3e2399]
+                - cell "W 5–2" [ref=f3e2400]
+                - cell [ref=f3e2402]:
+                  - generic [ref=f3e2403]:
+                    - link "Cam Schlittler" [ref=f3e2404] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2405]: vs
+                    - link "Clay Holmes" [ref=f3e2406] [cursor=pointer]:
+                      - /url: /players/605280
+                - cell "Citi Field" [ref=f3e2407]
+                - cell "Regular Season" [ref=f3e2408]
+              - row [ref=f3e2409]:
+                - cell [ref=f3e2410]:
+                  - link "May 16" [ref=f3e2411] [cursor=pointer]:
+                    - /url: /games/823627
+                - cell [ref=f3e2412]:
+                  - link "New York Mets" [ref=f3e2413] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "AWAY" [ref=f3e2414]
+                - cell "L 3–6" [ref=f3e2415]
+                - cell [ref=f3e2417]:
+                  - generic [ref=f3e2418]:
+                    - link "Carlos Rodón" [ref=f3e2419] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e2420]: vs
+                    - link "Huascar Brazobán" [ref=f3e2421] [cursor=pointer]:
+                      - /url: /players/623211
+                - cell "Citi Field" [ref=f3e2422]
+                - cell "Regular Season" [ref=f3e2423]
+              - row [ref=f3e2424]:
+                - cell [ref=f3e2425]:
+                  - link "May 17" [ref=f3e2426] [cursor=pointer]:
+                    - /url: /games/823628
+                - cell [ref=f3e2427]:
+                  - link "New York Mets" [ref=f3e2428] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "AWAY" [ref=f3e2429]
+                - cell "L 6–7" [ref=f3e2430]
+                - cell [ref=f3e2432]:
+                  - generic [ref=f3e2433]:
+                    - link "Elmer Rodríguez" [ref=f3e2434] [cursor=pointer]:
+                      - /url: /players/695684
+                    - emphasis [ref=f3e2435]: vs
+                    - link "Freddy Peralta" [ref=f3e2436] [cursor=pointer]:
+                      - /url: /players/642547
+                - cell "Citi Field" [ref=f3e2437]
+                - cell "Regular Season" [ref=f3e2438]
+              - row [ref=f3e2439]:
+                - cell [ref=f3e2440]:
+                  - link "May 18" [ref=f3e2441] [cursor=pointer]:
+                    - /url: /games/823549
+                - cell [ref=f3e2442]:
+                  - link "Toronto Blue Jays" [ref=f3e2443] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "HOME" [ref=f3e2444]
+                - cell "W 7–6" [ref=f3e2445]
+                - cell [ref=f3e2447]:
+                  - generic [ref=f3e2448]:
+                    - link "Ryan Weathers" [ref=f3e2449] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2450]: vs
+                    - link "Patrick Corbin" [ref=f3e2451] [cursor=pointer]:
+                      - /url: /players/571578
+                - cell "Yankee Stadium" [ref=f3e2452]
+                - cell "Regular Season" [ref=f3e2453]
+              - row [ref=f3e2454]:
+                - cell [ref=f3e2455]:
+                  - link "May 19" [ref=f3e2456] [cursor=pointer]:
+                    - /url: /games/823548
+                - cell [ref=f3e2457]:
+                  - link "Toronto Blue Jays" [ref=f3e2458] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "HOME" [ref=f3e2459]
+                - cell "W 5–4" [ref=f3e2460]
+                - cell [ref=f3e2462]:
+                  - generic [ref=f3e2463]:
+                    - link "Will Warren" [ref=f3e2464] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2465]: vs
+                    - link "Dylan Cease" [ref=f3e2466] [cursor=pointer]:
+                      - /url: /players/656302
+                - cell "Yankee Stadium" [ref=f3e2467]
+                - cell "Regular Season" [ref=f3e2468]
+              - row [ref=f3e2469]:
+                - cell [ref=f3e2470]:
+                  - link "May 20" [ref=f3e2471] [cursor=pointer]:
+                    - /url: /games/823547
+                - cell [ref=f3e2472]:
+                  - link "Toronto Blue Jays" [ref=f3e2473] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "HOME" [ref=f3e2474]
+                - cell "L 1–2" [ref=f3e2475]
+                - cell [ref=f3e2477]:
+                  - generic [ref=f3e2478]:
+                    - link "Cam Schlittler" [ref=f3e2479] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2480]: vs
+                    - link "Trey Yesavage" [ref=f3e2481] [cursor=pointer]:
+                      - /url: /players/702056
+                - cell "Yankee Stadium" [ref=f3e2482]
+                - cell "Regular Season" [ref=f3e2483]
+              - row [ref=f3e2484]:
+                - cell [ref=f3e2485]:
+                  - link "May 21" [ref=f3e2486] [cursor=pointer]:
+                    - /url: /games/823545
+                - cell [ref=f3e2487]:
+                  - link "Toronto Blue Jays" [ref=f3e2488] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "HOME" [ref=f3e2489]
+                - cell "L 0–2" [ref=f3e2490]
+                - cell [ref=f3e2492]:
+                  - generic [ref=f3e2493]:
+                    - link "Carlos Rodón" [ref=f3e2494] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e2495]: vs
+                    - link "Braydon Fisher" [ref=f3e2496] [cursor=pointer]:
+                      - /url: /players/680755
+                - cell "Yankee Stadium" [ref=f3e2497]
+                - cell "Regular Season" [ref=f3e2498]
+              - row [ref=f3e2499]:
+                - cell [ref=f3e2500]:
+                  - link "May 22" [ref=f3e2501] [cursor=pointer]:
+                    - /url: /games/823546
+                - cell [ref=f3e2502]:
+                  - link "Tampa Bay Rays" [ref=f3e2503] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "HOME" [ref=f3e2504]
+                - cell "L 2–4" [ref=f3e2505]
+                - cell [ref=f3e2507]:
+                  - generic [ref=f3e2508]:
+                    - link "Gerrit Cole" [ref=f3e2509] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e2510]: vs
+                    - link "Nick Martinez" [ref=f3e2511] [cursor=pointer]:
+                      - /url: /players/607259
+                - cell "Yankee Stadium" [ref=f3e2512]
+                - cell "Regular Season" [ref=f3e2513]
+              - row [ref=f3e2514]:
+                - cell [ref=f3e2515]:
+                  - link "May 23" [ref=f3e2516] [cursor=pointer]:
+                    - /url: /games/823543
+                - cell [ref=f3e2517]:
+                  - link "Tampa Bay Rays" [ref=f3e2518] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "HOME" [ref=f3e2519]
+                - cell "— null–null" [ref=f3e2520]
+                - cell [ref=f3e2522]:
+                  - generic [ref=f3e2523]:
+                    - link "Ryan Weathers" [ref=f3e2524] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2525]: vs
+                    - link "Drew Rasmussen" [ref=f3e2526] [cursor=pointer]:
+                      - /url: /players/656876
+                - cell "Yankee Stadium" [ref=f3e2527]
+                - cell "Regular Season" [ref=f3e2528]
+              - row [ref=f3e2529]:
+                - cell [ref=f3e2530]:
+                  - link "May 24" [ref=f3e2531] [cursor=pointer]:
+                    - /url: /games/823544
+                - cell [ref=f3e2532]:
+                  - link "Tampa Bay Rays" [ref=f3e2533] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "HOME" [ref=f3e2534]
+                - cell "W 2–0" [ref=f3e2535]
+                - cell [ref=f3e2537]:
+                  - generic [ref=f3e2538]:
+                    - link "Ryan Weathers" [ref=f3e2539] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2540]: vs
+                    - link "Drew Rasmussen" [ref=f3e2541] [cursor=pointer]:
+                      - /url: /players/656876
+                - cell "Yankee Stadium" [ref=f3e2542]
+                - cell "Regular Season" [ref=f3e2543]
+              - row [ref=f3e2544]:
+                - cell [ref=f3e2545]:
+                  - link "May 25" [ref=f3e2546] [cursor=pointer]:
+                    - /url: /games/824107
+                - cell [ref=f3e2547]:
+                  - link "Kansas City Royals" [ref=f3e2548] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "AWAY" [ref=f3e2549]
+                - cell "W 4–3" [ref=f3e2550]
+                - cell [ref=f3e2552]:
+                  - generic [ref=f3e2553]:
+                    - link "Will Warren" [ref=f3e2554] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2555]: vs
+                    - link "Michael Wacha" [ref=f3e2556] [cursor=pointer]:
+                      - /url: /players/608379
+                - cell "Kauffman Stadium" [ref=f3e2557]
+                - cell "Regular Season" [ref=f3e2558]
+              - row [ref=f3e2559]:
+                - cell [ref=f3e2560]:
+                  - link "May 26" [ref=f3e2561] [cursor=pointer]:
+                    - /url: /games/824106
+                - cell [ref=f3e2562]:
+                  - link "Kansas City Royals" [ref=f3e2563] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "AWAY" [ref=f3e2564]
+                - cell "W 15–1" [ref=f3e2565]
+                - cell [ref=f3e2567]:
+                  - generic [ref=f3e2568]:
+                    - link "Cam Schlittler" [ref=f3e2569] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2570]: vs
+                    - link "Bailey Falter" [ref=f3e2571] [cursor=pointer]:
+                      - /url: /players/663559
+                - cell "Kauffman Stadium" [ref=f3e2572]
+                - cell "Regular Season" [ref=f3e2573]
+              - row [ref=f3e2574]:
+                - cell [ref=f3e2575]:
+                  - link "May 27" [ref=f3e2576] [cursor=pointer]:
+                    - /url: /games/824104
+                - cell [ref=f3e2577]:
+                  - link "Kansas City Royals" [ref=f3e2578] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "AWAY" [ref=f3e2579]
+                - cell "W 7–0" [ref=f3e2580]
+                - cell [ref=f3e2582]:
+                  - generic [ref=f3e2583]:
+                    - link "Gerrit Cole" [ref=f3e2584] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e2585]: vs
+                    - link "Noah Cameron" [ref=f3e2586] [cursor=pointer]:
+                      - /url: /players/702070
+                - cell "Kauffman Stadium" [ref=f3e2587]
+                - cell "Regular Season" [ref=f3e2588]
+              - row [ref=f3e2589]:
+                - cell [ref=f3e2590]:
+                  - link "May 29" [ref=f3e2591] [cursor=pointer]:
+                    - /url: /games/825002
+                - cell [ref=f3e2592]:
+                  - link "Athletics" [ref=f3e2593] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "AWAY" [ref=f3e2594]
+                - cell "W 8–2" [ref=f3e2595]
+                - cell [ref=f3e2597]:
+                  - generic [ref=f3e2598]:
+                    - link "Carlos Rodón" [ref=f3e2599] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e2600]: vs
+                    - link "Luis Severino" [ref=f3e2601] [cursor=pointer]:
+                      - /url: /players/622663
+                - cell "Sutter Health Park" [ref=f3e2602]
+                - cell "Regular Season" [ref=f3e2603]
+              - row [ref=f3e2604]:
+                - cell [ref=f3e2605]:
+                  - link "May 30" [ref=f3e2606] [cursor=pointer]:
+                    - /url: /games/825000
+                - cell [ref=f3e2607]:
+                  - link "Athletics" [ref=f3e2608] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "AWAY" [ref=f3e2609]
+                - cell "L 4–6" [ref=f3e2610]
+                - cell [ref=f3e2612]:
+                  - generic [ref=f3e2613]:
+                    - link "Ryan Weathers" [ref=f3e2614] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2615]: vs
+                    - link "J.T. Ginn" [ref=f3e2616] [cursor=pointer]:
+                      - /url: /players/669372
+                - cell "Sutter Health Park" [ref=f3e2617]
+                - cell "Regular Season" [ref=f3e2618]
+              - row [ref=f3e2619]:
+                - cell [ref=f3e2620]:
+                  - link "May 31" [ref=f3e2621] [cursor=pointer]:
+                    - /url: /games/825001
+                - cell [ref=f3e2622]:
+                  - link "Athletics" [ref=f3e2623] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "AWAY" [ref=f3e2624]
+                - cell "W 13–8" [ref=f3e2625]
+                - cell [ref=f3e2627]:
+                  - generic [ref=f3e2628]:
+                    - link "Will Warren" [ref=f3e2629] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2630]: vs
+                    - link "Jacob Lopez" [ref=f3e2631] [cursor=pointer]:
+                      - /url: /players/682052
+                - cell "Sutter Health Park" [ref=f3e2632]
+                - cell "Regular Season" [ref=f3e2633]
+              - row [ref=f3e2634]:
+                - cell [ref=f3e2635]:
+                  - link "Jun 2" [ref=f3e2636] [cursor=pointer]:
+                    - /url: /games/823541
+                - cell [ref=f3e2637]:
+                  - link "Cleveland Guardians" [ref=f3e2638] [cursor=pointer]:
+                    - /url: /teams/114
+                - cell "HOME" [ref=f3e2639]
+                - cell "L 4–9" [ref=f3e2640]
+                - cell [ref=f3e2642]:
+                  - generic [ref=f3e2643]:
+                    - link "Cam Schlittler" [ref=f3e2644] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2645]: vs
+                    - link "Joey Cantillo" [ref=f3e2646] [cursor=pointer]:
+                      - /url: /players/676282
+                - cell "Yankee Stadium" [ref=f3e2647]
+                - cell "Regular Season" [ref=f3e2648]
+              - row [ref=f3e2649]:
+                - cell [ref=f3e2650]:
+                  - link "Jun 3" [ref=f3e2651] [cursor=pointer]:
+                    - /url: /games/823540
+                - cell [ref=f3e2652]:
+                  - link "Cleveland Guardians" [ref=f3e2653] [cursor=pointer]:
+                    - /url: /teams/114
+                - cell "HOME" [ref=f3e2654]
+                - cell "L 4–5" [ref=f3e2655]
+                - cell [ref=f3e2657]:
+                  - generic [ref=f3e2658]:
+                    - link "Gerrit Cole" [ref=f3e2659] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e2660]: vs
+                    - link "Gavin Williams" [ref=f3e2661] [cursor=pointer]:
+                      - /url: /players/668909
+                - cell "Yankee Stadium" [ref=f3e2662]
+                - cell "Regular Season" [ref=f3e2663]
+              - row [ref=f3e2664]:
+                - cell [ref=f3e2665]:
+                  - link "Jun 4" [ref=f3e2666] [cursor=pointer]:
+                    - /url: /games/823542
+                - cell [ref=f3e2667]:
+                  - link "Cleveland Guardians" [ref=f3e2668] [cursor=pointer]:
+                    - /url: /teams/114
+                - cell "HOME" [ref=f3e2669]
+                - cell "W 2–1" [ref=f3e2670]
+                - cell [ref=f3e2672]:
+                  - generic [ref=f3e2673]:
+                    - link "Carlos Rodón" [ref=f3e2674] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e2675]: vs
+                    - link "Slade Cecconi" [ref=f3e2676] [cursor=pointer]:
+                      - /url: /players/677944
+                - cell "Yankee Stadium" [ref=f3e2677]
+                - cell "Regular Season" [ref=f3e2678]
+              - row [ref=f3e2679]:
+                - cell [ref=f3e2680]:
+                  - link "Jun 5" [ref=f3e2681] [cursor=pointer]:
+                    - /url: /games/823538
+                - cell [ref=f3e2682]:
+                  - link "Boston Red Sox" [ref=f3e2683] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "HOME" [ref=f3e2684]
+                - cell "L 3–5" [ref=f3e2685]
+                - cell [ref=f3e2687]:
+                  - generic [ref=f3e2688]:
+                    - link "Ryan Weathers" [ref=f3e2689] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2690]: vs
+                    - link "Sonny Gray" [ref=f3e2691] [cursor=pointer]:
+                      - /url: /players/543243
+                - cell "Yankee Stadium" [ref=f3e2692]
+                - cell "Regular Season" [ref=f3e2693]
+              - row [ref=f3e2694]:
+                - cell [ref=f3e2695]:
+                  - link "Jun 6" [ref=f3e2696] [cursor=pointer]:
+                    - /url: /games/823539
+                - cell [ref=f3e2697]:
+                  - link "Boston Red Sox" [ref=f3e2698] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "HOME" [ref=f3e2699]
+                - cell "— null–null" [ref=f3e2700]
+                - cell [ref=f3e2702]:
+                  - generic [ref=f3e2703]:
+                    - link "Will Warren" [ref=f3e2704] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2705]: vs
+                    - link "Ranger Suarez" [ref=f3e2706] [cursor=pointer]:
+                      - /url: /players/624133
+                - cell "Yankee Stadium" [ref=f3e2707]
+                - cell "Regular Season" [ref=f3e2708]
+              - row [ref=f3e2709]:
+                - cell [ref=f3e2710]:
+                  - link "Jun 7" [ref=f3e2711] [cursor=pointer]:
+                    - /url: /games/823537
+                - cell [ref=f3e2712]:
+                  - link "Boston Red Sox" [ref=f3e2713] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "HOME" [ref=f3e2714]
+                - cell "W 6–1" [ref=f3e2715]
+                - cell [ref=f3e2717]:
+                  - generic [ref=f3e2718]:
+                    - link "Cam Schlittler" [ref=f3e2719] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2720]: vs
+                    - link "Ranger Suarez" [ref=f3e2721] [cursor=pointer]:
+                      - /url: /players/624133
+                - cell "Yankee Stadium" [ref=f3e2722]
+                - cell "Regular Season" [ref=f3e2723]
+              - row [ref=f3e2724]:
+                - cell [ref=f3e2725]:
+                  - link "Jun 8" [ref=f3e2726] [cursor=pointer]:
+                    - /url: /games/824427
+                - cell [ref=f3e2727]:
+                  - link "Cleveland Guardians" [ref=f3e2728] [cursor=pointer]:
+                    - /url: /teams/114
+                - cell "AWAY" [ref=f3e2729]
+                - cell "W 7–5" [ref=f3e2730]
+                - cell [ref=f3e2732]:
+                  - generic [ref=f3e2733]:
+                    - link "Will Warren" [ref=f3e2734] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2735]: vs
+                    - link "Gavin Williams" [ref=f3e2736] [cursor=pointer]:
+                      - /url: /players/668909
+                - cell "Progressive Field" [ref=f3e2737]
+                - cell "Regular Season" [ref=f3e2738]
+              - row [ref=f3e2739]:
+                - cell [ref=f3e2740]:
+                  - link "Jun 9" [ref=f3e2741] [cursor=pointer]:
+                    - /url: /games/824429
+                - cell [ref=f3e2742]:
+                  - link "Cleveland Guardians" [ref=f3e2743] [cursor=pointer]:
+                    - /url: /teams/114
+                - cell "AWAY" [ref=f3e2744]
+                - cell "W 3–2" [ref=f3e2745]
+                - cell [ref=f3e2747]:
+                  - generic [ref=f3e2748]:
+                    - link "Gerrit Cole" [ref=f3e2749] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e2750]: vs
+                    - link "Slade Cecconi" [ref=f3e2751] [cursor=pointer]:
+                      - /url: /players/677944
+                - cell "Progressive Field" [ref=f3e2752]
+                - cell "Regular Season" [ref=f3e2753]
+              - row [ref=f3e2754]:
+                - cell [ref=f3e2755]:
+                  - link "Jun 10" [ref=f3e2756] [cursor=pointer]:
+                    - /url: /games/824428
+                - cell [ref=f3e2757]:
+                  - link "Cleveland Guardians" [ref=f3e2758] [cursor=pointer]:
+                    - /url: /teams/114
+                - cell "AWAY" [ref=f3e2759]
+                - cell "W 8–4" [ref=f3e2760]
+                - cell [ref=f3e2762]:
+                  - generic [ref=f3e2763]:
+                    - link "Carlos Rodón" [ref=f3e2764] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e2765]: vs
+                    - link "Parker Messick" [ref=f3e2766] [cursor=pointer]:
+                      - /url: /players/800048
+                - cell "Progressive Field" [ref=f3e2767]
+                - cell "Regular Season" [ref=f3e2768]
+              - row [ref=f3e2769]:
+                - cell [ref=f3e2770]:
+                  - link "Jun 12" [ref=f3e2771] [cursor=pointer]:
+                    - /url: /games/822803
+                - cell [ref=f3e2772]:
+                  - link "Toronto Blue Jays" [ref=f3e2773] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "AWAY" [ref=f3e2774]
+                - cell "L 5–8" [ref=f3e2775]
+                - cell [ref=f3e2777]:
+                  - generic [ref=f3e2778]:
+                    - link "Ryan Weathers" [ref=f3e2779] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2780]: vs
+                    - link "Trey Yesavage" [ref=f3e2781] [cursor=pointer]:
+                      - /url: /players/702056
+                - cell "Rogers Centre" [ref=f3e2782]
+                - cell "Regular Season" [ref=f3e2783]
+              - row [ref=f3e2784]:
+                - cell [ref=f3e2785]:
+                  - link "Jun 13" [ref=f3e2786] [cursor=pointer]:
+                    - /url: /games/822802
+                - cell [ref=f3e2787]:
+                  - link "Toronto Blue Jays" [ref=f3e2788] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "AWAY" [ref=f3e2789]
+                - cell "W 3–1" [ref=f3e2790]
+                - cell [ref=f3e2792]:
+                  - generic [ref=f3e2793]:
+                    - link "Cam Schlittler" [ref=f3e2794] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2795]: vs
+                    - link "Kevin Gausman" [ref=f3e2796] [cursor=pointer]:
+                      - /url: /players/592332
+                - cell "Rogers Centre" [ref=f3e2797]
+                - cell "Regular Season" [ref=f3e2798]
+              - row [ref=f3e2799]:
+                - cell [ref=f3e2800]:
+                  - link "Jun 14" [ref=f3e2801] [cursor=pointer]:
+                    - /url: /games/822801
+                - cell [ref=f3e2802]:
+                  - link "Toronto Blue Jays" [ref=f3e2803] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "AWAY" [ref=f3e2804]
+                - cell "W 8–3" [ref=f3e2805]
+                - cell [ref=f3e2807]:
+                  - generic [ref=f3e2808]:
+                    - link "Will Warren" [ref=f3e2809] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2810]: vs
+                    - link "Patrick Corbin" [ref=f3e2811] [cursor=pointer]:
+                      - /url: /players/571578
+                - cell "Rogers Centre" [ref=f3e2812]
+                - cell "Regular Season" [ref=f3e2813]
+              - row [ref=f3e2814]:
+                - cell [ref=f3e2815]:
+                  - link "Jun 16" [ref=f3e2816] [cursor=pointer]:
+                    - /url: /games/823535
+                - cell [ref=f3e2817]:
+                  - link "Chicago White Sox" [ref=f3e2818] [cursor=pointer]:
+                    - /url: /teams/145
+                - cell "HOME" [ref=f3e2819]
+                - cell "W 12–2" [ref=f3e2820]
+                - cell [ref=f3e2822]:
+                  - generic [ref=f3e2823]:
+                    - link "Gerrit Cole" [ref=f3e2824] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e2825]: vs
+                    - link "Davis Martin" [ref=f3e2826] [cursor=pointer]:
+                      - /url: /players/663436
+                - cell "Yankee Stadium" [ref=f3e2827]
+                - cell "Regular Season" [ref=f3e2828]
+              - row [ref=f3e2829]:
+                - cell [ref=f3e2830]:
+                  - link "Jun 17" [ref=f3e2831] [cursor=pointer]:
+                    - /url: /games/823536
+                - cell [ref=f3e2832]:
+                  - link "Chicago White Sox" [ref=f3e2833] [cursor=pointer]:
+                    - /url: /teams/145
+                - cell "HOME" [ref=f3e2834]
+                - cell "W 10–5" [ref=f3e2835]
+                - cell [ref=f3e2837]:
+                  - generic [ref=f3e2838]:
+                    - link "Carlos Rodón" [ref=f3e2839] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e2840]: vs
+                    - link "Anthony Kay" [ref=f3e2841] [cursor=pointer]:
+                      - /url: /players/641743
+                - cell "Yankee Stadium" [ref=f3e2842]
+                - cell "Regular Season" [ref=f3e2843]
+              - row [ref=f3e2844]:
+                - cell [ref=f3e2845]:
+                  - link "Jun 18" [ref=f3e2846] [cursor=pointer]:
+                    - /url: /games/823533
+                - cell [ref=f3e2847]:
+                  - link "Chicago White Sox" [ref=f3e2848] [cursor=pointer]:
+                    - /url: /teams/145
+                - cell "HOME" [ref=f3e2849]
+                - cell "L 1–5" [ref=f3e2850]
+                - cell [ref=f3e2852]:
+                  - generic [ref=f3e2853]:
+                    - link "Ryan Weathers" [ref=f3e2854] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2855]: vs
+                    - link "Bryan Hudson" [ref=f3e2856] [cursor=pointer]:
+                      - /url: /players/663542
+                - cell "Yankee Stadium" [ref=f3e2857]
+                - cell "Regular Season" [ref=f3e2858]
+              - row [ref=f3e2859]:
+                - cell [ref=f3e2860]:
+                  - link "Jun 19" [ref=f3e2861] [cursor=pointer]:
+                    - /url: /games/823534
+                - cell [ref=f3e2862]:
+                  - link "Cincinnati Reds" [ref=f3e2863] [cursor=pointer]:
+                    - /url: /teams/113
+                - cell "HOME" [ref=f3e2864]
+                - cell "W 5–0" [ref=f3e2865]
+                - cell [ref=f3e2867]:
+                  - generic [ref=f3e2868]:
+                    - link "Cam Schlittler" [ref=f3e2869] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2870]: vs
+                    - link "Rhett Lowder" [ref=f3e2871] [cursor=pointer]:
+                      - /url: /players/695076
+                - cell "Yankee Stadium" [ref=f3e2872]
+                - cell "Regular Season" [ref=f3e2873]
+              - row [ref=f3e2874]:
+                - cell [ref=f3e2875]:
+                  - link "Jun 20" [ref=f3e2876] [cursor=pointer]:
+                    - /url: /games/823532
+                - cell [ref=f3e2877]:
+                  - link "Cincinnati Reds" [ref=f3e2878] [cursor=pointer]:
+                    - /url: /teams/113
+                - cell "HOME" [ref=f3e2879]
+                - cell "L 2–10" [ref=f3e2880]
+                - cell [ref=f3e2882]:
+                  - generic [ref=f3e2883]:
+                    - link "Will Warren" [ref=f3e2884] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2885]: vs
+                    - link "Andrew Abbott" [ref=f3e2886] [cursor=pointer]:
+                      - /url: /players/671096
+                - cell "Yankee Stadium" [ref=f3e2887]
+                - cell "Regular Season" [ref=f3e2888]
+              - row [ref=f3e2889]:
+                - cell [ref=f3e2890]:
+                  - link "Jun 21" [ref=f3e2891] [cursor=pointer]:
+                    - /url: /games/823531
+                - cell [ref=f3e2892]:
+                  - link "Cincinnati Reds" [ref=f3e2893] [cursor=pointer]:
+                    - /url: /teams/113
+                - cell "HOME" [ref=f3e2894]
+                - cell "L 1–4" [ref=f3e2895]
+                - cell [ref=f3e2897]:
+                  - generic [ref=f3e2898]:
+                    - link "Elmer Rodríguez" [ref=f3e2899] [cursor=pointer]:
+                      - /url: /players/695684
+                    - emphasis [ref=f3e2900]: vs
+                    - link "Chase Burns" [ref=f3e2901] [cursor=pointer]:
+                      - /url: /players/695505
+                - cell "Yankee Stadium" [ref=f3e2902]
+                - cell "Regular Season" [ref=f3e2903]
+              - row [ref=f3e2904]:
+                - cell [ref=f3e2905]:
+                  - link "Jun 22" [ref=f3e2906] [cursor=pointer]:
+                    - /url: /games/824261
+                - cell [ref=f3e2907]:
+                  - link "Detroit Tigers" [ref=f3e2908] [cursor=pointer]:
+                    - /url: /teams/116
+                - cell "AWAY" [ref=f3e2909]
+                - cell "L 3–5" [ref=f3e2910]
+                - cell [ref=f3e2912]:
+                  - generic [ref=f3e2913]:
+                    - link "Gerrit Cole" [ref=f3e2914] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e2915]: vs
+                    - link "Framber Valdez" [ref=f3e2916] [cursor=pointer]:
+                      - /url: /players/664285
+                - cell "Comerica Park" [ref=f3e2917]
+                - cell "Regular Season" [ref=f3e2918]
+              - row [ref=f3e2919]:
+                - cell [ref=f3e2920]:
+                  - link "Jun 23" [ref=f3e2921] [cursor=pointer]:
+                    - /url: /games/824262
+                - cell [ref=f3e2922]:
+                  - link "Detroit Tigers" [ref=f3e2923] [cursor=pointer]:
+                    - /url: /teams/116
+                - cell "AWAY" [ref=f3e2924]
+                - cell "W 4–3" [ref=f3e2925]
+                - cell [ref=f3e2927]:
+                  - generic [ref=f3e2928]:
+                    - link "Carlos Rodón" [ref=f3e2929] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e2930]: vs
+                    - link "Casey Mize" [ref=f3e2931] [cursor=pointer]:
+                      - /url: /players/663554
+                - cell "Comerica Park" [ref=f3e2932]
+                - cell "Regular Season" [ref=f3e2933]
+              - row [ref=f3e2934]:
+                - cell [ref=f3e2935]:
+                  - link "Jun 24" [ref=f3e2936] [cursor=pointer]:
+                    - /url: /games/824259
+                - cell [ref=f3e2937]:
+                  - link "Detroit Tigers" [ref=f3e2938] [cursor=pointer]:
+                    - /url: /teams/116
+                - cell "AWAY" [ref=f3e2939]
+                - cell "W 4–2" [ref=f3e2940]
+                - cell [ref=f3e2942]:
+                  - generic [ref=f3e2943]:
+                    - link "Ryan Weathers" [ref=f3e2944] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e2945]: vs
+                    - link "Tarik Skubal" [ref=f3e2946] [cursor=pointer]:
+                      - /url: /players/669373
+                - cell "Comerica Park" [ref=f3e2947]
+                - cell "Regular Season" [ref=f3e2948]
+              - row [ref=f3e2949]:
+                - cell [ref=f3e2950]:
+                  - link "Jun 25" [ref=f3e2951] [cursor=pointer]:
+                    - /url: /games/824747
+                - cell [ref=f3e2952]:
+                  - link "Boston Red Sox" [ref=f3e2953] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "AWAY" [ref=f3e2954]
+                - cell "L 3–6" [ref=f3e2955]
+                - cell [ref=f3e2957]:
+                  - generic [ref=f3e2958]:
+                    - link "Cam Schlittler" [ref=f3e2959] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e2960]: vs
+                    - link "Connelly Early" [ref=f3e2961] [cursor=pointer]:
+                      - /url: /players/813349
+                - cell "Fenway Park" [ref=f3e2962]
+                - cell "Regular Season" [ref=f3e2963]
+              - row [ref=f3e2964]:
+                - cell [ref=f3e2965]:
+                  - link "Jun 26" [ref=f3e2966] [cursor=pointer]:
+                    - /url: /games/824743
+                - cell [ref=f3e2967]:
+                  - link "Boston Red Sox" [ref=f3e2968] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "AWAY" [ref=f3e2969]
+                - cell "L 1–6" [ref=f3e2970]
+                - cell [ref=f3e2972]:
+                  - generic [ref=f3e2973]:
+                    - link "Will Warren" [ref=f3e2974] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e2975]: vs
+                    - link "Payton Tolle" [ref=f3e2976] [cursor=pointer]:
+                      - /url: /players/801139
+                - cell "Fenway Park" [ref=f3e2977]
+                - cell "Regular Season" [ref=f3e2978]
+              - row [ref=f3e2979]:
+                - cell [ref=f3e2980]:
+                  - link "Jun 27" [ref=f3e2981] [cursor=pointer]:
+                    - /url: /games/824745
+                - cell [ref=f3e2982]:
+                  - link "Boston Red Sox" [ref=f3e2983] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "AWAY" [ref=f3e2984]
+                - cell "L 1–4" [ref=f3e2985]
+                - cell [ref=f3e2987]:
+                  - generic [ref=f3e2988]:
+                    - link "Gerrit Cole" [ref=f3e2989] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e2990]: vs
+                    - link "Jake Bennett" [ref=f3e2991] [cursor=pointer]:
+                      - /url: /players/687562
+                - cell "Fenway Park" [ref=f3e2992]
+                - cell "Regular Season" [ref=f3e2993]
+              - row [ref=f3e2994]:
+                - cell [ref=f3e2995]:
+                  - link "Jun 28" [ref=f3e2996] [cursor=pointer]:
+                    - /url: /games/824744
+                - cell [ref=f3e2997]:
+                  - link "Boston Red Sox" [ref=f3e2998] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "AWAY" [ref=f3e2999]
+                - cell "L 4–5" [ref=f3e3000]
+                - cell [ref=f3e3002]:
+                  - generic [ref=f3e3003]:
+                    - link "Carlos Rodón" [ref=f3e3004] [cursor=pointer]:
+                      - /url: /players/607074
+                    - emphasis [ref=f3e3005]: vs
+                    - link "Sonny Gray" [ref=f3e3006] [cursor=pointer]:
+                      - /url: /players/543243
+                - cell "Fenway Park" [ref=f3e3007]
+                - cell "Regular Season" [ref=f3e3008]
+              - row [ref=f3e3009]:
+                - cell [ref=f3e3010]:
+                  - link "Jun 29" [ref=f3e3011] [cursor=pointer]:
+                    - /url: /games/823529
+                - cell [ref=f3e3012]:
+                  - link "Detroit Tigers" [ref=f3e3013] [cursor=pointer]:
+                    - /url: /teams/116
+                - cell "HOME" [ref=f3e3014]
+                - cell "L 3–7" [ref=f3e3015]
+                - cell [ref=f3e3017]:
+                  - generic [ref=f3e3018]:
+                    - link "Ryan Weathers" [ref=f3e3019] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3020]: vs
+                    - link "Casey Mize" [ref=f3e3021] [cursor=pointer]:
+                      - /url: /players/663554
+                - cell "Yankee Stadium" [ref=f3e3022]
+                - cell "Regular Season" [ref=f3e3023]
+              - row [ref=f3e3024]:
+                - cell [ref=f3e3025]:
+                  - link "Jun 30" [ref=f3e3026] [cursor=pointer]:
+                    - /url: /games/823528
+                - cell [ref=f3e3027]:
+                  - link "Detroit Tigers" [ref=f3e3028] [cursor=pointer]:
+                    - /url: /teams/116
+                - cell "HOME" [ref=f3e3029]
+                - cell "L 3–9" [ref=f3e3030]
+                - cell [ref=f3e3032]:
+                  - generic [ref=f3e3033]:
+                    - link "Cam Schlittler" [ref=f3e3034] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3035]: vs
+                    - link "Tarik Skubal" [ref=f3e3036] [cursor=pointer]:
+                      - /url: /players/669373
+                - cell "Yankee Stadium" [ref=f3e3037]
+                - cell "Regular Season" [ref=f3e3038]
+              - row [ref=f3e3039]:
+                - cell [ref=f3e3040]:
+                  - link "Jul 1" [ref=f3e3041] [cursor=pointer]:
+                    - /url: /games/823530
+                - cell [ref=f3e3042]:
+                  - link "Detroit Tigers" [ref=f3e3043] [cursor=pointer]:
+                    - /url: /teams/116
+                - cell "HOME" [ref=f3e3044]
+                - cell "L 2–6" [ref=f3e3045]
+                - cell [ref=f3e3047]:
+                  - generic [ref=f3e3048]:
+                    - link "Will Warren" [ref=f3e3049] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e3050]: vs
+                    - link "Troy Melton" [ref=f3e3051] [cursor=pointer]:
+                      - /url: /players/675512
+                - cell "Yankee Stadium" [ref=f3e3052]
+                - cell "Regular Season" [ref=f3e3053]
+              - row [ref=f3e3054]:
+                - cell [ref=f3e3055]:
+                  - link "Jul 3" [ref=f3e3056] [cursor=pointer]:
+                    - /url: /games/823527
+                - cell [ref=f3e3057]:
+                  - link "Minnesota Twins" [ref=f3e3058] [cursor=pointer]:
+                    - /url: /teams/142
+                - cell "HOME" [ref=f3e3059]
+                - cell "W 5–2" [ref=f3e3060]
+                - cell [ref=f3e3062]:
+                  - generic [ref=f3e3063]:
+                    - link "Gerrit Cole" [ref=f3e3064] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e3065]: vs
+                    - link "Mike Paredes" [ref=f3e3066] [cursor=pointer]:
+                      - /url: /players/702474
+                - cell "Yankee Stadium" [ref=f3e3067]
+                - cell "Regular Season" [ref=f3e3068]
+              - row [ref=f3e3069]:
+                - cell [ref=f3e3070]:
+                  - link "Jul 4" [ref=f3e3071] [cursor=pointer]:
+                    - /url: /games/823526
+                - cell [ref=f3e3072]:
+                  - link "Minnesota Twins" [ref=f3e3073] [cursor=pointer]:
+                    - /url: /teams/142
+                - cell "HOME" [ref=f3e3074]
+                - cell "L 4–11" [ref=f3e3075]
+                - cell [ref=f3e3077]:
+                  - generic [ref=f3e3078]:
+                    - link "Brendan Beck" [ref=f3e3079] [cursor=pointer]:
+                      - /url: /players/694341
+                    - emphasis [ref=f3e3080]: vs
+                    - link "Zebby Matthews" [ref=f3e3081] [cursor=pointer]:
+                      - /url: /players/805673
+                - cell "Yankee Stadium" [ref=f3e3082]
+                - cell "Regular Season" [ref=f3e3083]
+              - row [ref=f3e3084]:
+                - cell [ref=f3e3085]:
+                  - link "Jul 5" [ref=f3e3086] [cursor=pointer]:
+                    - /url: /games/823525
+                - cell [ref=f3e3087]:
+                  - link "Minnesota Twins" [ref=f3e3088] [cursor=pointer]:
+                    - /url: /teams/142
+                - cell "HOME" [ref=f3e3089]
+                - cell "L 1–6" [ref=f3e3090]
+                - cell [ref=f3e3092]:
+                  - generic [ref=f3e3093]:
+                    - link "Ryan Weathers" [ref=f3e3094] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3095]: vs
+                    - link "Joe Ryan" [ref=f3e3096] [cursor=pointer]:
+                      - /url: /players/657746
+                - cell "Yankee Stadium" [ref=f3e3097]
+                - cell "Regular Season" [ref=f3e3098]
+              - row [ref=f3e3099]:
+                - cell [ref=f3e3100]:
+                  - link "Jul 6" [ref=f3e3101] [cursor=pointer]:
+                    - /url: /games/822958
+                - cell [ref=f3e3102]:
+                  - link "Tampa Bay Rays" [ref=f3e3103] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "AWAY" [ref=f3e3104]
+                - cell "W 5–1" [ref=f3e3105]
+                - cell [ref=f3e3107]:
+                  - generic [ref=f3e3108]:
+                    - link "Cam Schlittler" [ref=f3e3109] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3110]: vs
+                    - link "Griffin Jax" [ref=f3e3111] [cursor=pointer]:
+                      - /url: /players/643377
+                - cell "Tropicana Field" [ref=f3e3112]
+                - cell "Regular Season" [ref=f3e3113]
+              - row [ref=f3e3114]:
+                - cell [ref=f3e3115]:
+                  - link "Jul 7" [ref=f3e3116] [cursor=pointer]:
+                    - /url: /games/822956
+                - cell [ref=f3e3117]:
+                  - link "Tampa Bay Rays" [ref=f3e3118] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "AWAY" [ref=f3e3119]
+                - cell "L 4–6" [ref=f3e3120]
+                - cell [ref=f3e3122]:
+                  - generic [ref=f3e3123]:
+                    - link "Will Warren" [ref=f3e3124] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e3125]: vs
+                    - link "Ian Seymour" [ref=f3e3126] [cursor=pointer]:
+                      - /url: /players/693855
+                - cell "Tropicana Field" [ref=f3e3127]
+                - cell "Regular Season" [ref=f3e3128]
+              - row [ref=f3e3129]:
+                - cell [ref=f3e3130]:
+                  - link "Jul 8" [ref=f3e3131] [cursor=pointer]:
+                    - /url: /games/822957
+                - cell [ref=f3e3132]:
+                  - link "Tampa Bay Rays" [ref=f3e3133] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "AWAY" [ref=f3e3134]
+                - cell "L 0–3" [ref=f3e3135]
+                - cell [ref=f3e3137]:
+                  - generic [ref=f3e3138]:
+                    - link "Gerrit Cole" [ref=f3e3139] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e3140]: vs
+                    - link "Shane McClanahan" [ref=f3e3141] [cursor=pointer]:
+                      - /url: /players/663556
+                - cell "Tropicana Field" [ref=f3e3142]
+                - cell "Regular Season" [ref=f3e3143]
+              - row [ref=f3e3144]:
+                - cell [ref=f3e3145]:
+                  - link "Jul 9" [ref=f3e3146] [cursor=pointer]:
+                    - /url: /games/822954
+                - cell [ref=f3e3147]:
+                  - link "Tampa Bay Rays" [ref=f3e3148] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "AWAY" [ref=f3e3149]
+                - cell "W 12–4" [ref=f3e3150]
+                - cell [ref=f3e3152]:
+                  - generic [ref=f3e3153]:
+                    - link "Paul Blackburn" [ref=f3e3154] [cursor=pointer]:
+                      - /url: /players/621112
+                    - emphasis [ref=f3e3155]: vs
+                    - link "Drew Rasmussen" [ref=f3e3156] [cursor=pointer]:
+                      - /url: /players/656876
+                - cell "Tropicana Field" [ref=f3e3157]
+                - cell "Regular Season" [ref=f3e3158]
+              - row [ref=f3e3159]:
+                - cell [ref=f3e3160]:
+                  - link "Jul 10" [ref=f3e3161] [cursor=pointer]:
+                    - /url: /games/822709
+                - cell [ref=f3e3162]:
+                  - link "Washington Nationals" [ref=f3e3163] [cursor=pointer]:
+                    - /url: /teams/120
+                - cell "AWAY" [ref=f3e3164]
+                - cell "W 5–3" [ref=f3e3165]
+                - cell [ref=f3e3167]:
+                  - generic [ref=f3e3168]:
+                    - link "Ryan Weathers" [ref=f3e3169] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3170]: vs
+                    - link "Carson Palmquist" [ref=f3e3171] [cursor=pointer]:
+                      - /url: /players/687223
+                - cell "Nationals Park" [ref=f3e3172]
+                - cell "Regular Season" [ref=f3e3173]
+              - row [ref=f3e3174]:
+                - cell [ref=f3e3175]:
+                  - link "Jul 11" [ref=f3e3176] [cursor=pointer]:
+                    - /url: /games/822711
+                - cell [ref=f3e3177]:
+                  - link "Washington Nationals" [ref=f3e3178] [cursor=pointer]:
+                    - /url: /teams/120
+                - cell "AWAY" [ref=f3e3179]
+                - cell "W 4–2" [ref=f3e3180]
+                - cell [ref=f3e3182]:
+                  - generic [ref=f3e3183]:
+                    - link "Cam Schlittler" [ref=f3e3184] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3185]: vs
+                    - link "PJ Poulin" [ref=f3e3186] [cursor=pointer]:
+                      - /url: /players/676571
+                - cell "Nationals Park" [ref=f3e3187]
+                - cell "Regular Season" [ref=f3e3188]
+              - row [ref=f3e3189]:
+                - cell [ref=f3e3190]:
+                  - link "Jul 12" [ref=f3e3191] [cursor=pointer]:
+                    - /url: /games/822708
+                - cell [ref=f3e3192]:
+                  - link "Washington Nationals" [ref=f3e3193] [cursor=pointer]:
+                    - /url: /teams/120
+                - cell "AWAY" [ref=f3e3194]
+                - cell "W 5–3" [ref=f3e3195]
+                - cell [ref=f3e3197]:
+                  - generic [ref=f3e3198]:
+                    - link "Will Warren" [ref=f3e3199] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e3200]: vs
+                    - link "Cade Cavalli" [ref=f3e3201] [cursor=pointer]:
+                      - /url: /players/676917
+                - cell "Nationals Park" [ref=f3e3202]
+                - cell "Regular Season" [ref=f3e3203]
+              - row [ref=f3e3204]:
+                - cell [ref=f3e3205]:
+                  - link "Jul 17" [ref=f3e3206] [cursor=pointer]:
+                    - /url: /games/823524
+                - cell [ref=f3e3207]:
+                  - link "Los Angeles Dodgers" [ref=f3e3208] [cursor=pointer]:
+                    - /url: /teams/119
+                - cell "HOME" [ref=f3e3209]
+                - cell "L 1–2" [ref=f3e3210]
+                - cell [ref=f3e3212]:
+                  - generic [ref=f3e3213]:
+                    - link "Gerrit Cole" [ref=f3e3214] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e3215]: vs
+                    - link "Roki Sasaki" [ref=f3e3216] [cursor=pointer]:
+                      - /url: /players/808963
+                - cell "Yankee Stadium" [ref=f3e3217]
+                - cell "Regular Season" [ref=f3e3218]
+              - row [ref=f3e3219]:
+                - cell [ref=f3e3220]:
+                  - link "Jul 18" [ref=f3e3221] [cursor=pointer]:
+                    - /url: /games/823523
+                - cell [ref=f3e3222]:
+                  - link "Los Angeles Dodgers" [ref=f3e3223] [cursor=pointer]:
+                    - /url: /teams/119
+                - cell "HOME" [ref=f3e3224]
+                - cell "— null–null" [ref=f3e3225]
+                - cell [ref=f3e3227]:
+                  - generic [ref=f3e3228]:
+                    - link "Ryan Weathers" [ref=f3e3229] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3230]: vs
+                    - link "Emmet Sheehan" [ref=f3e3231] [cursor=pointer]:
+                      - /url: /players/686218
+                - cell "Yankee Stadium" [ref=f3e3232]
+                - cell "Regular Season" [ref=f3e3233]
+              - row [ref=f3e3234]:
+                - cell [ref=f3e3235]:
+                  - link "Jul 19" [ref=f3e3236] [cursor=pointer]:
+                    - /url: /games/823523
+                - cell [ref=f3e3237]:
+                  - link "Los Angeles Dodgers" [ref=f3e3238] [cursor=pointer]:
+                    - /url: /teams/119
+                - cell "HOME" [ref=f3e3239]
+                - cell "L 2–8" [ref=f3e3240]
+                - cell [ref=f3e3242]:
+                  - generic [ref=f3e3243]:
+                    - link "Cam Schlittler" [ref=f3e3244] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3245]: vs
+                    - link "Yoshinobu Yamamoto" [ref=f3e3246] [cursor=pointer]:
+                      - /url: /players/808967
+                - cell "Yankee Stadium" [ref=f3e3247]
+                - cell "Regular Season" [ref=f3e3248]
+              - row [ref=f3e3249]:
+                - cell [ref=f3e3250]:
+                  - link "Jul 19" [ref=f3e3251] [cursor=pointer]:
+                    - /url: /games/823521
+                - cell [ref=f3e3252]:
+                  - link "Los Angeles Dodgers" [ref=f3e3253] [cursor=pointer]:
+                    - /url: /teams/119
+                - cell "HOME" [ref=f3e3254]
+                - cell "W 2–1" [ref=f3e3255]
+                - cell [ref=f3e3257]:
+                  - generic [ref=f3e3258]:
+                    - link "Ryan Yarbrough" [ref=f3e3259] [cursor=pointer]:
+                      - /url: /players/642232
+                    - emphasis [ref=f3e3260]: vs
+                    - link "Will Klein" [ref=f3e3261] [cursor=pointer]:
+                      - /url: /players/694361
+                - cell "Yankee Stadium" [ref=f3e3262]
+                - cell "Regular Season" [ref=f3e3263]
+              - row [ref=f3e3264]:
+                - cell [ref=f3e3265]:
+                  - link "Jul 20" [ref=f3e3266] [cursor=pointer]:
+                    - /url: /games/823522
+                - cell [ref=f3e3267]:
+                  - link "Pittsburgh Pirates" [ref=f3e3268] [cursor=pointer]:
+                    - /url: /teams/134
+                - cell "HOME" [ref=f3e3269]
+                - cell "W 8–5" [ref=f3e3270]
+                - cell [ref=f3e3272]:
+                  - generic [ref=f3e3273]:
+                    - link "Ryan Weathers" [ref=f3e3274] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3275]: vs
+                    - link "Braxton Ashcraft" [ref=f3e3276] [cursor=pointer]:
+                      - /url: /players/677952
+                - cell "Yankee Stadium" [ref=f3e3277]
+                - cell "Regular Season" [ref=f3e3278]
+              - row [ref=f3e3279]:
+                - cell [ref=f3e3280]:
+                  - link "Jul 21" [ref=f3e3281] [cursor=pointer]:
+                    - /url: /games/823519
+                - cell [ref=f3e3282]:
+                  - link "Pittsburgh Pirates" [ref=f3e3283] [cursor=pointer]:
+                    - /url: /teams/134
+                - cell "HOME" [ref=f3e3284]
+                - cell "— null–null" [ref=f3e3285]
+                - cell [ref=f3e3287]:
+                  - generic [ref=f3e3288]:
+                    - link "Will Warren" [ref=f3e3289] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e3290]: vs
+                    - link "Bubba Chandler" [ref=f3e3291] [cursor=pointer]:
+                      - /url: /players/696149
+                - cell "Yankee Stadium" [ref=f3e3292]
+                - cell "Regular Season" [ref=f3e3293]
+              - row [ref=f3e3294]:
+                - cell [ref=f3e3295]:
+                  - link "Jul 22" [ref=f3e3296] [cursor=pointer]:
+                    - /url: /games/823518
+                - cell [ref=f3e3297]:
+                  - link "Pittsburgh Pirates" [ref=f3e3298] [cursor=pointer]:
+                    - /url: /teams/134
+                - cell "HOME" [ref=f3e3299]
+                - cell "L 3–5" [ref=f3e3300]
+                - cell [ref=f3e3302]:
+                  - generic [ref=f3e3303]:
+                    - link "Gerrit Cole" [ref=f3e3304] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e3305]: vs
+                    - link "Mitch Keller" [ref=f3e3306] [cursor=pointer]:
+                      - /url: /players/656605
+                - cell "Yankee Stadium" [ref=f3e3307]
+                - cell "Regular Season" [ref=f3e3308]
+              - row [ref=f3e3309]:
+                - cell [ref=f3e3310]:
+                  - link "Jul 22" [ref=f3e3311] [cursor=pointer]:
+                    - /url: /games/823519
+                - cell [ref=f3e3312]:
+                  - link "Pittsburgh Pirates" [ref=f3e3313] [cursor=pointer]:
+                    - /url: /teams/134
+                - cell "HOME" [ref=f3e3314]
+                - cell "W 2–0" [ref=f3e3315]
+                - cell [ref=f3e3317]:
+                  - generic [ref=f3e3318]:
+                    - link "Max Fried" [ref=f3e3319] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e3320]: vs
+                    - link "Bubba Chandler" [ref=f3e3321] [cursor=pointer]:
+                      - /url: /players/696149
+                - cell "Yankee Stadium" [ref=f3e3322]
+                - cell "Regular Season" [ref=f3e3323]
+              - row [ref=f3e3324]:
+                - cell [ref=f3e3325]:
+                  - link "Jul 24" [ref=f3e3326] [cursor=pointer]:
+                    - /url: /games/823434
+                - cell [ref=f3e3327]:
+                  - link "Philadelphia Phillies" [ref=f3e3328] [cursor=pointer]:
+                    - /url: /teams/143
+                - cell "AWAY" [ref=f3e3329]
+                - cell "W 1–0" [ref=f3e3330]
+                - cell [ref=f3e3332]:
+                  - generic [ref=f3e3333]:
+                    - link "Cam Schlittler" [ref=f3e3334] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3335]: vs
+                    - link "Jesús Luzardo" [ref=f3e3336] [cursor=pointer]:
+                      - /url: /players/666200
+                - cell "Citizens Bank Park" [ref=f3e3337]
+                - cell "Regular Season" [ref=f3e3338]
+              - row [ref=f3e3339]:
+                - cell [ref=f3e3340]:
+                  - link "Jul 25" [ref=f3e3341] [cursor=pointer]:
+                    - /url: /games/823435
+                - cell [ref=f3e3342]:
+                  - link "Philadelphia Phillies" [ref=f3e3343] [cursor=pointer]:
+                    - /url: /teams/143
+                - cell "AWAY" [ref=f3e3344]
+                - cell "W 3–1" [ref=f3e3345]
+                - cell [ref=f3e3347]:
+                  - generic [ref=f3e3348]:
+                    - link "Ryan Weathers" [ref=f3e3349] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3350]: vs
+                    - link "Tim Mayza" [ref=f3e3351] [cursor=pointer]:
+                      - /url: /players/641835
+                - cell "Citizens Bank Park" [ref=f3e3352]
+                - cell "Regular Season" [ref=f3e3353]
+              - row [ref=f3e3354]:
+                - cell [ref=f3e3355]:
+                  - link "Jul 26" [ref=f3e3356] [cursor=pointer]:
+                    - /url: /games/823433
+                - cell [ref=f3e3357]:
+                  - link "Philadelphia Phillies" [ref=f3e3358] [cursor=pointer]:
+                    - /url: /teams/143
+                - cell "AWAY" [ref=f3e3359]
+                - cell "L 4–11" [ref=f3e3360]
+                - cell [ref=f3e3362]:
+                  - generic [ref=f3e3363]:
+                    - link "Will Warren" [ref=f3e3364] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e3365]: vs
+                    - link "Cristopher Sánchez" [ref=f3e3366] [cursor=pointer]:
+                      - /url: /players/650911
+                - cell "Citizens Bank Park" [ref=f3e3367]
+                - cell "Regular Season" [ref=f3e3368]
+              - row [ref=f3e3369]:
+                - cell [ref=f3e3370]:
+                  - link "Jul 27" [ref=f3e3371] [cursor=pointer]:
+                    - /url: /games/824570
+                - cell [ref=f3e3372]:
+                  - link "Chicago White Sox" [ref=f3e3373] [cursor=pointer]:
+                    - /url: /teams/145
+                - cell "AWAY" [ref=f3e3374]
+                - cell "W 9–5" [ref=f3e3375]
+                - cell [ref=f3e3377]:
+                  - generic [ref=f3e3378]:
+                    - link "Max Fried" [ref=f3e3379] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e3380]: vs
+                    - link "Noah Schultz" [ref=f3e3381] [cursor=pointer]:
+                      - /url: /players/702273
+                - cell "Rate Field" [ref=f3e3382]
+                - cell "Regular Season" [ref=f3e3383]
+              - row [ref=f3e3384]:
+                - cell [ref=f3e3385]:
+                  - link "Jul 28" [ref=f3e3386] [cursor=pointer]:
+                    - /url: /games/824569
+                - cell [ref=f3e3387]:
+                  - link "Chicago White Sox" [ref=f3e3388] [cursor=pointer]:
+                    - /url: /teams/145
+                - cell "AWAY" [ref=f3e3389]
+                - cell "W 3–2" [ref=f3e3390]
+                - cell [ref=f3e3392]:
+                  - generic [ref=f3e3393]:
+                    - link "Gerrit Cole" [ref=f3e3394] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e3395]: vs
+                    - link "Anthony Kay" [ref=f3e3396] [cursor=pointer]:
+                      - /url: /players/641743
+                - cell "Rate Field" [ref=f3e3397]
+                - cell "Regular Season" [ref=f3e3398]
+              - row [ref=f3e3399]:
+                - cell [ref=f3e3400]:
+                  - link "Jul 29" [ref=f3e3401] [cursor=pointer]:
+                    - /url: /games/824567
+                - cell [ref=f3e3402]:
+                  - link "Chicago White Sox" [ref=f3e3403] [cursor=pointer]:
+                    - /url: /teams/145
+                - cell "AWAY" [ref=f3e3404]
+                - cell "L 5–6" [ref=f3e3405]
+                - cell [ref=f3e3407]:
+                  - generic [ref=f3e3408]:
+                    - link "Cam Schlittler" [ref=f3e3409] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3410]: vs
+                    - link "Davis Martin" [ref=f3e3411] [cursor=pointer]:
+                      - /url: /players/663436
+                - cell "Rate Field" [ref=f3e3412]
+                - cell "Regular Season" [ref=f3e3413]
+              - row [ref=f3e3414]:
+                - cell [ref=f3e3415]:
+                  - link "Jul 30" [ref=f3e3416] [cursor=pointer]:
+                    - /url: /games/824568
+                - cell [ref=f3e3417]:
+                  - link "Chicago White Sox" [ref=f3e3418] [cursor=pointer]:
+                    - /url: /teams/145
+                - cell "AWAY" [ref=f3e3419]
+                - cell "L 1–2" [ref=f3e3420]
+                - cell [ref=f3e3422]:
+                  - generic [ref=f3e3423]:
+                    - link "Ryan Weathers" [ref=f3e3424] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3425]: vs
+                    - link "Sean Burke" [ref=f3e3426] [cursor=pointer]:
+                      - /url: /players/680732
+                - cell "Rate Field" [ref=f3e3427]
+                - cell "Regular Season" [ref=f3e3428]
+              - row [ref=f3e3429]:
+                - cell [ref=f3e3430]:
+                  - link "Jul 31" [ref=f3e3431] [cursor=pointer]:
+                    - /url: /games/824651
+                - cell [ref=f3e3432]:
+                  - link "Chicago Cubs" [ref=f3e3433] [cursor=pointer]:
+                    - /url: /teams/112
+                - cell "AWAY" [ref=f3e3434]
+                - cell "W 2–0" [ref=f3e3435]
+                - cell [ref=f3e3437]:
+                  - generic [ref=f3e3438]:
+                    - link "Will Warren" [ref=f3e3439] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e3440]: vs
+                    - link "Shota Imanaga" [ref=f3e3441] [cursor=pointer]:
+                      - /url: /players/684007
+                - cell "Wrigley Field" [ref=f3e3442]
+                - cell "Regular Season" [ref=f3e3443]
+              - row [ref=f3e3444]:
+                - cell [ref=f3e3445]:
+                  - link "Aug 1" [ref=f3e3446] [cursor=pointer]:
+                    - /url: /games/824649
+                - cell [ref=f3e3447]:
+                  - link "Chicago Cubs" [ref=f3e3448] [cursor=pointer]:
+                    - /url: /teams/112
+                - cell "AWAY" [ref=f3e3449]
+                - cell "L 2–5" [ref=f3e3450]
+                - cell [ref=f3e3452]:
+                  - generic [ref=f3e3453]:
+                    - link "Max Fried" [ref=f3e3454] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e3455]: vs
+                    - link "David Peterson" [ref=f3e3456] [cursor=pointer]:
+                      - /url: /players/656849
+                - cell "Wrigley Field" [ref=f3e3457]
+                - cell "Regular Season" [ref=f3e3458]
+              - row [ref=f3e3459]:
+                - cell [ref=f3e3460]:
+                  - link "Aug 2" [ref=f3e3461] [cursor=pointer]:
+                    - /url: /games/824648
+                - cell [ref=f3e3462]:
+                  - link "Chicago Cubs" [ref=f3e3463] [cursor=pointer]:
+                    - /url: /teams/112
+                - cell "AWAY" [ref=f3e3464]
+                - cell "W 2–1" [ref=f3e3465]
+                - cell [ref=f3e3467]:
+                  - generic [ref=f3e3468]:
+                    - link "Gerrit Cole" [ref=f3e3469] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e3470]: vs
+                    - link "Colin Rea" [ref=f3e3471] [cursor=pointer]:
+                      - /url: /players/607067
+                - cell "Wrigley Field" [ref=f3e3472]
+                - cell "Regular Season" [ref=f3e3473]
+              - row [ref=f3e3474]:
+                - cell [ref=f3e3475]:
+                  - link "Aug 3" [ref=f3e3476] [cursor=pointer]:
+                    - /url: /games/823520
+                - cell [ref=f3e3477]:
+                  - link "St. Louis Cardinals" [ref=f3e3478] [cursor=pointer]:
+                    - /url: /teams/138
+                - cell "HOME" [ref=f3e3479]
+                - cell "L 7–13" [ref=f3e3480]
+                - cell [ref=f3e3482]:
+                  - generic [ref=f3e3483]:
+                    - link "Cam Schlittler" [ref=f3e3484] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3485]: vs
+                    - link "Michael McGreevy" [ref=f3e3486] [cursor=pointer]:
+                      - /url: /players/700241
+                - cell "Yankee Stadium" [ref=f3e3487]
+                - cell "Regular Season" [ref=f3e3488]
+              - row [ref=f3e3489]:
+                - cell [ref=f3e3490]:
+                  - link "Aug 4" [ref=f3e3491] [cursor=pointer]:
+                    - /url: /games/823517
+                - cell [ref=f3e3492]:
+                  - link "St. Louis Cardinals" [ref=f3e3493] [cursor=pointer]:
+                    - /url: /teams/138
+                - cell "HOME" [ref=f3e3494]
+                - cell "W 2–0" [ref=f3e3495]
+                - cell [ref=f3e3497]:
+                  - generic [ref=f3e3498]:
+                    - link "Ryan Weathers" [ref=f3e3499] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3500]: vs
+                    - link "Hunter Dobbins" [ref=f3e3501] [cursor=pointer]:
+                      - /url: /players/690928
+                - cell "Yankee Stadium" [ref=f3e3502]
+                - cell "Regular Season" [ref=f3e3503]
+              - row [ref=f3e3504]:
+                - cell [ref=f3e3505]:
+                  - link "Aug 5" [ref=f3e3506] [cursor=pointer]:
+                    - /url: /games/823516
+                - cell [ref=f3e3507]:
+                  - link "St. Louis Cardinals" [ref=f3e3508] [cursor=pointer]:
+                    - /url: /teams/138
+                - cell "HOME" [ref=f3e3509]
+                - cell "L 1–3" [ref=f3e3510]
+                - cell [ref=f3e3512]:
+                  - generic [ref=f3e3513]:
+                    - link "Will Warren" [ref=f3e3514] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e3515]: vs
+                    - link "Andre Pallante" [ref=f3e3516] [cursor=pointer]:
+                      - /url: /players/669467
+                - cell "Yankee Stadium" [ref=f3e3517]
+                - cell "Regular Season" [ref=f3e3518]
+              - row [ref=f3e3519]:
+                - cell [ref=f3e3520]:
+                  - link "Aug 7" [ref=f3e3521] [cursor=pointer]:
+                    - /url: /games/823515
+                - cell [ref=f3e3522]:
+                  - link "Atlanta Braves" [ref=f3e3523] [cursor=pointer]:
+                    - /url: /teams/144
+                - cell "HOME" [ref=f3e3524]
+                - cell "W 3–2" [ref=f3e3525]
+                - cell [ref=f3e3527]:
+                  - generic [ref=f3e3528]:
+                    - link "Max Fried" [ref=f3e3529] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e3530]: vs
+                    - link "Tyler Mahle" [ref=f3e3531] [cursor=pointer]:
+                      - /url: /players/641816
+                - cell "Yankee Stadium" [ref=f3e3532]
+                - cell "Regular Season" [ref=f3e3533]
+              - row [ref=f3e3534]:
+                - cell [ref=f3e3535]:
+                  - link "Aug 8" [ref=f3e3536] [cursor=pointer]:
+                    - /url: /games/823514
+                - cell [ref=f3e3537]:
+                  - link "Atlanta Braves" [ref=f3e3538] [cursor=pointer]:
+                    - /url: /teams/144
+                - cell "HOME" [ref=f3e3539]
+                - cell "W 5–4" [ref=f3e3540]
+                - cell [ref=f3e3542]:
+                  - generic [ref=f3e3543]:
+                    - link "Gerrit Cole" [ref=f3e3544] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e3545]: vs
+                    - link "Chris Sale" [ref=f3e3546] [cursor=pointer]:
+                      - /url: /players/519242
+                - cell "Yankee Stadium" [ref=f3e3547]
+                - cell "Regular Season" [ref=f3e3548]
+              - row [ref=f3e3549]:
+                - cell [ref=f3e3550]:
+                  - link "Aug 9" [ref=f3e3551] [cursor=pointer]:
+                    - /url: /games/823513
+                - cell [ref=f3e3552]:
+                  - link "Atlanta Braves" [ref=f3e3553] [cursor=pointer]:
+                    - /url: /teams/144
+                - cell "HOME" [ref=f3e3554]
+                - cell "L 1–2" [ref=f3e3555]
+                - cell [ref=f3e3557]:
+                  - generic [ref=f3e3558]:
+                    - link "Cam Schlittler" [ref=f3e3559] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3560]: vs
+                    - link "Grant Holmes" [ref=f3e3561] [cursor=pointer]:
+                      - /url: /players/656550
+                - cell "Yankee Stadium" [ref=f3e3562]
+                - cell "Regular Season" [ref=f3e3563]
+              - row [ref=f3e3564]:
+                - cell [ref=f3e3565]:
+                  - link "Aug 11" [ref=f3e3566] [cursor=pointer]:
+                    - /url: /games/823512
+                - cell [ref=f3e3567]:
+                  - link "Seattle Mariners" [ref=f3e3568] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "HOME" [ref=f3e3569]
+                - cell "W 4–1" [ref=f3e3570]
+                - cell [ref=f3e3572]:
+                  - generic [ref=f3e3573]:
+                    - link "Ryan Weathers" [ref=f3e3574] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3575]: vs
+                    - link "Bryan Woo" [ref=f3e3576] [cursor=pointer]:
+                      - /url: /players/693433
+                - cell "Yankee Stadium" [ref=f3e3577]
+                - cell "Regular Season" [ref=f3e3578]
+              - row [ref=f3e3579]:
+                - cell [ref=f3e3580]:
+                  - link "Aug 12" [ref=f3e3581] [cursor=pointer]:
+                    - /url: /games/823511
+                - cell [ref=f3e3582]:
+                  - link "Seattle Mariners" [ref=f3e3583] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "HOME" [ref=f3e3584]
+                - cell "W 10–5" [ref=f3e3585]
+                - cell [ref=f3e3587]:
+                  - generic [ref=f3e3588]:
+                    - link "Will Warren" [ref=f3e3589] [cursor=pointer]:
+                      - /url: /players/701542
+                    - emphasis [ref=f3e3590]: vs
+                    - link "Bryce Miller" [ref=f3e3591] [cursor=pointer]:
+                      - /url: /players/682243
+                - cell "Yankee Stadium" [ref=f3e3592]
+                - cell "Regular Season" [ref=f3e3593]
+              - row [ref=f3e3594]:
+                - cell [ref=f3e3595]:
+                  - link "Aug 13" [ref=f3e3596] [cursor=pointer]:
+                    - /url: /games/823508
+                - cell [ref=f3e3597]:
+                  - link "Seattle Mariners" [ref=f3e3598] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "HOME" [ref=f3e3599]
+                - cell "L 0–1" [ref=f3e3600]
+                - cell [ref=f3e3602]:
+                  - generic [ref=f3e3603]:
+                    - link "Max Fried" [ref=f3e3604] [cursor=pointer]:
+                      - /url: /players/608331
+                    - emphasis [ref=f3e3605]: vs
+                    - link "Logan Gilbert" [ref=f3e3606] [cursor=pointer]:
+                      - /url: /players/669302
+                - cell "Yankee Stadium" [ref=f3e3607]
+                - cell "Regular Season" [ref=f3e3608]
+              - row [ref=f3e3609]:
+                - cell [ref=f3e3610]:
+                  - link "Aug 14" [ref=f3e3611] [cursor=pointer]:
+                    - /url: /games/822777
+                - cell [ref=f3e3612]:
+                  - link "Toronto Blue Jays" [ref=f3e3613] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "AWAY" [ref=f3e3614]
+                - cell "L 1–3" [ref=f3e3615]
+                - cell [ref=f3e3617]:
+                  - generic [ref=f3e3618]:
+                    - link "Gerrit Cole" [ref=f3e3619] [cursor=pointer]:
+                      - /url: /players/543037
+                    - emphasis [ref=f3e3620]: vs
+                    - link "Shane Bieber" [ref=f3e3621] [cursor=pointer]:
+                      - /url: /players/669456
+                - cell "Rogers Centre" [ref=f3e3622]
+                - cell "Regular Season" [ref=f3e3623]
+              - row [ref=f3e3624]:
+                - cell [ref=f3e3625]:
+                  - link "Aug 15" [ref=f3e3626] [cursor=pointer]:
+                    - /url: /games/822775
+                - cell [ref=f3e3627]:
+                  - link "Toronto Blue Jays" [ref=f3e3628] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "AWAY" [ref=f3e3629]
+                - cell "L 1–4" [ref=f3e3630]
+                - cell [ref=f3e3632]:
+                  - generic [ref=f3e3633]:
+                    - link "Cam Schlittler" [ref=f3e3634] [cursor=pointer]:
+                      - /url: /players/693645
+                    - emphasis [ref=f3e3635]: vs
+                    - link "Braydon Fisher" [ref=f3e3636] [cursor=pointer]:
+                      - /url: /players/680755
+                - cell "Rogers Centre" [ref=f3e3637]
+                - cell "Regular Season" [ref=f3e3638]
+              - row [ref=f3e3639]:
+                - cell [ref=f3e3640]:
+                  - link "Aug 16" [ref=f3e3641] [cursor=pointer]:
+                    - /url: /games/822774
+                - cell [ref=f3e3642]:
+                  - link "Toronto Blue Jays" [ref=f3e3643] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "AWAY" [ref=f3e3644]
+                - cell "Scheduled" [ref=f3e3645]
+                - cell [ref=f3e3647]:
+                  - generic [ref=f3e3648]:
+                    - link "Ryan Weathers" [ref=f3e3649] [cursor=pointer]:
+                      - /url: /players/677960
+                    - emphasis [ref=f3e3650]: vs
+                    - link "Dylan Cease" [ref=f3e3651] [cursor=pointer]:
+                      - /url: /players/656302
+                - cell "Rogers Centre" [ref=f3e3652]
+                - cell "Regular Season" [ref=f3e3653]
+              - row [ref=f3e3654]:
+                - cell [ref=f3e3655]:
+                  - link "Aug 18" [ref=f3e3656] [cursor=pointer]:
+                    - /url: /games/824803
+                - cell [ref=f3e3657]:
+                  - link "Baltimore Orioles" [ref=f3e3658] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "AWAY" [ref=f3e3659]
+                - cell "Scheduled" [ref=f3e3660]
+                - cell "TBD vs TBD" [ref=f3e3662]:
+                  - generic [ref=f3e3663]:
+                    - generic [ref=f3e3664]: TBD
+                    - emphasis [ref=f3e3665]: vs
+                    - generic [ref=f3e3666]: TBD
+                - cell "Oriole Park at Camden Yards" [ref=f3e3667]
+                - cell "Regular Season" [ref=f3e3668]
+              - row [ref=f3e3669]:
+                - cell [ref=f3e3670]:
+                  - link "Aug 19" [ref=f3e3671] [cursor=pointer]:
+                    - /url: /games/824801
+                - cell [ref=f3e3672]:
+                  - link "Baltimore Orioles" [ref=f3e3673] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "AWAY" [ref=f3e3674]
+                - cell "Scheduled" [ref=f3e3675]
+                - cell "TBD vs TBD" [ref=f3e3677]:
+                  - generic [ref=f3e3678]:
+                    - generic [ref=f3e3679]: TBD
+                    - emphasis [ref=f3e3680]: vs
+                    - generic [ref=f3e3681]: TBD
+                - cell "Oriole Park at Camden Yards" [ref=f3e3682]
+                - cell "Regular Season" [ref=f3e3683]
+              - row [ref=f3e3684]:
+                - cell [ref=f3e3685]:
+                  - link "Aug 20" [ref=f3e3686] [cursor=pointer]:
+                    - /url: /games/824802
+                - cell [ref=f3e3687]:
+                  - link "Baltimore Orioles" [ref=f3e3688] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "AWAY" [ref=f3e3689]
+                - cell "Scheduled" [ref=f3e3690]
+                - cell "TBD vs TBD" [ref=f3e3692]:
+                  - generic [ref=f3e3693]:
+                    - generic [ref=f3e3694]: TBD
+                    - emphasis [ref=f3e3695]: vs
+                    - generic [ref=f3e3696]: TBD
+                - cell "Oriole Park at Camden Yards" [ref=f3e3697]
+                - cell "Regular Season" [ref=f3e3698]
+              - row [ref=f3e3699]:
+                - cell [ref=f3e3700]:
+                  - link "Aug 21" [ref=f3e3701] [cursor=pointer]:
+                    - /url: /games/823510
+                - cell [ref=f3e3702]:
+                  - link "Toronto Blue Jays" [ref=f3e3703] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "HOME" [ref=f3e3704]
+                - cell "Scheduled" [ref=f3e3705]
+                - cell "TBD vs TBD" [ref=f3e3707]:
+                  - generic [ref=f3e3708]:
+                    - generic [ref=f3e3709]: TBD
+                    - emphasis [ref=f3e3710]: vs
+                    - generic [ref=f3e3711]: TBD
+                - cell "Yankee Stadium" [ref=f3e3712]
+                - cell "Regular Season" [ref=f3e3713]
+              - row [ref=f3e3714]:
+                - cell [ref=f3e3715]:
+                  - link "Aug 22" [ref=f3e3716] [cursor=pointer]:
+                    - /url: /games/823509
+                - cell [ref=f3e3717]:
+                  - link "Toronto Blue Jays" [ref=f3e3718] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "HOME" [ref=f3e3719]
+                - cell "Scheduled" [ref=f3e3720]
+                - cell "TBD vs TBD" [ref=f3e3722]:
+                  - generic [ref=f3e3723]:
+                    - generic [ref=f3e3724]: TBD
+                    - emphasis [ref=f3e3725]: vs
+                    - generic [ref=f3e3726]: TBD
+                - cell "Yankee Stadium" [ref=f3e3727]
+                - cell "Regular Season" [ref=f3e3728]
+              - row [ref=f3e3729]:
+                - cell [ref=f3e3730]:
+                  - link "Aug 23" [ref=f3e3731] [cursor=pointer]:
+                    - /url: /games/823507
+                - cell [ref=f3e3732]:
+                  - link "Toronto Blue Jays" [ref=f3e3733] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "HOME" [ref=f3e3734]
+                - cell "Scheduled" [ref=f3e3735]
+                - cell "TBD vs TBD" [ref=f3e3737]:
+                  - generic [ref=f3e3738]:
+                    - generic [ref=f3e3739]: TBD
+                    - emphasis [ref=f3e3740]: vs
+                    - generic [ref=f3e3741]: TBD
+                - cell "Yankee Stadium" [ref=f3e3742]
+                - cell "Regular Season" [ref=f3e3743]
+              - row [ref=f3e3744]:
+                - cell [ref=f3e3745]:
+                  - link "Aug 25" [ref=f3e3746] [cursor=pointer]:
+                    - /url: /games/823505
+                - cell [ref=f3e3747]:
+                  - link "Houston Astros" [ref=f3e3748] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "HOME" [ref=f3e3749]
+                - cell "Scheduled" [ref=f3e3750]
+                - cell "TBD vs TBD" [ref=f3e3752]:
+                  - generic [ref=f3e3753]:
+                    - generic [ref=f3e3754]: TBD
+                    - emphasis [ref=f3e3755]: vs
+                    - generic [ref=f3e3756]: TBD
+                - cell "Yankee Stadium" [ref=f3e3757]
+                - cell "Regular Season" [ref=f3e3758]
+              - row [ref=f3e3759]:
+                - cell [ref=f3e3760]:
+                  - link "Aug 26" [ref=f3e3761] [cursor=pointer]:
+                    - /url: /games/823506
+                - cell [ref=f3e3762]:
+                  - link "Houston Astros" [ref=f3e3763] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "HOME" [ref=f3e3764]
+                - cell "Scheduled" [ref=f3e3765]
+                - cell "TBD vs TBD" [ref=f3e3767]:
+                  - generic [ref=f3e3768]:
+                    - generic [ref=f3e3769]: TBD
+                    - emphasis [ref=f3e3770]: vs
+                    - generic [ref=f3e3771]: TBD
+                - cell "Yankee Stadium" [ref=f3e3772]
+                - cell "Regular Season" [ref=f3e3773]
+              - row [ref=f3e3774]:
+                - cell [ref=f3e3775]:
+                  - link "Aug 27" [ref=f3e3776] [cursor=pointer]:
+                    - /url: /games/823503
+                - cell [ref=f3e3777]:
+                  - link "Houston Astros" [ref=f3e3778] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "HOME" [ref=f3e3779]
+                - cell "Scheduled" [ref=f3e3780]
+                - cell "TBD vs TBD" [ref=f3e3782]:
+                  - generic [ref=f3e3783]:
+                    - generic [ref=f3e3784]: TBD
+                    - emphasis [ref=f3e3785]: vs
+                    - generic [ref=f3e3786]: TBD
+                - cell "Yankee Stadium" [ref=f3e3787]
+                - cell "Regular Season" [ref=f3e3788]
+              - row [ref=f3e3789]:
+                - cell [ref=f3e3790]:
+                  - link "Aug 28" [ref=f3e3791] [cursor=pointer]:
+                    - /url: /games/823504
+                - cell [ref=f3e3792]:
+                  - link "Boston Red Sox" [ref=f3e3793] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "HOME" [ref=f3e3794]
+                - cell "Scheduled" [ref=f3e3795]
+                - cell "TBD vs TBD" [ref=f3e3797]:
+                  - generic [ref=f3e3798]:
+                    - generic [ref=f3e3799]: TBD
+                    - emphasis [ref=f3e3800]: vs
+                    - generic [ref=f3e3801]: TBD
+                - cell "Yankee Stadium" [ref=f3e3802]
+                - cell "Regular Season" [ref=f3e3803]
+              - row [ref=f3e3804]:
+                - cell [ref=f3e3805]:
+                  - link "Aug 29" [ref=f3e3806] [cursor=pointer]:
+                    - /url: /games/823539
+                - cell [ref=f3e3807]:
+                  - link "Boston Red Sox" [ref=f3e3808] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "HOME" [ref=f3e3809]
+                - cell "Scheduled" [ref=f3e3810]
+                - cell "TBD vs TBD" [ref=f3e3812]:
+                  - generic [ref=f3e3813]:
+                    - generic [ref=f3e3814]: TBD
+                    - emphasis [ref=f3e3815]: vs
+                    - generic [ref=f3e3816]: TBD
+                - cell "Yankee Stadium" [ref=f3e3817]
+                - cell "Regular Season" [ref=f3e3818]
+              - row [ref=f3e3819]:
+                - cell [ref=f3e3820]:
+                  - link "Aug 29" [ref=f3e3821] [cursor=pointer]:
+                    - /url: /games/823501
+                - cell [ref=f3e3822]:
+                  - link "Boston Red Sox" [ref=f3e3823] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "HOME" [ref=f3e3824]
+                - cell "Scheduled" [ref=f3e3825]
+                - cell "TBD vs TBD" [ref=f3e3827]:
+                  - generic [ref=f3e3828]:
+                    - generic [ref=f3e3829]: TBD
+                    - emphasis [ref=f3e3830]: vs
+                    - generic [ref=f3e3831]: TBD
+                - cell "Yankee Stadium" [ref=f3e3832]
+                - cell "Regular Season" [ref=f3e3833]
+              - row [ref=f3e3834]:
+                - cell [ref=f3e3835]:
+                  - link "Aug 30" [ref=f3e3836] [cursor=pointer]:
+                    - /url: /games/823502
+                - cell [ref=f3e3837]:
+                  - link "Boston Red Sox" [ref=f3e3838] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "HOME" [ref=f3e3839]
+                - cell "Scheduled" [ref=f3e3840]
+                - cell "TBD vs TBD" [ref=f3e3842]:
+                  - generic [ref=f3e3843]:
+                    - generic [ref=f3e3844]: TBD
+                    - emphasis [ref=f3e3845]: vs
+                    - generic [ref=f3e3846]: TBD
+                - cell "Yankee Stadium" [ref=f3e3847]
+                - cell "Regular Season" [ref=f3e3848]
+              - row [ref=f3e3849]:
+                - cell [ref=f3e3850]:
+                  - link "Aug 31" [ref=f3e3851] [cursor=pointer]:
+                    - /url: /games/823982
+                - cell [ref=f3e3852]:
+                  - link "Los Angeles Angels" [ref=f3e3853] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "AWAY" [ref=f3e3854]
+                - cell "Scheduled" [ref=f3e3855]
+                - cell "TBD vs TBD" [ref=f3e3857]:
+                  - generic [ref=f3e3858]:
+                    - generic [ref=f3e3859]: TBD
+                    - emphasis [ref=f3e3860]: vs
+                    - generic [ref=f3e3861]: TBD
+                - cell "Angel Stadium" [ref=f3e3862]
+                - cell "Regular Season" [ref=f3e3863]
+              - row [ref=f3e3864]:
+                - cell [ref=f3e3865]:
+                  - link "Sep 1" [ref=f3e3866] [cursor=pointer]:
+                    - /url: /games/823984
+                - cell [ref=f3e3867]:
+                  - link "Los Angeles Angels" [ref=f3e3868] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "AWAY" [ref=f3e3869]
+                - cell "Scheduled" [ref=f3e3870]
+                - cell "TBD vs TBD" [ref=f3e3872]:
+                  - generic [ref=f3e3873]:
+                    - generic [ref=f3e3874]: TBD
+                    - emphasis [ref=f3e3875]: vs
+                    - generic [ref=f3e3876]: TBD
+                - cell "Angel Stadium" [ref=f3e3877]
+                - cell "Regular Season" [ref=f3e3878]
+              - row [ref=f3e3879]:
+                - cell [ref=f3e3880]:
+                  - link "Sep 2" [ref=f3e3881] [cursor=pointer]:
+                    - /url: /games/823983
+                - cell [ref=f3e3882]:
+                  - link "Los Angeles Angels" [ref=f3e3883] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "AWAY" [ref=f3e3884]
+                - cell "Scheduled" [ref=f3e3885]
+                - cell "TBD vs TBD" [ref=f3e3887]:
+                  - generic [ref=f3e3888]:
+                    - generic [ref=f3e3889]: TBD
+                    - emphasis [ref=f3e3890]: vs
+                    - generic [ref=f3e3891]: TBD
+                - cell "Angel Stadium" [ref=f3e3892]
+                - cell "Regular Season" [ref=f3e3893]
+              - row [ref=f3e3894]:
+                - cell [ref=f3e3895]:
+                  - link "Sep 4" [ref=f3e3896] [cursor=pointer]:
+                    - /url: /games/823256
+                - cell [ref=f3e3897]:
+                  - link "San Diego Padres" [ref=f3e3898] [cursor=pointer]:
+                    - /url: /teams/135
+                - cell "AWAY" [ref=f3e3899]
+                - cell "Scheduled" [ref=f3e3900]
+                - cell "TBD vs TBD" [ref=f3e3902]:
+                  - generic [ref=f3e3903]:
+                    - generic [ref=f3e3904]: TBD
+                    - emphasis [ref=f3e3905]: vs
+                    - generic [ref=f3e3906]: TBD
+                - cell "Petco Park" [ref=f3e3907]
+                - cell "Regular Season" [ref=f3e3908]
+              - row [ref=f3e3909]:
+                - cell [ref=f3e3910]:
+                  - link "Sep 5" [ref=f3e3911] [cursor=pointer]:
+                    - /url: /games/823257
+                - cell [ref=f3e3912]:
+                  - link "San Diego Padres" [ref=f3e3913] [cursor=pointer]:
+                    - /url: /teams/135
+                - cell "AWAY" [ref=f3e3914]
+                - cell "Scheduled" [ref=f3e3915]
+                - cell "TBD vs TBD" [ref=f3e3917]:
+                  - generic [ref=f3e3918]:
+                    - generic [ref=f3e3919]: TBD
+                    - emphasis [ref=f3e3920]: vs
+                    - generic [ref=f3e3921]: TBD
+                - cell "Petco Park" [ref=f3e3922]
+                - cell "Regular Season" [ref=f3e3923]
+              - row [ref=f3e3924]:
+                - cell [ref=f3e3925]:
+                  - link "Sep 6" [ref=f3e3926] [cursor=pointer]:
+                    - /url: /games/823253
+                - cell [ref=f3e3927]:
+                  - link "San Diego Padres" [ref=f3e3928] [cursor=pointer]:
+                    - /url: /teams/135
+                - cell "AWAY" [ref=f3e3929]
+                - cell "Scheduled" [ref=f3e3930]
+                - cell "TBD vs TBD" [ref=f3e3932]:
+                  - generic [ref=f3e3933]:
+                    - generic [ref=f3e3934]: TBD
+                    - emphasis [ref=f3e3935]: vs
+                    - generic [ref=f3e3936]: TBD
+                - cell "Petco Park" [ref=f3e3937]
+                - cell "Regular Season" [ref=f3e3938]
+              - row [ref=f3e3939]:
+                - cell [ref=f3e3940]:
+                  - link "Sep 8" [ref=f3e3941] [cursor=pointer]:
+                    - /url: /games/823500
+                - cell [ref=f3e3942]:
+                  - link "Colorado Rockies" [ref=f3e3943] [cursor=pointer]:
+                    - /url: /teams/115
+                - cell "HOME" [ref=f3e3944]
+                - cell "Scheduled" [ref=f3e3945]
+                - cell "TBD vs TBD" [ref=f3e3947]:
+                  - generic [ref=f3e3948]:
+                    - generic [ref=f3e3949]: TBD
+                    - emphasis [ref=f3e3950]: vs
+                    - generic [ref=f3e3951]: TBD
+                - cell "Yankee Stadium" [ref=f3e3952]
+                - cell "Regular Season" [ref=f3e3953]
+              - row [ref=f3e3954]:
+                - cell [ref=f3e3955]:
+                  - link "Sep 9" [ref=f3e3956] [cursor=pointer]:
+                    - /url: /games/823497
+                - cell [ref=f3e3957]:
+                  - link "Colorado Rockies" [ref=f3e3958] [cursor=pointer]:
+                    - /url: /teams/115
+                - cell "HOME" [ref=f3e3959]
+                - cell "Scheduled" [ref=f3e3960]
+                - cell "TBD vs TBD" [ref=f3e3962]:
+                  - generic [ref=f3e3963]:
+                    - generic [ref=f3e3964]: TBD
+                    - emphasis [ref=f3e3965]: vs
+                    - generic [ref=f3e3966]: TBD
+                - cell "Yankee Stadium" [ref=f3e3967]
+                - cell "Regular Season" [ref=f3e3968]
+              - row [ref=f3e3969]:
+                - cell [ref=f3e3970]:
+                  - link "Sep 10" [ref=f3e3971] [cursor=pointer]:
+                    - /url: /games/823499
+                - cell [ref=f3e3972]:
+                  - link "Colorado Rockies" [ref=f3e3973] [cursor=pointer]:
+                    - /url: /teams/115
+                - cell "HOME" [ref=f3e3974]
+                - cell "Scheduled" [ref=f3e3975]
+                - cell "TBD vs TBD" [ref=f3e3977]:
+                  - generic [ref=f3e3978]:
+                    - generic [ref=f3e3979]: TBD
+                    - emphasis [ref=f3e3980]: vs
+                    - generic [ref=f3e3981]: TBD
+                - cell "Yankee Stadium" [ref=f3e3982]
+                - cell "Regular Season" [ref=f3e3983]
+              - row [ref=f3e3984]:
+                - cell [ref=f3e3985]:
+                  - link "Sep 11" [ref=f3e3986] [cursor=pointer]:
+                    - /url: /games/823498
+                - cell [ref=f3e3987]:
+                  - link "New York Mets" [ref=f3e3988] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "HOME" [ref=f3e3989]
+                - cell "Scheduled" [ref=f3e3990]
+                - cell "TBD vs TBD" [ref=f3e3992]:
+                  - generic [ref=f3e3993]:
+                    - generic [ref=f3e3994]: TBD
+                    - emphasis [ref=f3e3995]: vs
+                    - generic [ref=f3e3996]: TBD
+                - cell "Yankee Stadium" [ref=f3e3997]
+                - cell "Regular Season" [ref=f3e3998]
+              - row [ref=f3e3999]:
+                - cell [ref=f3e4000]:
+                  - link "Sep 12" [ref=f3e4001] [cursor=pointer]:
+                    - /url: /games/823496
+                - cell [ref=f3e4002]:
+                  - link "New York Mets" [ref=f3e4003] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "HOME" [ref=f3e4004]
+                - cell "Scheduled" [ref=f3e4005]
+                - cell "TBD vs TBD" [ref=f3e4007]:
+                  - generic [ref=f3e4008]:
+                    - generic [ref=f3e4009]: TBD
+                    - emphasis [ref=f3e4010]: vs
+                    - generic [ref=f3e4011]: TBD
+                - cell "Yankee Stadium" [ref=f3e4012]
+                - cell "Regular Season" [ref=f3e4013]
+              - row [ref=f3e4014]:
+                - cell [ref=f3e4015]:
+                  - link "Sep 13" [ref=f3e4016] [cursor=pointer]:
+                    - /url: /games/823495
+                - cell [ref=f3e4017]:
+                  - link "New York Mets" [ref=f3e4018] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "HOME" [ref=f3e4019]
+                - cell "Scheduled" [ref=f3e4020]
+                - cell "TBD vs TBD" [ref=f3e4022]:
+                  - generic [ref=f3e4023]:
+                    - generic [ref=f3e4024]: TBD
+                    - emphasis [ref=f3e4025]: vs
+                    - generic [ref=f3e4026]: TBD
+                - cell "Yankee Stadium" [ref=f3e4027]
+                - cell "Regular Season" [ref=f3e4028]
+              - row [ref=f3e4029]:
+                - cell [ref=f3e4030]:
+                  - link "Sep 14" [ref=f3e4031] [cursor=pointer]:
+                    - /url: /games/823656
+                - cell [ref=f3e4032]:
+                  - link "Minnesota Twins" [ref=f3e4033] [cursor=pointer]:
+                    - /url: /teams/142
+                - cell "AWAY" [ref=f3e4034]
+                - cell "Scheduled" [ref=f3e4035]
+                - cell "TBD vs TBD" [ref=f3e4037]:
+                  - generic [ref=f3e4038]:
+                    - generic [ref=f3e4039]: TBD
+                    - emphasis [ref=f3e4040]: vs
+                    - generic [ref=f3e4041]: TBD
+                - cell "Target Field" [ref=f3e4042]
+                - cell "Regular Season" [ref=f3e4043]
+              - row [ref=f3e4044]:
+                - cell [ref=f3e4045]:
+                  - link "Sep 15" [ref=f3e4046] [cursor=pointer]:
+                    - /url: /games/823654
+                - cell [ref=f3e4047]:
+                  - link "Minnesota Twins" [ref=f3e4048] [cursor=pointer]:
+                    - /url: /teams/142
+                - cell "AWAY" [ref=f3e4049]
+                - cell "Scheduled" [ref=f3e4050]
+                - cell "TBD vs TBD" [ref=f3e4052]:
+                  - generic [ref=f3e4053]:
+                    - generic [ref=f3e4054]: TBD
+                    - emphasis [ref=f3e4055]: vs
+                    - generic [ref=f3e4056]: TBD
+                - cell "Target Field" [ref=f3e4057]
+                - cell "Regular Season" [ref=f3e4058]
+              - row [ref=f3e4059]:
+                - cell [ref=f3e4060]:
+                  - link "Sep 16" [ref=f3e4061] [cursor=pointer]:
+                    - /url: /games/823655
+                - cell [ref=f3e4062]:
+                  - link "Minnesota Twins" [ref=f3e4063] [cursor=pointer]:
+                    - /url: /teams/142
+                - cell "AWAY" [ref=f3e4064]
+                - cell "Scheduled" [ref=f3e4065]
+                - cell "TBD vs TBD" [ref=f3e4067]:
+                  - generic [ref=f3e4068]:
+                    - generic [ref=f3e4069]: TBD
+                    - emphasis [ref=f3e4070]: vs
+                    - generic [ref=f3e4071]: TBD
+                - cell "Target Field" [ref=f3e4072]
+                - cell "Regular Season" [ref=f3e4073]
+              - row [ref=f3e4074]:
+                - cell [ref=f3e4075]:
+                  - link "Sep 18" [ref=f3e4076] [cursor=pointer]:
+                    - /url: /games/825032
+                - cell [ref=f3e4077]:
+                  - link "Arizona Diamondbacks" [ref=f3e4078] [cursor=pointer]:
+                    - /url: /teams/109
+                - cell "AWAY" [ref=f3e4079]
+                - cell "Scheduled" [ref=f3e4080]
+                - cell "TBD vs TBD" [ref=f3e4082]:
+                  - generic [ref=f3e4083]:
+                    - generic [ref=f3e4084]: TBD
+                    - emphasis [ref=f3e4085]: vs
+                    - generic [ref=f3e4086]: TBD
+                - cell "Chase Field" [ref=f3e4087]
+                - cell "Regular Season" [ref=f3e4088]
+              - row [ref=f3e4089]:
+                - cell [ref=f3e4090]:
+                  - link "Sep 19" [ref=f3e4091] [cursor=pointer]:
+                    - /url: /games/825029
+                - cell [ref=f3e4092]:
+                  - link "Arizona Diamondbacks" [ref=f3e4093] [cursor=pointer]:
+                    - /url: /teams/109
+                - cell "AWAY" [ref=f3e4094]
+                - cell "Scheduled" [ref=f3e4095]
+                - cell "TBD vs TBD" [ref=f3e4097]:
+                  - generic [ref=f3e4098]:
+                    - generic [ref=f3e4099]: TBD
+                    - emphasis [ref=f3e4100]: vs
+                    - generic [ref=f3e4101]: TBD
+                - cell "Chase Field" [ref=f3e4102]
+                - cell "Regular Season" [ref=f3e4103]
+              - row [ref=f3e4104]:
+                - cell [ref=f3e4105]:
+                  - link "Sep 20" [ref=f3e4106] [cursor=pointer]:
+                    - /url: /games/825028
+                - cell [ref=f3e4107]:
+                  - link "Arizona Diamondbacks" [ref=f3e4108] [cursor=pointer]:
+                    - /url: /teams/109
+                - cell "AWAY" [ref=f3e4109]
+                - cell "Scheduled" [ref=f3e4110]
+                - cell "TBD vs TBD" [ref=f3e4112]:
+                  - generic [ref=f3e4113]:
+                    - generic [ref=f3e4114]: TBD
+                    - emphasis [ref=f3e4115]: vs
+                    - generic [ref=f3e4116]: TBD
+                - cell "Chase Field" [ref=f3e4117]
+                - cell "Regular Season" [ref=f3e4118]
+              - row [ref=f3e4119]:
+                - cell [ref=f3e4120]:
+                  - link "Sep 22" [ref=f3e4121] [cursor=pointer]:
+                    - /url: /games/823543
+                - cell [ref=f3e4122]:
+                  - link "Tampa Bay Rays" [ref=f3e4123] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "HOME" [ref=f3e4124]
+                - cell "Scheduled" [ref=f3e4125]
+                - cell "TBD vs TBD" [ref=f3e4127]:
+                  - generic [ref=f3e4128]:
+                    - generic [ref=f3e4129]: TBD
+                    - emphasis [ref=f3e4130]: vs
+                    - generic [ref=f3e4131]: TBD
+                - cell "Yankee Stadium" [ref=f3e4132]
+                - cell "Regular Season" [ref=f3e4133]
+              - row [ref=f3e4134]:
+                - cell [ref=f3e4135]:
+                  - link "Sep 22" [ref=f3e4136] [cursor=pointer]:
+                    - /url: /games/823494
+                - cell [ref=f3e4137]:
+                  - link "Tampa Bay Rays" [ref=f3e4138] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "HOME" [ref=f3e4139]
+                - cell "Scheduled" [ref=f3e4140]
+                - cell "TBD vs TBD" [ref=f3e4142]:
+                  - generic [ref=f3e4143]:
+                    - generic [ref=f3e4144]: TBD
+                    - emphasis [ref=f3e4145]: vs
+                    - generic [ref=f3e4146]: TBD
+                - cell "Yankee Stadium" [ref=f3e4147]
+                - cell "Regular Season" [ref=f3e4148]
+              - row [ref=f3e4149]:
+                - cell [ref=f3e4150]:
+                  - link "Sep 23" [ref=f3e4151] [cursor=pointer]:
+                    - /url: /games/823492
+                - cell [ref=f3e4152]:
+                  - link "Tampa Bay Rays" [ref=f3e4153] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "HOME" [ref=f3e4154]
+                - cell "Scheduled" [ref=f3e4155]
+                - cell "TBD vs TBD" [ref=f3e4157]:
+                  - generic [ref=f3e4158]:
+                    - generic [ref=f3e4159]: TBD
+                    - emphasis [ref=f3e4160]: vs
+                    - generic [ref=f3e4161]: TBD
+                - cell "Yankee Stadium" [ref=f3e4162]
+                - cell "Regular Season" [ref=f3e4163]
+              - row [ref=f3e4164]:
+                - cell [ref=f3e4165]:
+                  - link "Sep 24" [ref=f3e4166] [cursor=pointer]:
+                    - /url: /games/823493
+                - cell [ref=f3e4167]:
+                  - link "Tampa Bay Rays" [ref=f3e4168] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "HOME" [ref=f3e4169]
+                - cell "Scheduled" [ref=f3e4170]
+                - cell "TBD vs TBD" [ref=f3e4172]:
+                  - generic [ref=f3e4173]:
+                    - generic [ref=f3e4174]: TBD
+                    - emphasis [ref=f3e4175]: vs
+                    - generic [ref=f3e4176]: TBD
+                - cell "Yankee Stadium" [ref=f3e4177]
+                - cell "Regular Season" [ref=f3e4178]
+              - row [ref=f3e4179]:
+                - cell [ref=f3e4180]:
+                  - link "Sep 25" [ref=f3e4181] [cursor=pointer]:
+                    - /url: /games/823491
+                - cell [ref=f3e4182]:
+                  - link "Baltimore Orioles" [ref=f3e4183] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "HOME" [ref=f3e4184]
+                - cell "Scheduled" [ref=f3e4185]
+                - cell "TBD vs TBD" [ref=f3e4187]:
+                  - generic [ref=f3e4188]:
+                    - generic [ref=f3e4189]: TBD
+                    - emphasis [ref=f3e4190]: vs
+                    - generic [ref=f3e4191]: TBD
+                - cell "Yankee Stadium" [ref=f3e4192]
+                - cell "Regular Season" [ref=f3e4193]
+              - row [ref=f3e4194]:
+                - cell [ref=f3e4195]:
+                  - link "Sep 26" [ref=f3e4196] [cursor=pointer]:
+                    - /url: /games/823489
+                - cell [ref=f3e4197]:
+                  - link "Baltimore Orioles" [ref=f3e4198] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "HOME" [ref=f3e4199]
+                - cell "Scheduled" [ref=f3e4200]
+                - cell "TBD vs TBD" [ref=f3e4202]:
+                  - generic [ref=f3e4203]:
+                    - generic [ref=f3e4204]: TBD
+                    - emphasis [ref=f3e4205]: vs
+                    - generic [ref=f3e4206]: TBD
+                - cell "Yankee Stadium" [ref=f3e4207]
+                - cell "Regular Season" [ref=f3e4208]
+              - row [ref=f3e4209]:
+                - cell [ref=f3e4210]:
+                  - link "Sep 27" [ref=f3e4211] [cursor=pointer]:
+                    - /url: /games/823490
+                - cell [ref=f3e4212]:
+                  - link "Baltimore Orioles" [ref=f3e4213] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "HOME" [ref=f3e4214]
+                - cell "Scheduled" [ref=f3e4215]
+                - cell "TBD vs TBD" [ref=f3e4217]:
+                  - generic [ref=f3e4218]:
+                    - generic [ref=f3e4219]: TBD
+                    - emphasis [ref=f3e4220]: vs
+                    - generic [ref=f3e4221]: TBD
+                - cell "Yankee Stadium" [ref=f3e4222]
+                - cell "Regular Season" [ref=f3e4223]
+      - generic [ref=f3e4224]:
+        - generic [ref=f3e4226]:
+          - generic [ref=f3e4227]: NINTH / DATA
+          - heading "Complete active roster" [level=2] [ref=f3e4228]
+          - paragraph [ref=f3e4229]: Roles are grouped from official active-roster positions and current-season usage
+        - generic [ref=f3e4231]:
+          - generic [ref=f3e4232]:
+            - generic [ref=f3e4233]:
+              - generic [ref=f3e4234]: Starting rotation
+              - generic [ref=f3e4235]: "5"
+            - generic [ref=f3e4236]:
+              - 'link "Cam Schlittler headshot Starting pitcher Cam Schlittler #31 · Pitcher 26 starts · 152.0 IP" [ref=f3e4237] [cursor=pointer]':
+                - /url: /players/693645?from=/teams/147
+                - img "Cam Schlittler headshot" [ref=f3e4240]
+                - generic [ref=f3e4241]:
+                  - generic [ref=f3e4242]: Starting pitcher
+                  - heading "Cam Schlittler" [level=3] [ref=f3e4243]
+                  - paragraph [ref=f3e4244]: "#31 · Pitcher"
+                  - generic [ref=f3e4245]: 26 starts · 152.0 IP
+              - 'link "Will Warren headshot Starting pitcher Will Warren #29 · Pitcher 23 starts · 118.0 IP" [ref=f3e4246] [cursor=pointer]':
+                - /url: /players/701542?from=/teams/147
+                - img "Will Warren headshot" [ref=f3e4249]
+                - generic [ref=f3e4250]:
+                  - generic [ref=f3e4251]: Starting pitcher
+                  - heading "Will Warren" [level=3] [ref=f3e4252]
+                  - paragraph [ref=f3e4253]: "#29 · Pitcher"
+                  - generic [ref=f3e4254]: 23 starts · 118.0 IP
+              - 'link "Ryan Weathers headshot Starting pitcher Ryan Weathers #40 · Pitcher 23 starts · 126.2 IP" [ref=f3e4255] [cursor=pointer]':
+                - /url: /players/677960?from=/teams/147
+                - img "Ryan Weathers headshot" [ref=f3e4258]
+                - generic [ref=f3e4259]:
+                  - generic [ref=f3e4260]: Starting pitcher
+                  - heading "Ryan Weathers" [level=3] [ref=f3e4261]
+                  - paragraph [ref=f3e4262]: "#40 · Pitcher"
+                  - generic [ref=f3e4263]: 23 starts · 126.2 IP
+              - 'link "Gerrit Cole headshot Starting pitcher Gerrit Cole #45 · Pitcher 15 starts · 86.2 IP" [ref=f3e4264] [cursor=pointer]':
+                - /url: /players/543037?from=/teams/147
+                - img "Gerrit Cole headshot" [ref=f3e4267]
+                - generic [ref=f3e4268]:
+                  - generic [ref=f3e4269]: Starting pitcher
+                  - heading "Gerrit Cole" [level=3] [ref=f3e4270]
+                  - paragraph [ref=f3e4271]: "#45 · Pitcher"
+                  - generic [ref=f3e4272]: 15 starts · 86.2 IP
+              - 'link "Max Fried headshot Starting pitcher Max Fried #54 · Pitcher 15 starts · 86.1 IP" [ref=f3e4273] [cursor=pointer]':
+                - /url: /players/608331?from=/teams/147
+                - img "Max Fried headshot" [ref=f3e4276]
+                - generic [ref=f3e4277]:
+                  - generic [ref=f3e4278]: Starting pitcher
+                  - heading "Max Fried" [level=3] [ref=f3e4279]
+                  - paragraph [ref=f3e4280]: "#54 · Pitcher"
+                  - generic [ref=f3e4281]: 15 starts · 86.1 IP
+          - generic [ref=f3e4282]:
+            - generic [ref=f3e4283]:
+              - generic [ref=f3e4284]: Bullpen
+              - generic [ref=f3e4285]: "8"
+            - generic [ref=f3e4286]:
+              - 'link "Paul Blackburn headshot Relief pitcher Paul Blackburn #58 · Pitcher 2 starts · 68.0 IP" [ref=f3e4287] [cursor=pointer]':
+                - /url: /players/621112?from=/teams/147
+                - img "Paul Blackburn headshot" [ref=f3e4290]
+                - generic [ref=f3e4291]:
+                  - generic [ref=f3e4292]: Relief pitcher
+                  - heading "Paul Blackburn" [level=3] [ref=f3e4293]
+                  - paragraph [ref=f3e4294]: "#58 · Pitcher"
+                  - generic [ref=f3e4295]: 2 starts · 68.0 IP
+              - 'link "Ryan Yarbrough headshot Relief pitcher Ryan Yarbrough #33 · Pitcher 1 starts · 45.1 IP" [ref=f3e4296] [cursor=pointer]':
+                - /url: /players/642232?from=/teams/147
+                - img "Ryan Yarbrough headshot" [ref=f3e4299]
+                - generic [ref=f3e4300]:
+                  - generic [ref=f3e4301]: Relief pitcher
+                  - heading "Ryan Yarbrough" [level=3] [ref=f3e4302]
+                  - paragraph [ref=f3e4303]: "#33 · Pitcher"
+                  - generic [ref=f3e4304]: 1 starts · 45.1 IP
+              - 'link "Brent Headrick headshot Relief pitcher Brent Headrick #47 · Pitcher 63 games" [ref=f3e4305] [cursor=pointer]':
+                - /url: /players/687396?from=/teams/147
+                - img "Brent Headrick headshot" [ref=f3e4308]
+                - generic [ref=f3e4309]:
+                  - generic [ref=f3e4310]: Relief pitcher
+                  - heading "Brent Headrick" [level=3] [ref=f3e4311]
+                  - paragraph [ref=f3e4312]: "#47 · Pitcher"
+                  - generic [ref=f3e4313]: 63 games
+              - 'link "Fernando Cruz headshot Relief pitcher Fernando Cruz #63 · Pitcher 57 games" [ref=f3e4314] [cursor=pointer]':
+                - /url: /players/518585?from=/teams/147
+                - img "Fernando Cruz headshot" [ref=f3e4317]
+                - generic [ref=f3e4318]:
+                  - generic [ref=f3e4319]: Relief pitcher
+                  - heading "Fernando Cruz" [level=3] [ref=f3e4320]
+                  - paragraph [ref=f3e4321]: "#63 · Pitcher"
+                  - generic [ref=f3e4322]: 57 games
+              - 'link "Tim Hill headshot Relief pitcher Tim Hill #41 · Pitcher 55 games" [ref=f3e4323] [cursor=pointer]':
+                - /url: /players/657612?from=/teams/147
+                - img "Tim Hill headshot" [ref=f3e4326]
+                - generic [ref=f3e4327]:
+                  - generic [ref=f3e4328]: Relief pitcher
+                  - heading "Tim Hill" [level=3] [ref=f3e4329]
+                  - paragraph [ref=f3e4330]: "#41 · Pitcher"
+                  - generic [ref=f3e4331]: 55 games
+              - 'link "David Bednar headshot Relief pitcher David Bednar #53 · Pitcher 49 games" [ref=f3e4332] [cursor=pointer]':
+                - /url: /players/670280?from=/teams/147
+                - img "David Bednar headshot" [ref=f3e4335]
+                - generic [ref=f3e4336]:
+                  - generic [ref=f3e4337]: Relief pitcher
+                  - heading "David Bednar" [level=3] [ref=f3e4338]
+                  - paragraph [ref=f3e4339]: "#53 · Pitcher"
+                  - generic [ref=f3e4340]: 49 games
+              - 'link "Yerry De los Santos headshot Relief pitcher Yerry De los Santos #73 · Pitcher 9 games" [ref=f3e4341] [cursor=pointer]':
+                - /url: /players/660787?from=/teams/147
+                - img "Yerry De los Santos headshot" [ref=f3e4344]
+                - generic [ref=f3e4345]:
+                  - generic [ref=f3e4346]: Relief pitcher
+                  - heading "Yerry De los Santos" [level=3] [ref=f3e4347]
+                  - paragraph [ref=f3e4348]: "#73 · Pitcher"
+                  - generic [ref=f3e4349]: 9 games
+              - 'link "Bradley Hanner headshot Relief pitcher Bradley Hanner #93 · Pitcher 1 games" [ref=f3e4350] [cursor=pointer]':
+                - /url: /players/690440?from=/teams/147
+                - img "Bradley Hanner headshot" [ref=f3e4353]
+                - generic [ref=f3e4354]:
+                  - generic [ref=f3e4355]: Relief pitcher
+                  - heading "Bradley Hanner" [level=3] [ref=f3e4356]
+                  - paragraph [ref=f3e4357]: "#93 · Pitcher"
+                  - generic [ref=f3e4358]: 1 games
+          - generic [ref=f3e4359]:
+            - generic [ref=f3e4360]:
+              - generic [ref=f3e4361]: Starting lineup
+              - generic [ref=f3e4362]: "9"
+            - generic [ref=f3e4363]:
+              - 'link "Ben Rice headshot Designated hitter Ben Rice #22 · Designated Hitter 118 games · .875 OPS" [ref=f3e4364] [cursor=pointer]':
+                - /url: /players/700250?from=/teams/147
+                - img "Ben Rice headshot" [ref=f3e4367]
+                - generic [ref=f3e4368]:
+                  - generic [ref=f3e4369]: Designated hitter
+                  - heading "Ben Rice" [level=3] [ref=f3e4370]
+                  - paragraph [ref=f3e4371]: "#22 · Designated Hitter"
+                  - generic [ref=f3e4372]: 118 games · .875 OPS
+              - 'link "Jazz Chisholm Jr. headshot Starting infield Jazz Chisholm Jr. #13 · Second Base 114 games · .680 OPS" [ref=f3e4373] [cursor=pointer]':
+                - /url: /players/665862?from=/teams/147
+                - img "Jazz Chisholm Jr. headshot" [ref=f3e4376]
+                - generic [ref=f3e4377]:
+                  - generic [ref=f3e4378]: Starting infield
+                  - heading "Jazz Chisholm Jr." [level=3] [ref=f3e4379]
+                  - paragraph [ref=f3e4380]: "#13 · Second Base"
+                  - generic [ref=f3e4381]: 114 games · .680 OPS
+              - 'link "Luis García Jr. headshot Starting infield Luis García Jr. #26 · First Base 114 games · .851 OPS" [ref=f3e4382] [cursor=pointer]':
+                - /url: /players/671277?from=/teams/147
+                - img "Luis García Jr. headshot" [ref=f3e4385]
+                - generic [ref=f3e4386]:
+                  - generic [ref=f3e4387]: Starting infield
+                  - heading "Luis García Jr." [level=3] [ref=f3e4388]
+                  - paragraph [ref=f3e4389]: "#26 · First Base"
+                  - generic [ref=f3e4390]: 114 games · .851 OPS
+              - 'link "Ryan McMahon headshot Starting infield Ryan McMahon #19 · Third Base 103 games · .653 OPS" [ref=f3e4391] [cursor=pointer]':
+                - /url: /players/641857?from=/teams/147
+                - img "Ryan McMahon headshot" [ref=f3e4394]
+                - generic [ref=f3e4395]:
+                  - generic [ref=f3e4396]: Starting infield
+                  - heading "Ryan McMahon" [level=3] [ref=f3e4397]
+                  - paragraph [ref=f3e4398]: "#19 · Third Base"
+                  - generic [ref=f3e4399]: 103 games · .653 OPS
+              - 'link "Trent Grisham headshot Starting outfield Trent Grisham #12 · Outfielder 103 games · .737 OPS" [ref=f3e4400] [cursor=pointer]':
+                - /url: /players/663757?from=/teams/147
+                - img "Trent Grisham headshot" [ref=f3e4403]
+                - generic [ref=f3e4404]:
+                  - generic [ref=f3e4405]: Starting outfield
+                  - heading "Trent Grisham" [level=3] [ref=f3e4406]
+                  - paragraph [ref=f3e4407]: "#12 · Outfielder"
+                  - generic [ref=f3e4408]: 103 games · .737 OPS
+              - 'link "José Caballero headshot Starting infield José Caballero #72 · Shortstop 102 games · .686 OPS" [ref=f3e4409] [cursor=pointer]':
+                - /url: /players/676609?from=/teams/147
+                - img "José Caballero headshot" [ref=f3e4412]
+                - generic [ref=f3e4413]:
+                  - generic [ref=f3e4414]: Starting infield
+                  - heading "José Caballero" [level=3] [ref=f3e4415]
+                  - paragraph [ref=f3e4416]: "#72 · Shortstop"
+                  - generic [ref=f3e4417]: 102 games · .686 OPS
+              - 'link "Austin Wells headshot Starting catcher Austin Wells #28 · Catcher 88 games · .580 OPS" [ref=f3e4418] [cursor=pointer]':
+                - /url: /players/669224?from=/teams/147
+                - img "Austin Wells headshot" [ref=f3e4421]
+                - generic [ref=f3e4422]:
+                  - generic [ref=f3e4423]: Starting catcher
+                  - heading "Austin Wells" [level=3] [ref=f3e4424]
+                  - paragraph [ref=f3e4425]: "#28 · Catcher"
+                  - generic [ref=f3e4426]: 88 games · .580 OPS
+              - 'link "Heliot Ramos headshot Starting outfield Heliot Ramos #34 · Outfielder 84 games · .686 OPS" [ref=f3e4427] [cursor=pointer]':
+                - /url: /players/671218?from=/teams/147
+                - img "Heliot Ramos headshot" [ref=f3e4430]
+                - generic [ref=f3e4431]:
+                  - generic [ref=f3e4432]: Starting outfield
+                  - heading "Heliot Ramos" [level=3] [ref=f3e4433]
+                  - paragraph [ref=f3e4434]: "#34 · Outfielder"
+                  - generic [ref=f3e4435]: 84 games · .686 OPS
+              - 'link "Spencer Jones headshot Starting outfield Spencer Jones #78 · Outfielder 50 games · .701 OPS" [ref=f3e4436] [cursor=pointer]':
+                - /url: /players/682987?from=/teams/147
+                - img "Spencer Jones headshot" [ref=f3e4439]
+                - generic [ref=f3e4440]:
+                  - generic [ref=f3e4441]: Starting outfield
+                  - heading "Spencer Jones" [level=3] [ref=f3e4442]
+                  - paragraph [ref=f3e4443]: "#78 · Outfielder"
+                  - generic [ref=f3e4444]: 50 games · .701 OPS
+          - generic [ref=f3e4445]:
+            - generic [ref=f3e4446]:
+              - generic [ref=f3e4447]: Bench
+              - generic [ref=f3e4448]: "4"
+            - generic [ref=f3e4449]:
+              - 'link "Paul Goldschmidt headshot Reserve first base Paul Goldschmidt #48 · First Base 87 games · .758 OPS" [ref=f3e4450] [cursor=pointer]':
+                - /url: /players/502671?from=/teams/147
+                - img "Paul Goldschmidt headshot" [ref=f3e4453]
+                - generic [ref=f3e4454]:
+                  - generic [ref=f3e4455]: Reserve first base
+                  - heading "Paul Goldschmidt" [level=3] [ref=f3e4456]
+                  - paragraph [ref=f3e4457]: "#48 · First Base"
+                  - generic [ref=f3e4458]: 87 games · .758 OPS
+              - 'link "Amed Rosario headshot Reserve third base Amed Rosario #14 · Third Base 71 games · .700 OPS" [ref=f3e4459] [cursor=pointer]':
+                - /url: /players/642708?from=/teams/147
+                - img "Amed Rosario headshot" [ref=f3e4462]
+                - generic [ref=f3e4463]:
+                  - generic [ref=f3e4464]: Reserve third base
+                  - heading "Amed Rosario" [level=3] [ref=f3e4465]
+                  - paragraph [ref=f3e4466]: "#14 · Third Base"
+                  - generic [ref=f3e4467]: 71 games · .700 OPS
+              - 'link "Ali Sánchez headshot Reserve catcher Ali Sánchez #39 · Catcher 35 games · .658 OPS" [ref=f3e4468] [cursor=pointer]':
+                - /url: /players/645305?from=/teams/147
+                - img "Ali Sánchez headshot" [ref=f3e4471]
+                - generic [ref=f3e4472]:
+                  - generic [ref=f3e4473]: Reserve catcher
+                  - heading "Ali Sánchez" [level=3] [ref=f3e4474]
+                  - paragraph [ref=f3e4475]: "#39 · Catcher"
+                  - generic [ref=f3e4476]: 35 games · .658 OPS
+              - 'link "George Lombard Jr. headshot Reserve shortstop George Lombard Jr. #96 · Shortstop 10 games · .783 OPS" [ref=f3e4477] [cursor=pointer]':
+                - /url: /players/806146?from=/teams/147
+                - img "George Lombard Jr. headshot" [ref=f3e4480]
+                - generic [ref=f3e4481]:
+                  - generic [ref=f3e4482]: Reserve shortstop
+                  - heading "George Lombard Jr." [level=3] [ref=f3e4483]
+                  - paragraph [ref=f3e4484]: "#96 · Shortstop"
+                  - generic [ref=f3e4485]: 10 games · .783 OPS
+      - generic [ref=f3e4486]:
+        - generic [ref=f3e4488]:
+          - generic [ref=f3e4489]: NINTH / DATA
+          - heading "Recent results" [level=2] [ref=f3e4490]
+        - generic [ref=f3e4491]:
+          - generic [ref=f3e4492]:
+            - generic [ref=f3e4493]:
+              - generic [ref=f3e4494]: "@ Toronto Blue Jays"
+              - generic [ref=f3e4495]: 2026-08-15
+            - strong [ref=f3e4496]: L 1-4
+          - generic [ref=f3e4497]:
+            - generic [ref=f3e4498]:
+              - generic [ref=f3e4499]: "@ Toronto Blue Jays"
+              - generic [ref=f3e4500]: 2026-08-14
+            - strong [ref=f3e4501]: L 1-3
+          - generic [ref=f3e4502]:
+            - generic [ref=f3e4503]:
+              - generic [ref=f3e4504]: vs Seattle Mariners
+              - generic [ref=f3e4505]: 2026-08-13
+            - strong [ref=f3e4506]: L 0-1
+          - generic [ref=f3e4507]:
+            - generic [ref=f3e4508]:
+              - generic [ref=f3e4509]: vs Seattle Mariners
+              - generic [ref=f3e4510]: 2026-08-12
+            - strong [ref=f3e4511]: W 10-5
+          - generic [ref=f3e4512]:
+            - generic [ref=f3e4513]:
+              - generic [ref=f3e4514]: vs Seattle Mariners
+              - generic [ref=f3e4515]: 2026-08-11
+            - strong [ref=f3e4516]: W 4-1
+      - generic [ref=f3e4517]:
+        - generic [ref=f3e4519]:
+          - generic [ref=f3e4520]: NINTH / DATA
+          - heading "American League East standings" [level=2] [ref=f3e4521]
+        - table [ref=f3e4524]:
+          - rowgroup [ref=f3e4525]:
+            - row [ref=f3e4526]:
+              - columnheader "Team" [ref=f3e4527]
+              - columnheader "W" [ref=f3e4528]
+              - columnheader "L" [ref=f3e4529]
+              - columnheader "PCT" [ref=f3e4530]
+              - columnheader "GB" [ref=f3e4531]
+              - columnheader "Run diff" [ref=f3e4532]
+          - rowgroup [ref=f3e4533]:
+            - row [ref=f3e4534]:
+              - cell "1 · Tampa Bay Rays" [ref=f3e4535]
+              - cell "74" [ref=f3e4536]
+              - cell "48" [ref=f3e4537]
+              - cell ".607" [ref=f3e4538]
+              - cell "-" [ref=f3e4539]
+              - cell "60" [ref=f3e4540]
+            - row [ref=f3e4541]:
+              - cell "2 · New York Yankees" [ref=f3e4542]
+              - cell "68" [ref=f3e4543]
+              - cell "55" [ref=f3e4544]
+              - cell ".553" [ref=f3e4545]
+              - cell "6.5" [ref=f3e4546]
+              - cell "84" [ref=f3e4547]
+            - row [ref=f3e4548]:
+              - cell "3 · Boston Red Sox" [ref=f3e4549]
+              - cell "66" [ref=f3e4550]
+              - cell "57" [ref=f3e4551]
+              - cell ".537" [ref=f3e4552]
+              - cell "8.5" [ref=f3e4553]
+              - cell "86" [ref=f3e4554]
+            - row [ref=f3e4555]:
+              - cell "4 · Toronto Blue Jays" [ref=f3e4556]
+              - cell "61" [ref=f3e4557]
+              - cell "64" [ref=f3e4558]
+              - cell ".488" [ref=f3e4559]
+              - cell "14.5" [ref=f3e4560]
+              - cell "-56" [ref=f3e4561]
+            - row [ref=f3e4562]:
+              - cell "5 · Baltimore Orioles" [ref=f3e4563]
+              - cell "60" [ref=f3e4564]
+              - cell "63" [ref=f3e4565]
+              - cell ".488" [ref=f3e4566]
+              - cell "14.5" [ref=f3e4567]
+              - cell "-34" [ref=f3e4568]

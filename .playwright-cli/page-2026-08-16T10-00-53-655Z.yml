@@ -1,0 +1,585 @@
+- generic [ref=f15e3]:
+  - banner [ref=f15e5]:
+    - generic [ref=f15e6]:
+      - link "NINTH home" [ref=f15e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f15e8]: NINTH
+      - navigation "Sport workspaces" [ref=f15e9]:
+        - link "00 Platform" [ref=f15e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f15e11]: "00"
+          - generic [ref=f15e12]: Platform
+        - link "01 MLB" [ref=f15e14] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=f15e15]: "01"
+          - generic [ref=f15e16]: MLB
+        - link "02 FTB" [ref=f15e17] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=f15e18]: "02"
+          - generic [ref=f15e19]: FTB
+        - link "03 NFL" [ref=f15e20] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=f15e21]: "03"
+          - generic [ref=f15e22]: NFL
+        - link "04 NBA" [ref=f15e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=f15e24]: "04"
+          - generic [ref=f15e25]: NBA
+        - link "05 ESP" [ref=f15e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=f15e27]: "05"
+          - generic [ref=f15e28]: ESP
+      - button "Use light theme" [ref=f15e30] [cursor=pointer]
+    - generic [ref=f15e37]:
+      - generic [ref=f15e38]:
+        - generic [ref=f15e39]: DECISION SYSTEM
+        - generic [ref=f15e40]: All sports
+      - navigation "Workspace navigation" [ref=f15e41]:
+        - link "Platform" [ref=f15e42] [cursor=pointer]:
+          - /url: /
+        - link "All-sports builder" [ref=f15e43] [cursor=pointer]:
+          - /url: /build
+  - main [ref=f15e45]:
+    - generic [ref=f15e48]:
+      - generic [ref=f15e49]:
+        - generic [ref=f15e50]:
+          - generic [ref=f15e51]: NINTH / ALL-SPORTS BUILDER
+          - heading [level=1] [ref=f15e52]:
+            - generic "One card." [ref=f15e53]:
+              - generic [ref=f15e54]: One
+              - generic [ref=f15e56]: card.
+            - emphasis [ref=f15e57]:
+              - generic "Every arena." [ref=f15e58]:
+                - generic [ref=f15e59]: Every
+                - generic [ref=f15e61]: arena.
+          - paragraph [ref=f15e62]: Build one portfolio from sport-native forecasts without blending their evidence. Each leg retains its own release state, event identity and probability contract.
+        - generic [ref=f15e63]:
+          - generic [ref=f15e64]:
+            - generic [ref=f15e65]: SPORT
+            - generic [ref=f15e66]:
+              - button "ALL" [ref=f15e67] [cursor=pointer]
+              - button "MLB" [ref=f15e68] [cursor=pointer]
+              - button "FTB" [ref=f15e69] [cursor=pointer]
+              - button "NFL" [ref=f15e70] [cursor=pointer]
+              - button "NBA" [ref=f15e71] [cursor=pointer]
+              - button "ESP" [ref=f15e72] [cursor=pointer]
+          - generic [ref=f15e73]:
+            - generic [ref=f15e74]:
+              - generic [ref=f15e75]: Evidence
+              - button "Production eligible Audited only" [ref=f15e76] [cursor=pointer]:
+                - generic [ref=f15e77]: Production eligible
+                - generic [ref=f15e78]: Audited only
+            - generic [ref=f15e81]:
+              - generic [ref=f15e82]: Target legs
+              - button "5 legs" [ref=f15e83] [cursor=pointer]
+            - generic [ref=f15e87]:
+              - generic [ref=f15e88]: Odds floor
+              - button "All listed odds" [ref=f15e89] [cursor=pointer]
+            - button "REFRESH" [ref=f15e93] [cursor=pointer]
+      - generic [ref=f15e99]:
+        - img "38.1 percent, all legs" [ref=f15e633]:
+          - generic [ref=f15e104]:
+            - strong [ref=f15e105]:
+              - generic [ref=f15e106]: "36.7"
+              - superscript: "%"
+            - generic [ref=f15e107]: all legs
+            - generic [ref=f15e108]: joint model
+        - generic [ref=f15e109]:
+          - generic [ref=f15e110]: JOINT MODEL CONFIDENCE
+          - heading "2-leg combined card" [level=2] [ref=f15e634]
+          - paragraph [ref=f15e112]: The joint score multiplies the selected sport-native probabilities. One selection is allowed per event and cross-sport builds cap concentration in any one model family.
+          - generic [ref=f15e113]: Current combined decimal price 3.13. Research-only legs never become wager eligible.
+        - generic [ref=f15e114]:
+          - generic [ref=f15e115]:
+            - generic [ref=f15e116]: LEGS / TARGET
+            - generic [ref=f15e117]: 2 / 5
+          - generic [ref=f15e118]:
+            - generic [ref=f15e119]: JOINT MODEL
+            - generic [ref=f15e120]: 38.1%
+          - generic [ref=f15e121]:
+            - generic [ref=f15e122]: TYPICAL LEG
+            - generic [ref=f15e123]: 61.7%
+          - generic [ref=f15e124]:
+            - generic [ref=f15e125]: EVIDENCE
+            - generic [ref=f15e126]: AUTO
+        - generic [ref=f15e127]:
+          - button "BUILD BEST 5" [active] [ref=f15e128] [cursor=pointer]
+          - button "CLEAR" [ref=f15e133] [cursor=pointer]
+      - generic [ref=f15e137]:
+        - article [ref=f15e138]:
+          - generic [ref=f15e139]: Baseball
+          - generic [ref=f15e140]: LIVE BOARD
+          - generic [ref=f15e141]: 16 automatic legs
+        - article [ref=f15e142]:
+          - generic [ref=f15e143]: Football
+          - generic [ref=f15e144]: SHADOW BOARD
+          - generic [ref=f15e145]: 33 exact-event forecasts
+        - article [ref=f15e146]:
+          - generic [ref=f15e147]: American Football
+          - generic [ref=f15e148]: SHADOW BOARD
+          - generic [ref=f15e149]: 32 exact-event forecasts
+        - article [ref=f15e150]:
+          - generic [ref=f15e151]: NBA
+          - generic [ref=f15e152]: RESEARCH LOCKED
+          - generic [ref=f15e153]: 0 exact-event forecasts
+        - article [ref=f15e154]:
+          - generic [ref=f15e155]: Esports
+          - generic [ref=f15e156]: SHADOW BOARD
+          - generic [ref=f15e157]: 29 exact-event forecasts
+      - generic [ref=f15e158]:
+        - generic [ref=f15e159]: 16 VISIBLE LINES · AUDITED RELEASE
+        - paragraph [ref=f15e161]: "Combined does not mean blended: probabilities stay attached to their sport-native model, and locked sports remain visibly research-only."
+      - generic [ref=f15e635]:
+        - article [ref=f15e636]:
+          - generic [ref=f15e637]: "01"
+          - generic [ref=f15e638]:
+            - generic [ref=f15e639]: MLB · Moneyline · 62.9%
+            - generic [ref=f15e640]: Chicago Cubs to win
+            - emphasis [ref=f15e641]: St. Louis Cardinals @ Chicago Cubs
+          - button "×" [ref=f15e642] [cursor=pointer]
+        - article [ref=f15e643]:
+          - generic [ref=f15e644]: "02"
+          - generic [ref=f15e645]:
+            - generic [ref=f15e646]: MLB · Total runs · 60.5%
+            - generic [ref=f15e647]: UNDER 9.5
+            - emphasis [ref=f15e648]: Kansas City Royals @ Los Angeles Angels
+          - button "×" [ref=f15e649] [cursor=pointer]
+      - generic [ref=f15e162]:
+        - generic [ref=f15e163]:
+          - generic [ref=f15e164]:
+            - generic [ref=f15e165]: AUDITED INVENTORY
+            - heading "16 decision-ready outcomes" [level=2] [ref=f15e166]
+          - generic [ref=f15e167]: ALL SPORTS
+        - generic [ref=f15e168]:
+          - article [ref=f15e169]:
+            - generic [ref=f15e170]:
+              - generic [ref=f15e171]: 2026-08-16T19:15:00Z
+              - strong [ref=f15e172]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e173]:
+              - generic [ref=f15e174]:
+                - generic "St. Louis Cardinals monogram fallback" [ref=f15e176]: SLC
+                - generic [ref=f15e177]:
+                  - generic [ref=f15e178]: AWAY
+                  - generic [ref=f15e179]: St. Louis Cardinals
+              - generic [ref=f15e180]: AT
+              - generic [ref=f15e181]:
+                - generic "Chicago Cubs monogram fallback" [ref=f15e183]: CC
+                - generic [ref=f15e184]:
+                  - generic [ref=f15e185]: HOME
+                  - generic [ref=f15e186]: Chicago Cubs
+            - generic [ref=f15e187]:
+              - text: Moneyline
+              - generic [ref=f15e188]: MLB
+            - button "CURRENT PRICE @ 1.660 Chicago Cubs to win 62.9%" [ref=f15e189] [cursor=pointer]:
+              - generic [ref=f15e190]:
+                - generic [ref=f15e191]: CURRENT PRICE @ 1.660
+                - generic [ref=f15e192]: Chicago Cubs to win
+              - strong [ref=f15e193]: 62.9%
+            - generic [ref=f15e195]:
+              - generic [ref=f15e196]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e197]: ONE PICK PER EVENT
+          - article [ref=f15e198]:
+            - generic [ref=f15e199]:
+              - generic [ref=f15e200]: 2026-08-16T20:07:00Z
+              - strong [ref=f15e201]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e202]:
+              - generic [ref=f15e203]:
+                - generic "Kansas City Royals monogram fallback" [ref=f15e205]: KCR
+                - generic [ref=f15e206]:
+                  - generic [ref=f15e207]: AWAY
+                  - generic [ref=f15e208]: Kansas City Royals
+              - generic [ref=f15e209]: AT
+              - generic [ref=f15e210]:
+                - generic "Los Angeles Angels monogram fallback" [ref=f15e212]: LAA
+                - generic [ref=f15e213]:
+                  - generic [ref=f15e214]: HOME
+                  - generic [ref=f15e215]: Los Angeles Angels
+            - generic [ref=f15e216]:
+              - text: Total runs
+              - generic [ref=f15e217]: MLB
+            - button "CURRENT PRICE @ 1.885 UNDER 9.5 60.5%" [ref=f15e218] [cursor=pointer]:
+              - generic [ref=f15e219]:
+                - generic [ref=f15e220]: CURRENT PRICE @ 1.885
+                - generic [ref=f15e221]: UNDER 9.5
+              - strong [ref=f15e222]: 60.5%
+            - generic [ref=f15e224]:
+              - generic [ref=f15e225]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e226]: ONE PICK PER EVENT
+          - article [ref=f15e227]:
+            - generic [ref=f15e228]:
+              - generic [ref=f15e229]: 2026-08-16T20:05:00Z
+              - strong [ref=f15e230]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e231]:
+              - generic [ref=f15e232]:
+                - generic "Texas Rangers monogram fallback" [ref=f15e234]: TR
+                - generic [ref=f15e235]:
+                  - generic [ref=f15e236]: AWAY
+                  - generic [ref=f15e237]: Texas Rangers
+              - generic [ref=f15e238]: AT
+              - generic [ref=f15e239]:
+                - generic "Athletics monogram fallback" [ref=f15e241]: A
+                - generic [ref=f15e242]:
+                  - generic [ref=f15e243]: HOME
+                  - generic [ref=f15e244]: Athletics
+            - generic [ref=f15e245]:
+              - text: Moneyline
+              - generic [ref=f15e246]: MLB
+            - button "CURRENT PRICE @ 1.763 Texas Rangers to win 60.3%" [ref=f15e247] [cursor=pointer]:
+              - generic [ref=f15e248]:
+                - generic [ref=f15e249]: CURRENT PRICE @ 1.763
+                - generic [ref=f15e250]: Texas Rangers to win
+              - strong [ref=f15e251]: 60.3%
+            - generic [ref=f15e253]:
+              - generic [ref=f15e254]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e255]: ONE PICK PER EVENT
+          - article [ref=f15e256]:
+            - generic [ref=f15e257]:
+              - generic [ref=f15e258]: 2026-08-16T17:35:00Z
+              - strong [ref=f15e259]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e260]:
+              - generic [ref=f15e261]:
+                - generic "Boston Red Sox monogram fallback" [ref=f15e263]: BRS
+                - generic [ref=f15e264]:
+                  - generic [ref=f15e265]: AWAY
+                  - generic [ref=f15e266]: Boston Red Sox
+              - generic [ref=f15e267]: AT
+              - generic [ref=f15e268]:
+                - generic "Pittsburgh Pirates monogram fallback" [ref=f15e270]: PP
+                - generic [ref=f15e271]:
+                  - generic [ref=f15e272]: HOME
+                  - generic [ref=f15e273]: Pittsburgh Pirates
+            - generic [ref=f15e274]:
+              - text: Moneyline
+              - generic [ref=f15e275]: MLB
+            - button "CURRENT PRICE @ 1.939 Boston Red Sox to win 59.6%" [ref=f15e276] [cursor=pointer]:
+              - generic [ref=f15e277]:
+                - generic [ref=f15e278]: CURRENT PRICE @ 1.939
+                - generic [ref=f15e279]: Boston Red Sox to win
+              - strong [ref=f15e280]: 59.6%
+            - generic [ref=f15e282]:
+              - generic [ref=f15e283]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e284]: ONE PICK PER EVENT
+          - article [ref=f15e285]:
+            - generic [ref=f15e286]:
+              - generic [ref=f15e287]: 2026-08-16T16:15:00Z
+              - strong [ref=f15e288]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e289]:
+              - generic [ref=f15e290]:
+                - generic "Baltimore Orioles monogram fallback" [ref=f15e292]: BO
+                - generic [ref=f15e293]:
+                  - generic [ref=f15e294]: AWAY
+                  - generic [ref=f15e295]: Baltimore Orioles
+              - generic [ref=f15e296]: AT
+              - generic [ref=f15e297]:
+                - generic "Tampa Bay Rays monogram fallback" [ref=f15e299]: TBR
+                - generic [ref=f15e300]:
+                  - generic [ref=f15e301]: HOME
+                  - generic [ref=f15e302]: Tampa Bay Rays
+            - generic [ref=f15e303]:
+              - text: Moneyline
+              - generic [ref=f15e304]: MLB
+            - button "CURRENT PRICE @ 1.719 Tampa Bay Rays to win 59.5%" [ref=f15e305] [cursor=pointer]:
+              - generic [ref=f15e306]:
+                - generic [ref=f15e307]: CURRENT PRICE @ 1.719
+                - generic [ref=f15e308]: Tampa Bay Rays to win
+              - strong [ref=f15e309]: 59.5%
+            - generic [ref=f15e311]:
+              - generic [ref=f15e312]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e313]: ONE PICK PER EVENT
+          - article [ref=f15e314]:
+            - generic [ref=f15e315]:
+              - generic [ref=f15e316]: 2026-08-16T17:40:00Z
+              - strong [ref=f15e317]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e318]:
+              - generic [ref=f15e319]:
+                - generic "Washington Nationals monogram fallback" [ref=f15e321]: WN
+                - generic [ref=f15e322]:
+                  - generic [ref=f15e323]: AWAY
+                  - generic [ref=f15e324]: Washington Nationals
+              - generic [ref=f15e325]: AT
+              - generic [ref=f15e326]:
+                - generic "New York Mets monogram fallback" [ref=f15e328]: NYM
+                - generic [ref=f15e329]:
+                  - generic [ref=f15e330]: HOME
+                  - generic [ref=f15e331]: New York Mets
+            - generic [ref=f15e332]:
+              - text: Moneyline
+              - generic [ref=f15e333]: MLB
+            - button "CURRENT PRICE @ 1.630 New York Mets to win 59.1%" [ref=f15e334] [cursor=pointer]:
+              - generic [ref=f15e335]:
+                - generic [ref=f15e336]: CURRENT PRICE @ 1.630
+                - generic [ref=f15e337]: New York Mets to win
+              - strong [ref=f15e338]: 59.1%
+            - generic [ref=f15e340]:
+              - generic [ref=f15e341]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e342]: ONE PICK PER EVENT
+          - article [ref=f15e343]:
+            - generic [ref=f15e344]:
+              - generic [ref=f15e345]: 2026-08-16T17:40:00Z
+              - strong [ref=f15e346]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e347]:
+              - generic [ref=f15e348]:
+                - generic "San Diego Padres monogram fallback" [ref=f15e350]: SDP
+                - generic [ref=f15e351]:
+                  - generic [ref=f15e352]: AWAY
+                  - generic [ref=f15e353]: San Diego Padres
+              - generic [ref=f15e354]: AT
+              - generic [ref=f15e355]:
+                - generic "Cleveland Guardians monogram fallback" [ref=f15e357]: CG
+                - generic [ref=f15e358]:
+                  - generic [ref=f15e359]: HOME
+                  - generic [ref=f15e360]: Cleveland Guardians
+            - generic [ref=f15e361]:
+              - text: Moneyline
+              - generic [ref=f15e362]: MLB
+            - button "CURRENT PRICE @ 1.929 San Diego Padres to win 55.7%" [ref=f15e363] [cursor=pointer]:
+              - generic [ref=f15e364]:
+                - generic [ref=f15e365]: CURRENT PRICE @ 1.929
+                - generic [ref=f15e366]: San Diego Padres to win
+              - strong [ref=f15e367]: 55.7%
+            - generic [ref=f15e369]:
+              - generic [ref=f15e370]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e371]: ONE PICK PER EVENT
+          - article [ref=f15e372]:
+            - generic [ref=f15e373]:
+              - generic [ref=f15e374]: 2026-08-16T17:40:00Z
+              - strong [ref=f15e375]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e376]:
+              - generic [ref=f15e377]:
+                - generic "Miami Marlins monogram fallback" [ref=f15e379]: MM
+                - generic [ref=f15e380]:
+                  - generic [ref=f15e381]: AWAY
+                  - generic [ref=f15e382]: Miami Marlins
+              - generic [ref=f15e383]: AT
+              - generic [ref=f15e384]:
+                - generic "Cincinnati Reds monogram fallback" [ref=f15e386]: CR
+                - generic [ref=f15e387]:
+                  - generic [ref=f15e388]: HOME
+                  - generic [ref=f15e389]: Cincinnati Reds
+            - generic [ref=f15e390]:
+              - text: Moneyline
+              - generic [ref=f15e391]: MLB
+            - button "CURRENT PRICE @ 1.910 Miami Marlins to win 55.0%" [ref=f15e392] [cursor=pointer]:
+              - generic [ref=f15e393]:
+                - generic [ref=f15e394]: CURRENT PRICE @ 1.910
+                - generic [ref=f15e395]: Miami Marlins to win
+              - strong [ref=f15e396]: 55.0%
+            - generic [ref=f15e398]:
+              - generic [ref=f15e399]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e400]: ONE PICK PER EVENT
+          - article [ref=f15e401]:
+            - generic [ref=f15e402]:
+              - generic [ref=f15e403]: 2026-08-16T20:05:00Z
+              - strong [ref=f15e404]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e405]:
+              - generic [ref=f15e406]:
+                - generic "Colorado Rockies monogram fallback" [ref=f15e408]: CR
+                - generic [ref=f15e409]:
+                  - generic [ref=f15e410]: AWAY
+                  - generic [ref=f15e411]: Colorado Rockies
+              - generic [ref=f15e412]: AT
+              - generic [ref=f15e413]:
+                - generic "San Francisco Giants monogram fallback" [ref=f15e415]: SFG
+                - generic [ref=f15e416]:
+                  - generic [ref=f15e417]: HOME
+                  - generic [ref=f15e418]: San Francisco Giants
+            - generic [ref=f15e419]:
+              - text: Moneyline
+              - generic [ref=f15e420]: MLB
+            - button "CURRENT PRICE @ 1.804 San Francisco Giants to win 54.4%" [ref=f15e421] [cursor=pointer]:
+              - generic [ref=f15e422]:
+                - generic [ref=f15e423]: CURRENT PRICE @ 1.804
+                - generic [ref=f15e424]: San Francisco Giants to win
+              - strong [ref=f15e425]: 54.4%
+            - generic [ref=f15e427]:
+              - generic [ref=f15e428]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e429]: ONE PICK PER EVENT
+          - article [ref=f15e430]:
+            - generic [ref=f15e431]:
+              - generic [ref=f15e432]: 2026-08-16T20:07:00Z
+              - strong [ref=f15e433]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e434]:
+              - generic [ref=f15e435]:
+                - generic "Kansas City Royals monogram fallback" [ref=f15e437]: KCR
+                - generic [ref=f15e438]:
+                  - generic [ref=f15e439]: AWAY
+                  - generic [ref=f15e440]: Kansas City Royals
+              - generic [ref=f15e441]: AT
+              - generic [ref=f15e442]:
+                - generic "Los Angeles Angels monogram fallback" [ref=f15e444]: LAA
+                - generic [ref=f15e445]:
+                  - generic [ref=f15e446]: HOME
+                  - generic [ref=f15e447]: Los Angeles Angels
+            - generic [ref=f15e448]:
+              - text: Moneyline
+              - generic [ref=f15e449]: MLB
+            - button "CURRENT PRICE @ 1.900 Kansas City Royals to win 54.2%" [disabled] [ref=f15e450]:
+              - generic [ref=f15e451]:
+                - generic [ref=f15e452]: CURRENT PRICE @ 1.900
+                - generic [ref=f15e453]: Kansas City Royals to win
+              - strong [ref=f15e454]: 54.2%
+            - generic [ref=f15e456]:
+              - generic [ref=f15e457]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e458]: ONE PICK PER EVENT
+          - article [ref=f15e459]:
+            - generic [ref=f15e460]:
+              - generic [ref=f15e461]: 2026-08-16T23:20:00Z
+              - strong [ref=f15e462]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e463]:
+              - generic [ref=f15e464]:
+                - generic "Seattle Mariners monogram fallback" [ref=f15e466]: SM
+                - generic [ref=f15e467]:
+                  - generic [ref=f15e468]: AWAY
+                  - generic [ref=f15e469]: Seattle Mariners
+              - generic [ref=f15e470]: AT
+              - generic [ref=f15e471]:
+                - generic "Houston Astros monogram fallback" [ref=f15e473]: HA
+                - generic [ref=f15e474]:
+                  - generic [ref=f15e475]: HOME
+                  - generic [ref=f15e476]: Houston Astros
+            - generic [ref=f15e477]:
+              - text: Moneyline
+              - generic [ref=f15e478]: MLB
+            - button "CURRENT PRICE @ 1.782 Houston Astros to win 53.1%" [ref=f15e479] [cursor=pointer]:
+              - generic [ref=f15e480]:
+                - generic [ref=f15e481]: CURRENT PRICE @ 1.782
+                - generic [ref=f15e482]: Houston Astros to win
+              - strong [ref=f15e483]: 53.1%
+            - generic [ref=f15e485]:
+              - generic [ref=f15e486]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e487]: ONE PICK PER EVENT
+          - article [ref=f15e488]:
+            - generic [ref=f15e489]:
+              - generic [ref=f15e490]: 2026-08-16T18:10:00Z
+              - strong [ref=f15e491]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e492]:
+              - generic [ref=f15e493]:
+                - generic "Philadelphia Phillies monogram fallback" [ref=f15e495]: PP
+                - generic [ref=f15e496]:
+                  - generic [ref=f15e497]: AWAY
+                  - generic [ref=f15e498]: Philadelphia Phillies
+              - generic [ref=f15e499]: AT
+              - generic [ref=f15e500]:
+                - generic "Minnesota Twins monogram fallback" [ref=f15e502]: MT
+                - generic [ref=f15e503]:
+                  - generic [ref=f15e504]: HOME
+                  - generic [ref=f15e505]: Minnesota Twins
+            - generic [ref=f15e506]:
+              - text: Moneyline
+              - generic [ref=f15e507]: MLB
+            - button "CURRENT PRICE @ 1.929 Philadelphia Phillies to win 53.0%" [ref=f15e508] [cursor=pointer]:
+              - generic [ref=f15e509]:
+                - generic [ref=f15e510]: CURRENT PRICE @ 1.929
+                - generic [ref=f15e511]: Philadelphia Phillies to win
+              - strong [ref=f15e512]: 53.0%
+            - generic [ref=f15e514]:
+              - generic [ref=f15e515]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e516]: ONE PICK PER EVENT
+          - article [ref=f15e517]:
+            - generic [ref=f15e518]:
+              - generic [ref=f15e519]: 2026-08-16T17:35:00Z
+              - strong [ref=f15e520]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e521]:
+              - generic [ref=f15e522]:
+                - generic "Arizona Diamondbacks monogram fallback" [ref=f15e524]: AD
+                - generic [ref=f15e525]:
+                  - generic [ref=f15e526]: AWAY
+                  - generic [ref=f15e527]: Arizona Diamondbacks
+              - generic [ref=f15e528]: AT
+              - generic [ref=f15e529]:
+                - generic "Atlanta Braves monogram fallback" [ref=f15e531]: AB
+                - generic [ref=f15e532]:
+                  - generic [ref=f15e533]: HOME
+                  - generic [ref=f15e534]: Atlanta Braves
+            - generic [ref=f15e535]:
+              - text: Moneyline
+              - generic [ref=f15e536]: MLB
+            - button "CURRENT PRICE @ 1.804 Atlanta Braves to win 51.2%" [ref=f15e537] [cursor=pointer]:
+              - generic [ref=f15e538]:
+                - generic [ref=f15e539]: CURRENT PRICE @ 1.804
+                - generic [ref=f15e540]: Atlanta Braves to win
+              - strong [ref=f15e541]: 51.2%
+            - generic [ref=f15e543]:
+              - generic [ref=f15e544]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e545]: ONE PICK PER EVENT
+          - article [ref=f15e546]:
+            - generic [ref=f15e547]:
+              - generic [ref=f15e548]: 2026-08-16T20:10:00Z
+              - strong [ref=f15e549]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e550]:
+              - generic [ref=f15e551]:
+                - generic "Milwaukee Brewers monogram fallback" [ref=f15e553]: MB
+                - generic [ref=f15e554]:
+                  - generic [ref=f15e555]: AWAY
+                  - generic [ref=f15e556]: Milwaukee Brewers
+              - generic [ref=f15e557]: AT
+              - generic [ref=f15e558]:
+                - generic "Los Angeles Dodgers monogram fallback" [ref=f15e560]: LAD
+                - generic [ref=f15e561]:
+                  - generic [ref=f15e562]: HOME
+                  - generic [ref=f15e563]: Los Angeles Dodgers
+            - generic [ref=f15e564]:
+              - text: Moneyline
+              - generic [ref=f15e565]: MLB
+            - button "CURRENT PRICE @ 1.588 Los Angeles Dodgers to win 50.7%" [ref=f15e566] [cursor=pointer]:
+              - generic [ref=f15e567]:
+                - generic [ref=f15e568]: CURRENT PRICE @ 1.588
+                - generic [ref=f15e569]: Los Angeles Dodgers to win
+              - strong [ref=f15e570]: 50.7%
+            - generic [ref=f15e572]:
+              - generic [ref=f15e573]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e574]: ONE PICK PER EVENT
+          - article [ref=f15e575]:
+            - generic [ref=f15e576]:
+              - generic [ref=f15e577]: 2026-08-16T17:37:00Z
+              - strong [ref=f15e578]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e579]:
+              - generic [ref=f15e580]:
+                - generic "New York Yankees monogram fallback" [ref=f15e582]: NYY
+                - generic [ref=f15e583]:
+                  - generic [ref=f15e584]: AWAY
+                  - generic [ref=f15e585]: New York Yankees
+              - generic [ref=f15e586]: AT
+              - generic [ref=f15e587]:
+                - generic "Toronto Blue Jays monogram fallback" [ref=f15e589]: TBJ
+                - generic [ref=f15e590]:
+                  - generic [ref=f15e591]: HOME
+                  - generic [ref=f15e592]: Toronto Blue Jays
+            - generic [ref=f15e593]:
+              - text: Moneyline
+              - generic [ref=f15e594]: MLB
+            - button "CURRENT PRICE @ 1.826 Toronto Blue Jays to win 50.5%" [ref=f15e595] [cursor=pointer]:
+              - generic [ref=f15e596]:
+                - generic [ref=f15e597]: CURRENT PRICE @ 1.826
+                - generic [ref=f15e598]: Toronto Blue Jays to win
+              - strong [ref=f15e599]: 50.5%
+            - generic [ref=f15e601]:
+              - generic [ref=f15e602]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e603]: ONE PICK PER EVENT
+          - article [ref=f15e604]:
+            - generic [ref=f15e605]:
+              - generic [ref=f15e606]: 2026-08-16T17:40:00Z
+              - strong [ref=f15e607]: PRODUCTION ELIGIBLE
+            - generic [ref=f15e608]:
+              - generic [ref=f15e609]:
+                - generic "Chicago White Sox monogram fallback" [ref=f15e611]: CWS
+                - generic [ref=f15e612]:
+                  - generic [ref=f15e613]: AWAY
+                  - generic [ref=f15e614]: Chicago White Sox
+              - generic [ref=f15e615]: AT
+              - generic [ref=f15e616]:
+                - generic "Detroit Tigers monogram fallback" [ref=f15e618]: DT
+                - generic [ref=f15e619]:
+                  - generic [ref=f15e620]: HOME
+                  - generic [ref=f15e621]: Detroit Tigers
+            - generic [ref=f15e622]:
+              - text: Moneyline
+              - generic [ref=f15e623]: MLB
+            - button "CURRENT PRICE @ 1.929 Detroit Tigers to win 50.2%" [ref=f15e624] [cursor=pointer]:
+              - generic [ref=f15e625]:
+                - generic [ref=f15e626]: CURRENT PRICE @ 1.929
+                - generic [ref=f15e627]: Detroit Tigers to win
+              - strong [ref=f15e628]: 50.2%
+            - generic [ref=f15e630]:
+              - generic [ref=f15e631]: PRODUCTION ELIGIBLE
+              - generic [ref=f15e632]: ONE PICK PER EVENT

@@ -1,0 +1,16 @@
+- generic [ref=f13e3]:
+  - banner [ref=f13e5]:
+    - generic [ref=f13e6]:
+      - link "NINTH home" [ref=f13e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f13e8]: NINTH
+      - generic [ref=f13e9]:
+        - button "Use light theme" [ref=f13e10] [cursor=pointer]
+        - button "Choose sport" [ref=f13e17] [cursor=pointer]
+    - generic [ref=f13e19]:
+      - generic [ref=f13e20]: Baseball
+      - button "Open workspace navigation" [ref=f13e22] [cursor=pointer]
+    - generic [ref=f13e24]:
+      - generic [ref=f13e25]: TODAY
+      - generic [ref=f13e27]: Official scoreboard syncing
+  - main [ref=f13e28]

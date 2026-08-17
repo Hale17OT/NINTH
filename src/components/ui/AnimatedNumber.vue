@@ -1,14 +1,17 @@
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
+import { useReducedMotion } from 'motion-v'
 
 const props = defineProps({ value: { type: Number, default: 0 }, decimals: { type: Number, default: 0 }, suffix: { type: String, default: '' } })
-const shown = ref(Number(props.value) || 0)
+const shown = ref(0)
+const reduced = useReducedMotion()
 let frame
 
 watch(() => props.value, nextValue => {
   window.cancelAnimationFrame(frame)
   const from = shown.value
   const to = Number(nextValue) || 0
+  if (reduced.value) { shown.value = to; return }
   const started = performance.now()
   const duration = 520
   const tick = now => {
@@ -18,7 +21,7 @@ watch(() => props.value, nextValue => {
     if (progress < 1) frame = window.requestAnimationFrame(tick)
   }
   frame = window.requestAnimationFrame(tick)
-})
+}, { immediate: true })
 
 onBeforeUnmount(() => window.cancelAnimationFrame(frame))
 </script>

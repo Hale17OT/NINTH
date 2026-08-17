@@ -152,7 +152,17 @@ On macOS or Linux, replace the last command with:
 cp .env.example .env
 ```
 
-### Start all development services
+### Start the normal daily stack
+
+The daily profile builds the client once, serves the production bundle without
+watching the repository, and starts the API/model services without Node watch
+mode:
+
+```powershell
+npm run daily
+```
+
+Reserve the full watch stack for active coding:
 
 ```powershell
 npm run dev
@@ -188,14 +198,19 @@ The Node process reads `.env` from the project root through `dotenv`. The Python
 | `MLB_STATS_URL` | `http://127.0.0.1:3002` | Python service URL used by Express |
 | `MLB_STATS_PORT` | `3002` | Python service port |
 | `NINTH_PROJECTION_MONITOR_ENABLED` | `1` | Enable background pregame/live projection monitoring |
-| `NINTH_PREGAME_REFRESH_SECONDS` | `60` | Background pregame reassessment interval; minimum 30 seconds |
+| `NINTH_PREGAME_REFRESH_SECONDS` | `300` | Background pregame reassessment interval; minimum 60 seconds |
 | `NINTH_LIVE_REFRESH_SECONDS` | `10` | Background live reassessment interval; minimum 5 seconds |
-| `NINTH_GAME_DISCOVERY_SECONDS` | `30` | How often the monitor discovers upcoming/live games |
+| `NINTH_GAME_DISCOVERY_SECONDS` | `60` | How often the monitor discovers upcoming/live games |
 | `NINTH_PREGAME_MONITOR_HOURS` | `24` | Pregame monitoring horizon |
-| `NINTH_PLAYER_PROP_REFRESH_SECONDS` | `60` | Refresh and archive the current listed player-prop board independently of the UI; minimum 60 seconds |
+| `NINTH_PLAYER_PROP_REFRESH_SECONDS` | `300` | Normal player-prop archive cadence; automatically tightens near first pitch |
+| `NINTH_MELBET_REFRESH_SECONDS` | `300` | Normal MelBet market polling interval |
+| `NINTH_MELBET_NEAR_START_SECONDS` | `60` | MelBet interval inside the near-first-pitch window |
+| `NINTH_MELBET_NEAR_START_MINUTES` | `30` | Minutes before first pitch when tighter polling begins |
+| `NINTH_MELBET_MAX_BACKOFF_SECONDS` | `1800` | Maximum MelBet failure backoff |
 | `NINTH_SLIP_TIMEZONE_OFFSET_HOURS` | `3` | Time-zone offset used to interpret printed slip timestamps |
 | `NINTH_MAINTENANCE_ENABLED` | `1` | Enable guarded model/data maintenance checks |
-| `NINTH_MAINTENANCE_CHECK_SECONDS` | `3600` | Maintenance check interval; minimum 900 seconds |
+| `NINTH_MAINTENANCE_HOUR` / `NINTH_MAINTENANCE_MINUTE` | `3` / `15` | Local nightly maintenance time; maintenance does not run at startup |
+| `NINTH_READINESS_HOUR` / `NINTH_READINESS_MINUTE` | `3` / `45` | Local nightly NFL/Football readiness refresh time; results under six hours old are skipped |
 | `NINTH_ENRICH_WORKERS` | `6` | Worker count for scheduled context enrichment |
 | `NINTH_RETRAIN_GAME_THRESHOLD` | `100` | Retrain after this many new completed games |
 | `NINTH_RETRAIN_DAYS` | `7` | Maximum age before retraining when new games exist |
@@ -212,15 +227,22 @@ MLB_STATS_URL=http://127.0.0.1:3002
 MLB_STATS_PORT=3002
 
 NINTH_PROJECTION_MONITOR_ENABLED=1
-NINTH_PREGAME_REFRESH_SECONDS=60
+NINTH_PREGAME_REFRESH_SECONDS=300
 NINTH_LIVE_REFRESH_SECONDS=10
-NINTH_GAME_DISCOVERY_SECONDS=30
+NINTH_GAME_DISCOVERY_SECONDS=60
 NINTH_PREGAME_MONITOR_HOURS=24
-NINTH_PLAYER_PROP_REFRESH_SECONDS=60
+NINTH_PLAYER_PROP_REFRESH_SECONDS=300
+NINTH_MELBET_REFRESH_SECONDS=300
+NINTH_MELBET_NEAR_START_SECONDS=60
+NINTH_MELBET_NEAR_START_MINUTES=30
+NINTH_MELBET_MAX_BACKOFF_SECONDS=1800
 NINTH_SLIP_TIMEZONE_OFFSET_HOURS=3
 
 NINTH_MAINTENANCE_ENABLED=1
-NINTH_MAINTENANCE_CHECK_SECONDS=3600
+NINTH_MAINTENANCE_HOUR=3
+NINTH_MAINTENANCE_MINUTE=15
+NINTH_READINESS_HOUR=3
+NINTH_READINESS_MINUTE=45
 NINTH_ENRICH_WORKERS=6
 NINTH_PLAYER_PROP_WORKERS=12
 NINTH_RETRAIN_GAME_THRESHOLD=100
@@ -237,13 +259,14 @@ Do not commit `.env` or provider secrets.
 
 | Command | Description |
 |---|---|
-| `npm run dev` | Start Python, Express in watch mode, and Vite |
+| `npm run daily` | Build once and start the resource-aware daily stack |
+| `npm start` | Serve the existing production client build with Python and Express |
+| `npm run dev` | Start Python, Express in watch mode, and Vite for active coding only |
 | `npm run dev:client` | Start only Vite on port 5173 |
 | `npm run dev:server` | Start only Express in watch mode |
 | `npm run dev:stats` | Start only the Python service |
 | `npm run build` | Build the Vue client into `dist/` |
 | `npm run preview` | Preview the production client build |
-| `npm start` | Start the Python and Express services; it does **not** serve `dist/` |
 
 ### Model-data commands
 
@@ -784,7 +807,10 @@ Verify at minimum:
 
 ## Production deployment
 
-`npm run build` creates static files in `dist/`. `npm start` starts Express and Python but does not serve those static files. A production deployment therefore needs a static web server or CDN for `dist/` and a reverse proxy for `/api`.
+`npm run build` creates static files in `dist/`. The local `npm start` daily
+profile serves that bundle through Vite Preview and proxies `/api` to Express.
+An internet-facing deployment should still use a static web server or CDN plus
+a reverse proxy rather than Vite Preview.
 
 ### Recommended VPS layout
 

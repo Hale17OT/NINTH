@@ -1,0 +1,309 @@
+- generic [ref=f16e3]:
+  - banner [ref=f16e5]:
+    - generic [ref=f16e6]:
+      - link "NINTH home" [ref=f16e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f16e8]: NINTH
+      - navigation "Sport workspaces" [ref=f16e9]:
+        - link "00 Platform" [ref=f16e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f16e11]: "00"
+          - generic [ref=f16e12]: Platform
+        - link "01 MLB" [ref=f16e14] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=f16e15]: "01"
+          - generic [ref=f16e16]: MLB
+        - link "02 FTB" [ref=f16e17] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=f16e18]: "02"
+          - generic [ref=f16e19]: FTB
+        - link "03 NFL" [ref=f16e20] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=f16e21]: "03"
+          - generic [ref=f16e22]: NFL
+        - link "04 NBA" [ref=f16e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=f16e24]: "04"
+          - generic [ref=f16e25]: NBA
+        - link "05 ESP" [ref=f16e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=f16e27]: "05"
+          - generic [ref=f16e28]: ESP
+      - button "Use light theme" [ref=f16e30] [cursor=pointer]
+    - generic [ref=f16e37]:
+      - generic [ref=f16e38]:
+        - generic [ref=f16e39]: DECISION SYSTEM
+        - generic [ref=f16e40]: All sports
+      - navigation "Workspace navigation" [ref=f16e41]:
+        - link "Platform" [ref=f16e42] [cursor=pointer]:
+          - /url: /
+        - link "All-sports builder" [ref=f16e43] [cursor=pointer]:
+          - /url: /build
+  - main [ref=f16e45]:
+    - generic [ref=f16e48]:
+      - generic [ref=f16e49]:
+        - generic [ref=f16e50]:
+          - generic [ref=f16e51]: NINTH / ALL-SPORTS BUILDER
+          - heading [level=1] [ref=f16e52]:
+            - generic "One card." [ref=f16e53]:
+              - generic [ref=f16e54]: One
+              - generic [ref=f16e56]: card.
+            - emphasis [ref=f16e57]:
+              - generic "Every arena." [ref=f16e58]:
+                - generic [ref=f16e59]: Every
+                - generic [ref=f16e61]: arena.
+          - paragraph [ref=f16e62]: Build one portfolio from sport-native forecasts without blending their evidence. Each leg retains its own release state, event identity and probability contract.
+        - generic [ref=f16e63]:
+          - generic [ref=f16e64]:
+            - generic [ref=f16e65]: SPORT
+            - generic [ref=f16e66]:
+              - button "ALL" [ref=f16e67] [cursor=pointer]
+              - button "MLB" [ref=f16e68] [cursor=pointer]
+              - button "FTB" [ref=f16e69] [cursor=pointer]
+              - button "NFL" [ref=f16e70] [cursor=pointer]
+              - button "NBA" [ref=f16e71] [cursor=pointer]
+              - button "ESP" [ref=f16e72] [cursor=pointer]
+          - generic [ref=f16e73]:
+            - generic [ref=f16e74]:
+              - generic [ref=f16e75]: Evidence
+              - button "Production eligible Audited only" [ref=f16e76] [cursor=pointer]:
+                - generic [ref=f16e77]: Production eligible
+                - generic [ref=f16e78]: Audited only
+            - generic [ref=f16e81]:
+              - generic [ref=f16e82]: Target legs
+              - button "5 legs" [ref=f16e83] [cursor=pointer]
+            - generic [ref=f16e87]:
+              - generic [ref=f16e88]: Odds floor
+              - button "All listed odds" [ref=f16e89] [cursor=pointer]
+            - button "REFRESH" [ref=f16e93] [cursor=pointer]
+      - generic [ref=f16e99]:
+        - img "5.5 percent, all legs" [ref=f16e323]:
+          - generic [ref=f16e104]:
+            - strong [ref=f16e105]:
+              - generic [ref=f16e106]: "5.3"
+              - superscript: "%"
+            - generic [ref=f16e107]: all legs
+            - generic [ref=f16e108]: joint model
+        - generic [ref=f16e109]:
+          - generic [ref=f16e110]: JOINT MODEL CONFIDENCE
+          - heading "5-leg combined card" [level=2] [ref=f16e324]
+          - paragraph [ref=f16e112]: The joint score multiplies the selected sport-native probabilities. One selection is allowed per event and cross-sport builds cap concentration in any one model family.
+          - generic [ref=f16e113]: Current combined decimal price 20.73. Research-only legs never become wager eligible.
+        - generic [ref=f16e114]:
+          - generic [ref=f16e115]:
+            - generic [ref=f16e116]: LEGS / TARGET
+            - generic [ref=f16e117]: 5 / 5
+          - generic [ref=f16e118]:
+            - generic [ref=f16e119]: JOINT MODEL
+            - generic [ref=f16e120]: 5.5%
+          - generic [ref=f16e121]:
+            - generic [ref=f16e122]: TYPICAL LEG
+            - generic [ref=f16e123]: 55.9%
+          - generic [ref=f16e124]:
+            - generic [ref=f16e125]: EVIDENCE
+            - generic [ref=f16e126]: AUTO
+        - generic [ref=f16e127]:
+          - button "BUILD BEST 5" [active] [ref=f16e128] [cursor=pointer]
+          - button "CLEAR" [ref=f16e133] [cursor=pointer]
+      - generic [ref=f16e137]:
+        - article [ref=f16e138]:
+          - generic [ref=f16e139]: Baseball
+          - generic [ref=f16e140]: LIVE BOARD
+          - generic [ref=f16e141]: 5 automatic legs
+        - article [ref=f16e142]:
+          - generic [ref=f16e143]: Football
+          - generic [ref=f16e144]: SHADOW BOARD
+          - generic [ref=f16e145]: 33 exact-event forecasts
+        - article [ref=f16e146]:
+          - generic [ref=f16e147]: American Football
+          - generic [ref=f16e148]: SHADOW BOARD
+          - generic [ref=f16e149]: 32 exact-event forecasts
+        - article [ref=f16e150]:
+          - generic [ref=f16e151]: NBA
+          - generic [ref=f16e152]: RESEARCH LOCKED
+          - generic [ref=f16e153]: 0 exact-event forecasts
+        - article [ref=f16e154]:
+          - generic [ref=f16e155]: Esports
+          - generic [ref=f16e156]: SHADOW BOARD
+          - generic [ref=f16e157]: 29 exact-event forecasts
+      - generic [ref=f16e158]:
+        - generic [ref=f16e159]: 5 VISIBLE LINES · AUDITED RELEASE
+        - paragraph [ref=f16e161]: "Combined does not mean blended: probabilities stay attached to their sport-native model, and locked sports remain visibly research-only."
+      - generic [ref=f16e325]:
+        - article [ref=f16e326]:
+          - generic [ref=f16e327]: "01"
+          - generic [ref=f16e328]:
+            - generic [ref=f16e329]: MLB · Moneyline · 59.1%
+            - generic [ref=f16e330]: Tampa Bay Rays to win
+            - emphasis [ref=f16e331]: Baltimore Orioles @ Tampa Bay Rays
+          - button "×" [ref=f16e332] [cursor=pointer]
+        - article [ref=f16e333]:
+          - generic [ref=f16e334]: "02"
+          - generic [ref=f16e335]:
+            - generic [ref=f16e336]: MLB · Moneyline · 57.3%
+            - generic [ref=f16e337]: Boston Red Sox to win
+            - emphasis [ref=f16e338]: Boston Red Sox @ Pittsburgh Pirates
+          - button "×" [ref=f16e339] [cursor=pointer]
+        - article [ref=f16e340]:
+          - generic [ref=f16e341]: "03"
+          - generic [ref=f16e342]:
+            - generic [ref=f16e343]: MLB · Moneyline · 55.1%
+            - generic [ref=f16e344]: New York Yankees to win
+            - emphasis [ref=f16e345]: New York Yankees @ Toronto Blue Jays
+          - button "×" [ref=f16e346] [cursor=pointer]
+        - article [ref=f16e347]:
+          - generic [ref=f16e348]: "04"
+          - generic [ref=f16e349]:
+            - generic [ref=f16e350]: MLB · Moneyline · 54.3%
+            - generic [ref=f16e351]: Atlanta Braves to win
+            - emphasis [ref=f16e352]: Arizona Diamondbacks @ Atlanta Braves
+          - button "×" [ref=f16e353] [cursor=pointer]
+        - article [ref=f16e354]:
+          - generic [ref=f16e355]: "05"
+          - generic [ref=f16e356]:
+            - generic [ref=f16e357]: MLB · Moneyline · 53.9%
+            - generic [ref=f16e358]: New York Mets to win
+            - emphasis [ref=f16e359]: Washington Nationals @ New York Mets
+          - button "×" [ref=f16e360] [cursor=pointer]
+      - generic [ref=f16e162]:
+        - generic [ref=f16e163]:
+          - generic [ref=f16e164]:
+            - generic [ref=f16e165]: AUDITED INVENTORY
+            - heading "5 decision-ready outcomes" [level=2] [ref=f16e176]
+          - generic [ref=f16e167]: ALL SPORTS
+        - generic [ref=f16e177]:
+          - article [ref=f16e178]:
+            - generic [ref=f16e179]:
+              - generic [ref=f16e180]: 2026-08-16T16:15:00Z
+              - strong [ref=f16e181]: PRODUCTION ELIGIBLE
+            - generic [ref=f16e182]:
+              - generic [ref=f16e183]:
+                - generic "Baltimore Orioles monogram fallback" [ref=f16e185]: BO
+                - generic [ref=f16e186]:
+                  - generic [ref=f16e187]: AWAY
+                  - generic [ref=f16e188]: Baltimore Orioles
+              - generic [ref=f16e189]: AT
+              - generic [ref=f16e190]:
+                - generic "Tampa Bay Rays monogram fallback" [ref=f16e192]: TBR
+                - generic [ref=f16e193]:
+                  - generic [ref=f16e194]: HOME
+                  - generic [ref=f16e195]: Tampa Bay Rays
+            - generic [ref=f16e196]:
+              - text: Moneyline
+              - generic [ref=f16e197]: MLB
+            - button "CURRENT PRICE @ 1.719 Tampa Bay Rays to win 59.1%" [ref=f16e198] [cursor=pointer]:
+              - generic [ref=f16e199]:
+                - generic [ref=f16e200]: CURRENT PRICE @ 1.719
+                - generic [ref=f16e201]: Tampa Bay Rays to win
+              - strong [ref=f16e202]: 59.1%
+            - generic [ref=f16e204]:
+              - generic [ref=f16e205]: PRODUCTION ELIGIBLE
+              - generic [ref=f16e206]: ONE PICK PER EVENT
+          - article [ref=f16e207]:
+            - generic [ref=f16e208]:
+              - generic [ref=f16e209]: 2026-08-16T17:35:00Z
+              - strong [ref=f16e210]: PRODUCTION ELIGIBLE
+            - generic [ref=f16e211]:
+              - generic [ref=f16e212]:
+                - generic "Boston Red Sox monogram fallback" [ref=f16e214]: BRS
+                - generic [ref=f16e215]:
+                  - generic [ref=f16e216]: AWAY
+                  - generic [ref=f16e217]: Boston Red Sox
+              - generic [ref=f16e218]: AT
+              - generic [ref=f16e219]:
+                - generic "Pittsburgh Pirates monogram fallback" [ref=f16e221]: PP
+                - generic [ref=f16e222]:
+                  - generic [ref=f16e223]: HOME
+                  - generic [ref=f16e224]: Pittsburgh Pirates
+            - generic [ref=f16e225]:
+              - text: Moneyline
+              - generic [ref=f16e226]: MLB
+            - button "CURRENT PRICE @ 1.939 Boston Red Sox to win 57.3%" [ref=f16e227] [cursor=pointer]:
+              - generic [ref=f16e228]:
+                - generic [ref=f16e229]: CURRENT PRICE @ 1.939
+                - generic [ref=f16e230]: Boston Red Sox to win
+              - strong [ref=f16e231]: 57.3%
+            - generic [ref=f16e233]:
+              - generic [ref=f16e234]: PRODUCTION ELIGIBLE
+              - generic [ref=f16e235]: ONE PICK PER EVENT
+          - article [ref=f16e236]:
+            - generic [ref=f16e237]:
+              - generic [ref=f16e238]: 2026-08-16T17:37:00Z
+              - strong [ref=f16e239]: PRODUCTION ELIGIBLE
+            - generic [ref=f16e240]:
+              - generic [ref=f16e241]:
+                - generic "New York Yankees monogram fallback" [ref=f16e243]: NYY
+                - generic [ref=f16e244]:
+                  - generic [ref=f16e245]: AWAY
+                  - generic [ref=f16e246]: New York Yankees
+              - generic [ref=f16e247]: AT
+              - generic [ref=f16e248]:
+                - generic "Toronto Blue Jays monogram fallback" [ref=f16e250]: TBJ
+                - generic [ref=f16e251]:
+                  - generic [ref=f16e252]: HOME
+                  - generic [ref=f16e253]: Toronto Blue Jays
+            - generic [ref=f16e254]:
+              - text: Moneyline
+              - generic [ref=f16e255]: MLB
+            - button "CURRENT PRICE @ 2.115 New York Yankees to win 55.1%" [ref=f16e256] [cursor=pointer]:
+              - generic [ref=f16e257]:
+                - generic [ref=f16e258]: CURRENT PRICE @ 2.115
+                - generic [ref=f16e259]: New York Yankees to win
+              - strong [ref=f16e260]: 55.1%
+            - generic [ref=f16e262]:
+              - generic [ref=f16e263]: PRODUCTION ELIGIBLE
+              - generic [ref=f16e264]: ONE PICK PER EVENT
+          - article [ref=f16e265]:
+            - generic [ref=f16e266]:
+              - generic [ref=f16e267]: 2026-08-16T17:35:00Z
+              - strong [ref=f16e268]: PRODUCTION ELIGIBLE
+            - generic [ref=f16e269]:
+              - generic [ref=f16e270]:
+                - generic "Arizona Diamondbacks monogram fallback" [ref=f16e272]: AD
+                - generic [ref=f16e273]:
+                  - generic [ref=f16e274]: AWAY
+                  - generic [ref=f16e275]: Arizona Diamondbacks
+              - generic [ref=f16e276]: AT
+              - generic [ref=f16e277]:
+                - generic "Atlanta Braves monogram fallback" [ref=f16e279]: AB
+                - generic [ref=f16e280]:
+                  - generic [ref=f16e281]: HOME
+                  - generic [ref=f16e282]: Atlanta Braves
+            - generic [ref=f16e283]:
+              - text: Moneyline
+              - generic [ref=f16e284]: MLB
+            - button "CURRENT PRICE @ 1.804 Atlanta Braves to win 54.3%" [ref=f16e285] [cursor=pointer]:
+              - generic [ref=f16e286]:
+                - generic [ref=f16e287]: CURRENT PRICE @ 1.804
+                - generic [ref=f16e288]: Atlanta Braves to win
+              - strong [ref=f16e289]: 54.3%
+            - generic [ref=f16e291]:
+              - generic [ref=f16e292]: PRODUCTION ELIGIBLE
+              - generic [ref=f16e293]: ONE PICK PER EVENT
+          - article [ref=f16e294]:
+            - generic [ref=f16e295]:
+              - generic [ref=f16e296]: 2026-08-16T17:40:00Z
+              - strong [ref=f16e297]: PRODUCTION ELIGIBLE
+            - generic [ref=f16e298]:
+              - generic [ref=f16e299]:
+                - generic "Washington Nationals monogram fallback" [ref=f16e301]: WN
+                - generic [ref=f16e302]:
+                  - generic [ref=f16e303]: AWAY
+                  - generic [ref=f16e304]: Washington Nationals
+              - generic [ref=f16e305]: AT
+              - generic [ref=f16e306]:
+                - generic "New York Mets monogram fallback" [ref=f16e308]: NYM
+                - generic [ref=f16e309]:
+                  - generic [ref=f16e310]: HOME
+                  - generic [ref=f16e311]: New York Mets
+            - generic [ref=f16e312]:
+              - text: Moneyline
+              - generic [ref=f16e313]: MLB
+            - button "CURRENT PRICE @ 1.630 New York Mets to win 53.9%" [ref=f16e314] [cursor=pointer]:
+              - generic [ref=f16e315]:
+                - generic [ref=f16e316]: CURRENT PRICE @ 1.630
+                - generic [ref=f16e317]: New York Mets to win
+              - strong [ref=f16e318]: 53.9%
+            - generic [ref=f16e320]:
+              - generic [ref=f16e321]: PRODUCTION ELIGIBLE
+              - generic [ref=f16e322]: ONE PICK PER EVENT

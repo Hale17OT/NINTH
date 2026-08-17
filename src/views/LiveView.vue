@@ -10,6 +10,7 @@ import LiveGameStats from '../components/game/LiveGameStats.vue'
 import ContextBack from '../components/navigation/ContextBack.vue'
 import LoadingState from '../components/ui/LoadingState.vue'
 import LoadError from '../components/ui/LoadError.vue'
+import { createSharedPoller } from '../services/polling'
 const data = ref()
 const refreshing = ref(false)
 const error = ref('')
@@ -19,7 +20,7 @@ const gameStateLabel = computed(() => {
   return status.toLowerCase()===inning.toLowerCase()?status:`${status} · ${inning}`
 })
 const route = useRoute()
-let refreshTimer
+let poller
 let pendingReload = false
 const load = async () => {
   if (refreshing.value) { pendingReload = true; return }
@@ -37,15 +38,18 @@ const load = async () => {
     if (pendingReload) { pendingReload = false; queueMicrotask(load) }
   }
 }
-onMounted(async () => {
+const loadActive = async () => {
   let id = route.params.id
-  if (!id || !/^\d+$/.test(id)) id = (await api.games('today'))[0]?.id
+  if (!id || !/^\d+$/.test(id)) id = activeId.value || (await api.games('today'))[0]?.id
   activeId.value = id
   if (id) await load()
-  refreshTimer = window.setInterval(load, 5000)
+}
+onMounted(() => {
+  poller = createSharedPoller({ key: () => `live-game:${activeId.value || route.params.id || 'current'}`, task: loadActive, interval: 10_000 })
+  poller.start()
 })
-onBeforeUnmount(() => window.clearInterval(refreshTimer))
-watch(() => route.params.id, id => { if (id && /^\d+$/.test(id)) { activeId.value = id; load() } })
+onBeforeUnmount(() => poller?.stop())
+watch(() => route.params.id, id => { if (id && /^\d+$/.test(id)) { activeId.value = id; poller?.trigger() } })
 </script>
 <template><div v-if="data" class="live">
   <ContextBack fallback="/live"/>

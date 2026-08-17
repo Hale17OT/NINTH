@@ -1,7 +1,9 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { Check, RefreshCw, Sparkles, Trash2, X } from "lucide-vue-next";
+import { AnimatePresence, motion, useReducedMotion } from "motion-v";
 import { api } from "../services/api";
+import { createSharedPoller } from "../services/polling";
 import CustomDatePicker from "../components/ui/CustomDatePicker.vue";
 import CustomDateRangePicker from "../components/ui/CustomDateRangePicker.vue";
 import CustomSelect from "../components/ui/CustomSelect.vue";
@@ -14,8 +16,10 @@ import BuilderRefreshButton from "../components/builder/BuilderRefreshButton.vue
 import CustomMultiSelect from "../components/ui/CustomMultiSelect.vue";
 import MelbetHandoff from "../components/builder/MelbetHandoff.vue";
 import OddsFloorSelect from "../components/builder/OddsFloorSelect.vue";
+import ProbabilityRing from "../components/charts/ProbabilityRing.vue";
 import {
   buildGuaranteeCandidates,
+  DEFAULT_GUARANTEE_ROBUST_FLOOR,
   guaranteeOddsFloor,
   selectGuaranteeCandidates,
 } from "../services/playerPropGuaranteeRecommendations";
@@ -42,6 +46,7 @@ import {
 } from "../services/playerPropRecommendations";
 
 const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+const reducedMotion = useReducedMotion();
 const shadowTestMode = new URLSearchParams(window.location.search).get("shadow") === "1";
 const addDays = (value, amount) => { const next = new Date(`${value}T12:00:00Z`); next.setUTCDate(next.getUTCDate() + amount); return next.toISOString().slice(0, 10); };
 const saved = (() => {
@@ -106,7 +111,7 @@ const activeGame = ref(null);
 const loading = ref(false);
 const error = ref("");
 const marketNotice = ref("");
-let timer;
+let poller;
 let token = 0;
 const selectedRecommendationFloor = computed(() => recommendationCutoffFloor(recommendationCutoff.value));
 const isSweepMode = computed(() => buildStyle.value === "sweep");
@@ -213,8 +218,15 @@ const guaranteeRecordFor = (player, prop, threshold, side) => guaranteeRecordMap
   side,
   threshold?.line,
 ));
+const exactGuaranteeCandidate = (player, prop, threshold, side) => allGuaranteeCandidates.value.find(candidate => (
+  String(candidate.player?.player_id) === String(player?.player_id)
+  && candidate.player?.kind === player?.kind
+  && candidate.prop?.prop === prop?.prop
+  && candidate.side === side
+  && Number(candidate.line?.line) === Number(threshold?.line)
+));
 const guaranteeSides = (player, prop, threshold) => availableSides(threshold).filter(side => (
-  Boolean(guaranteeRecordFor(player, prop, threshold, side))
+  Boolean(exactGuaranteeCandidate(player, prop, threshold, side))
 ));
 const eligibleThresholdsForPlayer = (player, prop) => eligibleThresholds(prop).filter(threshold => (
   propPreset.value !== "guarantee" || guaranteeSides(player, prop, threshold).length
@@ -442,7 +454,7 @@ const alternateFor = leg => nextSameGameAlternate(
 const saferLineFor = leg => propPreset.value === "guarantee"
   ? null
   : saferSamePropLine(alternateAutomaticCandidates.value, leg);
-const candidatePick = ({ game, player, prop, line, side, probability, recommendationProbability, robustProbability, processProbability, sportsbookProbability, evidence, postSelectionEvidence, candidateRank, withinGameRank, rerankScore, shadowRerankScore, rerankerPromoted, expectedValue, rawLineClearance, normalizedLineClearance, fragilityPenalty, fragilityReasons, sportsbookDisagreement, rerankerVersion, marketRule, melbetSelection: exactMelbetSelection, guaranteeRecord }, decision = {}) => {
+const candidatePick = ({ game, player, prop, line, side, probability, recommendationProbability, robustProbability, processProbability, sportsbookProbability, evidence, postSelectionEvidence, candidateRank, withinGameRank, rerankScore, shadowRerankScore, rerankerPromoted, expectedValue, rawLineClearance, normalizedLineClearance, fragilityPenalty, fragilityReasons, sportsbookDisagreement, rerankerVersion, marketRule, melbetSelection: exactMelbetSelection, guaranteeRecord, guaranteeScore, guaranteeRobustFloor }, decision = {}) => {
   const melbetSelection = exactMelbetSelection || preferredMelbetSelection(line, side);
   return {
     game_id: game.game_id,
@@ -485,6 +497,8 @@ const candidatePick = ({ game, player, prop, line, side, probability, recommenda
     guarantee_accuracy: Number.isFinite(Number(guaranteeRecord?.accuracy)) ? Number(guaranteeRecord.accuracy) : null,
     guarantee_wilson_lower: Number.isFinite(Number(guaranteeRecord?.wilson_lower)) ? Number(guaranteeRecord.wilson_lower) : null,
     guarantee_evidence: guaranteeRecord?.evidence || null,
+    guarantee_score: Number.isFinite(Number(guaranteeScore)) ? Number(guaranteeScore) : null,
+    guarantee_robust_floor: Number.isFinite(Number(guaranteeRobustFloor)) ? Number(guaranteeRobustFloor) : null,
     history_games: player.history_games,
     lineup_status: player.lineup_status,
     official_date: game.official_date,
@@ -512,6 +526,7 @@ function archiveAdjustedCard(entries, selectionAction, decisions = []) {
     recommendation_cutoff: recommendationCutoff.value,
     portfolio_mode: portfolioMode.value,
     prop_preset: propPreset.value,
+    guarantee_robust_floor: propPreset.value === "guarantee" ? DEFAULT_GUARANTEE_ROBUST_FLOOR : null,
     rotation_depth: rotationDepth.value,
     selection_action: selectionAction,
     shadow_test: shadowTestMode,
@@ -541,6 +556,14 @@ function archiveAdjustedCard(entries, selectionAction, decisions = []) {
       exact_audit_samples: entry.exact_audit_samples,
       selection_audit_samples: entry.selection_audit_samples,
       post_selection_samples: entry.post_selection_samples,
+      selection_source: entry.selection_source,
+      guarantee_samples: entry.guarantee_samples,
+      guarantee_correct: entry.guarantee_correct,
+      guarantee_accuracy: entry.guarantee_accuracy,
+      guarantee_wilson_lower: entry.guarantee_wilson_lower,
+      guarantee_evidence: entry.guarantee_evidence,
+      guarantee_score: entry.guarantee_score,
+      guarantee_robust_floor: entry.guarantee_robust_floor,
       candidate_rank: entry.candidate_rank,
       within_game_rank: entry.within_game_rank,
       rerank_score: entry.rerank_score,
@@ -660,16 +683,22 @@ function chooseLine(game, player, value) { const prop = selectedProp(game, playe
 function select(game, player, side) {
   const prop = selectedProp(game, player), threshold = selectedThreshold(game, player); if (!prop || !threshold) return;
   if (propPreset.value === "strongest" && side !== strongestPlayerPropSide(player.kind, prop.prop)) return;
-  const guaranteeRecord = propPreset.value === "guarantee" ? guaranteeRecordFor(player, prop, threshold, side) : null;
-  if (propPreset.value === "guarantee" && !guaranteeRecord) return;
+  const guaranteeCandidate = propPreset.value === "guarantee" ? exactGuaranteeCandidate(player, prop, threshold, side) : null;
+  if (propPreset.value === "guarantee" && !guaranteeCandidate) return;
   if (!sideAvailable(threshold, side)) return;
   const key = keyFor(game, player, prop.prop), current = picks.value[key];
   const next = Object.fromEntries(Object.entries(picks.value).filter(([, pick]) => String(pick.game_id) !== String(game.game_id)));
   usedAlternateKeys.value = [];
   if (current?.side === side) { picks.value = next; return; }
   if (Object.keys(next).length >= Number(targetLegs.value)) return;
+  if (guaranteeCandidate) {
+    next[key] = candidatePick(guaranteeCandidate, { selectionAction: "manual" });
+    picks.value = next;
+    closeGame();
+    return;
+  }
   const melbetSelection = preferredMelbetSelection(threshold, side);
-  next[key] = { game_id: game.game_id, player_id: player.player_id, player_name: player.name, kind: player.kind, team_id: player.team_id, prop: prop.prop, label: prop.label, line: threshold.line, side, probability: Number(threshold[`${side}_probability`]), selection_source: guaranteeRecord ? "guarantee" : "model", guarantee_samples: Number(guaranteeRecord?.samples || 0), guarantee_correct: Number(guaranteeRecord?.correct || 0), guarantee_accuracy: guaranteeRecord?.accuracy ?? null, guarantee_wilson_lower: guaranteeRecord?.wilson_lower ?? null, guarantee_evidence: guaranteeRecord?.evidence || null, history_games: player.history_games, matchup: `${game.away.name} at ${game.home.name}`, melbet_market_name: melbetSelection?.market_name, melbet_player_name: melbetSelection?.player_name, melbet_selection_name: melbetSelection?.selection_name, melbet_display_line: melbetSelection?.display_line, melbet_format: melbetSelection?.format, melbet_group_id: melbetSelection?.group_id, melbet_type_id: melbetSelection?.type_id, melbet_decimal_odds: melbetSelection?.decimal_odds };
+  next[key] = { game_id: game.game_id, player_id: player.player_id, player_name: player.name, kind: player.kind, team_id: player.team_id, prop: prop.prop, label: prop.label, line: threshold.line, side, probability: Number(threshold[`${side}_probability`]), selection_source: "model", history_games: player.history_games, matchup: `${game.away.name} at ${game.home.name}`, melbet_market_name: melbetSelection?.market_name, melbet_player_name: melbetSelection?.player_name, melbet_selection_name: melbetSelection?.selection_name, melbet_display_line: melbetSelection?.display_line, melbet_format: melbetSelection?.format, melbet_group_id: melbetSelection?.group_id, melbet_type_id: melbetSelection?.type_id, melbet_decimal_odds: melbetSelection?.decimal_odds };
   picks.value = next;
   closeGame();
 }
@@ -748,7 +777,7 @@ async function recommend() {
   const candidates = activeCandidates.value.slice(0, Number(targetLegs.value));
   if (candidates.length < Number(targetLegs.value)) {
     if (propPreset.value === "guarantee") {
-      marketNotice.value = `Only ${candidates.length} independent ${candidates.length === 1 ? "game has" : "games have"} an exact historical-consistency pick that is listed by MelBet today at @ ${guaranteeOddsFloor(minimumOdds.value).toFixed(2)} or higher. Reduce the target or odds floor.`;
+      marketNotice.value = `Only ${candidates.length} independent ${candidates.length === 1 ? "game has" : "games have"} an exact historical-consistency pick with at least ${Math.round(DEFAULT_GUARANTEE_ROBUST_FLOOR * 100)}% robust probability at @ ${guaranteeOddsFloor(minimumOdds.value).toFixed(2)} or higher. Reduce the target or odds floor.`;
       return;
     }
     const cutoffGuidance = recommendationCutoff.value === "ignore"
@@ -787,6 +816,7 @@ async function recommend() {
       recommendation_cutoff: recommendationCutoff.value,
       portfolio_mode: portfolioMode.value,
       prop_preset: propPreset.value,
+      guarantee_robust_floor: propPreset.value === "guarantee" ? DEFAULT_GUARANTEE_ROBUST_FLOOR : null,
       rotation_depth: rotationDepth.value,
       selection_action: "build_best",
       shadow_test: shadowTestMode,
@@ -814,11 +844,14 @@ async function recommend() {
           market_name: selection?.market_name,
           selection_name: selection?.selection_name,
           audit_samples: candidate.marketRule?.samples,
+          selection_source: candidate.guaranteeRecord ? "guarantee" : "model",
           guarantee_samples: candidate.guaranteeRecord?.samples,
           guarantee_correct: candidate.guaranteeRecord?.correct,
           guarantee_accuracy: candidate.guaranteeRecord?.accuracy,
           guarantee_wilson_lower: candidate.guaranteeRecord?.wilson_lower,
           guarantee_evidence: candidate.guaranteeRecord?.evidence,
+          guarantee_score: candidate.guaranteeScore,
+          guarantee_robust_floor: candidate.guaranteeRobustFloor,
           exact_audit_samples: candidate.evidence?.exact?.samples,
           selection_audit_samples: candidate.evidence?.selection?.samples,
           post_selection_samples: candidate.postSelectionEvidence?.evidence?.samples,
@@ -855,9 +888,21 @@ function reconcilePicks(games) {
     const prop = player?.props?.find(row => row.prop === pick.prop);
     const threshold = prop?.thresholds?.find(row => Number(row.line) === Number(pick.line));
     if (!game || !player || !prop || !threshold || !sideAvailable(threshold, pick.side)) continue;
-    const melbetSelection = pick.selection_source === "guarantee"
-      ? (threshold.melbet_selections?.[pick.side] || []).find(selection => Number(selection.decimal_odds) >= guaranteeOddsFloor(minimumOdds.value))
-      : preferredMelbetSelection(threshold, pick.side);
+    const guaranteeCandidate = pick.selection_source === "guarantee"
+      ? exactGuaranteeCandidate(player, prop, threshold, pick.side)
+      : null;
+    if (pick.selection_source === "guarantee" && !guaranteeCandidate) continue;
+    if (guaranteeCandidate) {
+      reconciled[keyFor(game, player, prop.prop)] = {
+        ...pick,
+        ...candidatePick(guaranteeCandidate, {
+          selectionAction: pick.selection_action || "build_best",
+          replacedSelection: pick.replaced_selection || null,
+        }),
+      };
+      continue;
+    }
+    const melbetSelection = preferredMelbetSelection(threshold, pick.side);
     if (!melbetSelection) continue;
     const marketRule = automaticMarketRule(recommendationPolicy.value, player, prop);
     const adjusted = robustRecommendationProbability(
@@ -905,7 +950,7 @@ function reconcilePicks(games) {
   picks.value = reconciled;
   bulkAlternateKeys.value = bulkAlternateKeys.value.filter(key => Object.hasOwn(reconciled, key));
   const removed = previousCount - Object.keys(reconciled).length;
-  marketNotice.value = removed ? `${removed} saved ${removed === 1 ? "leg was" : "legs were"} removed because MelBet changed or relabeled the listed market.` : "";
+  marketNotice.value = removed ? `${removed} saved ${removed === 1 ? "leg was" : "legs were"} removed because the selection no longer clears the current MelBet or eligibility rules.` : "";
 }
 async function load(refresh = false) {
   const current = ++token; loading.value = true; error.value = "";
@@ -921,7 +966,7 @@ async function load(refresh = false) {
     }
   }
   catch (caught) { if (current === token) error.value = caught?.message || "Player props could not be loaded."; }
-  finally { if (current === token) { loading.value = false; window.clearTimeout(timer); timer = window.setTimeout(load, Math.max(10, Number(board.value?.refresh_seconds || 60)) * 1000); } }
+  finally { if (current === token) loading.value = false; }
 }
 const onKeydown = event => { if (event.key === "Escape") closeGame(); };
 watch([mode, date, () => dateRange.value.start, () => dateRange.value.end], load);
@@ -986,8 +1031,16 @@ watch(maxTargetLegs, count => {
   const minimum = isSweepMode.value ? 3 : 1;
   if (count >= minimum && Number(targetLegs.value) > count) targetLegs.value = String(count);
 });
-onMounted(() => { load(); window.addEventListener("keydown", onKeydown); });
-onBeforeUnmount(() => { window.clearTimeout(timer); window.removeEventListener("keydown", onKeydown); });
+onMounted(() => {
+  poller = createSharedPoller({
+    key: () => `player-props:${selectedStart.value}:${selectedDays.value}`,
+    task: load,
+    interval: () => Math.max(60, Number(board.value?.refresh_seconds || 300)) * 1000,
+  });
+  poller.start();
+  window.addEventListener("keydown", onKeydown);
+});
+onBeforeUnmount(() => { poller?.stop(); window.removeEventListener("keydown", onKeydown); });
 </script>
 
 <template>
@@ -998,13 +1051,13 @@ onBeforeUnmount(() => { window.clearTimeout(timer); window.removeEventListener("
         <BuilderMarketTabs active="props" />
         <div class="slate-toolbar"><SlateModeToggle v-model="mode" /><CustomDatePicker v-if="mode === 'daily'" v-model="date" label="Game date" /><CustomDateRangePicker v-else v-model="dateRange" label="Game range" :max-days="7" /><CustomSelect v-model="targetLegs" label="Target legs" :options="legOptions" /><OddsFloorSelect v-model="minimumOdds" :label="propPreset === 'guarantee' ? 'Guarantee odds floor' : 'Minimum MelBet odds'" :minimum="propPreset === 'guarantee' ? 1.2 : 1.1" :include-all="propPreset !== 'guarantee'" /><BuilderRefreshButton :loading="loading" @refresh="load(true)" /></div>
         <details class="advanced-controls">
-          <summary><span>BUILD RULES</span><b>{{ propPreset === 'strongest' ? 'Strongest picks' : propPreset === 'guarantee' ? `Guarantee history · @ ${guaranteeOddsFloor(minimumOdds).toFixed(2)}+` : `${selectedPropTypes.length} props · ${selectedPropDirectionSummary}` }}<template v-if="propPreset !== 'guarantee'"> · {{ recommendationCutoff === 'ignore' ? 'no cutoff' : `${Math.round(selectedRecommendationFloor * 100)}% floor` }}</template></b></summary>
+          <summary><span>BUILD RULES</span><b>{{ propPreset === 'strongest' ? 'Strongest picks' : propPreset === 'guarantee' ? `Guarantee · ${Math.round(DEFAULT_GUARANTEE_ROBUST_FLOOR * 100)}% robust · @ ${guaranteeOddsFloor(minimumOdds).toFixed(2)}+` : `${selectedPropTypes.length} props · ${selectedPropDirectionSummary}` }}<template v-if="propPreset !== 'guarantee'"> · {{ recommendationCutoff === 'ignore' ? 'no cutoff' : `${Math.round(selectedRecommendationFloor * 100)}% floor` }}</template></b></summary>
           <div class="advanced-grid">
             <CustomSelect v-if="propPreset !== 'guarantee'" v-model="recommendationCutoff" class="cutoff-control" label="Prop cutoff" :options="probabilityCutoffOptions" />
             <CustomSelect v-model="propPreset" class="preset-control" label="Pick set" :options="propPresetOptions" />
             <CustomMultiSelect v-if="propPreset === 'included'" :model-value="selectedPropTypes" class="prop-market-filter" label="Included player props" placeholder="No prop markets selected" :options="availablePropOptions" @update:model-value="updatePropTypes" />
             <div v-else-if="propPreset === 'strongest'" class="strongest-summary"><span>STRONGEST PICKS</span><p>{{ strongestPlayerPropMarkets.map(market => market.label).join(' · ') }}</p></div>
-            <div v-else class="strongest-summary guarantee-summary"><span>GUARANTEE HISTORY</span><p>Exact player, role, prop, side and line · 3+ settled picks · live MelBet odds @ {{ guaranteeOddsFloor(minimumOdds).toFixed(2) }} or higher.</p></div>
+            <div v-else class="strongest-summary guarantee-summary"><span>GUARANTEE HISTORY + TODAY'S MODEL</span><p>Exact player, role, prop, side and line · 3+ settled picks · at least {{ Math.round(DEFAULT_GUARANTEE_ROBUST_FLOOR * 100) }}% robust probability · live MelBet odds @ {{ guaranteeOddsFloor(minimumOdds).toFixed(2) }} or higher.</p></div>
             <CustomSelect v-model="portfolioMode" class="rotation-control" label="Card rotation" :options="portfolioModeOptions" />
             <div v-if="propPreset === 'included'" class="build-side-control"><span>APPLY DIRECTION TO ALL INCLUDED PROPS</span><div role="group" aria-label="Apply automatic build direction to all included player props"><button v-for="side in ['both','over','under']" :key="side" type="button" :class="{ active: selectedPropDirectionSummary === side }" :aria-pressed="selectedPropDirectionSummary === side" @click="setAllPropSides(side)">{{ side.toUpperCase() }}</button></div></div>
             <div v-if="propPreset === 'included' && availablePropOptions.length" class="prop-side-preferences">
@@ -1020,10 +1073,10 @@ onBeforeUnmount(() => { window.clearTimeout(timer); window.removeEventListener("
     </section>
 
     <section class="scoreboard">
-      <div class="score-ring" :style="{ '--score': `${adjustedJoint * 100}%` }"><span><strong class="mono">{{ (adjustedJoint * 100).toFixed(1) }}</strong><small>%</small></span></div>
-      <div class="score-copy"><span class="eyebrow">ROBUST SLIP CONFIDENCE</span><h2>{{ scoreLabel }}</h2><p>{{ propPreset === 'guarantee' ? 'Guarantee mode matches today\'s live MelBet selection to the same historically settled player, prop, side and exact line, then ranks the sample-aware record.' : 'Exact line, selection-bias and MelBet-consistency checks are applied before ranking. Independent rotation avoids legs used on earlier cards.' }}</p><small>HISTORICAL CONSISTENCY AND MODEL PROBABILITY, NOT FUTURE CERTAINTY</small></div>
+      <ProbabilityRing class="score-ring" :value="adjustedJoint" :size="112" />
+      <div class="score-copy"><span class="eyebrow">ROBUST SLIP CONFIDENCE</span><h2>{{ scoreLabel }}</h2><p>{{ propPreset === 'guarantee' ? `Guarantee mode first requires both today's model and the exact historical record to support at least ${Math.round(DEFAULT_GUARANTEE_ROBUST_FLOOR * 100)}% robust probability, then ranks only the survivors.` : 'Exact line, selection-bias and MelBet-consistency checks are applied before ranking. Independent rotation avoids legs used on earlier cards.' }}</p><small>HISTORICAL CONSISTENCY AND MODEL PROBABILITY, NOT FUTURE CERTAINTY</small></div>
       <div class="score-metrics"><span><small>LEGS</small><b>{{ legs.length }} / {{ targetLegs }}</b></span><span><small>ADJUSTED</small><b>{{ pct(adjustedJoint) }}</b></span><span><small>RAW PRODUCT</small><b>{{ pct(rawJoint) }}</b></span><span><small>TYPICAL LEG</small><b>{{ pct(typicalLeg) }}</b></span></div>
-      <div class="score-actions"><div class="card-style" role="group" aria-label="Card style"><button type="button" :class="{ active: buildStyle === 'balanced' }" @click="buildStyle = 'balanced'">BALANCED</button><button type="button" :class="{ active: buildStyle === 'sweep' }" @click="buildStyle = 'sweep'">SWEEP 3–5</button></div><button class="recommend" :disabled="loading || !board" @click="recommend"><Sparkles /> BUILD {{ propPreset === 'guarantee' ? 'GUARANTEE' : buildStyle === 'sweep' ? 'SWEEP' : 'BEST' }} {{ targetLegs }}</button><small v-if="board && !canRecommend">{{ activeCandidates.length }} of {{ targetLegs }} games qualify {{ propPreset === 'guarantee' ? `with exact history at @ ${guaranteeOddsFloor(minimumOdds).toFixed(2)}+` : recommendationCutoffLabel }}</small><MelbetHandoff :entries="melbetEntries" autofill-mode="player_prop" /><button class="clear" :disabled="!legs.length" @click="clearCard"><Trash2 /> CLEAR</button></div>
+      <div class="score-actions"><div class="card-style" role="group" aria-label="Card style"><button type="button" :class="{ active: buildStyle === 'balanced' }" @click="buildStyle = 'balanced'">BALANCED</button><button type="button" :class="{ active: buildStyle === 'sweep' }" @click="buildStyle = 'sweep'">SWEEP 3–5</button></div><button class="recommend" :disabled="loading || !board" @click="recommend"><Sparkles /> BUILD {{ propPreset === 'guarantee' ? 'GUARANTEE' : buildStyle === 'sweep' ? 'SWEEP' : 'BEST' }} {{ targetLegs }}</button><small v-if="board && !canRecommend">{{ activeCandidates.length }} of {{ targetLegs }} games qualify {{ propPreset === 'guarantee' ? `with ${Math.round(DEFAULT_GUARANTEE_ROBUST_FLOOR * 100)}%+ robust exact history at @ ${guaranteeOddsFloor(minimumOdds).toFixed(2)}+` : recommendationCutoffLabel }}</small><MelbetHandoff :entries="melbetEntries" autofill-mode="player_prop" /><button class="clear" :disabled="!legs.length" @click="clearCard"><Trash2 /> CLEAR</button></div>
     </section>
     <div v-if="marketNotice" class="market-notice">{{ marketNotice }}</div>
 
@@ -1044,7 +1097,7 @@ onBeforeUnmount(() => { window.clearTimeout(timer); window.removeEventListener("
     <LoadingState v-if="loading && !board" label="Building player distributions" detail="Loading official lineups, probable starters and calibrated prop thresholds." />
     <div v-else-if="error" class="error">{{ error }} <button @click="load">RETRY</button></div>
     <template v-else-if="board">
-      <div class="board-note"><span><i></i>{{ board.games.length }} GAMES · {{ dateLabel(selectedStart).toUpperCase() }} · {{ board.player_prop_line_feed?.listed_games || 0 }} WITH CURRENT PLAYER MARKETS<template v-if="board.player_prop_line_feed?.partial_games"> · {{ board.player_prop_line_feed.partial_games }} PARTIAL</template><template v-if="propPreset === 'guarantee'"> · GUARANTEE @ {{ guaranteeOddsFloor(minimumOdds).toFixed(2) }}+ · 3+ EXACT SETTLED</template><template v-else> · {{ minimumOdds === 'all' ? 'ALL ODDS' : `MINIMUM @ ${minimumOdds}` }} · {{ recommendationCutoff === 'ignore' ? 'NO PROP CUTOFF' : `PROP CUTOFF ${Math.round(selectedRecommendationFloor * 100)}%` }}</template> · AUTO {{ board.refresh_seconds }}S</span><p>{{ propPreset === 'guarantee' ? 'Only the same player, role, prop, side and exact line from the Guarantee history is eligible; each must also be listed by MelBet today at the active minimum price.' : 'MelBet odds remain an eligibility signal, not a model input. Partial games are checked every 15 seconds until standard player markets appear; sparse exact lines remain manual-only.' }}</p></div>
+      <div class="board-note"><span><i></i>{{ board.games.length }} GAMES · {{ dateLabel(selectedStart).toUpperCase() }} · {{ board.player_prop_line_feed?.listed_games || 0 }} WITH CURRENT PLAYER MARKETS<template v-if="board.player_prop_line_feed?.partial_games"> · {{ board.player_prop_line_feed.partial_games }} PARTIAL</template><template v-if="propPreset === 'guarantee'"> · GUARANTEE @ {{ guaranteeOddsFloor(minimumOdds).toFixed(2) }}+ · {{ Math.round(DEFAULT_GUARANTEE_ROBUST_FLOOR * 100) }}%+ ROBUST · 3+ EXACT SETTLED</template><template v-else> · {{ minimumOdds === 'all' ? 'ALL ODDS' : `MINIMUM @ ${minimumOdds}` }} · {{ recommendationCutoff === 'ignore' ? 'NO PROP CUTOFF' : `PROP CUTOFF ${Math.round(selectedRecommendationFloor * 100)}%` }}</template> · AUTO {{ board.refresh_seconds }}S</span><p>{{ propPreset === 'guarantee' ? `Only the same player, role, prop, side and exact line is eligible, and the weaker of today's model probability and its historical probability must be at least ${Math.round(DEFAULT_GUARANTEE_ROBUST_FLOOR * 100)}%.` : 'MelBet odds remain an eligibility signal, not a model input. Partial games are checked every 15 seconds until standard player markets appear; sparse exact lines remain manual-only.' }}</p></div>
       <section v-if="board.games.length" class="game-grid">
         <button v-for="game in board.games" :key="game.game_id" class="game-card" :class="{ picked: gamePick(game), unavailable: !playersWithSelectedProps(game).length }" :disabled="!playersWithSelectedProps(game).length" @click="openGame(game)">
           <span class="game-time">{{ timeLabel(game.datetime) }}</span>
@@ -1059,20 +1112,22 @@ onBeforeUnmount(() => { window.clearTimeout(timer); window.removeEventListener("
     </template>
 
     <Teleport to="body">
-      <div v-if="activeGame" class="modal-backdrop" @click.self="closeGame">
-        <section class="props-modal" role="dialog" aria-modal="true" :aria-label="`${activeGame.away.name} at ${activeGame.home.name} player props`">
+      <AnimatePresence>
+      <motion.div v-if="activeGame" class="modal-backdrop" :initial="reducedMotion?false:{opacity:0,backdropFilter:'blur(0px)'}" :animate="{opacity:1,backdropFilter:'blur(8px)'}" :exit="reducedMotion?undefined:{opacity:0,backdropFilter:'blur(0px)'}" :transition="{duration:.24}" @click.self="closeGame">
+        <motion.section class="props-modal" role="dialog" aria-modal="true" :aria-label="`${activeGame.away.name} at ${activeGame.home.name} player props`" :initial="reducedMotion?false:{opacity:0,y:28,scale:.96,filter:'blur(8px)'}" :animate="{opacity:1,y:0,scale:1,filter:'blur(0px)'}" :exit="reducedMotion?undefined:{opacity:0,y:16,scale:.97,filter:'blur(6px)'}" :transition="{type:'spring',stiffness:250,damping:28}">
           <header class="modal-header"><div class="modal-matchup"><TeamLogo :team="activeGame.away" :size="48" /><span><small>{{ timeLabel(activeGame.datetime) }}</small><b>{{ activeGame.away.name }} <em>at</em> {{ activeGame.home.name }}</b></span><TeamLogo :team="activeGame.home" :size="48" /></div><button aria-label="Close player props" @click="closeGame"><X /></button></header>
           <div class="modal-toolbar"><div><span class="eyebrow">AVAILABLE PLAYER PROPS</span><p>Select a player, market and line. One leg is allowed from each game.</p></div><div class="seg"><button v-for="value in ['all','batter','pitcher']" :key="value" :class="{ active: role === value }" @click="role = value">{{ value.toUpperCase() }}</button></div></div>
           <div class="modal-scroll"><div v-if="visiblePlayers(activeGame).length" class="player-grid">
             <article v-for="player in visiblePlayers(activeGame)" :key="player.player_id" class="player-card" :class="{ picked: gamePick(activeGame)?.player_id === player.player_id }">
               <div class="player"><PlayerHeadshot :player="{ id: player.player_id, name: player.name }" :size="72" /><span><small>{{ player.kind.toUpperCase() }} · {{ player.lineup_status.toUpperCase() }}</small><b>{{ player.name }}</b><em>{{ player.role }} · {{ player.history_games }} tracked games</em></span></div>
               <div class="selectors"><CustomSelect :model-value="selectedProp(activeGame, player)?.prop" label="Prop" :options="propOptions(player)" @update:model-value="chooseProp(activeGame, player, $event)" /><CustomSelect :model-value="String(selectedThreshold(activeGame, player)?.line)" label="Line" :options="lineOptions(activeGame, player)" @update:model-value="chooseLine(activeGame, player, $event)" /></div>
-              <div v-if="selectedThreshold(activeGame, player)" class="sides"><button v-for="side in ['over','under']" :key="side" :disabled="!sideAvailable(selectedThreshold(activeGame, player), side) || (propPreset === 'strongest' && side !== strongestPlayerPropSide(player.kind, selectedProp(activeGame, player).prop)) || (propPreset === 'guarantee' && !guaranteeRecordFor(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side)) || (legs.length >= Number(targetLegs) && !gamePick(activeGame))" :class="{ active: selected(activeGame, player, side), unavailable: !sideAvailable(selectedThreshold(activeGame, player), side) || (propPreset === 'strongest' && side !== strongestPlayerPropSide(player.kind, selectedProp(activeGame, player).prop)) || (propPreset === 'guarantee' && !guaranteeRecordFor(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side)) }" @click="select(activeGame, player, side)"><span><small>{{ sideAvailable(selectedThreshold(activeGame, player), side) ? selectionLabel(selectedThreshold(activeGame, player), side) : `${side.toUpperCase()} NOT LISTED` }}</small><b>{{ preferredMelbetSelection(selectedThreshold(activeGame, player), side)?.market_name || selectedProp(activeGame, player).label }}</b></span><span v-if="sideAvailable(selectedThreshold(activeGame, player), side)" class="model-chance"><template v-if="propPreset !== 'guarantee' || guaranteeRecordFor(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side)"><small>{{ propPreset === 'guarantee' ? 'EXACT HISTORY' : 'NINTH MODEL' }}</small><strong>{{ propPreset === 'guarantee' ? `${guaranteeRecordFor(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side).correct}/${guaranteeRecordFor(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side).samples}` : pct(selectedThreshold(activeGame, player)[`${side}_probability`]) }}</strong></template><small v-else>NOT IN HISTORY</small></span><Check /></button></div>
+              <div v-if="selectedThreshold(activeGame, player)" class="sides"><button v-for="side in ['over','under']" :key="side" :disabled="!sideAvailable(selectedThreshold(activeGame, player), side) || (propPreset === 'strongest' && side !== strongestPlayerPropSide(player.kind, selectedProp(activeGame, player).prop)) || (propPreset === 'guarantee' && !exactGuaranteeCandidate(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side)) || (legs.length >= Number(targetLegs) && !gamePick(activeGame))" :class="{ active: selected(activeGame, player, side), unavailable: !sideAvailable(selectedThreshold(activeGame, player), side) || (propPreset === 'strongest' && side !== strongestPlayerPropSide(player.kind, selectedProp(activeGame, player).prop)) || (propPreset === 'guarantee' && !exactGuaranteeCandidate(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side)) }" @click="select(activeGame, player, side)"><span><small>{{ sideAvailable(selectedThreshold(activeGame, player), side) ? selectionLabel(selectedThreshold(activeGame, player), side) : `${side.toUpperCase()} NOT LISTED` }}</small><b>{{ preferredMelbetSelection(selectedThreshold(activeGame, player), side)?.market_name || selectedProp(activeGame, player).label }}</b></span><span v-if="sideAvailable(selectedThreshold(activeGame, player), side)" class="model-chance"><template v-if="propPreset !== 'guarantee' || exactGuaranteeCandidate(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side)"><small>{{ propPreset === 'guarantee' ? 'ROBUST / HISTORY' : 'NINTH MODEL' }}</small><strong>{{ propPreset === 'guarantee' ? `${pct(exactGuaranteeCandidate(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side).robustProbability)} · ${guaranteeRecordFor(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side).correct}/${guaranteeRecordFor(player, selectedProp(activeGame, player), selectedThreshold(activeGame, player), side).samples}` : pct(selectedThreshold(activeGame, player)[`${side}_probability`]) }}</strong></template><small v-else>BELOW GUARANTEE FLOOR</small></span><Check /></button></div>
               <footer>LAST 10 AVG <b>{{ selectedProp(activeGame, player)?.recent_10_average }}</b><span>{{ selectedProp(activeGame, player)?.confidence_label }} confidence · {{ selectedProp(activeGame, player)?.confidence_score }}/100</span></footer>
             </article>
           </div><div v-else class="empty">No {{ role === 'all' ? '' : role }} props are available for this matchup.</div></div>
-        </section>
-      </div>
+        </motion.section>
+      </motion.div>
+      </AnimatePresence>
     </Teleport>
   </div>
 </template>
@@ -1091,6 +1146,8 @@ onBeforeUnmount(() => { window.clearTimeout(timer); window.removeEventListener("
 .selected-header-actions{display:grid;justify-items:end;gap:8px}.selected-header-actions>div{display:flex;gap:8px}.selected-header-actions button{display:flex;align-items:center;gap:7px;padding:9px 11px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-size:8px;font-weight:900}.selected-header-actions button:disabled{opacity:.45}.selected-header-actions svg{width:13px}.selected-card{padding-top:50px}.bulk-check{position:absolute;left:14px;top:12px;z-index:2;display:flex;align-items:center;gap:7px;cursor:pointer}.bulk-check input{position:absolute;opacity:0;pointer-events:none}.bulk-check span{width:24px;height:24px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);color:transparent}.bulk-check input:checked+span{border-color:var(--accent);background:var(--accent);color:var(--ink)}.bulk-check svg{width:14px}.bulk-check small{font:800 7px 'DM Mono';letter-spacing:.06em;color:var(--muted)}.bulk-check.disabled{opacity:.35;cursor:not-allowed}
 .prop-filter-row{width:100%;display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:8px;align-items:end}.build-side-control>span{display:block;margin-bottom:6px;font:500 7px 'DM Mono';letter-spacing:.1em;color:var(--muted)}.build-side-control>div{height:44px;display:grid;grid-template-columns:repeat(3,1fr);padding:3px;border:1px solid var(--line);background:var(--surface)}.build-side-control button{border:0;background:transparent;color:var(--muted);font:700 8px 'DM Mono';letter-spacing:.04em}.build-side-control button.active{background:var(--selection-bg);color:var(--selection-text)}
 .scoreboard{background:var(--contrast);color:var(--on-contrast)}
+.score-ring{height:auto!important;background:none!important;--muted:#a8afa4}
+.score-ring:after{display:none!important}
 .score-ring:after{background:var(--contrast)}
 .score-copy p{color:#aeb3aa}
 .score-copy>small{color:#d5d8d1}
@@ -1112,4 +1169,5 @@ onBeforeUnmount(() => { window.clearTimeout(timer); window.removeEventListener("
 @media(min-width:761px){.slate-toolbar{grid-template-columns:135px minmax(160px,1fr) 105px 135px 110px}}
 @media(max-width:900px) and (min-width:761px){.advanced-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.advanced-grid>.prop-market-filter,.advanced-grid>.strongest-summary{grid-column:1/-1}.advanced-grid>.rotation-control,.advanced-grid>.build-side-control{grid-column:auto}.prop-side-list{grid-template-columns:1fr}}
 @media(max-width:760px){.advanced-grid{grid-template-columns:1fr}.advanced-grid>*{grid-column:auto!important}.leg-actions{grid-template-columns:1fr}.advanced-controls summary b{max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.prop-side-list{grid-template-columns:1fr}.prop-side-row{grid-template-columns:minmax(0,1fr) 176px}}
+.props-page :is(.market-control>span,.market-control a,.seg button,.refresh,.score-copy>small,.score-metrics small,.score-actions button,.score-actions>small,.selected-line small,.board-note span,.board-note p,.game-time,.team small,.versus,.game-selection small,.open-props,.modal-matchup small,.modal-toolbar p,.player small,.player em,.sides button small,.player-card footer,.selected-card footer,.market-notice,.alternate small,.alternate b,.selected-header-actions button,.advanced-controls summary span,.advanced-controls summary b,.strongest-summary>span,.strongest-summary>p,.reset-rotation,.prop-side-preferences>header span,.prop-side-preferences>header small,.prop-side-row b,.prop-side-row small,.prop-side-row button,.card-style button,.leg-actions small,.leg-actions b,.build-side-control>span,.build-side-control button){font-size:12px!important}.props-page :is(.game-card,.alternate,.selected-header-actions button,.prop-side-row>div,.leg-actions button,.build-side-control>div){min-height:46px}.props-page .advanced-controls summary{min-height:54px;height:auto}.props-page .prop-side-row{min-height:72px}.props-page .score-copy p{font-size:13px!important}
 </style>

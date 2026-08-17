@@ -1,0 +1,144 @@
+- generic [ref=e3]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "NINTH home" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: NINTH
+      - navigation "Sport workspaces" [ref=e9]:
+        - link "00 Platform" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e11]: "00"
+          - generic [ref=e12]: Platform
+        - link "01 MLB" [ref=e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=e14]: "01"
+          - generic [ref=e15]: MLB
+        - link "02 FTB" [ref=e16] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=e17]: "02"
+          - generic [ref=e18]: FTB
+        - link "03 NFL" [ref=e19] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=e20]: "03"
+          - generic [ref=e21]: NFL
+        - link "04 NBA" [ref=e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=e24]: "04"
+          - generic [ref=e25]: NBA
+        - link "05 ESP" [ref=e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=e27]: "05"
+          - generic [ref=e28]: ESP
+      - button "Use light theme" [ref=e30] [cursor=pointer]
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]: NFL
+        - generic [ref=e40]: American Football
+        - emphasis [ref=e41]: RESEARCH LAB
+      - navigation "Workspace navigation" [ref=e42]:
+        - link "Overview" [ref=e43] [cursor=pointer]:
+          - /url: /american-football
+        - link "Games" [ref=e44] [cursor=pointer]:
+          - /url: /american-football/games
+        - link "Teams" [ref=e45] [cursor=pointer]:
+          - /url: /american-football/teams
+        - link "Players" [ref=e46] [cursor=pointer]:
+          - /url: /american-football/players
+        - link "NFL Builder" [ref=e47] [cursor=pointer]:
+          - /url: /american-football/builder
+        - link "Models" [ref=e49] [cursor=pointer]:
+          - /url: /american-football/models
+        - link "Data" [ref=e50] [cursor=pointer]:
+          - /url: /american-football/data
+  - main [ref=e51]:
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - generic [ref=e57]: NINTH / NFL BUILDER
+          - heading [level=1] [ref=e58]:
+            - generic "Build today's" [ref=e59]:
+              - generic [ref=e60]: Build
+              - generic [ref=e62]: today's
+            - emphasis [ref=e63]:
+              - generic "NFL card." [ref=e64]:
+                - generic [ref=e65]: NFL
+                - generic [ref=e67]: card.
+          - paragraph [ref=e68]: Moneyline, spread and total-points decisions use the same compact card-building flow as MLB while every NFL market retains its own evidence gate.
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e71]: MODEL
+            - generic [ref=e72]:
+              - button "MONEYLINE" [ref=e73] [cursor=pointer]
+              - button "SPREAD" [ref=e74] [cursor=pointer]
+              - button "TOTALS" [ref=e75] [cursor=pointer]
+              - button "MIXED" [ref=e76] [cursor=pointer]
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e79]: Evidence
+              - button "All shadow observations Research" [ref=e80] [cursor=pointer]:
+                - generic [ref=e81]: All shadow observations
+                - generic [ref=e82]: Research
+            - generic [ref=e85]:
+              - generic [ref=e86]: Slate
+              - button "Select" [ref=e87] [cursor=pointer]
+            - generic [ref=e91]:
+              - generic [ref=e92]: Target legs
+              - button "5 legs" [ref=e93] [cursor=pointer]
+            - generic [ref=e97]:
+              - generic [ref=e98]: Odds floor
+              - button "All listed odds" [ref=e99] [cursor=pointer]
+            - button "REFRESH" [disabled] [ref=e103] [cursor=pointer]
+      - generic [ref=e109]:
+        - img "100.0 percent, all legs":
+          - generic:
+            - strong:
+              - generic: "33.9"
+              - superscript: "%"
+            - generic: all legs
+            - generic: joint model
+        - generic [ref=e112]:
+          - generic [ref=e113]: JOINT MODEL CONFIDENCE
+          - heading "No NFL legs selected" [level=2] [ref=e114]
+          - paragraph [ref=e115]: The displayed joint estimate multiplies the selected NFL model probabilities. One selection is allowed per game and mixed cards cap repeated market-side exposure.
+          - generic [ref=e116]: Current prices appear when the source feed lists them.
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]: LEGS / TARGET
+            - generic [ref=e120]: 0 / 5
+          - generic [ref=e121]:
+            - generic [ref=e122]: JOINT MODEL
+            - generic [ref=e123]: —
+          - generic [ref=e124]:
+            - generic [ref=e125]: TYPICAL LEG
+            - generic [ref=e126]: —
+          - generic [ref=e127]:
+            - generic [ref=e128]: MODE
+            - generic [ref=e129]: SHADOW
+        - generic [ref=e130]:
+          - button "BUILD BEST 5" [disabled] [ref=e131]
+          - button "CLEAR" [disabled] [ref=e136]
+      - generic [ref=e140]:
+        - article [ref=e141]:
+          - generic [ref=e142]: Moneyline
+          - generic [ref=e143]: SHADOW LOCKED
+          - generic [ref=e144]: 0 / 30 LIVE · BRIER —
+        - article [ref=e145]:
+          - generic [ref=e146]: Spread
+          - generic [ref=e147]: SHADOW LOCKED
+          - generic [ref=e148]: 0 / 30 LIVE · BRIER —
+        - article [ref=e149]:
+          - generic [ref=e150]: Total points
+          - generic [ref=e151]: SHADOW LOCKED
+          - generic [ref=e152]: 0 / 30 LIVE · BRIER —
+      - generic [ref=e153]:
+        - generic [ref=e154]: 0 CURRENT NFL LINES · WEEK
+        - paragraph [ref=e156]: Production mode exposes only markets that pass their live gate. Shadow mode remains research-only and never triggers sportsbook autofill.
+      - generic [ref=e157]:
+        - generic [ref=e158]:
+          - generic [ref=e159]:
+            - generic [ref=e160]: CURRENT NFL BOARD
+            - heading "0 decision-ready lines" [level=2] [ref=e161]
+          - generic [ref=e162]: 0 GAMES
+        - generic [ref=e163]:
+          - generic [ref=e169]: Loading NFL distributions
+          - paragraph [ref=e170]: Joining the schedule, current prices, EPA history and immutable audit state.

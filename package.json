@@ -9,10 +9,15 @@
     "dev:server": "node --watch server/src/server.js",
     "dev:stats": "python stats-service/app.py",
     "build": "vite build",
-    "preview": "vite preview",
-    "start": "concurrently -k \"python stats-service/app.py\" \"node server/src/server.js\"",
+    "preview": "vite preview --host 0.0.0.0 --strictPort",
+    "start": "concurrently -k \"python stats-service/app.py\" \"node server/src/server.js\" \"vite preview --host 0.0.0.0 --strictPort\"",
+    "start:client": "vite preview --host 0.0.0.0 --strictPort",
+    "start:server": "node server/src/server.js",
+    "start:stats": "python stats-service/app.py",
+    "daily": "npm run build && npm start",
     "audit:multisport": "python -m ml.multisport.backfill",
-    "backfill:multisport": "python -m ml.multisport.backfill --refresh-sources"
+    "backfill:multisport": "python -m ml.multisport.backfill --refresh-sources",
+    "refresh:readiness": "python -m ml.multisport.refresh_readiness"
   },
   "dependencies": {
     "chart.js": "^4.4.7",
@@ -22,12 +27,14 @@
     "express": "^4.21.2",
     "hyparquet": "^1.28.1",
     "lucide-vue-next": "^0.468.0",
+    "motion-v": "^2.3.0",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
     "vue-chartjs": "^5.3.2",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@chenglou/pretext": "^0.0.8",
     "@vitejs/plugin-vue": "^6.0.8",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.1.2",

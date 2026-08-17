@@ -1,11 +1,13 @@
 <script setup>
 import { RefreshCw } from "lucide-vue-next";
+import { motion, useReducedMotion } from "motion-v";
 defineProps({ loading: Boolean });
 defineEmits(["refresh"]);
+const reduced = useReducedMotion();
 </script>
 
 <template>
-  <div class="refresh-control"><span>DATA</span><button type="button" :disabled="loading" @click="$emit('refresh')"><RefreshCw :class="{ spin: loading }" /> REFRESH</button></div>
+  <div class="refresh-control"><span>DATA</span><motion.button type="button" :disabled="loading" :while-hover="reduced ? undefined : { y: -2 }" :while-press="reduced ? undefined : { scale: .97 }" @click="$emit('refresh')"><RefreshCw :class="{ spin: loading }" /> REFRESH</motion.button></div>
 </template>
 
 <style scoped>

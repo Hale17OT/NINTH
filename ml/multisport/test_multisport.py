@@ -1,10 +1,14 @@
 from datetime import datetime, timedelta, timezone
+import json
+from pathlib import Path
+import tempfile
 import unittest
 
 from ml.multisport.evaluation import binary_metrics, promotion_decision
 from ml.multisport.ratings import TimeDecayElo
 from ml.multisport.score_models import dixon_coles_matrix, series_win_probability
 from ml.multisport.train import train
+from ml.multisport.refresh_readiness import result_age_hours
 
 
 class MultisportFoundationTests(unittest.TestCase):
@@ -43,6 +47,13 @@ class MultisportFoundationTests(unittest.TestCase):
         report = train(rows, "test", "winner")
         self.assertEqual(report["features"], ["team_rating"])
         self.assertTrue(report["odds_independent"])
+
+    def test_readiness_refresh_can_skip_a_recent_result(self):
+        now = datetime(2026, 8, 16, 12, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "predictions.json"
+            path.write_text(json.dumps({"generated_at": (now - timedelta(hours=2)).isoformat()}), encoding="utf-8")
+            self.assertAlmostEqual(result_age_hours(path, now), 2.0)
 
 
 if __name__ == "__main__":

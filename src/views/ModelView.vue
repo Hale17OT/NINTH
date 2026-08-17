@@ -13,6 +13,7 @@ import TeamLogo from "../components/team/TeamLogo.vue";
 import PlayerHeadshot from "../components/player/PlayerHeadshot.vue";
 import CustomDatePicker from "../components/ui/CustomDatePicker.vue";
 import CustomMultiSelect from "../components/ui/CustomMultiSelect.vue";
+import { createSharedPoller } from "../services/polling";
 
 const emptyLedger = () => ({
   games: [],
@@ -40,7 +41,7 @@ const totalsPage = ref(1);
 const propsPage = ref(1);
 const loading = ref(true);
 const error = ref("");
-let refreshTimer;
+let poller;
 let propsFilterInitialized = false;
 let suppressPropFilterWatchers = false;
 
@@ -114,10 +115,10 @@ const changePropsPage = async (value) => {
 };
 
 onMounted(() => {
-  load();
-  refreshTimer = window.setInterval(load, 60000);
+  poller = createSharedPoller({ key: "model-audit", task: load, interval: 300_000 });
+  poller.start();
 });
-onBeforeUnmount(() => window.clearInterval(refreshTimer));
+onBeforeUnmount(() => poller?.stop());
 watch(selectedDate, () =>
   loadDaily().catch((caught) => {
     error.value = caught?.message || "Daily results could not be loaded.";
@@ -863,7 +864,7 @@ h1 {
 }
 h1 i {
   font-style: normal;
-  color: var(--orange);
+  color: var(--accent);
 }
 .model-hero p {
   max-width: 620px;
@@ -970,7 +971,7 @@ h1 i {
 .bar i {
   display: block;
   height: 100%;
-  background: var(--orange);
+  background: var(--blue);
 }
 .feature-group {
   display: grid;
@@ -1065,7 +1066,7 @@ h1 i {
   display: block;
   height: 100%;
   min-width: 2px;
-  background: var(--orange);
+  background: var(--blue);
 }
 .parlay-grid footer {
   display: grid;
@@ -1195,7 +1196,7 @@ h1 i {
   font: 800 7px "DM Mono";
 }
 .daily-parlay-grid header em {
-  color: var(--orange);
+  color: var(--blue);
   font-style: normal;
 }
 .daily-parlay-grid article.hit header em,
@@ -1215,7 +1216,7 @@ h1 i {
 .daily-parlay-grid article > div i {
   display: block;
   height: 100%;
-  background: var(--orange);
+  background: var(--blue);
 }
 .daily-parlay-grid article.hit > div i {
   background: var(--acid);
@@ -1302,7 +1303,7 @@ h1 i {
   color: var(--acid);
 }
 .result-row > em.missed {
-  color: var(--orange);
+  color: var(--red);
 }
 .result-row > em.push {
   color: var(--muted);

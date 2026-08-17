@@ -66,6 +66,7 @@ const request = (path, options = {}) => {
 
 export const api = {
   sportDirectory: (sport, type, filters = {}) => request(`/multisport/${encodeURIComponent(sport)}/${encodeURIComponent(type)}?${new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([,value]) => value && value !== 'all')))}`, { timeoutMs: 120_000 }),
+  sportWorkspace: (sport, scope, id, filters = {}) => request(`/multisport/${encodeURIComponent(sport)}/workspace/${encodeURIComponent(scope)}/${encodeURIComponent(id)}?${new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([,value]) => value && value !== 'all')))}`, { timeoutMs: 120_000 }),
   model: () => request("/model"),
   modelResults: (
     date = "", page = 1, pageSize = 10, market = "moneyline", propTypes,

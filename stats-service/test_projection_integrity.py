@@ -47,10 +47,12 @@ class ProjectionIntegrityTests(unittest.TestCase):
         APP._player_prop_boxscore_cache.clear()
         APP._weather_cache.clear()
         APP._weather_backoff_until = 0.0
-        APP._melbet_totals_cache.update({"updated_at": APP.datetime.now(APP.timezone.utc), "last_attempt_at": None, "markets": [], "error": None})
+        APP._league_rankings_cache.clear()
+        APP._inning_distribution_cache.clear()
+        APP._melbet_totals_cache.update({"updated_at": APP.datetime.now(APP.timezone.utc), "last_attempt_at": None, "markets": [], "error": None, "consecutive_failures": 0, "retry_after": None})
         APP._melbet_totals_snapshot_last.clear()
         APP._melbet_totals_snapshot_loaded = False
-        APP._melbet_player_props_cache.update({"updated_at": APP.datetime.now(APP.timezone.utc), "last_attempt_at": None, "markets": [], "error": None})
+        APP._melbet_player_props_cache.update({"updated_at": APP.datetime.now(APP.timezone.utc), "last_attempt_at": None, "markets": [], "error": None, "consecutive_failures": 0, "retry_after": None})
 
     def tearDown(self):
         APP.PROJECTION_LOG = self.original_log
@@ -66,7 +68,35 @@ class ProjectionIntegrityTests(unittest.TestCase):
         APP._melbet_totals_snapshot_loaded = False
         APP._weather_cache.clear()
         APP._weather_backoff_until = 0.0
+        APP._league_rankings_cache.clear()
+        APP._inning_distribution_cache.clear()
         self.temp.cleanup()
+
+    def test_melbet_runtime_uses_five_minutes_and_tightens_near_first_pitch(self):
+        now = APP.datetime(2026, 8, 16, 12, tzinfo=APP.timezone.utc)
+        with patch.dict(APP.os.environ, {
+            "NINTH_MELBET_REFRESH_SECONDS": "300",
+            "NINTH_MELBET_NEAR_START_SECONDS": "60",
+            "NINTH_MELBET_NEAR_START_MINUTES": "30",
+        }):
+            ordinary = [{"starts_at": (now + APP.timedelta(hours=2)).isoformat()}]
+            imminent = [{"starts_at": (now + APP.timedelta(minutes=20)).isoformat()}]
+            self.assertEqual(APP._melbet_refresh_seconds(games=ordinary, now=now), 300)
+            self.assertEqual(APP._melbet_refresh_seconds(games=imminent, now=now), 60)
+
+    def test_melbet_failures_back_off_without_discarding_cached_markets(self):
+        now = APP.datetime(2026, 8, 16, 12, tzinfo=APP.timezone.utc)
+        cache = {"markets": [{"starts_at": (now + APP.timedelta(hours=2)).isoformat()}], "consecutive_failures": 0}
+        with patch.dict(APP.os.environ, {
+            "NINTH_MELBET_REFRESH_SECONDS": "300",
+            "NINTH_MELBET_MAX_BACKOFF_SECONDS": "1800",
+        }):
+            APP._record_melbet_failure(cache, now, RuntimeError("temporary"))
+            self.assertEqual(cache["refresh_seconds"], 300)
+            self.assertEqual(cache["markets"][0]["starts_at"], (now + APP.timedelta(hours=2)).isoformat())
+            APP._record_melbet_failure(cache, now, RuntimeError("temporary"))
+            self.assertEqual(cache["refresh_seconds"], 600)
+            self.assertGreater(cache["retry_after"], now)
 
     def test_guarantee_history_uses_exact_pick_identity_and_sample_aware_rank(self):
         rows = []
@@ -106,6 +136,127 @@ class ProjectionIntegrityTests(unittest.TestCase):
         self.assertAlmostEqual(APP._innings_pitched("123.2"), 123 + 2 / 3)
         self.assertAlmostEqual(APP._innings_pitched("7.1"), 7 + 1 / 3)
         self.assertEqual(APP._innings_pitched(None), 0)
+
+    def test_team_league_rankings_use_rate_direction_and_all_team_context(self):
+        hitting = [
+            {"team": {"id": 1, "name": "A"}, "stat": {"gamesPlayed": 10, "runs": 60, "ops": ".800", "strikeOuts": 80, "baseOnBalls": 50, "plateAppearances": 400}},
+            {"team": {"id": 2, "name": "B"}, "stat": {"gamesPlayed": 10, "runs": 50, "ops": ".750", "strikeOuts": 100, "baseOnBalls": 40, "plateAppearances": 400}},
+            {"team": {"id": 3, "name": "C"}, "stat": {"gamesPlayed": 10, "runs": 40, "ops": ".700", "strikeOuts": 120, "baseOnBalls": 30, "plateAppearances": 400}},
+        ]
+        pitching = [
+            {"team": {"id": 1, "name": "A"}, "stat": {"gamesPlayed": 10, "runs": 30, "era": "3.00", "whip": "1.10", "inningsPitched": "90.0", "strikeOuts": 100, "baseOnBalls": 25, "homeRuns": 8, "battersFaced": 380, "strikeoutsPer9Inn": "10.00"}},
+            {"team": {"id": 2, "name": "B"}, "stat": {"gamesPlayed": 10, "runs": 40, "era": "4.00", "whip": "1.20", "inningsPitched": "90.0", "strikeOuts": 90, "baseOnBalls": 30, "homeRuns": 10, "battersFaced": 390, "strikeoutsPer9Inn": "9.00"}},
+            {"team": {"id": 3, "name": "C"}, "stat": {"gamesPlayed": 10, "runs": 50, "era": "5.00", "whip": "1.30", "inningsPitched": "90.0", "strikeOuts": 80, "baseOnBalls": 35, "homeRuns": 12, "battersFaced": 400, "strikeoutsPer9Inn": "8.00"}},
+        ]
+
+        result = APP.build_team_league_rankings(hitting, pitching)
+        rows = {row["key"]: row for row in result[1]["rankings"]}
+
+        self.assertEqual(rows["hitter_k_rate"]["rank"], 1)
+        self.assertEqual(rows["pitcher_k9"]["rank"], 1)
+        self.assertEqual(rows["pitcher_k_rate"]["rank"], 1)
+        self.assertEqual(rows["pitcher_walk_rate"]["rank"], 1)
+        self.assertEqual(rows["runs_allowed_per_game"]["rank"], 1)
+        self.assertEqual(rows["hitter_k_rate"]["teams"], 3)
+        self.assertEqual(rows["hitter_k_rate"]["display"], "20.0%")
+        self.assertEqual(rows["ops"]["display"], ".800")
+
+    def test_team_schedule_preserves_links_results_starters_and_upcoming_games(self):
+        payload = {"dates": [{"date": "2026-08-15", "games": [{
+            "gamePk": 11, "gameDate": "2026-08-15T23:00:00Z", "gameType": "R", "gameNumber": 1,
+            "status": {"abstractGameState": "Final", "detailedState": "Final", "statusCode": "F"},
+            "teams": {
+                "away": {"team": {"id": 1, "name": "A"}, "score": 5, "probablePitcher": {"id": 101, "fullName": "Away Starter"}},
+                "home": {"team": {"id": 2, "name": "B"}, "score": 3, "probablePitcher": {"id": 202, "fullName": "Home Starter"}},
+            },
+            "venue": {"id": 9, "name": "Park"}, "seriesDescription": "Regular Season", "doubleHeader": "N",
+        }, {
+            "gamePk": 12, "gameDate": "2026-08-16T23:00:00Z", "gameType": "R", "gameNumber": 1,
+            "status": {"abstractGameState": "Preview", "detailedState": "Scheduled", "statusCode": "S"},
+            "teams": {"away": {"team": {"id": 2, "name": "B"}}, "home": {"team": {"id": 1, "name": "A"}}},
+            "venue": {"id": 10, "name": "Next Park"}, "seriesDescription": "Regular Season", "doubleHeader": "N",
+        }, {
+            "gamePk": 13, "gameDate": "2026-02-01T23:00:00Z", "gameType": "E", "gameNumber": 1,
+            "status": {"abstractGameState": "Final", "detailedState": "Final", "statusCode": "F"},
+            "teams": {"away": {"team": {"id": 1, "name": "A"}}, "home": {"team": {"id": 900, "name": "Exhibition Club"}}},
+            "venue": {"id": 11, "name": "Exhibition Park"}, "seriesDescription": "Exhibition", "doubleHeader": "N",
+        }, {
+            "gamePk": 14, "gameDate": "2026-08-17T23:00:00Z", "gameType": "R", "gameNumber": 1,
+            "status": {"abstractGameState": "Final", "detailedState": "Postponed", "statusCode": "DR"},
+            "teams": {"away": {"team": {"id": 1, "name": "A"}}, "home": {"team": {"id": 2, "name": "B"}}},
+            "venue": {"id": 12, "name": "Rain Park"}, "seriesDescription": "Regular Season", "doubleHeader": "N",
+        }]}]}
+
+        rows = APP.normalize_team_schedule(payload, 1)
+
+        self.assertEqual(len(rows), 3)
+        self.assertEqual(rows[0]["opponent_id"], 2)
+        self.assertEqual(rows[0]["result"], "W")
+        self.assertEqual(rows[0]["team_starter_id"], 101)
+        self.assertEqual(rows[0]["opponent_starter_id"], 202)
+        self.assertFalse(rows[1]["is_final"])
+        self.assertIsNone(rows[1]["team_score"])
+        self.assertEqual(rows[2]["status"], "Postponed")
+        self.assertFalse(rows[2]["is_final"])
+        self.assertIsNone(rows[2]["result"])
+
+    def test_player_game_logs_preserve_game_team_opponent_and_all_stat_fields(self):
+        payload = {"people": [{"stats": [{
+            "group": {"displayName": "hitting"}, "splits": [{
+                "date": "2026-08-15", "season": "2026", "isHome": True, "isWin": True,
+                "game": {"gamePk": 99, "gameNumber": 1, "dayNight": "night"},
+                "team": {"id": 1, "name": "A"}, "opponent": {"id": 2, "name": "B"},
+                "positionsPlayed": [{"abbreviation": "RF"}],
+                "stat": {"summary": "2-4, HR", "atBats": 4, "hits": 2, "homeRuns": 1, "customFutureField": 7},
+            }],
+        }, {
+            "group": {"displayName": "pitching"}, "splits": [{
+                "date": "2026-08-16", "season": "2026", "isHome": False, "isWin": False,
+                "game": {"gamePk": 100}, "team": {"id": 1, "name": "A"}, "opponent": {"id": 3, "name": "C"},
+                "stat": {"inningsPitched": "6.0", "strikeOuts": 8, "losses": 1, "numberOfPitches": 94},
+            }],
+        }]}]}
+
+        rows = APP.normalize_player_game_logs(payload)
+
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0]["game_id"], 99)
+        self.assertEqual(rows[0]["opponent_id"], 2)
+        self.assertEqual(rows[0]["positions"], ["RF"])
+        self.assertEqual(rows[0]["stats"]["customFutureField"], 7)
+        self.assertEqual(rows[1]["decision"], "L")
+        self.assertEqual(rows[1]["stats"]["numberOfPitches"], 94)
+
+    def test_inning_distribution_normalizes_by_team_games_and_buckets_extras(self):
+        def game(game_id, home_id, away_id, innings):
+            return {
+                "gamePk": game_id,
+                "status": {"abstractGameState": "Final"},
+                "teams": {"home": {"team": {"id": home_id}}, "away": {"team": {"id": away_id}}},
+                "linescore": {"innings": innings},
+            }
+
+        payload = {"dates": [{"games": [
+            game(1, 2, 1, [
+                {"num": 1, "away": {"runs": 1}, "home": {"runs": 0}},
+                {"num": 2, "away": {"runs": 2}, "home": {"runs": 1}},
+            ]),
+            game(2, 1, 3, [
+                {"num": 1, "away": {"runs": 1}, "home": {"runs": 0}},
+                {"num": 10, "away": {"runs": 0}, "home": {"runs": 1}},
+            ]),
+            game(3, 1, 4, [{"num": 1, "away": {"runs": 0}, "home": {"runs": 9}}]),
+        ]}]}
+
+        result = APP.summarize_inning_distribution(payload, 1, excluded_game_id=3)
+
+        self.assertEqual(result["sample_games"], 2)
+        self.assertEqual(result["scored_per_game"][0], 0.5)
+        self.assertEqual(result["scored_per_game"][1], 1.0)
+        self.assertEqual(result["scored_per_game"][9], 0.5)
+        self.assertEqual(result["scoring_game_rate"][0], 50.0)
+        self.assertEqual(result["phases"][0]["scored_per_game"], 1.5)
+        self.assertEqual(result["phases"][3]["innings"], "10+")
 
     def test_melbet_snapshots_retain_prices_and_record_price_changes(self):
         market = {
@@ -1121,7 +1272,8 @@ class ProjectionIntegrityTests(unittest.TestCase):
             "start_date": "2026-08-04", "days": 1, "target_legs": 1,
             "build_style": "sweep",
             "build_side": "both", "minimum_odds": "1.50",
-            "portfolio_mode": "independent", "prop_preset": "strongest",
+            "portfolio_mode": "independent", "prop_preset": "guarantee",
+            "guarantee_robust_floor": .6,
             "rotation_depth": 2,
             "selected_prop_types": ["hits"],
             "selected_prop_sides": {"batter:hits": "under"}, "policy": {
@@ -1146,6 +1298,10 @@ class ProjectionIntegrityTests(unittest.TestCase):
                 "exact_audit_samples": 306, "selection_audit_samples": 14,
                 "market_name": "Batters. Total Hits", "selection_name": "Under (1.5)",
                 "audit_samples": 500,
+                "selection_source": "guarantee", "guarantee_samples": 12,
+                "guarantee_correct": 10, "guarantee_accuracy": 10 / 12,
+                "guarantee_wilson_lower": .67, "guarantee_evidence": "established",
+                "guarantee_score": .72, "guarantee_robust_floor": .6,
             }],
         })
         self.assertTrue(result["ok"])
@@ -1157,10 +1313,17 @@ class ProjectionIntegrityTests(unittest.TestCase):
         self.assertEqual(archived["entries"][0]["candidate_rank"], 3)
         self.assertEqual(archived["entries"][0]["within_game_rank"], 2)
         self.assertEqual(archived["entries"][0]["selection_action"], "alternate")
+        self.assertEqual(archived["entries"][0]["selection_source"], "guarantee")
+        self.assertEqual(archived["entries"][0]["guarantee_samples"], 12)
+        self.assertEqual(archived["entries"][0]["guarantee_correct"], 10)
+        self.assertEqual(archived["entries"][0]["guarantee_wilson_lower"], .67)
+        self.assertEqual(archived["entries"][0]["guarantee_score"], .72)
+        self.assertEqual(archived["entries"][0]["guarantee_robust_floor"], .6)
         self.assertEqual(archived["entries"][0]["replaced_selection"]["player_id"], 111)
         self.assertEqual(archived["entries"][0]["official_date"], "2026-08-04")
         self.assertEqual(archived["build_style"], "sweep")
         self.assertEqual(archived["rotation_depth"], 2)
+        self.assertEqual(archived["guarantee_robust_floor"], .6)
         self.assertEqual(archived["selected_prop_sides"], {"batter:hits": "under"})
         self.assertEqual(archived["forward_test_policy_id"], "forward-test-v1")
         self.assertEqual(archived["snapshot_rule"], "Exact Build Best selections before first pitch")

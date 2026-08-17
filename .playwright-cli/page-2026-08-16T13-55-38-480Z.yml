@@ -1,0 +1,72 @@
+- generic [ref=e3]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "NINTH home" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: NINTH
+      - navigation "Sport workspaces" [ref=e9]:
+        - link "00 Platform" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e11]: "00"
+          - generic [ref=e12]: Platform
+        - link "01 MLB" [ref=e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=e14]: "01"
+          - generic [ref=e15]: MLB
+        - link "02 FTB" [ref=e17] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=e18]: "02"
+          - generic [ref=e19]: FTB
+        - link "03 NFL" [ref=e20] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=e21]: "03"
+          - generic [ref=e22]: NFL
+        - link "04 NBA" [ref=e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=e24]: "04"
+          - generic [ref=e25]: NBA
+        - link "05 ESP" [ref=e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=e27]: "05"
+          - generic [ref=e28]: ESP
+      - generic [ref=e29]:
+        - textbox "Search MLB" [ref=e34]
+        - button "Use light theme" [ref=e35] [cursor=pointer]
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]: PRODUCTION
+        - generic [ref=e45]: Baseball
+        - emphasis [ref=e46]: PRODUCTION
+      - navigation "Workspace navigation" [ref=e47]:
+        - link "Overview" [ref=e48] [cursor=pointer]:
+          - /url: /baseball
+        - link "Games" [ref=e49] [cursor=pointer]:
+          - /url: /schedule
+        - link "Standings" [ref=e50] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e51] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e52] [cursor=pointer]:
+          - /url: /players
+        - link "Live" [ref=e54] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=e55] [cursor=pointer]:
+          - /url: /builder
+        - link "Player props" [ref=e56] [cursor=pointer]:
+          - /url: /props-builder
+        - link "Models" [ref=e57] [cursor=pointer]:
+          - /url: /model
+        - link "Guarantees" [ref=e58] [cursor=pointer]:
+          - /url: /baseball/guarantees
+        - link "Alter ego" [ref=e59] [cursor=pointer]:
+          - /url: /alter-ego
+    - generic [ref=e60]:
+      - generic [ref=e61]: TODAY
+      - generic [ref=e63]: Official scoreboard syncing
+      - generic [ref=e64]: FEEDS CONNECTED
+  - main [ref=e66]:
+    - status [ref=e69]:
+      - generic [ref=e70]: "N"
+      - generic [ref=e74]:
+        - strong [ref=e75]: Loading player profile
+        - generic [ref=e76]: Synchronizing the latest official roster and season statistics.

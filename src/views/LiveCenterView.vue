@@ -4,12 +4,13 @@ import { api } from '../services/api'
 import GameCard from '../components/game/GameCard.vue'
 import LoadingState from '../components/ui/LoadingState.vue'
 import LoadError from '../components/ui/LoadError.vue'
+import { createSharedPoller } from '../services/polling'
 
 const games = ref([])
 const loading = ref(true)
 const updatedAt = ref()
 const error = ref('')
-let refreshTimer
+let poller
 
 const load = async () => {
   try {
@@ -23,11 +24,11 @@ const load = async () => {
   }
 }
 
-onMounted(async () => {
-  await load()
-  refreshTimer = window.setInterval(load, 15000)
+onMounted(() => {
+  poller = createSharedPoller({ key: 'live-center', task: load, interval: 10_000 })
+  poller.start()
 })
-onBeforeUnmount(() => window.clearInterval(refreshTimer))
+onBeforeUnmount(() => poller?.stop())
 </script>
 
 <template>
@@ -39,7 +40,7 @@ onBeforeUnmount(() => window.clearInterval(refreshTimer))
     <div v-if="games.length" class="game-grid"><GameCard v-for="game in games" :key="game.id" :game="game" live /></div>
     <LoadError v-else-if="error" :message="error" @retry="load"/>
     <LoadingState v-else-if="loading" label="Loading the live scoreboard" detail="Checking every official MLB game currently in progress."/>
-    <section v-else class="panel empty"><span class="ring"></span><h2>No MLB games are live right now</h2><p>The board refreshes automatically every 15 seconds.</p><RouterLink to="/schedule">VIEW TODAY'S SCHEDULE →</RouterLink></section>
+    <section v-else class="panel empty"><span class="ring"></span><h2>No MLB games are live right now</h2><p>The board refreshes every 10 seconds while this tab is visible.</p><RouterLink to="/schedule">VIEW TODAY'S SCHEDULE →</RouterLink></section>
   </div>
 </template>
 

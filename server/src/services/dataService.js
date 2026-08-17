@@ -637,6 +637,8 @@ export const dataService = {
             ? {
                 ...detail.probable_pitchers[side],
                 side,
+                team_id: detail[side]?.id,
+                team: detail[side]?.name,
                 status:
                   detail.model_context?.[side]?.starter_status || "predicted",
               }
@@ -644,6 +646,7 @@ export const dataService = {
         )
         .filter(Boolean),
       pitchingMatchup: detail.pitching_matchup || {},
+      leagueContext: detail.league_context || null,
       recentForm: {
         away: detail.recent_form?.away || [],
         home: detail.recent_form?.home || [],
@@ -810,17 +813,20 @@ export const dataService = {
     const divisionTeams = all
       .filter((item) => item.division === team.division)
       .sort((a, b) => pct(b.pct) - pct(a.pct));
-    const recent = detail.recent || [],
+    const schedule = detail.schedule || [],
+      completed = schedule.filter((game) => game.is_final && !/postponed|cancelled|suspended/i.test(game.status || "")),
+      recent = completed.slice(-20),
+      leagueRankings = detail.league_rankings || [],
+      rankingByKey = new Map(leagueRankings.map((row) => [row.key, row])),
       progress = [];
     let diff = 0;
     recent.forEach((game) => {
-      const isHome = game.home_id === team.id;
-      diff += isHome
-        ? num(game.home_score) - num(game.away_score)
-        : num(game.away_score) - num(game.home_score);
+      diff += num(game.team_score) - num(game.opponent_score);
       progress.push(diff);
     });
     const roster = activeRoster(detail.roster || []);
+    const hitterKRate = rankingByKey.get("hitter_k_rate");
+    const pitcherKRate = rankingByKey.get("pitcher_k_rate");
     return {
       name: team.name,
       abbr: team.abbr,
@@ -846,15 +852,25 @@ export const dataService = {
           delta: `AVG ${hit.avg || "—"}`,
         },
         {
+          label: "Hitter K rate",
+          value: hitterKRate?.display || "—",
+          delta: hitterKRate ? `#${hitterKRate.rank} of ${hitterKRate.teams} MLB teams` : "League rank pending",
+        },
+        {
           label: "Team ERA",
           value: pitch.era || "—",
           delta: `WHIP ${pitch.whip || "—"}`,
         },
+        {
+          label: "Pitcher K rate",
+          value: pitcherKRate?.display || "—",
+          delta: pitcherKRate ? `#${pitcherKRate.rank} of ${pitcherKRate.teams} MLB teams` : "League rank pending",
+        },
       ],
-      chartTitle: "Cumulative run differential · last completed games",
+      chartTitle: "Cumulative run differential · latest 20 completed games",
       chart: progress.length ? progress : [0, 0],
       chartLabels: progress.length
-        ? recent.map((game) => String(game.game_date || "").slice(5))
+        ? recent.map((game) => String(game.date || "").slice(5))
         : ["No data", ""],
       chartType: "line",
       chartUnit: "runs",
@@ -892,19 +908,31 @@ export const dataService = {
           stats: { POS: item.position, STATUS: item.status },
         })),
       roster,
+      season: detail.season,
+      through: detail.through,
+      leagueRankings,
+      leagueTeamCount: detail.league_team_count || 30,
+      inningDistribution: detail.inning_distribution || null,
+      schedule,
+      scheduleSummary: {
+        total: schedule.length,
+        active: schedule.filter((game) => !/postponed|cancelled|suspended/i.test(game.status || "")).length,
+        completed: completed.length,
+        upcoming: schedule.filter((game) => !game.is_final && !/postponed|cancelled|suspended/i.test(game.status || "")).length,
+        postponed: schedule.filter((game) => /postponed|cancelled|suspended/i.test(game.status || "")).length,
+        home: schedule.filter((game) => game.is_home).length,
+        away: schedule.filter((game) => !game.is_home).length,
+      },
       statusTitle: "Recent results",
-      status: recent
+      status: completed
         .slice(-5)
         .reverse()
         .map((game) => {
-          const home = game.home_id === team.id,
-            forRuns = num(home ? game.home_score : game.away_score),
-            against = num(home ? game.away_score : game.home_score);
           return {
-            name: `${game.away_name} @ ${game.home_name}`,
-            detail: game.game_date,
-            value: `${forRuns > against ? "W" : "L"} ${forRuns}-${against}`,
-            tone: forRuns > against ? "teal" : "pink",
+            name: `${game.is_home ? "vs" : "@"} ${game.opponent}`,
+            detail: game.date,
+            value: `${game.result || "—"} ${game.team_score}-${game.opponent_score}`,
+            tone: game.result === "W" ? "teal" : "pink",
           };
         }),
       tableTitle: `${team.division} standings`,
@@ -930,6 +958,84 @@ export const dataService = {
       pitching = player.stats?.find((item) => item.group === "pitching")?.stats,
       stat = hitting || pitching || {},
       hitter = Boolean(hitting);
+    const allGameLogs = player.game_log || [],
+      gameLog = allGameLogs.filter((item) => item.group === (hitter ? "hitting" : "pitching")),
+      trendLog = gameLog.slice(-30),
+      primaryKey = hitter ? "hits" : "strikeOuts",
+      secondaryKey = hitter ? "totalBases" : "numberOfPitches",
+      gameValues = gameLog.map((item) => Number(item.stats?.[primaryKey] || 0)),
+      trendValues = trendLog.map((item) => Number(item.stats?.[primaryKey] || 0)),
+      secondaryValues = trendLog.map((item) => Number(item.stats?.[secondaryKey] || 0)),
+      lastFive = gameValues.slice(-5),
+      seasonGameAverage = gameValues.length ? gameValues.reduce((sum, value) => sum + value, 0) / gameValues.length : null,
+      recentAverage = lastFive.length ? lastFive.reduce((sum, value) => sum + value, 0) / lastFive.length : null,
+      peerMetrics = player.peer_profile?.metrics || [],
+      leadPeerMetric = [...peerMetrics].filter((item) => item.percentile != null).sort((a, b) => b.percentile - a.percentile)[0];
+    const gameLogDefinitions = {
+      hitting: {
+        label: "Hitting game log",
+        columns: [
+          ["plateAppearances", "PA"], ["atBats", "AB"], ["runs", "R"], ["hits", "H"],
+          ["doubles", "2B"], ["triples", "3B"], ["homeRuns", "HR"], ["rbi", "RBI"],
+          ["baseOnBalls", "BB"], ["strikeOuts", "K"], ["stolenBases", "SB"], ["totalBases", "TB"],
+          ["leftOnBase", "LOB"], ["numberOfPitches", "Pitches"], ["avg", "AVG"], ["obp", "OBP"],
+          ["slg", "SLG"], ["ops", "OPS"],
+        ],
+      },
+      pitching: {
+        label: "Pitching game log",
+        columns: [
+          ["gamesStarted", "GS"], ["inningsPitched", "IP"], ["hits", "H"], ["runs", "R"],
+          ["earnedRuns", "ER"], ["homeRuns", "HR"], ["baseOnBalls", "BB"], ["strikeOuts", "K"],
+          ["numberOfPitches", "Pitches"], ["strikes", "Strikes"], ["battersFaced", "BF"], ["strikePercentage", "Strike %"],
+          ["era", "ERA"], ["whip", "WHIP"], ["pitchesPerInning", "P / IP"], ["strikeoutWalkRatio", "K / BB"],
+          ["groundOuts", "GO"], ["airOuts", "AO"],
+        ],
+      },
+      fielding: {
+        label: "Fielding game log",
+        columns: [
+          ["gamesStarted", "GS"], ["innings", "Inn"], ["putOuts", "PO"], ["assists", "A"],
+          ["errors", "E"], ["chances", "Ch"], ["doublePlays", "DP"], ["fielding", "FLD %"],
+        ],
+      },
+    };
+    const gameLogLabelOverrides = {
+      gamesPlayed: "G", gamesStarted: "GS", atBats: "AB", plateAppearances: "PA",
+      runs: "R", hits: "H", doubles: "2B", triples: "3B", homeRuns: "HR", rbi: "RBI",
+      baseOnBalls: "BB", intentionalWalks: "IBB", strikeOuts: "K", hitByPitch: "HBP",
+      stolenBases: "SB", caughtStealing: "CS", totalBases: "TB", leftOnBase: "LOB",
+      sacBunts: "SAC", sacFlies: "SF", groundIntoDoublePlay: "GIDP", numberOfPitches: "Pitches",
+      avg: "AVG", obp: "OBP", slg: "SLG", ops: "OPS", babip: "BABIP",
+      inningsPitched: "IP", earnedRuns: "ER", battersFaced: "BF", strikes: "Strikes",
+      strikePercentage: "Strike %", pitchesPerInning: "P / IP", strikeoutWalkRatio: "K / BB",
+      strikeoutsPer9Inn: "K / 9", walksPer9Inn: "BB / 9", hitsPer9Inn: "H / 9",
+      homeRunsPer9: "HR / 9", groundOuts: "GO", airOuts: "AO", groundOutsToAirouts: "GO / AO",
+      wins: "W", losses: "L", saves: "SV", saveOpportunities: "SVO", holds: "HLD",
+      blownSaves: "BS", era: "ERA", whip: "WHIP", completeGames: "CG", shutouts: "SHO",
+      innings: "Inn", putOuts: "PO", assists: "A", errors: "E", chances: "Ch",
+      doublePlays: "DP", fielding: "FLD %",
+    };
+    const gameLogColumnLabel = (key) => gameLogLabelOverrides[key]
+      || String(key).replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/^./, (letter) => letter.toUpperCase());
+    const gameLogs = Object.entries(gameLogDefinitions)
+      .map(([group, definition]) => {
+        const rows = allGameLogs.filter((row) => row.group === group),
+          preferredKeys = new Set(definition.columns.map(([key]) => key)),
+          extraKeys = [...new Set(rows.flatMap((row) => Object.keys(row.stats || {})))]
+            .filter((key) => !preferredKeys.has(key))
+            .sort((left, right) => gameLogColumnLabel(left).localeCompare(gameLogColumnLabel(right)));
+        return {
+          group,
+          label: definition.label,
+          columns: [
+            ...definition.columns.map(([key, label]) => ({ key, label })),
+            ...extraKeys.map((key) => ({ key, label: gameLogColumnLabel(key) })),
+          ],
+          rows,
+        };
+      })
+      .filter((section) => section.rows.length);
     const metrics = hitter
       ? [
           {
@@ -977,6 +1083,7 @@ export const dataService = {
         ];
     return {
       playerId: player.id,
+      season: Number(player.stats?.find((item) => item?.season)?.season || new Date().getUTCFullYear()),
       name: `${player.first_name} ${player.last_name}`,
       number: `#${player.id}`,
       kicker: `${player.current_team || "MLB"} · ${player.position || "PLAYER"}`,
@@ -1048,6 +1155,25 @@ export const dataService = {
         },
       ],
       statusTitle: "Provider status",
+      gameLogs,
+      gameLogCount: new Set(allGameLogs.map((row) => row.game_id)).size,
+      analytics: {
+        positionGroup: hitter ? "Position players" : "Pitchers",
+        peerSample: player.peer_profile?.sample || 0,
+        metrics: peerMetrics,
+        trends: {
+          labels: trendLog.map((row) => String(row.date || "").slice(5) || `G${row.game_id}`),
+          primary: trendValues,
+          secondary: secondaryValues,
+          primaryLabel: hitter ? "Hits" : "Strikeouts",
+          secondaryLabel: hitter ? "Total bases" : "Pitches",
+        },
+        splits: lastFive.length ? [{ label: "Latest 5", value: Number(recentAverage.toFixed(2)), comparison: Number(seasonGameAverage.toFixed(2)), context: "Captured game average" }] : [],
+        interpretation: leadPeerMetric
+          ? `${player.first_name} ${player.last_name}'s strongest captured peer rate is ${leadPeerMetric.label} at the ${leadPeerMetric.percentile}th percentile among ${player.peer_profile.sample} ${hitter ? "MLB hitters" : "MLB pitchers"}. ${lastFive.length ? `The latest five average ${recentAverage.toFixed(2)} ${hitter ? "hits" : "strikeouts"}, compared with ${seasonGameAverage.toFixed(2)} across the captured game log.` : "A chronological game sample is not available."}`
+          : `Official season totals are available, but a sufficiently comparable league peer sample is not attached to this response.`,
+        source: "Official MLB Stats API season and game-log records",
+      },
       status: [
         {
           name: "Official MLB feed",

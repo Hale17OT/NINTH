@@ -1,0 +1,53 @@
+- generic [ref=f14e3]:
+  - banner [ref=f14e5]:
+    - generic [ref=f14e6]:
+      - link "NINTH home" [ref=f14e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f14e8]: NINTH
+      - navigation "Sport workspaces" [ref=f14e9]:
+        - link "00 Platform" [ref=f14e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f14e11]: "00"
+          - generic [ref=f14e12]: Platform
+        - link "01 MLB" [ref=f14e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=f14e14]: "01"
+          - generic [ref=f14e15]: MLB
+        - link "02 FTB" [ref=f14e16] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=f14e17]: "02"
+          - generic [ref=f14e18]: FTB
+        - link "03 NFL" [ref=f14e19] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=f14e20]: "03"
+          - generic [ref=f14e21]: NFL
+        - link "04 NBA" [ref=f14e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=f14e24]: "04"
+          - generic [ref=f14e25]: NBA
+        - link "05 ESP" [ref=f14e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=f14e27]: "05"
+          - generic [ref=f14e28]: ESP
+      - button "Use light theme" [ref=f14e30] [cursor=pointer]
+    - generic [ref=f14e37]:
+      - generic [ref=f14e38]:
+        - generic [ref=f14e39]: NFL
+        - generic [ref=f14e40]: American Football
+        - emphasis [ref=f14e41]: RESEARCH LAB
+      - navigation "Workspace navigation" [ref=f14e42]:
+        - link "Overview" [ref=f14e43] [cursor=pointer]:
+          - /url: /american-football
+        - link "Games" [ref=f14e44] [cursor=pointer]:
+          - /url: /american-football/games
+        - link "Teams" [ref=f14e45] [cursor=pointer]:
+          - /url: /american-football/teams
+        - link "Players" [ref=f14e46] [cursor=pointer]:
+          - /url: /american-football/players
+        - link "NFL Builder" [ref=f14e47] [cursor=pointer]:
+          - /url: /american-football/builder
+        - link "Models" [ref=f14e49] [cursor=pointer]:
+          - /url: /american-football/models
+        - link "Data" [ref=f14e50] [cursor=pointer]:
+          - /url: /american-football/data
+  - main [ref=f14e51]

@@ -62,7 +62,13 @@ export const apiController = {
   multiSportDirectory: async (req, res) => res.json(await multiSportProvider.directory(
     req.params.sport,
     req.params.type,
-    { competition: req.query.competition, discipline: req.query.discipline, season: req.query.season },
+    { ...req.query },
+  )),
+  multiSportWorkspace: async (req, res) => res.json(await multiSportProvider.workspace(
+    req.params.sport,
+    req.params.scope,
+    req.params.id,
+    { ...req.query },
   )),
   slips: async (req, res) => res.json(await data.slips()),
   importSlip: async (req, res) =>

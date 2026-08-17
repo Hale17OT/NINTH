@@ -6,6 +6,7 @@ const wrap = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
 r.get("/health", wrap(c.health));
+r.get("/multisport/:sport/workspace/:scope/:id", wrap(c.multiSportWorkspace));
 r.get("/multisport/:sport/:type", wrap(c.multiSportDirectory));
 r.get("/model/results", wrap(c.modelResults));
 r.get("/model", wrap(c.model));

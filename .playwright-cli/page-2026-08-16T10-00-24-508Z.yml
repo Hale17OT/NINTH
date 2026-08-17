@@ -1,0 +1,610 @@
+- generic [ref=f14e3]:
+  - banner [ref=f14e5]:
+    - generic [ref=f14e6]:
+      - link "NINTH home" [ref=f14e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f14e8]: NINTH
+      - navigation "Sport workspaces" [ref=f14e9]:
+        - link "00 Platform" [ref=f14e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f14e11]: "00"
+          - generic [ref=f14e12]: Platform
+        - link "01 MLB" [ref=f14e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=f14e14]: "01"
+          - generic [ref=f14e15]: MLB
+        - link "02 FTB" [ref=f14e16] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=f14e17]: "02"
+          - generic [ref=f14e18]: FTB
+        - link "03 NFL" [ref=f14e19] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=f14e20]: "03"
+          - generic [ref=f14e21]: NFL
+        - link "04 NBA" [ref=f14e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=f14e24]: "04"
+          - generic [ref=f14e25]: NBA
+        - link "05 ESP" [ref=f14e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=f14e27]: "05"
+          - generic [ref=f14e28]: ESP
+      - button "Use light theme" [ref=f14e30] [cursor=pointer]
+    - generic [ref=f14e37]:
+      - generic [ref=f14e38]:
+        - generic [ref=f14e39]: NFL
+        - generic [ref=f14e40]: American Football
+        - emphasis [ref=f14e41]: RESEARCH LAB
+      - navigation "Workspace navigation" [ref=f14e42]:
+        - link "Overview" [ref=f14e43] [cursor=pointer]:
+          - /url: /american-football
+        - link "Games" [ref=f14e44] [cursor=pointer]:
+          - /url: /american-football/games
+        - link "Teams" [ref=f14e45] [cursor=pointer]:
+          - /url: /american-football/teams
+        - link "Players" [ref=f14e46] [cursor=pointer]:
+          - /url: /american-football/players
+        - link "NFL Builder" [ref=f14e47] [cursor=pointer]:
+          - /url: /american-football/builder
+        - link "Models" [ref=f14e49] [cursor=pointer]:
+          - /url: /american-football/models
+        - link "Data" [ref=f14e50] [cursor=pointer]:
+          - /url: /american-football/data
+  - main [ref=f14e51]:
+    - generic [ref=f14e54]:
+      - generic [ref=f14e55]:
+        - generic [ref=f14e56]:
+          - generic [ref=f14e57]: NINTH / NFL BUILDER
+          - heading [level=1] [ref=f14e58]:
+            - generic "Build today's" [ref=f14e59]:
+              - generic [ref=f14e60]: Build
+              - generic [ref=f14e62]: today's
+            - emphasis [ref=f14e63]:
+              - generic "NFL card." [ref=f14e64]:
+                - generic [ref=f14e65]: NFL
+                - generic [ref=f14e67]: card.
+          - paragraph [ref=f14e68]: Moneyline, spread and total-points decisions use the same compact card-building flow as MLB while every NFL market retains its own evidence gate.
+        - generic [ref=f14e69]:
+          - generic [ref=f14e70]:
+            - generic [ref=f14e71]: MODEL
+            - generic [ref=f14e72]:
+              - button "MONEYLINE" [ref=f14e73] [cursor=pointer]
+              - button "SPREAD" [ref=f14e74] [cursor=pointer]
+              - button "TOTALS" [ref=f14e75] [cursor=pointer]
+              - button "MIXED" [ref=f14e76] [cursor=pointer]
+          - generic [ref=f14e77]:
+            - generic [ref=f14e78]:
+              - generic [ref=f14e79]: Evidence
+              - button "All shadow observations Research" [ref=f14e80] [cursor=pointer]:
+                - generic [ref=f14e81]: All shadow observations
+                - generic [ref=f14e82]: Research
+            - generic [ref=f14e85]:
+              - generic [ref=f14e86]: Slate
+              - button "Week 1" [ref=f14e87] [cursor=pointer]
+            - generic [ref=f14e91]:
+              - generic [ref=f14e92]: Target legs
+              - button "5 legs" [ref=f14e93] [cursor=pointer]
+            - generic [ref=f14e97]:
+              - generic [ref=f14e98]: Odds floor
+              - button "All listed odds" [ref=f14e99] [cursor=pointer]
+            - button "REFRESH" [ref=f14e103] [cursor=pointer]
+      - generic [ref=f14e109]:
+        - img "15.6 percent, all legs" [ref=f14e635]:
+          - generic [ref=f14e114]:
+            - strong [ref=f14e115]:
+              - generic [ref=f14e116]: "15.2"
+              - superscript: "%"
+            - generic [ref=f14e117]: all legs
+            - generic [ref=f14e118]: joint model
+        - generic [ref=f14e119]:
+          - generic [ref=f14e120]: JOINT MODEL CONFIDENCE
+          - heading "5-leg NFL card" [level=2] [ref=f14e636]
+          - paragraph [ref=f14e122]: The displayed joint estimate multiplies the selected NFL model probabilities. One selection is allowed per game and mixed cards cap repeated market-side exposure.
+          - generic [ref=f14e123]: Current combined decimal price 6.18. Prices filter and describe selections; they are not model inputs.
+        - generic [ref=f14e124]:
+          - generic [ref=f14e125]:
+            - generic [ref=f14e126]: LEGS / TARGET
+            - generic [ref=f14e127]: 5 / 5
+          - generic [ref=f14e128]:
+            - generic [ref=f14e129]: JOINT MODEL
+            - generic [ref=f14e130]: 15.6%
+          - generic [ref=f14e131]:
+            - generic [ref=f14e132]: TYPICAL LEG
+            - generic [ref=f14e133]: 69.1%
+          - generic [ref=f14e134]:
+            - generic [ref=f14e135]: MODE
+            - generic [ref=f14e136]: SHADOW
+        - generic [ref=f14e137]:
+          - button "BUILD BEST 5" [active] [ref=f14e138] [cursor=pointer]
+          - button "CLEAR" [ref=f14e143] [cursor=pointer]
+      - generic [ref=f14e147]:
+        - article [ref=f14e148]:
+          - generic [ref=f14e149]: Moneyline
+          - generic [ref=f14e150]: HISTORICAL READY
+          - generic [ref=f14e151]: 0 / 30 LIVE · BRIER —
+        - article [ref=f14e152]:
+          - generic [ref=f14e153]: Spread
+          - generic [ref=f14e154]: SHADOW LOCKED
+          - generic [ref=f14e155]: 0 / 30 LIVE · BRIER —
+        - article [ref=f14e156]:
+          - generic [ref=f14e157]: Total points
+          - generic [ref=f14e158]: SHADOW LOCKED
+          - generic [ref=f14e159]: 0 / 30 LIVE · BRIER —
+      - generic [ref=f14e160]:
+        - generic [ref=f14e161]: 16 CURRENT NFL LINES · WEEK 1
+        - paragraph [ref=f14e163]: Production mode exposes only markets that pass their live gate. Shadow mode remains research-only and never triggers sportsbook autofill.
+      - generic [ref=f14e637]:
+        - article [ref=f14e638]:
+          - generic [ref=f14e639]: "01"
+          - generic [ref=f14e640]:
+            - generic [ref=f14e641]: Moneyline · 71.7%
+            - generic [ref=f14e642]: Jacksonville Jaguars moneyline
+            - emphasis [ref=f14e643]: Cleveland Browns @ Jacksonville Jaguars
+          - button "×" [ref=f14e644] [cursor=pointer]
+        - article [ref=f14e645]:
+          - generic [ref=f14e646]: "02"
+          - generic [ref=f14e647]:
+            - generic [ref=f14e648]: Moneyline · 71.7%
+            - generic [ref=f14e649]: Los Angeles Chargers moneyline
+            - emphasis [ref=f14e650]: Arizona Cardinals @ Los Angeles Chargers
+          - button "×" [ref=f14e651] [cursor=pointer]
+        - article [ref=f14e652]:
+          - generic [ref=f14e653]: "03"
+          - generic [ref=f14e654]:
+            - generic [ref=f14e655]: Moneyline · 71.7%
+            - generic [ref=f14e656]: Philadelphia Eagles moneyline
+            - emphasis [ref=f14e657]: Washington Commanders @ Philadelphia Eagles
+          - button "×" [ref=f14e658] [cursor=pointer]
+        - article [ref=f14e659]:
+          - generic [ref=f14e660]: "04"
+          - generic [ref=f14e661]:
+            - generic [ref=f14e662]: Moneyline · 65.2%
+            - generic [ref=f14e663]: Seattle Seahawks moneyline
+            - emphasis [ref=f14e664]: New England Patriots @ Seattle Seahawks
+          - button "×" [ref=f14e665] [cursor=pointer]
+        - article [ref=f14e666]:
+          - generic [ref=f14e667]: "05"
+          - generic [ref=f14e668]:
+            - generic [ref=f14e669]: Moneyline · 65.2%
+            - generic [ref=f14e670]: Minnesota Vikings moneyline
+            - emphasis [ref=f14e671]: Green Bay Packers @ Minnesota Vikings
+          - button "×" [ref=f14e672] [cursor=pointer]
+      - generic [ref=f14e164]:
+        - generic [ref=f14e165]:
+          - generic [ref=f14e166]:
+            - generic [ref=f14e167]: CURRENT NFL BOARD
+            - heading "16 decision-ready lines" [level=2] [ref=f14e168]
+          - generic [ref=f14e169]: 16 GAMES
+        - generic [ref=f14e170]:
+          - article [ref=f14e171]:
+            - generic [ref=f14e172]:
+              - generic [ref=f14e173]: W1 · 2026-09-13
+              - strong [ref=f14e174]: SHADOW ONLY
+            - generic [ref=f14e175]:
+              - generic [ref=f14e176]:
+                - img "Cleveland Browns identity" [ref=f14e178]
+                - generic [ref=f14e179]:
+                  - generic [ref=f14e180]: AWAY
+                  - generic [ref=f14e181]: Cleveland Browns
+              - generic [ref=f14e182]: AT
+              - generic [ref=f14e183]:
+                - img "Jacksonville Jaguars identity" [ref=f14e185]
+                - generic [ref=f14e186]:
+                  - generic [ref=f14e187]: HOME
+                  - generic [ref=f14e188]: Jacksonville Jaguars
+            - generic [ref=f14e189]:
+              - text: Moneyline
+              - generic [ref=f14e190]: 19.0–27.1 projected
+            - button "HOME · @ 1.267 Jacksonville Jaguars moneyline 71.7%" [ref=f14e191] [cursor=pointer]:
+              - generic [ref=f14e192]:
+                - generic [ref=f14e193]: HOME · @ 1.267
+                - generic [ref=f14e194]: Jacksonville Jaguars moneyline
+              - strong [ref=f14e195]: 71.7%
+            - generic [ref=f14e197]:
+              - generic [ref=f14e198]: MODEL CONSISTENT
+              - generic [ref=f14e199]: ONE PICK PER GAME
+          - article [ref=f14e200]:
+            - generic [ref=f14e201]:
+              - generic [ref=f14e202]: W1 · 2026-09-13
+              - strong [ref=f14e203]: SHADOW ONLY
+            - generic [ref=f14e204]:
+              - generic [ref=f14e205]:
+                - img "Arizona Cardinals identity" [ref=f14e207]
+                - generic [ref=f14e208]:
+                  - generic [ref=f14e209]: AWAY
+                  - generic [ref=f14e210]: Arizona Cardinals
+              - generic [ref=f14e211]: AT
+              - generic [ref=f14e212]:
+                - img "Los Angeles Chargers identity" [ref=f14e214]
+                - generic [ref=f14e215]:
+                  - generic [ref=f14e216]: HOME
+                  - generic [ref=f14e217]: Los Angeles Chargers
+            - generic [ref=f14e218]:
+              - text: Moneyline
+              - generic [ref=f14e219]: 18.4–31.0 projected
+            - button "HOME · @ 1.174 Los Angeles Chargers moneyline 71.7%" [ref=f14e220] [cursor=pointer]:
+              - generic [ref=f14e221]:
+                - generic [ref=f14e222]: HOME · @ 1.174
+                - generic [ref=f14e223]: Los Angeles Chargers moneyline
+              - strong [ref=f14e224]: 71.7%
+            - generic [ref=f14e226]:
+              - generic [ref=f14e227]: MODEL CONSISTENT
+              - generic [ref=f14e228]: ONE PICK PER GAME
+          - article [ref=f14e229]:
+            - generic [ref=f14e230]:
+              - generic [ref=f14e231]: W1 · 2026-09-13
+              - strong [ref=f14e232]: SHADOW ONLY
+            - generic [ref=f14e233]:
+              - generic [ref=f14e234]:
+                - img "Washington Commanders identity" [ref=f14e236]
+                - generic [ref=f14e237]:
+                  - generic [ref=f14e238]: AWAY
+                  - generic [ref=f14e239]: Washington Commanders
+              - generic [ref=f14e240]: AT
+              - generic [ref=f14e241]:
+                - img "Philadelphia Eagles identity" [ref=f14e243]
+                - generic [ref=f14e244]:
+                  - generic [ref=f14e245]: HOME
+                  - generic [ref=f14e246]: Philadelphia Eagles
+            - generic [ref=f14e247]:
+              - text: Moneyline
+              - generic [ref=f14e248]: 16.6–25.8 projected
+            - button "HOME · @ 1.459 Philadelphia Eagles moneyline 71.7%" [ref=f14e249] [cursor=pointer]:
+              - generic [ref=f14e250]:
+                - generic [ref=f14e251]: HOME · @ 1.459
+                - generic [ref=f14e252]: Philadelphia Eagles moneyline
+              - strong [ref=f14e253]: 71.7%
+            - generic [ref=f14e255]:
+              - generic [ref=f14e256]: MODEL CONSISTENT
+              - generic [ref=f14e257]: ONE PICK PER GAME
+          - article [ref=f14e258]:
+            - generic [ref=f14e259]:
+              - generic [ref=f14e260]: W1 · 2026-09-09
+              - strong [ref=f14e261]: SHADOW ONLY
+            - generic [ref=f14e262]:
+              - generic [ref=f14e263]:
+                - img "New England Patriots identity" [ref=f14e265]
+                - generic [ref=f14e266]:
+                  - generic [ref=f14e267]: AWAY
+                  - generic [ref=f14e268]: New England Patriots
+              - generic [ref=f14e269]: AT
+              - generic [ref=f14e270]:
+                - img "Seattle Seahawks identity" [ref=f14e272]
+                - generic [ref=f14e273]:
+                  - generic [ref=f14e274]: HOME
+                  - generic [ref=f14e275]: Seattle Seahawks
+            - generic [ref=f14e276]:
+              - text: Moneyline
+              - generic [ref=f14e277]: 19.4–27.3 projected
+            - button "HOME · @ 1.541 Seattle Seahawks moneyline 65.2%" [ref=f14e278] [cursor=pointer]:
+              - generic [ref=f14e279]:
+                - generic [ref=f14e280]: HOME · @ 1.541
+                - generic [ref=f14e281]: Seattle Seahawks moneyline
+              - strong [ref=f14e282]: 65.2%
+            - generic [ref=f14e284]:
+              - generic [ref=f14e285]: MODEL CONSISTENT
+              - generic [ref=f14e286]: ONE PICK PER GAME
+          - article [ref=f14e287]:
+            - generic [ref=f14e288]:
+              - generic [ref=f14e289]: W1 · 2026-09-13
+              - strong [ref=f14e290]: SHADOW ONLY
+            - generic [ref=f14e291]:
+              - generic [ref=f14e292]:
+                - img "Green Bay Packers identity" [ref=f14e294]
+                - generic [ref=f14e295]:
+                  - generic [ref=f14e296]: AWAY
+                  - generic [ref=f14e297]: Green Bay Packers
+              - generic [ref=f14e298]: AT
+              - generic [ref=f14e299]:
+                - img "Minnesota Vikings identity" [ref=f14e301]
+                - generic [ref=f14e302]:
+                  - generic [ref=f14e303]: HOME
+                  - generic [ref=f14e304]: Minnesota Vikings
+            - generic [ref=f14e305]:
+              - text: Moneyline
+              - generic [ref=f14e306]: 19.2–26.3 projected
+            - button "HOME · @ 1.847 Minnesota Vikings moneyline 65.2%" [ref=f14e307] [cursor=pointer]:
+              - generic [ref=f14e308]:
+                - generic [ref=f14e309]: HOME · @ 1.847
+                - generic [ref=f14e310]: Minnesota Vikings moneyline
+              - strong [ref=f14e311]: 65.2%
+            - generic [ref=f14e313]:
+              - generic [ref=f14e314]: MODEL CONSISTENT
+              - generic [ref=f14e315]: ONE PICK PER GAME
+          - article [ref=f14e316]:
+            - generic [ref=f14e317]:
+              - generic [ref=f14e318]: W1 · 2026-09-13
+              - strong [ref=f14e319]: SHADOW ONLY
+            - generic [ref=f14e320]:
+              - generic [ref=f14e321]:
+                - img "Baltimore Ravens identity" [ref=f14e323]
+                - generic [ref=f14e324]:
+                  - generic [ref=f14e325]: AWAY
+                  - generic [ref=f14e326]: Baltimore Ravens
+              - generic [ref=f14e327]: AT
+              - generic [ref=f14e328]:
+                - img "Indianapolis Colts identity" [ref=f14e330]
+                - generic [ref=f14e331]:
+                  - generic [ref=f14e332]: HOME
+                  - generic [ref=f14e333]: Indianapolis Colts
+            - generic [ref=f14e334]:
+              - text: Moneyline
+              - generic [ref=f14e335]: 26.0–21.7 projected
+            - button "AWAY · @ 1.571 Baltimore Ravens moneyline 61.4%" [disabled] [ref=f14e336]:
+              - generic [ref=f14e337]:
+                - generic [ref=f14e338]: AWAY · @ 1.571
+                - generic [ref=f14e339]: Baltimore Ravens moneyline
+              - strong [ref=f14e340]: 61.4%
+            - generic [ref=f14e342]:
+              - generic [ref=f14e343]: MODEL CONSISTENT
+              - generic [ref=f14e344]: ONE PICK PER GAME
+          - article [ref=f14e345]:
+            - generic [ref=f14e346]:
+              - generic [ref=f14e347]: W1 · 2026-09-13
+              - strong [ref=f14e348]: SHADOW ONLY
+            - generic [ref=f14e349]:
+              - generic [ref=f14e350]:
+                - img "Miami Dolphins identity" [ref=f14e352]
+                - generic [ref=f14e353]:
+                  - generic [ref=f14e354]: AWAY
+                  - generic [ref=f14e355]: Miami Dolphins
+              - generic [ref=f14e356]: AT
+              - generic [ref=f14e357]:
+                - img "Las Vegas Raiders identity" [ref=f14e359]
+                - generic [ref=f14e360]:
+                  - generic [ref=f14e361]: HOME
+                  - generic [ref=f14e362]: Las Vegas Raiders
+            - generic [ref=f14e363]:
+              - text: Moneyline
+              - generic [ref=f14e364]: 25.1–21.8 projected
+            - button "AWAY · @ 2.600 Miami Dolphins moneyline 61.4%" [disabled] [ref=f14e365]:
+              - generic [ref=f14e366]:
+                - generic [ref=f14e367]: AWAY · @ 2.600
+                - generic [ref=f14e368]: Miami Dolphins moneyline
+              - strong [ref=f14e369]: 61.4%
+            - generic [ref=f14e371]:
+              - generic [ref=f14e372]: MODEL CONSISTENT
+              - generic [ref=f14e373]: ONE PICK PER GAME
+          - article [ref=f14e374]:
+            - generic [ref=f14e375]:
+              - generic [ref=f14e376]: W1 · 2026-09-13
+              - strong [ref=f14e377]: SHADOW ONLY
+            - generic [ref=f14e378]:
+              - generic [ref=f14e379]:
+                - img "Tampa Bay Buccaneers identity" [ref=f14e381]
+                - generic [ref=f14e382]:
+                  - generic [ref=f14e383]: AWAY
+                  - generic [ref=f14e384]: Tampa Bay Buccaneers
+              - generic [ref=f14e385]: AT
+              - generic [ref=f14e386]:
+                - img "Cincinnati Bengals identity" [ref=f14e388]
+                - generic [ref=f14e389]:
+                  - generic [ref=f14e390]: HOME
+                  - generic [ref=f14e391]: Cincinnati Bengals
+            - generic [ref=f14e392]:
+              - text: Moneyline
+              - generic [ref=f14e393]: 21.0–23.1 projected
+            - button "HOME · @ 1.505 Cincinnati Bengals moneyline 60.8%" [disabled] [ref=f14e394]:
+              - generic [ref=f14e395]:
+                - generic [ref=f14e396]: HOME · @ 1.505
+                - generic [ref=f14e397]: Cincinnati Bengals moneyline
+              - strong [ref=f14e398]: 60.8%
+            - generic [ref=f14e400]:
+              - generic [ref=f14e401]: MODEL CONSISTENT
+              - generic [ref=f14e402]: ONE PICK PER GAME
+          - article [ref=f14e403]:
+            - generic [ref=f14e404]:
+              - generic [ref=f14e405]: W1 · 2026-09-13
+              - strong [ref=f14e406]: SHADOW ONLY
+            - generic [ref=f14e407]:
+              - generic [ref=f14e408]:
+                - img "New Orleans Saints identity" [ref=f14e410]
+                - generic [ref=f14e411]:
+                  - generic [ref=f14e412]: AWAY
+                  - generic [ref=f14e413]: New Orleans Saints
+              - generic [ref=f14e414]: AT
+              - generic [ref=f14e415]:
+                - img "Detroit Lions identity" [ref=f14e417]
+                - generic [ref=f14e418]:
+                  - generic [ref=f14e419]: HOME
+                  - generic [ref=f14e420]: Detroit Lions
+            - generic [ref=f14e421]:
+              - text: Moneyline
+              - generic [ref=f14e422]: 20.4–26.0 projected
+            - button "HOME · @ 1.308 Detroit Lions moneyline 60.8%" [disabled] [ref=f14e423]:
+              - generic [ref=f14e424]:
+                - generic [ref=f14e425]: HOME · @ 1.308
+                - generic [ref=f14e426]: Detroit Lions moneyline
+              - strong [ref=f14e427]: 60.8%
+            - generic [ref=f14e429]:
+              - generic [ref=f14e430]: MODEL CONSISTENT
+              - generic [ref=f14e431]: ONE PICK PER GAME
+          - article [ref=f14e432]:
+            - generic [ref=f14e433]:
+              - generic [ref=f14e434]: W1 · 2026-09-13
+              - strong [ref=f14e435]: SHADOW ONLY
+            - generic [ref=f14e436]:
+              - generic [ref=f14e437]:
+                - img "Chicago Bears identity" [ref=f14e439]
+                - generic [ref=f14e440]:
+                  - generic [ref=f14e441]: AWAY
+                  - generic [ref=f14e442]: Chicago Bears
+              - generic [ref=f14e443]: AT
+              - generic [ref=f14e444]:
+                - img "Carolina Panthers identity" [ref=f14e446]
+                - generic [ref=f14e447]:
+                  - generic [ref=f14e448]: HOME
+                  - generic [ref=f14e449]: Carolina Panthers
+            - generic [ref=f14e450]:
+              - text: Moneyline
+              - generic [ref=f14e451]: 24.1–22.6 projected
+            - button "AWAY · @ 1.676 Chicago Bears moneyline 60.0%" [disabled] [ref=f14e452]:
+              - generic [ref=f14e453]:
+                - generic [ref=f14e454]: AWAY · @ 1.676
+                - generic [ref=f14e455]: Chicago Bears moneyline
+              - strong [ref=f14e456]: 60.0%
+            - generic [ref=f14e458]:
+              - generic [ref=f14e459]: MODEL CONSISTENT
+              - generic [ref=f14e460]: ONE PICK PER GAME
+          - article [ref=f14e461]:
+            - generic [ref=f14e462]:
+              - generic [ref=f14e463]: W1 · 2026-09-14
+              - strong [ref=f14e464]: SHADOW ONLY
+            - generic [ref=f14e465]:
+              - generic [ref=f14e466]:
+                - img "Denver Broncos identity" [ref=f14e468]
+                - generic [ref=f14e469]:
+                  - generic [ref=f14e470]: AWAY
+                  - generic [ref=f14e471]: Denver Broncos
+              - generic [ref=f14e472]: AT
+              - generic [ref=f14e473]:
+                - img "Kansas City Chiefs identity" [ref=f14e475]
+                - generic [ref=f14e476]:
+                  - generic [ref=f14e477]: HOME
+                  - generic [ref=f14e478]: Kansas City Chiefs
+            - generic [ref=f14e479]:
+              - text: Moneyline
+              - generic [ref=f14e480]: 21.7–20.2 projected
+            - button "AWAY · @ 2.240 Denver Broncos moneyline 58.1%" [disabled] [ref=f14e481]:
+              - generic [ref=f14e482]:
+                - generic [ref=f14e483]: AWAY · @ 2.240
+                - generic [ref=f14e484]: Denver Broncos moneyline
+              - strong [ref=f14e485]: 58.1%
+            - generic [ref=f14e487]:
+              - generic [ref=f14e488]: MODEL CONSISTENT
+              - generic [ref=f14e489]: ONE PICK PER GAME
+          - article [ref=f14e490]:
+            - generic [ref=f14e491]:
+              - generic [ref=f14e492]: W1 · 2026-09-13
+              - strong [ref=f14e493]: SHADOW ONLY
+            - generic [ref=f14e494]:
+              - generic [ref=f14e495]:
+                - img "Atlanta Falcons identity" [ref=f14e497]
+                - generic [ref=f14e498]:
+                  - generic [ref=f14e499]: AWAY
+                  - generic [ref=f14e500]: Atlanta Falcons
+              - generic [ref=f14e501]: AT
+              - generic [ref=f14e502]:
+                - img "Pittsburgh Steelers identity" [ref=f14e504]
+                - generic [ref=f14e505]:
+                  - generic [ref=f14e506]: HOME
+                  - generic [ref=f14e507]: Pittsburgh Steelers
+            - generic [ref=f14e508]:
+              - text: Moneyline
+              - generic [ref=f14e509]: 20.7–26.1 projected
+            - button "HOME · @ 1.571 Pittsburgh Steelers moneyline 57.8%" [disabled] [ref=f14e510]:
+              - generic [ref=f14e511]:
+                - generic [ref=f14e512]: HOME · @ 1.571
+                - generic [ref=f14e513]: Pittsburgh Steelers moneyline
+              - strong [ref=f14e514]: 57.8%
+            - generic [ref=f14e516]:
+              - generic [ref=f14e517]: MODEL CONSISTENT
+              - generic [ref=f14e518]: ONE PICK PER GAME
+          - article [ref=f14e519]:
+            - generic [ref=f14e520]:
+              - generic [ref=f14e521]: W1 · 2026-09-13
+              - strong [ref=f14e522]: SHADOW ONLY
+            - generic [ref=f14e523]:
+              - generic [ref=f14e524]:
+                - img "Dallas Cowboys identity" [ref=f14e526]
+                - generic [ref=f14e527]:
+                  - generic [ref=f14e528]: AWAY
+                  - generic [ref=f14e529]: Dallas Cowboys
+              - generic [ref=f14e530]: AT
+              - generic [ref=f14e531]:
+                - img "New York Giants identity" [ref=f14e533]
+                - generic [ref=f14e534]:
+                  - generic [ref=f14e535]: HOME
+                  - generic [ref=f14e536]: New York Giants
+            - generic [ref=f14e537]:
+              - text: Moneyline
+              - generic [ref=f14e538]: 23.2–21.1 projected
+            - button "AWAY · @ 1.676 Dallas Cowboys moneyline 55.0%" [disabled] [ref=f14e539]:
+              - generic [ref=f14e540]:
+                - generic [ref=f14e541]: AWAY · @ 1.676
+                - generic [ref=f14e542]: Dallas Cowboys moneyline
+              - strong [ref=f14e543]: 55.0%
+            - generic [ref=f14e545]:
+              - generic [ref=f14e546]: MODEL CONSISTENT
+              - generic [ref=f14e547]: ONE PICK PER GAME
+          - article [ref=f14e548]:
+            - generic [ref=f14e549]:
+              - generic [ref=f14e550]: W1 · 2026-09-13
+              - strong [ref=f14e551]: SHADOW ONLY
+            - generic [ref=f14e552]:
+              - generic [ref=f14e553]:
+                - img "New York Jets identity" [ref=f14e555]
+                - generic [ref=f14e556]:
+                  - generic [ref=f14e557]: AWAY
+                  - generic [ref=f14e558]: New York Jets
+              - generic [ref=f14e559]: AT
+              - generic [ref=f14e560]:
+                - img "Tennessee Titans identity" [ref=f14e562]
+                - generic [ref=f14e563]:
+                  - generic [ref=f14e564]: HOME
+                  - generic [ref=f14e565]: Tennessee Titans
+            - generic [ref=f14e566]:
+              - text: Moneyline
+              - generic [ref=f14e567]: 23.9–24.5 projected
+            - button "HOME · @ 1.676 Tennessee Titans moneyline 52.7%" [disabled] [ref=f14e568]:
+              - generic [ref=f14e569]:
+                - generic [ref=f14e570]: HOME · @ 1.676
+                - generic [ref=f14e571]: Tennessee Titans moneyline
+              - strong [ref=f14e572]: 52.7%
+            - generic [ref=f14e574]:
+              - generic [ref=f14e575]: MODEL DISAGREEMENT
+              - generic [ref=f14e576]: ONE PICK PER GAME
+          - article [ref=f14e577]:
+            - generic [ref=f14e578]:
+              - generic [ref=f14e579]: W1 · 2026-09-10
+              - strong [ref=f14e580]: SHADOW ONLY
+            - generic [ref=f14e581]:
+              - generic [ref=f14e582]:
+                - img "San Francisco 49ers identity" [ref=f14e584]
+                - generic [ref=f14e585]:
+                  - generic [ref=f14e586]: AWAY
+                  - generic [ref=f14e587]: San Francisco 49ers
+              - generic [ref=f14e588]: AT
+              - generic [ref=f14e589]:
+                - img "Los Angeles Rams identity" [ref=f14e591]
+                - generic [ref=f14e592]:
+                  - generic [ref=f14e593]: HOME
+                  - generic [ref=f14e594]: Los Angeles Rams
+            - generic [ref=f14e595]:
+              - text: Moneyline
+              - generic [ref=f14e596]: 23.3–26.1 projected
+            - button "AWAY · @ 2.600 San Francisco 49ers moneyline 50.8%" [disabled] [ref=f14e597]:
+              - generic [ref=f14e598]:
+                - generic [ref=f14e599]: AWAY · @ 2.600
+                - generic [ref=f14e600]: San Francisco 49ers moneyline
+              - strong [ref=f14e601]: 50.8%
+            - generic [ref=f14e603]:
+              - generic [ref=f14e604]: MODEL DISAGREEMENT
+              - generic [ref=f14e605]: ONE PICK PER GAME
+          - article [ref=f14e606]:
+            - generic [ref=f14e607]:
+              - generic [ref=f14e608]: W1 · 2026-09-13
+              - strong [ref=f14e609]: SHADOW ONLY
+            - generic [ref=f14e610]:
+              - generic [ref=f14e611]:
+                - img "Buffalo Bills identity" [ref=f14e613]
+                - generic [ref=f14e614]:
+                  - generic [ref=f14e615]: AWAY
+                  - generic [ref=f14e616]: Buffalo Bills
+              - generic [ref=f14e617]: AT
+              - generic [ref=f14e618]:
+                - img "Houston Texans identity" [ref=f14e620]
+                - generic [ref=f14e621]:
+                  - generic [ref=f14e622]: HOME
+                  - generic [ref=f14e623]: Houston Texans
+            - generic [ref=f14e624]:
+              - text: Moneyline
+              - generic [ref=f14e625]: 23.7–26.8 projected
+            - button "AWAY · @ 1.833 Buffalo Bills moneyline 50.8%" [disabled] [ref=f14e626]:
+              - generic [ref=f14e627]:
+                - generic [ref=f14e628]: AWAY · @ 1.833
+                - generic [ref=f14e629]: Buffalo Bills moneyline
+              - strong [ref=f14e630]: 50.8%
+            - generic [ref=f14e632]:
+              - generic [ref=f14e633]: MODEL DISAGREEMENT
+              - generic [ref=f14e634]: ONE PICK PER GAME

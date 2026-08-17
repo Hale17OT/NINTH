@@ -2,9 +2,13 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Activity, ArrowRight, CheckCircle2, Database, LockKeyhole, Orbit, RefreshCw } from 'lucide-vue-next'
+import { motion } from 'motion-v'
 import { sportById } from '../config/sports'
 import { esportsDisciplines } from '../config/sportWorkspaces'
 import { api } from '../services/api'
+import SportVisual from '../components/ui/SportVisual.vue'
+import EvidenceBadge from '../components/ui/EvidenceBadge.vue'
+import BorderTrail from '../components/motion/BorderTrail.vue'
 
 const props = defineProps({ sport: { type: String, required: true }, section: { type: String, default: 'overview' } })
 const route = useRoute()
@@ -68,8 +72,10 @@ onMounted(loadStatus)
 <template>
   <div class="sport-hub" :style="{ '--sport': active.accent }">
     <section class="sport-hero">
-      <div><span class="eyebrow">{{ active.eyebrow }} / NINTH RESEARCH LAB</span><h1>{{ active.name }}<br><i>intelligence.</i></h1><p>{{ active.description }}</p><div class="lab-state"><i></i> {{ active.id === 'esports' ? 'LIVE DATA · SHADOW MODELS' : 'SHADOW FOUNDATION · NOT YET PRODUCTION ELIGIBLE' }}</div></div>
-      <aside><Orbit :size="36"/><span>MODEL STATE</span><b>Evidence before exposure.</b><p>No selection enters the all-sports builder until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.</p></aside>
+      <div class="sport-beam" aria-hidden="true"></div>
+      <div class="sport-copy"><EvidenceBadge state="brand">{{ active.eyebrow }} / NINTH RESEARCH LAB</EvidenceBadge><h1>{{ active.name }}<br><i>intelligence.</i></h1><p>{{ active.description }}</p><div class="lab-state"><i></i> {{ active.id === 'esports' ? 'LIVE DATA · SHADOW MODELS' : 'SHADOW FOUNDATION · NOT YET PRODUCTION ELIGIBLE' }}</div></div>
+      <motion.div class="sport-object" :initial="{opacity:0,scale:.86,rotate:-8}" :animate="{opacity:1,scale:1,rotate:0}" :transition="{type:'spring',stiffness:120,damping:19}"><SportVisual :sport="active.id" :accent="active.accent" compact/></motion.div>
+      <aside><BorderTrail/><Orbit :size="36"/><span>MODEL STATE</span><b>Evidence before exposure.</b><p>No selection enters the all-sports builder until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.</p></aside>
     </section>
 
     <template v-if="section === 'overview'">
@@ -106,4 +112,10 @@ onMounted(loadStatus)
 .discipline-grid{grid-template-columns:repeat(3,1fr)}
 @media(max-width:1050px){.discipline-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.discipline-grid{grid-template-columns:1fr}}
+
+/* Route-family composition: sport object, research state, and evidence ledger
+   form one command-center hero instead of three disconnected blocks. */
+.sport-hero{position:relative;min-height:700px;padding:64px 0;display:block;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--contrast);isolation:isolate}.sport-hero::before{position:absolute;inset:0;background:radial-gradient(circle at 74% 42%,color-mix(in srgb,var(--sport) 15%,transparent),transparent 34%),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:auto,100px 100%;content:''}.sport-beam{position:absolute;z-index:0;left:36%;right:-12%;top:57%;height:74px;background:var(--sport);transform:rotate(-24deg);box-shadow:0 0 54px color-mix(in srgb,var(--sport) 22%,transparent)}.sport-copy{position:relative;z-index:4;width:min(62%,850px);padding:clamp(18px,4.5vw,70px)}.sport-copy h1{margin:24px 0 28px;font-size:clamp(5.2rem,9vw,9.4rem);line-height:.78;letter-spacing:-.09em}.sport-copy>p{max-width:670px;color:var(--muted-strong);font-size:16px;line-height:1.65}.sport-object{position:absolute;z-index:2;right:-2%;top:5%}.lab-state{min-height:42px;margin-top:30px;padding:10px 13px;font:700 11px 'DM Mono';background:rgba(4,7,5,.7);backdrop-filter:blur(12px)}.sport-hero aside{position:absolute;z-index:6;right:34px;bottom:30px;width:min(370px,40%);min-height:230px;padding:25px;border:1px solid color-mix(in srgb,var(--sport) 32%,var(--line));border-top:3px solid var(--sport);background:rgba(4,7,5,.82);backdrop-filter:blur(18px)}.sport-hero aside span{margin-top:auto;font:700 11px 'DM Mono'}.sport-hero aside b{margin:10px 0;font-size:30px}.sport-hero aside p{font-size:13px;line-height:1.6}.league-strip{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:auto}.league-strip span{min-height:58px;padding:20px;font:700 12px 'DM Mono'}.architecture,.lab-page{padding:88px 0}.architecture h2,.lab-page h2{font-size:clamp(2.6rem,5vw,5rem);line-height:.95}.architecture>div,.model-cards{gap:10px;margin-top:38px;background:transparent;border:0}.architecture article,.model-cards article{min-height:310px;padding:30px;border:1px solid var(--line);border-radius:14px}.architecture article small{font:700 11px 'DM Mono'}.architecture h3,.model-cards h3{font-size:24px}.architecture p,.model-cards p,.lab-page header p{font-size:14px}.discipline-grid{gap:10px;background:transparent;border:0}.discipline-grid article{min-height:330px;border:1px solid var(--line);border-top:4px solid var(--discipline);border-radius:14px}.discipline-grid header span,.discipline-grid footer{font-size:11px}.discipline-grid p{font-size:14px}.release-gate{gap:10px;background:transparent;border:0}.release-gate>div,.release-gate ul{padding:32px;border:1px solid var(--line);border-radius:14px}.release-gate small{font:700 11px 'DM Mono'}.release-gate b{font-size:22px}.release-gate li{font-size:13px}.model-cards article>span{padding:7px 9px;font:700 11px 'DM Mono'}.model-cards dt{font:600 11px 'DM Mono'}.model-cards dd{font-size:18px}.model-cards article>footer{font:700 11px 'DM Mono'}.source-table article{min-height:86px;padding:20px}.source-table small{font:600 11px 'DM Mono'}.source-table b{font-size:15px}.source-table p{font-size:13px}.source-table em,.status-refresh,.status-error,.source-loading,.research-footer{font-size:11px}
+@media(max-width:1000px){.sport-hero{min-height:720px;padding:0}.sport-copy{width:76%;padding:70px 28px}.sport-copy h1{font-size:clamp(4.8rem,11vw,7.5rem)}.sport-object{right:-22%;top:15%;opacity:.6}.sport-hero aside{right:24px;bottom:24px;width:360px}.architecture>div,.model-cards{grid-template-columns:1fr}.release-gate{grid-template-columns:1fr}}
+@media(max-width:650px){.sport-hero{min-height:760px;border-radius:14px}.sport-copy{width:100%;padding:48px 20px}.sport-copy h1{font-size:clamp(3.9rem,17vw,5.8rem)}.sport-object{right:-36%;top:30%;opacity:.5}.sport-hero aside{left:18px;right:18px;bottom:18px;width:auto;min-height:210px}.league-strip span{min-width:145px}.architecture,.lab-page{padding:64px 0}}
 </style>

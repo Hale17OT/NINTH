@@ -4,6 +4,7 @@ import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-vue-ne
 import { api } from '../services/api'
 import SectionCard from '../components/ui/SectionCard.vue'
 import LoadingState from '../components/ui/LoadingState.vue'
+import { createSharedPoller } from '../services/polling'
 
 const PAGE_SIZE = 6
 const slips = ref([])
@@ -14,7 +15,7 @@ const input = ref()
 const page = ref(1)
 const expandedIds = ref(new Set())
 const initializedIds = new Set()
-let timer
+let poller
 let warmupTimer
 
 const timestamp = slip => slip.placed_at_iso || slip.imported_at || ''
@@ -96,10 +97,11 @@ onMounted(async () => {
   try { await load() } catch (caught) { error.value = caught?.message || 'Slips could not be loaded.' }
   // The first response is the persisted snapshot; pick up the background MLB
   // reconciliation shortly afterward without blocking initial rendering.
-  warmupTimer = window.setTimeout(() => load().catch(() => {}), 3000)
-  timer = window.setInterval(load, 60000)
+  warmupTimer = window.setTimeout(() => { if (document.visibilityState === 'visible') load().catch(() => {}) }, 3000)
+  poller = createSharedPoller({ key: 'slips', task: load, interval: 300_000, immediate: false })
+  poller.start()
 })
-onBeforeUnmount(() => { window.clearTimeout(warmupTimer); window.clearInterval(timer) })
+onBeforeUnmount(() => { window.clearTimeout(warmupTimer); poller?.stop() })
 </script>
 
 <template>

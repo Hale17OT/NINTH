@@ -1,0 +1,625 @@
+- generic [ref=e3]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "NINTH home" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: NINTH
+      - navigation "Sport workspaces" [ref=e9]:
+        - link "00 Platform" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e11]: "00"
+          - generic [ref=e12]: Platform
+        - link "01 MLB" [ref=e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=e14]: "01"
+          - generic [ref=e15]: MLB
+        - link "02 FTB" [ref=e17] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=e18]: "02"
+          - generic [ref=e19]: FTB
+        - link "03 NFL" [ref=e20] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=e21]: "03"
+          - generic [ref=e22]: NFL
+        - link "04 NBA" [ref=e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=e24]: "04"
+          - generic [ref=e25]: NBA
+        - link "05 ESP" [ref=e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=e27]: "05"
+          - generic [ref=e28]: ESP
+      - generic [ref=e29]:
+        - textbox "Search MLB" [ref=e34]
+        - button "Use light theme" [ref=e35] [cursor=pointer]
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]: PRODUCTION
+        - generic [ref=e45]: Baseball
+        - emphasis [ref=e46]: PRODUCTION
+      - navigation "Workspace navigation" [ref=e47]:
+        - link "Overview" [ref=e48] [cursor=pointer]:
+          - /url: /baseball
+        - link "Games" [ref=e49] [cursor=pointer]:
+          - /url: /schedule
+        - link "Standings" [ref=e50] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e51] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e52] [cursor=pointer]:
+          - /url: /players
+        - link "Live" [ref=e54] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=e55] [cursor=pointer]:
+          - /url: /builder
+        - link "Player props" [ref=e56] [cursor=pointer]:
+          - /url: /props-builder
+        - link "Models" [ref=e57] [cursor=pointer]:
+          - /url: /model
+        - link "Guarantees" [ref=e58] [cursor=pointer]:
+          - /url: /baseball/guarantees
+        - link "Alter ego" [ref=e59] [cursor=pointer]:
+          - /url: /alter-ego
+    - generic [ref=e60]:
+      - generic [ref=e61]: TODAY
+      - link "BAL 0 — 0 TB Scheduled" [ref=e81] [cursor=pointer]:
+        - /url: /games/822940
+        - generic [ref=e82]: BAL
+        - emphasis [ref=e83]: "0"
+        - generic [ref=e84]: —
+        - emphasis [ref=e85]: "0"
+        - generic [ref=e86]: TB
+        - generic [ref=e87]: Scheduled
+      - link "BOS 0 — 0 PIT Scheduled" [ref=e88] [cursor=pointer]:
+        - /url: /games/823344
+        - generic [ref=e89]: BOS
+        - emphasis [ref=e90]: "0"
+        - generic [ref=e91]: —
+        - emphasis [ref=e92]: "0"
+        - generic [ref=e93]: PIT
+        - generic [ref=e94]: Scheduled
+      - link "AZ 0 — 0 ATL Scheduled" [ref=e95] [cursor=pointer]:
+        - /url: /games/824880
+        - generic [ref=e96]: AZ
+        - emphasis [ref=e97]: "0"
+        - generic [ref=e98]: —
+        - emphasis [ref=e99]: "0"
+        - generic [ref=e100]: ATL
+        - generic [ref=e101]: Scheduled
+      - link "NYY 0 — 0 TOR Scheduled" [ref=e102] [cursor=pointer]:
+        - /url: /games/822774
+        - generic [ref=e103]: NYY
+        - emphasis [ref=e104]: "0"
+        - generic [ref=e105]: —
+        - emphasis [ref=e106]: "0"
+        - generic [ref=e107]: TOR
+        - generic [ref=e108]: Scheduled
+      - generic [ref=e64]: FEEDS CONNECTED
+  - main [ref=e66]:
+    - generic [ref=e109]:
+      - button "BACK TO PLAYERS" [ref=e110] [cursor=pointer]
+      - generic [ref=e113]:
+        - generic [ref=e114]:
+          - img "Ryan Weathers headshot" [ref=e117]
+          - generic [ref=e118]:
+            - generic [ref=e119]: New York Yankees · P
+            - heading "Ryan Weathers" [level=1] [ref=e120]
+            - paragraph [ref=e121]: Right BAT · Left THROW · MLB DEBUT 2020-10-06
+        - generic [ref=e122]:
+          - generic [ref=e123]: 2026 ERA
+          - generic [ref=e124]: "3.69"
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]: ERA
+          - strong [ref=e128]: "3.69"
+          - generic [ref=e129]: 23 games
+        - generic [ref=e130]:
+          - generic [ref=e131]: WHIP
+          - strong [ref=e132]: "1.21"
+          - generic [ref=e133]: 126.2 IP
+        - generic [ref=e134]:
+          - generic [ref=e135]: Strikeouts
+          - strong [ref=e136]: "136"
+          - generic [ref=e137]: 37 walks
+        - generic [ref=e138]:
+          - generic [ref=e139]: Wins
+          - strong [ref=e140]: "5"
+          - generic [ref=e141]: 7 losses
+      - generic [ref=e142]:
+        - generic [ref=e143]:
+          - generic [ref=e145]:
+            - generic [ref=e146]: NINTH / DATA
+            - heading "2026 pitching totals" [level=2] [ref=e147]
+          - generic [ref=e148]:
+            - 'img "Value: 4 values" [ref=e150]'
+            - generic [ref=e152]:
+              - generic [ref=e153]: SOURCE NOTE
+              - text: Bars show the labeled official season totals directly; unlike a trend line, they do not imply a time sequence. No modeled player values are displayed.
+        - generic [ref=e154]:
+          - generic [ref=e156]:
+            - generic [ref=e157]: NINTH / DATA
+            - heading "Season rates" [level=2] [ref=e158]
+          - generic [ref=e159]:
+            - generic [ref=e160]:
+              - generic [ref=e161]:
+                - generic [ref=e162]: ERA
+                - strong [ref=e163]: "3.69"
+              - generic [ref=e166]: 126.2 IP
+            - generic [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e169]: WHIP
+                - strong [ref=e170]: "1.21"
+              - generic [ref=e173]: 136 SO
+      - generic [ref=e174]:
+        - generic [ref=e175]:
+          - generic [ref=e176]: INTERPRETATION
+          - heading "What the current profile says" [level=2] [ref=e177]
+        - paragraph [ref=e178]: Ryan Weathers's strongest captured peer rate is K rate at the 77th percentile among 687 MLB pitchers. The latest five average 5.20 strikeouts, compared with 5.91 across the captured game log.
+        - generic [ref=e179]:
+          - article [ref=e180]:
+            - generic [ref=e181]: "01"
+            - generic [ref=e182]: K rate
+            - generic [ref=e183]: 77th percentile · 0.259
+          - article [ref=e184]:
+            - generic [ref=e185]: "02"
+            - generic [ref=e186]: BB rate
+            - generic [ref=e187]: 77th percentile · 0.07
+          - article [ref=e188]:
+            - generic [ref=e189]: "03"
+            - generic [ref=e190]: WHIP
+            - generic [ref=e191]: 72th percentile · 1.21
+      - generic [ref=e192]:
+        - generic [ref=e193]:
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - generic [ref=e196]: ROLLING TREND
+              - heading "Game-by-game production" [level=2] [ref=e197]
+            - navigation [ref=e198]:
+              - button "L5" [ref=e199] [cursor=pointer]
+              - button "L10" [ref=e200] [cursor=pointer]
+              - button "ALL" [ref=e201] [cursor=pointer]
+          - 'img "Strikeouts: 23 values; Pitches: 23 values" [ref=e203]'
+          - paragraph [ref=e205]: Official chronological game-log observations; missing games are not imputed.
+        - generic [ref=e206]:
+          - generic [ref=e207]:
+            - generic [ref=e208]: CONTEXT SPLITS
+            - heading "Latest form versus full log" [level=2] [ref=e209]
+          - article [ref=e211]:
+            - generic [ref=e212]: Latest 5
+            - strong [ref=e213]: "5.2"
+            - generic [ref=e215]:
+              - text: "5.91"
+              - emphasis [ref=e216]: Captured game average
+      - generic [ref=e217]:
+        - generic [ref=e218]:
+          - generic [ref=e219]:
+            - generic [ref=e220]: PEER PERCENTILES
+            - heading "Pitchers peer profile" [level=2] [ref=e221]
+          - generic [ref=e222]: 687 COMPARABLE PLAYERS
+        - generic [ref=e223]:
+          - article "Earned runs allowed per nine innings." [ref=e224]:
+            - generic [ref=e225]:
+              - generic [ref=e226]: ERA
+              - generic [ref=e227]: "3.69"
+            - emphasis [ref=e230]: "63"
+          - article "Walks plus hits allowed per inning." [ref=e232]:
+            - generic [ref=e233]:
+              - generic [ref=e234]: WHIP
+              - generic [ref=e235]: "1.21"
+            - emphasis [ref=e238]: "72"
+          - article "Strikeouts divided by plate appearances or batters faced." [ref=e240]:
+            - generic [ref=e241]:
+              - generic [ref=e242]: K rate
+              - generic [ref=e243]: "0.259"
+            - emphasis [ref=e246]: "77"
+          - article "Walks divided by plate appearances or batters faced." [ref=e248]:
+            - generic [ref=e249]:
+              - generic [ref=e250]: BB rate
+              - generic [ref=e251]: "0.07"
+            - emphasis [ref=e254]: "77"
+          - article "Home runs allowed divided by batters faced." [ref=e256]:
+            - generic [ref=e257]:
+              - generic [ref=e258]: HR rate
+              - generic [ref=e259]: "0.034"
+            - emphasis [ref=e262]: "38"
+      - generic [ref=e264]:
+        - generic [ref=e265]:
+          - generic [ref=e266]:
+            - generic [ref=e267]: ADVANCED PROFILE
+            - heading "Rate definitions and context" [level=2] [ref=e268]
+          - generic [ref=e269]: Official MLB Stats API season and game-log records
+        - generic [ref=e270]:
+          - article "Earned runs allowed per nine innings." [ref=e271]:
+            - generic [ref=e272]:
+              - text: ERA
+              - generic [ref=e273]: "?"
+            - generic [ref=e274]: "3.69"
+            - emphasis [ref=e275]: P63
+          - article "Walks plus hits allowed per inning." [ref=e277]:
+            - generic [ref=e278]:
+              - text: WHIP
+              - generic [ref=e279]: "?"
+            - generic [ref=e280]: "1.21"
+            - emphasis [ref=e281]: P72
+          - article "Strikeouts divided by plate appearances or batters faced." [ref=e283]:
+            - generic [ref=e284]:
+              - text: K rate
+              - generic [ref=e285]: "?"
+            - generic [ref=e286]: "0.259"
+            - emphasis [ref=e287]: P77
+          - article "Walks divided by plate appearances or batters faced." [ref=e289]:
+            - generic [ref=e290]:
+              - text: BB rate
+              - generic [ref=e291]: "?"
+            - generic [ref=e292]: "0.07"
+            - emphasis [ref=e293]: P77
+          - article "Home runs allowed divided by batters faced." [ref=e295]:
+            - generic [ref=e296]:
+              - text: HR rate
+              - generic [ref=e297]: "?"
+            - generic [ref=e298]: "0.034"
+            - emphasis [ref=e299]: P38
+      - generic [ref=e301]:
+        - generic [ref=e303]:
+          - generic [ref=e304]: NINTH / DATA
+          - heading "Complete 2026 game log" [level=2] [ref=e305]
+          - paragraph [ref=e306]: 23 unique games · every official per-game stat returned by MLB
+        - generic [ref=e307]:
+          - generic [ref=e308]:
+            - group "Player game log type" [ref=e309]:
+              - button "PITCHING GAME LOG · 23" [ref=e310] [cursor=pointer]
+              - button "FIELDING GAME LOG · 23" [ref=e311] [cursor=pointer]
+            - generic [ref=e312]: NEWEST FIRST · CLICK A DATE, TEAM OR OPPONENT TO OPEN IT
+          - generic [ref=e313]:
+            - generic [ref=e314]:
+              - generic [ref=e315]: Opponent
+              - button "Seattle Mariners 2 games" [ref=e2363] [cursor=pointer]:
+                - generic [ref=e317]: Seattle Mariners
+                - generic [ref=e318]: 2 games
+            - generic [ref=e321]:
+              - generic [ref=e322]: LOCATION
+              - group "Player game location" [ref=e323]:
+                - button "BOTH" [ref=e324] [cursor=pointer]
+                - button "HOME" [ref=e325] [cursor=pointer]
+                - button "AWAY" [active] [ref=e326] [cursor=pointer]
+            - generic [ref=e327]:
+              - generic [ref=e328]: CURRENT SAMPLE
+              - generic [ref=e329]: Seattle Mariners · Away · 1 game
+              - link "OPEN TEAM PAGE →" [ref=e2364] [cursor=pointer]:
+                - /url: /teams/136
+          - generic [ref=e330]:
+            - generic [ref=e331]:
+              - generic [ref=e332]:
+                - generic [ref=e333]: FILTERED PERFORMANCE
+                - heading "Averages for this selection" [level=3] [ref=e334]
+              - generic [ref=e335]: 1 GAME
+            - generic [ref=e336]:
+              - article [ref=e337]:
+                - generic [ref=e338]: Appearances
+                - strong [ref=e339]: "1"
+                - generic [ref=e340]: 1 starts
+              - article [ref=e341]:
+                - generic [ref=e342]: IP / appearance
+                - strong [ref=e343]: "4.33"
+                - generic [ref=e344]: 4.1 total IP
+              - article [ref=e345]:
+                - generic [ref=e346]: K / appearance
+                - strong [ref=e347]: "7.00"
+                - generic [ref=e348]: 7 total K
+              - article [ref=e349]:
+                - generic [ref=e350]: BB / appearance
+                - strong [ref=e351]: "2.00"
+                - generic [ref=e352]: 2 total BB
+              - article [ref=e353]:
+                - generic [ref=e354]: ERA
+                - strong [ref=e355]: "2.08"
+                - generic [ref=e356]: 1.00 ER / game
+              - article [ref=e357]:
+                - generic [ref=e358]: WHIP
+                - strong [ref=e359]: "1.38"
+                - generic [ref=e360]: 4.00 H / game
+              - article [ref=e361]:
+                - generic [ref=e362]: K / 9
+                - strong [ref=e363]: "14.54"
+                - generic [ref=e364]: 3.50 K / BB
+              - article [ref=e365]:
+                - generic [ref=e366]: Pitches / appearance
+                - strong [ref=e367]: "77.0"
+                - generic [ref=e368]: 77 total pitches
+            - generic [ref=e369]:
+              - generic [ref=e370]:
+                - generic [ref=e371]: ALL COUNTABLE STATS · PER-GAME AVERAGE
+                - generic [ref=e372]: Rate fields such as ERA, WHIP, AVG and OPS are recomputed from the filtered totals above rather than averaged incorrectly.
+              - generic [ref=e373]: 44 FIELDS
+            - table [ref=e375]:
+              - rowgroup [ref=e376]:
+                - row [ref=e377]:
+                  - columnheader "GS" [ref=e378]
+                  - columnheader "IP" [ref=e379]
+                  - columnheader "H" [ref=e380]
+                  - columnheader "R" [ref=e381]
+                  - columnheader "ER" [ref=e382]
+                  - columnheader "HR" [ref=e383]
+                  - columnheader "BB" [ref=e384]
+                  - columnheader "K" [ref=e385]
+                  - columnheader "Pitches" [ref=e386]
+                  - columnheader "Strikes" [ref=e387]
+                  - columnheader "BF" [ref=e388]
+                  - columnheader "GO" [ref=e389]
+                  - columnheader "AO" [ref=e390]
+                  - columnheader "2B" [ref=e391]
+                  - columnheader "3B" [ref=e392]
+                  - columnheader "AB" [ref=e393]
+                  - columnheader "Balks" [ref=e394]
+                  - columnheader "BS" [ref=e395]
+                  - columnheader "Catchers Interference" [ref=e396]
+                  - columnheader "CG" [ref=e397]
+                  - columnheader "CS" [ref=e398]
+                  - columnheader "Fly Outs" [ref=e399]
+                  - columnheader "G" [ref=e400]
+                  - columnheader "Games Finished" [ref=e401]
+                  - columnheader "Games Pitched" [ref=e402]
+                  - columnheader "GIDP" [ref=e403]
+                  - columnheader "HBP" [ref=e404]
+                  - columnheader "Hit Batsmen" [ref=e405]
+                  - columnheader "HLD" [ref=e406]
+                  - columnheader "IBB" [ref=e407]
+                  - columnheader "Inherited Runners" [ref=e408]
+                  - columnheader "Inherited Runners Scored" [ref=e409]
+                  - columnheader "L" [ref=e410]
+                  - columnheader "Outs" [ref=e411]
+                  - columnheader "Pickoffs" [ref=e412]
+                  - columnheader "SAC" [ref=e413]
+                  - columnheader "SB" [ref=e414]
+                  - columnheader "SF" [ref=e415]
+                  - columnheader "SHO" [ref=e416]
+                  - columnheader "SV" [ref=e417]
+                  - columnheader "SVO" [ref=e418]
+                  - columnheader "TB" [ref=e419]
+                  - columnheader "W" [ref=e420]
+                  - columnheader "Wild Pitches" [ref=e421]
+              - rowgroup [ref=e422]:
+                - row [ref=e2482]:
+                  - cell "1.00" [ref=e424]
+                  - cell "4.33" [ref=e2483]
+                  - cell "4.00" [ref=e2484]
+                  - cell "1.00" [ref=e2368]
+                  - cell "1.00" [ref=e2369]
+                  - cell "0.00" [ref=e2485]
+                  - cell "2.00" [ref=e2486]
+                  - cell "7.00" [ref=e2487]
+                  - cell "77.00" [ref=e2488]
+                  - cell "49.00" [ref=e2489]
+                  - cell "19.00" [ref=e2490]
+                  - cell "2.00" [ref=e2491]
+                  - cell "4.00" [ref=e2377]
+                  - cell "0.00" [ref=e2378]
+                  - cell "0.00" [ref=e2379]
+                  - cell "17.00" [ref=e2492]
+                  - cell "0.00" [ref=e440]
+                  - cell "0.00" [ref=e441]
+                  - cell "0.00" [ref=e442]
+                  - cell "0.00" [ref=e443]
+                  - cell "0.00" [ref=e2381]
+                  - cell "0.00" [ref=e2493]
+                  - cell "1.00" [ref=e446]
+                  - cell "0.00" [ref=e447]
+                  - cell "1.00" [ref=e448]
+                  - cell "0.00" [ref=e2383]
+                  - cell "0.00" [ref=e2384]
+                  - cell "0.00" [ref=e2385]
+                  - cell "0.00" [ref=e452]
+                  - cell "0.00" [ref=e453]
+                  - cell "0.00" [ref=e454]
+                  - cell "0.00" [ref=e455]
+                  - cell "0.00" [ref=e2386]
+                  - cell "13.00" [ref=e2494]
+                  - cell "0.00" [ref=e2388]
+                  - cell "0.00" [ref=e2389]
+                  - cell "0.00" [ref=e2390]
+                  - cell "0.00" [ref=e2391]
+                  - cell "0.00" [ref=e462]
+                  - cell "0.00" [ref=e463]
+                  - cell "0.00" [ref=e464]
+                  - cell "4.00" [ref=e2495]
+                  - cell "0.00" [ref=e2393]
+                  - cell "0.00" [ref=e2394]
+          - table [ref=e469]:
+            - rowgroup [ref=e470]:
+              - row [ref=e471]:
+                - columnheader "Date" [ref=e472]
+                - columnheader "Team" [ref=e473]
+                - columnheader "Matchup" [ref=e474]
+                - columnheader "Result" [ref=e475]
+                - columnheader "Pos" [ref=e476]
+                - columnheader "GS" [ref=e477]
+                - columnheader "IP" [ref=e478]
+                - columnheader "H" [ref=e479]
+                - columnheader "R" [ref=e480]
+                - columnheader "ER" [ref=e481]
+                - columnheader "HR" [ref=e482]
+                - columnheader "BB" [ref=e483]
+                - columnheader "K" [ref=e484]
+                - columnheader "Pitches" [ref=e485]
+                - columnheader "Strikes" [ref=e486]
+                - columnheader "BF" [ref=e487]
+                - columnheader "Strike %" [ref=e488]
+                - columnheader "ERA" [ref=e489]
+                - columnheader "WHIP" [ref=e490]
+                - columnheader "P / IP" [ref=e491]
+                - columnheader "K / BB" [ref=e492]
+                - columnheader "GO" [ref=e493]
+                - columnheader "AO" [ref=e494]
+                - columnheader "2B" [ref=e495]
+                - columnheader "3B" [ref=e496]
+                - columnheader "AB" [ref=e497]
+                - columnheader "AVG" [ref=e498]
+                - columnheader "Balks" [ref=e499]
+                - columnheader "BB / 9" [ref=e500]
+                - columnheader "BS" [ref=e501]
+                - columnheader "Catchers Interference" [ref=e502]
+                - columnheader "Caught Stealing Percentage" [ref=e503]
+                - columnheader "CG" [ref=e504]
+                - columnheader "CS" [ref=e505]
+                - columnheader "Fly Outs" [ref=e506]
+                - columnheader "G" [ref=e507]
+                - columnheader "Games Finished" [ref=e508]
+                - columnheader "Games Pitched" [ref=e509]
+                - columnheader "GIDP" [ref=e510]
+                - columnheader "GO / AO" [ref=e511]
+                - columnheader "H / 9" [ref=e512]
+                - columnheader "HBP" [ref=e513]
+                - columnheader "Hit Batsmen" [ref=e514]
+                - columnheader "HLD" [ref=e515]
+                - columnheader "HR / 9" [ref=e516]
+                - columnheader "IBB" [ref=e517]
+                - columnheader "Inherited Runners" [ref=e518]
+                - columnheader "Inherited Runners Scored" [ref=e519]
+                - columnheader "K / 9" [ref=e520]
+                - columnheader "L" [ref=e521]
+                - columnheader "OBP" [ref=e522]
+                - columnheader "OPS" [ref=e523]
+                - columnheader "Outs" [ref=e524]
+                - columnheader "Pickoffs" [ref=e525]
+                - columnheader "Runs Scored Per9" [ref=e526]
+                - columnheader "SAC" [ref=e527]
+                - columnheader "SB" [ref=e528]
+                - columnheader "SF" [ref=e529]
+                - columnheader "SHO" [ref=e530]
+                - columnheader "SLG" [ref=e531]
+                - columnheader "Stolen Base Percentage" [ref=e532]
+                - columnheader "Summary" [ref=e533]
+                - columnheader "SV" [ref=e534]
+                - columnheader "SVO" [ref=e535]
+                - columnheader "TB" [ref=e536]
+                - columnheader "W" [ref=e537]
+                - columnheader "Wild Pitches" [ref=e538]
+                - columnheader "Win Percentage" [ref=e539]
+            - rowgroup [ref=e540]:
+              - row [ref=e2496]:
+                - cell [ref=e2497]:
+                  - link "Mar 30" [ref=e2498] [cursor=pointer]:
+                    - /url: /games/823159
+                - cell [ref=e2499]:
+                  - link "New York Yankees" [ref=e2500] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2501]:
+                  - link "@ Seattle Mariners" [ref=e2502] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "ND" [ref=e2503]
+                - cell "—" [ref=e2505]
+                - cell "1" [ref=e2506]
+                - cell "4.1" [ref=e2507]
+                - cell "4" [ref=e2508]
+                - cell "1" [ref=e2509]
+                - cell "1" [ref=e2510]
+                - cell "0" [ref=e2511]
+                - cell "2" [ref=e2512]
+                - cell "7" [ref=e2513]
+                - cell "77" [ref=e2514]
+                - cell "49" [ref=e2515]
+                - cell "19" [ref=e2516]
+                - cell ".640" [ref=e2517]
+                - cell "2.08" [ref=e2518]
+                - cell "1.38" [ref=e2519]
+                - cell "17.77" [ref=e2520]
+                - cell "3.50" [ref=e2521]
+                - cell "2" [ref=e2522]
+                - cell "4" [ref=e2523]
+                - cell "0" [ref=e2524]
+                - cell "0" [ref=e2525]
+                - cell "17" [ref=e2526]
+                - cell ".235" [ref=e2527]
+                - cell "0" [ref=e2528]
+                - cell "4.15" [ref=e2529]
+                - cell "0" [ref=e2530]
+                - cell "0" [ref=e2531]
+                - cell ".---" [ref=e2532]
+                - cell "0" [ref=e2533]
+                - cell "0" [ref=e2534]
+                - cell "0" [ref=e2535]
+                - cell "1" [ref=e2536]
+                - cell "0" [ref=e2537]
+                - cell "1" [ref=e2538]
+                - cell "0" [ref=e2539]
+                - cell "0.50" [ref=e2540]
+                - cell "8.31" [ref=e2541]
+                - cell "0" [ref=e2542]
+                - cell "0" [ref=e2543]
+                - cell "0" [ref=e2544]
+                - cell "0.00" [ref=e2545]
+                - cell "0" [ref=e2546]
+                - cell "0" [ref=e2547]
+                - cell "0" [ref=e2548]
+                - cell "14.54" [ref=e2549]
+                - cell "0" [ref=e2550]
+                - cell ".316" [ref=e2551]
+                - cell ".551" [ref=e2552]
+                - cell "13" [ref=e2553]
+                - cell "0" [ref=e2554]
+                - cell "2.08" [ref=e2555]
+                - cell "0" [ref=e2556]
+                - cell "0" [ref=e2557]
+                - cell "0" [ref=e2558]
+                - cell "0" [ref=e2559]
+                - cell ".235" [ref=e2560]
+                - cell ".---" [ref=e2561]
+                - cell "4.1 IP, ER, 7 K, 2 BB" [ref=e2562]
+                - cell "0" [ref=e2563]
+                - cell "0" [ref=e2564]
+                - cell "4" [ref=e2565]
+                - cell "0" [ref=e2566]
+                - cell "0" [ref=e2567]
+                - cell ".---" [ref=e2568]
+      - generic [ref=e2220]:
+        - generic [ref=e2221]:
+          - generic [ref=e2223]:
+            - generic [ref=e2224]: NINTH / DATA
+            - heading "Season production" [level=2] [ref=e2225]
+          - article [ref=e2228]:
+            - img "Ryan Weathers headshot" [ref=e2231]
+            - heading "Ryan Weathers" [level=3] [ref=e2232]
+            - paragraph [ref=e2233]: 2026 season
+            - generic [ref=e2234]:
+              - generic [ref=e2235]:
+                - generic [ref=e2236]: IP
+                - generic [ref=e2237]: "126.2"
+              - generic [ref=e2238]:
+                - generic [ref=e2239]: SO
+                - generic [ref=e2240]: "136"
+        - generic [ref=e2241]:
+          - generic [ref=e2243]:
+            - generic [ref=e2244]: NINTH / DATA
+            - heading "Provider status" [level=2] [ref=e2245]
+          - generic [ref=e2247]:
+            - generic [ref=e2248]:
+              - generic [ref=e2249]: Official MLB feed
+              - generic [ref=e2250]: Current season totals
+            - strong [ref=e2251]: LIVE
+      - generic [ref=e2252]:
+        - generic [ref=e2254]:
+          - generic [ref=e2255]: NINTH / DATA
+          - heading "Current season statistics" [level=2] [ref=e2256]
+        - table [ref=e2259]:
+          - rowgroup [ref=e2260]:
+            - row [ref=e2261]:
+              - columnheader "G" [ref=e2262]
+              - columnheader "GS" [ref=e2263]
+              - columnheader "IP" [ref=e2264]
+              - columnheader "W" [ref=e2265]
+              - columnheader "L" [ref=e2266]
+              - columnheader "ERA" [ref=e2267]
+              - columnheader "WHIP" [ref=e2268]
+              - columnheader "SO" [ref=e2269]
+              - columnheader "BB" [ref=e2270]
+          - rowgroup [ref=e2271]:
+            - row [ref=e2272]:
+              - cell "23" [ref=e2273]
+              - cell "23" [ref=e2274]
+              - cell "126.2" [ref=e2275]
+              - cell "5" [ref=e2276]
+              - cell "7" [ref=e2277]
+              - cell "3.69" [ref=e2278]
+              - cell "1.21" [ref=e2279]
+              - cell "136" [ref=e2280]
+              - cell "37" [ref=e2281]

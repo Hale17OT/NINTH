@@ -1,0 +1,215 @@
+/* NINTH editorial route policy
+   ----------------------------
+   These rules define the shared information scale across analytical routes.
+   Individual pages retain their own composition, while labels, controls and
+   evidence rows no longer shrink to dashboard-thumbnail dimensions. */
+
+:is(.model-page,.game-page,.props-page,.guarantee-page,.alter-page) :is(button,a,input,select) {
+  font-size: max(12px, .75rem);
+}
+
+:is(.model-page,.game-page,.props-page,.guarantee-page,.alter-page) :is(small,dt,label) {
+  font-size: max(12px, .75rem) !important;
+  line-height: 1.45;
+}
+
+:is(.model-page,.game-page,.props-page,.guarantee-page,.alter-page) :is(p,li) {
+  line-height: 1.62;
+}
+
+/* Model Lab — wide audit gallery with legible metric provenance. */
+.model-page .model-hero { min-height: 570px; grid-template-columns: minmax(0,1fr) 380px; gap: 64px; }
+.model-page .model-hero h1 { font-size: clamp(4.8rem, 9vw, 9rem); }
+.model-page .model-hero p { max-width: 720px; font-size: 16px; }
+.model-page .hero-score { min-height: 370px; height: auto; padding: 32px; border: 1px solid var(--line); border-top: 4px solid var(--accent); }
+.model-page .hero-score strong { font-size: clamp(4rem, 7vw, 6.8rem); }
+.model-page .hero-score :is(small,span) { font-size: 12px !important; }
+.model-page .model-stats > div { min-height: 155px; padding: 28px; }
+.model-page .model-stats span { margin: 25px 0 9px; font-size: 12px !important; }
+.model-page .model-stats strong { font-size: 32px; }
+.model-page .model-grid { gap: 58px; padding: 72px 0; }
+.model-page :is(.model-grid h2,.next-step h2,.prediction-ledger h2,.totals-audit h2,.props-audit h2) { font-size: clamp(2rem, 3.8vw, 3.6rem); }
+.model-page :is(.totals-audit header p,.props-audit header p,.totals-note,.props-note,.model-grid header p) { font-size: 13px; }
+.model-page :is(.totals-metrics article,.props-shadow article,.props-deployment-breakdown article) { min-height: 105px; padding: 20px; }
+.model-page :is(.totals-metrics b,.props-shadow b,.props-deployment-breakdown b) { font-size: 24px; }
+.model-page .line-audit span { min-height: 82px; padding: 16px; }
+.model-page .line-audit b { font-size: 15px; }
+.model-page .props-table article { min-height: 90px; padding: 18px; }
+.model-page .props-table b { font-size: 13px; }
+.model-page :is(.result-row,.prop-result-row) { min-height: 84px; }
+.model-page .props-table b { font-size: 12px !important; }
+.model-page .result-pick b { font-size: 14px !important; }
+.model-page .result-pick span,.model-page .factor-tags span { font-size: 12px !important; }
+.model-page .result-row :is(time,em) { font-size: 12px !important; }
+.model-page :is(.result-match,.home) b { font-size: 13px !important; }
+.model-page .props-deployment-breakdown span { font-size: 12px !important; }
+.model-page .prop-player b { font-size: 14px !important; }
+.model-page .feature-group :is(span,em) { font-size: 12px !important; }
+.model-page .parlay-label b,.model-page .parlay-grid b { font-size: 13px !important; }
+.model-page :is(.parlay-label,.parlay-grid,.ledger-score,.tier,.totals-metrics,.props-shadow,.parlay-audit) span { font-size: 12px !important; }
+.model-page .prediction-ledger > :is(div,footer) { font-size: 12px !important; }
+
+/* Matchup — scorecard first, readable evidence second. */
+.game-page { padding-top: 20px; }
+.game-page .return-builder { min-height: 54px; }
+.game-page .match { min-height: 270px; padding: 34px; border-radius: 22px; background: radial-gradient(circle at 70% 35%,rgba(214,255,97,.09),transparent 38%),var(--surface); }
+.game-page .matchup-team h2 { font-size: clamp(1.55rem,3vw,2.6rem); }
+.game-page .match-meta strong { font-size: 38px; }
+.game-page .prob { min-width: 190px; padding: 18px; }
+.game-page .grid-auto { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+.game-page .grid-auto > * { min-height: 145px; }
+.game-page :is(.projection,.totals-projection,.form-grid,.pitcher-grid,.pitching-run-grid) { gap: 16px; }
+.game-page .projection-stamp { min-height: 66px; padding: 12px 16px; }
+.game-page .probability-row { min-height: 150px; }
+.game-page .probability-row strong { font-size: 36px; }
+.game-page .reason-grid article { min-height: 76px; padding: 14px; }
+.game-page .reason-grid b { font-size: 14px; }
+.game-page .reason-grid small { font-size: 12px !important; }
+.game-page .totals-call > span,.game-page .totals-call > div { min-height: 120px; padding: 22px; }
+.game-page .totals-call strong { font-size: 28px; }
+.game-page .total-thresholds article { min-height: 105px; padding: 16px; }
+.game-page .total-thresholds span { font-size: 12px; }
+.game-page .pitching-run-card { padding: 22px; }
+.game-page .pitching-run-metrics span { min-height: 100px; padding: 14px; }
+.game-page .match-meta p,.game-page .projection-stamp b,.game-page .projection-stamp em { font-size: 12px !important; }
+.game-page .starter,.game-page .start-table-wrap { min-width: 0; max-width: 100%; }
+.game-page .start-table-wrap { overflow-x: auto; }
+.game-page .start-table-wrap :is(th,td,b) { font-size: 12px !important; }
+.game-page .person-card b { font-size: 14px !important; }
+.game-page .context-grid span { font-size: 12px !important; }
+.game-page .form-row i { font-size: 12px !important; }
+.game-page .form-row b { font-size: 13px !important; }
+.game-page .model-audit b { font-size: 12px !important; }
+.game-page .starter-splits span { font-size: 12px !important; }
+.game-page .reasoning-status span { font-size: 12px !important; }
+.game-page .reasoning-status b { font-size: 14px !important; }
+.game-page .pitching-run-metrics em { font-size: 12px !important; }
+.game-page .total-reasons span { font-size: 12px !important; }
+.game-page .total-reasons b { font-size: 13px !important; }
+.game-page .group-title b { font-size: 14px !important; }
+.game-page .totals-call em,.game-page .recent-starts span,.game-page .team-personnel span { font-size: 12px !important; }
+.game-page .projection-reasoning { font-size: 13px !important; }
+.game-page :is(.person-group.lineup p,.personnel-title) { font-size: 13px !important; }
+.game-page .model-pick :is(span,em),.game-page :is(.home,.away) > span { font-size: 12px !important; }
+.game-page .projection-reasoning aside,.game-page .personnel-title p { font-size: 13px !important; }
+.game-page .confidence-summary em { font-size: 12px !important; }
+
+/* Player Lab — controls are work surfaces, not caption-sized metadata. */
+.props-page { gap: 18px; padding-top: 24px; }
+.props-page .props-hero { min-height: 410px; padding: 48px; border-radius: 20px; background: radial-gradient(circle at 82% 12%,rgba(214,255,97,.25),transparent 34%),var(--surface); }
+.props-page .props-hero h1 { font-size: clamp(3.5rem,7vw,6.8rem); }
+.props-page .props-hero p { max-width: 840px; font-size: 15px; }
+.props-page .props-hero :is(span,small,label) { font-size: 12px !important; }
+.props-page .props-hero :is(a,button,b) { font-size: 12px !important; }
+.props-page :is(.select-label,.picker-label,.market-tabs>span,.slate-mode>span,.refresh-control>span) { margin-bottom: 7px; font-size: 12px !important; letter-spacing: .08em; }
+.props-page :is(.trigger,.date-trigger,.range-trigger,.slate-mode>div,.refresh-control button) { min-height: 46px; height: 46px; }
+.props-page :is(.trigger>span,.date-trigger b,.range-trigger b,.slate-mode button,.refresh-control button) { font-size: 12px !important; }
+.props-page :is(.trigger>small,.options small,.menu header button) { font-size: 12px !important; }
+.props-page .options>button { min-height: 46px; }
+.props-page .options b { font-size: 12px !important; }
+.props-page .market-control > span { font-size: 12px; }
+.props-page :is(.market-control a,.seg button,.refresh) { min-height: 46px; padding: 12px 16px; font-size: 12px; }
+.props-page .advanced-controls summary { min-height: 52px; height: auto; padding: 0 16px; }
+.props-page .advanced-controls summary span { font-size: 12px; }
+.props-page .advanced-grid { gap: 12px; padding: 16px; }
+.props-page .prop-side-row { min-height: 64px; padding: 10px; }
+.props-page .prop-side-row b { font-size: 12px; }
+.props-page .prop-side-row > div { min-height: 40px; height: auto; }
+.props-page .prop-side-row button { font-size: 12px; }
+.props-page .scoreboard { min-height: 210px; padding: 30px; }
+.props-page .score-copy h2 { font-size: 25px; }
+.props-page .score-copy p { font-size: 13px; }
+.props-page .scoreboard :is(p,span,small) { font-size: 12px !important; }
+.props-page .score-metrics small { font-size: 12px !important; }
+.props-page .score-metrics b { font-size: 20px; }
+.props-page .game-grid { gap: 14px; }
+.props-page .game-card { min-height: 190px; padding: 24px; border-radius: 14px; }
+.props-page .team b { font-size: 15px; }
+.props-page .selected-card,.props-page .player-card { padding: 18px; border-radius: 14px; }
+.props-page .player b { font-size: 19px; }
+.props-page .alternate b,.props-page .leg-actions b { font-size: 12px; }
+.props-page .selected-line small,.props-page .sides button small { font-size: 12px !important; }
+.props-modal .modal-header > button { width: 46px !important; height: 46px !important; min-width: 46px; flex: none; }
+
+/* Guarantees — turn the list into an evidence ledger with a visible hierarchy. */
+.guarantee-page .guarantee-hero { min-height: 580px; grid-template-columns: minmax(0,1fr) 390px; gap: 70px; }
+.guarantee-page .guarantee-hero h1 { font-size: clamp(4.7rem,9vw,8.8rem); }
+.guarantee-page .guarantee-hero > div > p { max-width: 760px; font-size: 16px; }
+.guarantee-page .guarantee-hero aside { min-height: 370px; padding: 32px; border-top-width: 4px; }
+.guarantee-page .guarantee-hero aside > span { font-size: 12px !important; }
+.guarantee-page .guarantee-hero aside > b { font-size: 24px; }
+.guarantee-page .guarantee-hero aside > strong { font-size: 68px; }
+.guarantee-page .method-warning { min-height: 88px; margin: 28px 0; padding: 22px; align-items: center; }
+.guarantee-page .method-warning b { font-size: 14px; }
+.guarantee-page .method-warning p { font-size: 12px; }
+.guarantee-page .method-warning p { font-size: 12px !important; }
+.guarantee-page .summary-strip { gap: 10px; background: transparent; border: 0; }
+.guarantee-page .summary-strip article { min-height: 130px; padding: 24px; border: 1px solid var(--line); border-radius: 12px; }
+.guarantee-page .summary-strip b { font-size: 34px; }
+.guarantee-page .controls { gap: 12px; padding: 32px 0 18px; }
+.guarantee-page .controls label > div,.guarantee-page .controls select { min-height: 48px; height: auto; }
+.guarantee-page .controls input,.guarantee-page .controls select { font-size: 13px; }
+.guarantee-page .guarantee-list > header,.guarantee-page .guarantee-list > article { padding: 15px 18px; }
+.guarantee-page .guarantee-list > header { font-size: 12px; }
+.guarantee-page .guarantee-list > article { min-height: 88px; }
+.guarantee-page .player b { font-size: 14px; }
+.guarantee-page .record strong { font-size: 24px; }
+.guarantee-page .guarantee-list article > div > b { font-size: 15px; }
+.guarantee-page .guarantee-list em { font-size: 12px; }
+
+/* Alter Ego — a distinct reflective surface with a stronger input timeline. */
+.alter-page { gap: 20px; padding-top: 24px; }
+.alter-page .hero { position: relative; min-height: 600px; padding: 54px; grid-template-columns: minmax(0,1.1fr) minmax(390px,.9fr); gap: 52px; overflow: hidden; border-radius: 20px; background: radial-gradient(circle at 12% 18%,rgba(214,255,97,.16),transparent 34%),radial-gradient(circle at 80% 50%,rgba(131,168,255,.1),transparent 28%),var(--surface); }
+.alter-page .hero::after { position:absolute;right:-110px;top:-100px;width:460px;height:460px;border:1px solid rgba(214,255,97,.18);border-radius:50%;box-shadow:0 0 0 54px rgba(214,255,97,.025),0 0 0 108px rgba(214,255,97,.018);content:'';pointer-events:none; }
+.alter-page .hero > * { position: relative; z-index: 1; }
+.alter-page h1 { font-size: clamp(4.4rem,8vw,8rem); }
+.alter-page .hero > div > p { max-width: 720px; font-size: 15px; }
+.alter-page .import-panel { padding: 30px; box-shadow: 12px 12px 0 color-mix(in srgb,var(--accent) 12%,transparent); }
+.alter-page .connection { font-size: 12px; }
+.alter-page .hero :is(.eyebrow,.connection,li,.import-panel small,.import-panel button) { font-size: 12px !important; }
+.alter-page ol { gap: 14px; margin: 26px 0; }
+.alter-page li { font-size: 13px; }
+.alter-page li > b { width: 32px; height: 32px; font-size: 12px; }
+.alter-page .import-panel button { min-height: 50px; height: auto; font-size: 12px; }
+.alter-page .import-panel small { font-size: 12px !important; }
+.alter-page .metrics { gap: 12px; }
+.alter-page .metrics article { min-height: 155px; padding: 24px; border-radius: 12px; }
+.alter-page .metrics span { font-size: 12px; }
+.alter-page .metrics b { font-size: 40px; }
+.alter-page .metrics small { font-size: 12px !important; }
+.alter-page .analysis-grid { gap: 12px; }
+.alter-page :is(.panel,.history) { border-radius: 14px; overflow: hidden; }
+.alter-page :is(.panel>header,.history>header) { min-height: 82px; padding: 22px 24px; }
+.alter-page :is(.panel h2,.history h2) { font-size: 26px; }
+.alter-page .advice { min-height: 88px; padding: 18px 24px; }
+.alter-page .advice b { font-size: 14px; }
+.alter-page .advice p { font-size: 12px; }
+.alter-page .tabs { min-height: 48px; height: auto; }
+.alter-page .tabs button { font-size: 12px; }
+.alter-page .breakdown-row { min-height: 72px; }
+.alter-page .breakdown-row b,.alter-page .breakdown-row > span { font-size: 12px; }
+.alter-page .slip-summary { min-height: 92px; }
+.alter-page .slip-summary b { font-size: 12px; }
+
+@media (max-width: 980px) {
+  .model-page .model-hero,.guarantee-page .guarantee-hero { grid-template-columns: 1fr; padding: 56px 0; }
+  .model-page .hero-score,.guarantee-page .guarantee-hero aside { width: min(100%,620px); }
+  .game-page .grid-auto { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .alter-page .hero { grid-template-columns: 1fr; }
+  .alter-page .import-panel { width: min(100%,720px); }
+}
+
+@media (max-width: 1100px) {
+  .game-page .pitcher-grid { grid-template-columns: 1fr !important; }
+  .props-modal .player-grid { grid-template-columns: 1fr !important; }
+  .props-modal .custom-select { min-width: 0; }
+}
+
+@media (max-width: 700px) {
+  .model-page .model-stats,.guarantee-page .summary-strip,.alter-page .metrics { grid-template-columns: 1fr 1fr; }
+  .game-page .match { padding: 22px; }
+  .game-page .grid-auto { grid-template-columns: 1fr 1fr; }
+  .props-page .props-hero { min-height: 0; padding: 30px 20px; }
+  .alter-page .hero { min-height: 0; padding: 34px 20px; }
+  .alter-page .analysis-grid { grid-template-columns: 1fr; }
+}

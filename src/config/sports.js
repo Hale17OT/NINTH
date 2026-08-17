@@ -13,12 +13,12 @@ export const sports = [
   },
   {
     id: 'american-football', name: 'American Football', short: 'NFL', route: '/american-football', status: 'research',
-    eyebrow: 'NFL', accent: '#ff754f', numeral: '03',
+    eyebrow: 'NFL', accent: '#83a8ff', numeral: '03',
     description: 'EPA, success rate, quarterback value, injuries and drive-level simulation.',
     leagues: ['NFL'],
   },
   {
-    id: 'basketball', name: 'Basketball', short: 'NBA', route: '/basketball', status: 'research',
+    id: 'basketball', name: 'NBA', short: 'NBA', route: '/basketball', status: 'research',
     eyebrow: 'NBA', accent: '#f6b945', numeral: '04',
     description: 'Possession forecasts, lineup impact, rest, availability and pace distributions.',
     leagues: ['NBA'],
@@ -39,13 +39,14 @@ const researchNav = sport => [
   ['Games', `${sport.route}/games`],
   ['Teams', `${sport.route}/teams`],
   ['Players', `${sport.route}/players`],
+  ['Builder', `${sport.route}/builder`],
   ['Models', `${sport.route}/models`],
   ['Data', `${sport.route}/data`],
 ]
 
 export const sportNavigation = {
   baseball: [
-    ['Overview', '/baseball'], ['Games', '/schedule'], ['Teams', '/teams'], ['Players', '/players'],
+    ['Overview', '/baseball'], ['Games', '/schedule'], ['Standings', '/standings'], ['Teams', '/teams'], ['Players', '/players'],
     ['Live', '/live'], ['Builder', '/builder'], ['Player props', '/props-builder'], ['Models', '/model'],
     ['Guarantees', '/baseball/guarantees'], ['Alter ego', '/alter-ego'],
   ],

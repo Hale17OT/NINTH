@@ -1,0 +1,13 @@
+- generic [ref=f11e3]:
+  - banner [ref=f11e5]:
+    - generic [ref=f11e6]:
+      - link "NINTH home" [ref=f11e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f11e8]: NINTH
+      - generic [ref=f11e9]:
+        - button "Use light theme" [ref=f11e10] [cursor=pointer]
+        - button "Choose sport" [ref=f11e17] [cursor=pointer]
+    - generic [ref=f11e19]:
+      - generic [ref=f11e20]: NBA
+      - button "Open workspace navigation" [ref=f11e22] [cursor=pointer]
+  - main [ref=f11e24]

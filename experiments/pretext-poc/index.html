@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NINTH / Pretext evaluation</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #080b08; color: #f2f2e8; font-family: Arial, sans-serif; }
+      .shell { width: min(1180px, calc(100% - 32px)); margin: auto; padding: 48px 0; }
+      .eyebrow { font: 700 11px monospace; color: #d6ff61; letter-spacing: .11em; }
+      .intro { max-width: 780px; color: #a5ab9f; line-height: 1.65; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; }
+      .case { min-width: 0; padding: 22px; border: 1px solid #30362e; background: #10140f; }
+      .case header { display: flex; justify-content: space-between; font: 700 10px monospace; color: #9ca398; }
+      .stage { min-height: 360px; margin-top: 20px; padding: 20px; border: 1px solid #252b24; background: #080b08; overflow: hidden; }
+      .css-title { max-width: 100%; font-size: clamp(58px, 7vw, 108px); line-height: .78; letter-spacing: -.085em; font-weight: 800; }
+      .css-title i { color: #d6ff61; font-style: normal; }
+      .canvas-wrap { position: relative; }
+      .canvas-wrap canvas { display: block; width: 100%; height: 320px; }
+      .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 16px; background: #30362e; }
+      .metrics span { padding: 12px; display: grid; gap: 5px; background: #10140f; font: 700 9px monospace; color: #9ca398; }
+      .metrics b { color: #f2f2e8; }
+      .note { margin-top: 24px; padding: 18px; border-left: 3px solid #d6ff61; background: #10140f; color: #b7bdb1; font-size: 13px; line-height: 1.65; }
+      @media (max-width: 720px) {
+        .grid { grid-template-columns: 1fr; }
+        .stage { min-height: 300px; }
+        .canvas-wrap canvas { height: 270px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <span class="eyebrow">ISOLATED EXPERIMENT / NOT PRODUCTION UI</span>
+      <h1>CSS text vs Pretext canvas layout</h1>
+      <p class="intro">Same NINTH editorial heading, measured at the same container width. Resize the browser to compare line breaks, update cost, readability and accessibility implications.</p>
+      <section class="grid">
+        <article class="case">
+          <header><span>NATIVE CSS / DOM</span><b>READY</b></header>
+          <div class="stage"><div class="css-title">Read the game<br /><i>before the line.</i></div></div>
+          <div class="metrics"><span>SEMANTICS<b>Native heading</b></span><span>SELECTION<b>Selectable</b></span><span>LAYOUT CODE<b>CSS only</b></span></div>
+        </article>
+        <article class="case">
+          <header><span>PRETEXT / CANVAS</span><b id="pretextStatus">MEASURING</b></header>
+          <div class="stage canvas-wrap"><canvas id="canvas" role="img" aria-label="Read the game before the line."></canvas></div>
+          <div class="metrics"><span>SEMANTICS<b>ARIA duplicate</b></span><span>SELECTION<b>Not selectable</b></span><span>LAYOUT CODE<b>Manual canvas</b></span></div>
+        </article>
+      </section>
+      <div class="note" id="finding">Resize measurement pending.</div>
+    </main>
+    <script type="module">
+      import { prepareWithSegments, layoutWithLines } from '@chenglou/pretext'
+
+      const copy = 'Read the game\nbefore the line.'
+      const canvas = document.querySelector('#canvas')
+      const stage = canvas.parentElement
+      const status = document.querySelector('#pretextStatus')
+      const finding = document.querySelector('#finding')
+      let prepared
+      let lastWidth = 0
+      let lastFont = ''
+
+      const draw = () => {
+        const width = Math.max(220, stage.clientWidth - 40)
+        const fontSize = Math.max(54, Math.min(104, width * .2))
+        const lineHeight = fontSize * .82
+        const font = `800 ${fontSize}px Arial`
+        if (width === lastWidth && font === lastFont) return
+        lastWidth = width
+
+        const startedAt = performance.now()
+        if (!prepared || font !== lastFont) {
+          prepared = prepareWithSegments(copy, font, { whiteSpace: 'pre-wrap', letterSpacing: -fontSize * .085 })
+          lastFont = font
+        }
+        const result = layoutWithLines(prepared, width, lineHeight)
+        const elapsed = performance.now() - startedAt
+        const dpr = devicePixelRatio || 1
+
+        canvas.width = stage.clientWidth * dpr
+        canvas.height = 320 * dpr
+        canvas.style.height = '320px'
+        const context = canvas.getContext('2d')
+        context.scale(dpr, dpr)
+        context.font = font
+        context.textBaseline = 'top'
+        result.lines.forEach((line, index) => {
+          context.fillStyle = index === result.lines.length - 1 ? '#d6ff61' : '#f2f2e8'
+          context.fillText(line.text, 20, 18 + index * lineHeight)
+        })
+
+        status.textContent = `${result.lineCount} LINES / ${elapsed.toFixed(2)} MS`
+        finding.textContent = `At ${Math.round(width)}px, Pretext produced ${result.lineCount} manual lines in ${elapsed.toFixed(2)}ms. It gives precise canvas line ranges, but this hero is already handled by accessible, selectable CSS with far less integration code. Pretext would be valuable for future canvas/SVG annotation collision or virtualization work—not this DOM heading.`
+      }
+
+      new ResizeObserver(draw).observe(stage)
+      document.fonts?.ready.then(() => {
+        prepared = null
+        lastWidth = 0
+        lastFont = ''
+        draw()
+      })
+      draw()
+    </script>
+  </body>
+</html>

@@ -1,7 +1,9 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion-v";
 import { useRoute } from "vue-router";
 import { api } from "../services/api";
+import { createSharedPoller } from "../services/polling";
 import TeamLogo from "../components/team/TeamLogo.vue";
 import CustomDatePicker from "../components/ui/CustomDatePicker.vue";
 import CustomSelect from "../components/ui/CustomSelect.vue";
@@ -12,8 +14,11 @@ import SlateModeToggle from "../components/builder/SlateModeToggle.vue";
 import BuilderRefreshButton from "../components/builder/BuilderRefreshButton.vue";
 import MelbetHandoff from "../components/builder/MelbetHandoff.vue";
 import OddsFloorSelect from "../components/builder/OddsFloorSelect.vue";
+import ProbabilityRing from "../components/charts/ProbabilityRing.vue";
 import { Check, Sparkles, Trash2 } from "lucide-vue-next";
 import { selectMixedCandidates, selectTotalsCandidates } from "../services/slipBuilderRecommendations";
+
+const reduced = useReducedMotion();
 
 const today = new Intl.DateTimeFormat("en-CA", {
   timeZone: "America/New_York",
@@ -260,19 +265,7 @@ const snapshotLabel = (value) =>
     : "pending";
 const pct = (value) => `${(Number(value || 0) * 100).toFixed(1)}%`;
 let loadToken = 0;
-let refreshTimer;
-let mounted = false;
-function queueRefresh() {
-  if (!mounted) return;
-  window.clearTimeout(refreshTimer);
-  refreshTimer = window.setTimeout(
-    () => {
-      markVisited();
-      load();
-    },
-    Math.max(3, Number(board.value?.refresh_seconds || 60)) * 1000,
-  );
-}
+let poller;
 function trimToTarget() {
   const limit = Number(targetLegs.value);
   if (legs.value.length <= limit) return;
@@ -305,7 +298,6 @@ async function load() {
   } finally {
     if (token === loadToken) {
       loading.value = false;
-      queueRefresh();
     }
   }
 }
@@ -421,14 +413,17 @@ watch([date, mode, marketMode, targetLegs, minimumOdds, () => dateRange.value.st
   markVisited();
 });
 onMounted(() => {
-  mounted = true;
   markVisited();
-  load();
+  poller = createSharedPoller({
+    key: () => `slip-builder:${selectedStart.value}:${selectedDays.value}`,
+    task: () => { markVisited(); return load(); },
+    interval: () => Math.max(10, Number(board.value?.refresh_seconds || 300)) * 1000,
+  });
+  poller.start();
 });
 onBeforeUnmount(() => {
-  mounted = false;
   markVisited();
-  window.clearTimeout(refreshTimer);
+  poller?.stop();
 });
 </script>
 
@@ -449,12 +444,7 @@ onBeforeUnmount(() => {
       </div>
     </section>
     <section class="scoreboard">
-      <div class="score-ring" :style="{ '--score': `${Math.min(100, calibratedProbability * 100)}%` }">
-        <span
-          ><strong class="mono">{{ (calibratedProbability * 100).toFixed(1) }}</strong
-          ><small>%</small></span
-        >
-      </div>
+      <ProbabilityRing class="score-ring" :value="calibratedProbability" :size="112" />
       <div class="score-copy">
         <span class="eyebrow">{{ confidenceMethod }} SLIP CONFIDENCE</span>
         <h2>{{ scoreLabel }}</h2>
@@ -545,8 +535,8 @@ onBeforeUnmount(() => {
           <h2>{{ dateLabel(group[0]) }}</h2>
           <small>{{ group[1].length }} GAMES</small>
         </header>
-        <div class="game-grid">
-          <article v-for="game in group[1]" :key="game.game_id" class="game-pick" :class="{ selected: picks[String(game.game_id)] }">
+        <LayoutGroup :id="`mlb-builder-${group[0]}`"><motion.div layout class="game-grid"><AnimatePresence mode="popLayout">
+          <motion.article v-for="game in group[1]" :key="game.game_id" layout class="game-pick" :class="{ selected: picks[String(game.game_id)] }" :initial="reduced ? false : { opacity: 0, y: 12 }" :animate="{ opacity: 1, y: 0 }" :exit="reduced ? undefined : { opacity: 0, scale: .98 }" :while-hover="reduced ? undefined : { y: -2 }">
             <div class="game-meta">
               <span>{{ timeLabel(game.starts_at) }}</span
               ><RouterLink
@@ -608,8 +598,8 @@ onBeforeUnmount(() => {
                 >BEST ELIGIBLE <b>{{ optionForGame(game)?.market === "totals" ? `${optionForGame(game).side.toUpperCase()} ${optionForGame(game).line}` : optionForGame(game) ? game[game.recommended_side].name : 'NONE' }}<template v-if="optionForGame(game)"> · @ {{ formatOdds(optionForGame(game).odds) }}</template></b></span
               ><span>{{ game.projection_basis === "matchup_synced" ? "MATCHUP-SYNCED" : "EARLY BASELINE" }} · {{ snapshotLabel(game.projection_updated_at) }} · ONE PICK PER GAME</span>
             </footer>
-          </article>
-        </div>
+          </motion.article>
+        </AnimatePresence></motion.div></LayoutGroup>
       </section>
     </template>
   </div>
@@ -1309,6 +1299,8 @@ button:disabled {
   background: var(--contrast);
   color: var(--on-contrast);
 }
+.score-ring{height:auto!important;background:none!important;--muted:#a8afa4}
+.score-ring:after{display:none!important}
 .score-ring:after {
   background: var(--contrast);
 }

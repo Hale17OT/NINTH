@@ -1,5 +1,7 @@
 const numberOrNull = value => Number.isFinite(Number(value)) ? Number(value) : null;
 
+export const DEFAULT_GUARANTEE_ROBUST_FLOOR = 0.6;
+
 const exactKey = (playerId, kind, prop, side, line) => [
   String(playerId),
   String(kind || "").toLowerCase(),
@@ -32,9 +34,33 @@ const recordScore = (record, probability) => {
     + 0.1 * sampleMaturity;
 };
 
+export const guaranteeHistoryProbability = record => {
+  const recentSamples = Number(record?.recent_10_samples || 0);
+  const recentAccuracy = recentSamples
+    ? Number(record?.recent_10_correct || 0) / recentSamples
+    : Number(record?.accuracy || 0);
+  return Math.max(0, Math.min(1,
+    0.7 * Number(record?.wilson_lower || 0) + 0.3 * recentAccuracy,
+  ));
+};
+
+export const guaranteeRobustFloor = value => {
+  if (value == null || value === "") return DEFAULT_GUARANTEE_ROBUST_FLOOR;
+  const floor = numberOrNull(value);
+  return floor == null
+    ? DEFAULT_GUARANTEE_ROBUST_FLOOR
+    : Math.max(0, Math.min(1, floor));
+};
+
+export const guaranteeRobustProbability = (record, probability) => Math.min(
+  Number(probability || 0),
+  guaranteeHistoryProbability(record),
+);
+
 export function buildGuaranteeCandidates(games, records, options = {}) {
   const minimumSamples = Math.max(1, Number(options.minimumSamples || 3));
   const oddsFloor = guaranteeOddsFloor(options.minimumOdds);
+  const robustFloor = guaranteeRobustFloor(options.minimumRobustProbability);
   const recordMap = new Map();
   for (const record of records || []) {
     if (Number(record.samples || 0) < minimumSamples) continue;
@@ -49,14 +75,9 @@ export function buildGuaranteeCandidates(games, records, options = {}) {
       const melbetSelection = preferredSelection(line, side, oddsFloor);
       const probability = numberOrNull(line[`${side}_probability`]);
       if (!melbetSelection || probability == null) continue;
-      const recentSamples = Number(record.recent_10_samples || 0);
-      const recentAccuracy = recentSamples
-        ? Number(record.recent_10_correct || 0) / recentSamples
-        : Number(record.accuracy || 0);
-      const historyProbability = Math.max(0, Math.min(1,
-        0.7 * Number(record.wilson_lower || 0) + 0.3 * recentAccuracy,
-      ));
-      const robustProbability = Math.min(probability, historyProbability);
+      const historyProbability = guaranteeHistoryProbability(record);
+      const robustProbability = guaranteeRobustProbability(record, probability);
+      if (robustProbability < robustFloor) continue;
       candidates.push({
         game,
         player,
@@ -71,6 +92,7 @@ export function buildGuaranteeCandidates(games, records, options = {}) {
         melbetSelection,
         guaranteeRecord: record,
         guaranteeScore: recordScore(record, probability),
+        guaranteeRobustFloor: robustFloor,
         marketRule: null,
       });
     }

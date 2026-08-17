@@ -1,0 +1,89 @@
+:root {
+  color-scheme: dark;
+  --paper: #050706;
+  --surface: #0a0d0b;
+  --surface-2: #101411;
+  --wash: #171c18;
+  --raised: #202721;
+  --ink: #f3f5ee;
+  --text: #f3f5ee;
+  --muted: #969f95;
+  --muted-strong: #c0c8be;
+  --line: rgba(228, 237, 223, 0.12);
+  --line-strong: rgba(228, 237, 223, 0.25);
+  --accent: #d6ff61;
+  --accent-strong: #e4ff91;
+  --accent-soft: rgba(214, 255, 97, 0.12);
+  --acid: #d6ff61;
+  --orange: #f0a55b;
+  --green: #78d6a3;
+  --red: #ff7168;
+  --amber: #ffbd61;
+  --blue: #83a8ff;
+  --contrast: #020304;
+  --on-contrast: #f4f1eb;
+  --bg: var(--paper);
+  --panel: var(--surface);
+  --soft: #20252a;
+  --selection-bg: var(--accent);
+  --selection-text: #071005;
+  --selection-muted: #334410;
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.22);
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+  --shadow-glow: 0 0 58px rgba(214, 255, 97, 0.13);
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --text-xs: .75rem;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.4rem;
+  --text-display: clamp(4.7rem, 12vw, 11.5rem);
+  --control-height: 46px;
+  --motion-fast: 160ms;
+  --motion-base: 220ms;
+  --motion-panel: 320ms;
+  --motion-compose: 480ms;
+  --ease-standard: cubic-bezier(.2,.75,.25,1);
+  --ease-emphasized: cubic-bezier(.16,1,.3,1);
+  --content-max: 1640px;
+  --content-pad: clamp(18px, 3vw, 48px);
+  --header-height: 76px;
+}
+
+:root.light {
+  color-scheme: light;
+  --paper: #edf0e8;
+  --surface: #f8faf4;
+  --surface-2: #e4e9df;
+  --wash: #dce2d7;
+  --raised: #cfd7ca;
+  --ink: #111315;
+  --text: #111315;
+  --muted: #676b70;
+  --muted-strong: #494d52;
+  --line: rgba(17, 19, 21, 0.14);
+  --line-strong: rgba(17, 19, 21, 0.28);
+  --contrast: #070809;
+  --on-contrast: #f4f1eb;
+  --shadow-sm: 0 8px 24px rgba(25, 20, 15, 0.08);
+  --shadow: 0 24px 70px rgba(25, 20, 15, 0.16);
+}
+
+@media (max-width: 760px) {
+  :root { --header-height: 66px; --content-pad: 16px; }
+}

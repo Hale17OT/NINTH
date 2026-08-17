@@ -1,19 +1,98 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=DM+Mono:wght@400;500&display=swap');
-@tailwind base; @tailwind components; @tailwind utilities;
-:root,:root.light{color-scheme:light;--paper:#f1efe8;--surface:#fbfaf6;--wash:#e8e7df;--ink:#131612;--text:#131612;--muted:#73786f;--line:#d3d4cc;--accent:#b9ed39;--acid:#719d00;--orange:#ed583b;--green:#27754a;--blue:#4169a9;--contrast:#10130f;--on-contrast:#f1efe8;--bg:var(--paper);--panel:var(--surface);--raised:var(--wash);--soft:#dedfd6;--shadow:none}
-:root.dark{color-scheme:dark;--paper:#0e110e;--surface:#161a16;--wash:#20251f;--ink:#f2f1e9;--text:#f2f1e9;--muted:#a0a79d;--line:#353c34;--accent:#b9ed39;--acid:#b9ed39;--orange:#ff7258;--green:#72c994;--blue:#86aef5;--contrast:#080b08;--on-contrast:#f2f1e9;--bg:var(--paper);--panel:var(--surface);--raised:var(--wash);--soft:#293027;--shadow:0 18px 50px rgba(0,0,0,.26)}
-:root{--selection-bg:#c5ee4d;--selection-text:#101508;--selection-muted:#3e4a16}:root.dark{--selection-bg:#d1ff63;--selection-text:#0b1105;--selection-muted:#33400d}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;background:var(--paper);color:var(--text);font-family:Archivo,sans-serif;-webkit-font-smoothing:antialiased;transition:background-color .2s,color .2s}button,input,select{font:inherit}button,a{color:inherit}.mono{font-family:'DM Mono',monospace}.muted{color:var(--muted)}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:4px;box-shadow:none}.eyebrow{font:500 9px 'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}.section-title{font-size:17px;font-weight:800;margin:0}.teal{color:var(--acid)!important}.pink{color:var(--orange)!important}.grid-auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px}.progress{height:4px;background:var(--wash);overflow:hidden}.progress>i{display:block;height:100%;background:var(--ink)}.tag{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border:1px solid var(--line);background:var(--surface);border-radius:2px;font:500 8px 'DM Mono';text-transform:uppercase;letter-spacing:.05em}.live-dot{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 0 rgba(237,88,59,.45);animation:pulse 1.8s infinite}@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(237,88,59,0)}}
-.data-table{width:100%;border-collapse:collapse;font-size:11px}.data-table th{text-align:left;color:var(--muted);font:500 8px 'DM Mono';letter-spacing:.1em;text-transform:uppercase;padding:12px}.data-table td{padding:13px 12px;border-top:1px solid var(--line)}.data-table tbody tr{transition:.15s}.data-table tbody tr:hover{background:var(--wash)}::selection{background:var(--selection-bg);color:var(--selection-text)}::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#babdb4}
-@media(max-width:767px){.grid-auto{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.mobile-hide{display:none!important}.data-table{min-width:640px}.table-wrap{overflow-x:auto}.panel{border-radius:3px}}@media(max-width:420px){.grid-auto{grid-template-columns:1fr}}
-:root .brief-signals{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-bottom:13px;background:#363a34;border-top:1px solid #363a34}
-:root .brief-signals>span{padding:11px 9px;background:var(--contrast);display:flex;flex-direction:column;gap:5px}
-:root .brief-signals small,:root .brief-empty span{font:600 7px 'DM Mono';color:#aeb4aa}
-:root .brief-signals b{font:600 9px 'DM Mono';color:var(--accent)}
-:root .brief-empty{margin:auto 0;padding:30px 5px;text-align:center}
-:root .brief-empty p{font-size:9px;line-height:1.6;color:#aeb4aa}
-.team-grid:empty,.builder-page .game-grid:empty{grid-column:1/-1;min-height:145px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;text-align:center;color:var(--muted)}
-.team-grid:empty:after{content:'No MLB teams match the current search and league filter.';font:600 9px 'DM Mono'}
-.builder-page .game-grid:empty:after{content:'No upcoming games were found in this slate. Choose another date or expand the range.';max-width:440px;padding:20px;font:600 9px/1.6 'DM Mono'}
-.roster-groups:not(:has(.roster-card)):after{content:'No active players were returned for this roster.';display:block;padding:30px;border:1px solid var(--line);text-align:center;color:var(--muted);font:600 9px 'DM Mono'}
+@import './tokens.css';
+@import './typography.css';
+@import './motion.css';
+@import './editorial.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+html { min-width: 320px; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth; background: var(--paper); }
+body { margin: 0; min-width: 320px; min-height: 100vh; overflow-x: hidden; background: var(--paper); color: var(--text); -webkit-font-smoothing: antialiased; }
+body::before { position: fixed; inset: 0; z-index: -1; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px); background-size: 72px 72px; mask-image: linear-gradient(to bottom,black,transparent 72%); content: ''; }
+button, input, select, textarea { font: inherit; }
+button, a { color: inherit; }
+button { border-radius: var(--radius-xs); }
+button:not(:disabled), a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+a { text-underline-offset: 3px; }
+img, svg { max-width: 100%; }
+.brand img { filter: sepia(1) saturate(4.5) hue-rotate(25deg) brightness(1.28) !important; }
+
+.muted { color: var(--muted); }
+.panel, .ninth-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: none; }
+.section-title { margin: 0; font-size: var(--text-2xl); font-weight: 760; letter-spacing: -.045em; }
+.teal { color: var(--green) !important; }
+.pink { color: var(--red) !important; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 10px; }
+.progress { height: 3px; overflow: hidden; background: var(--wash); }
+.progress > i { display: block; height: 100%; background: var(--accent); }
+.tag { min-height: 32px; display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px; border: 1px solid var(--line); background: var(--surface-2); border-radius: var(--radius-xs); font: 500 var(--text-xs) 'DM Mono'; letter-spacing: .05em; text-transform: uppercase; }
+.live-dot { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 4px rgba(255,113,104,.12); animation: ninth-pulse 1.8s infinite; }
+
+.data-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--text-sm); }
+.data-table th { position: sticky; top: 0; z-index: 1; padding: 14px; border-bottom: 1px solid var(--line); background: var(--surface); color: var(--muted); font-size: var(--text-xs); font-weight: 500; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
+.data-table td { padding: 15px 14px; border-bottom: 1px solid var(--line); }
+.data-table tbody tr { transition: background-color var(--motion-fast); }
+.data-table tbody tr:hover { background: var(--wash); }
+.table-wrap { max-width: 100%; overflow: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
+
+.state, .empty, .unavailable { border-color: var(--line) !important; background: var(--surface) !important; }
+::selection { background: var(--selection-bg); color: var(--selection-text); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb { background: var(--raised); border: 2px solid var(--paper); border-radius: 999px; }
+
+.brief-signals { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-bottom: 13px; background: var(--line); border-top: 1px solid var(--line); }
+.brief-signals > span { display: flex; flex-direction: column; gap: 5px; padding: 11px 9px; background: var(--contrast); }
+.brief-signals small, .brief-empty span { color: var(--muted-strong); font: 600 var(--text-xs) 'DM Mono'; }
+.brief-signals b { color: var(--accent); font: 600 var(--text-sm) 'DM Mono'; }
+.brief-empty { margin: auto 0; padding: 30px 5px; text-align: center; }
+.brief-empty p { color: var(--muted-strong); font-size: var(--text-sm); line-height: 1.6; }
+
+:where(button, a, input, select, textarea) { font-size: max(var(--text-xs), 12px); }
+:where(button, input, select, textarea):not(.icon-only) { min-height: var(--control-height); }
+
+/* The legacy route components intentionally inherit this floor. Route-specific
+   display type may be larger, but no analytical label should collapse below it. */
+:where(.panel, .ninth-card, .builder-page, .props-page, .model-page, .game-page, .team-page, .player-page) :is(small, label) {
+  font-size: max(.72rem, 11.5px);
+}
+
+/* Shared analytical controls use a legible, touchable floor everywhere. These
+   overrides intentionally supersede the compressed legacy component styles. */
+:is(.custom-select, .multi-select, .date-picker, .range-picker) :is(.select-label, .picker-label) { font: 600 12px 'DM Mono' !important; letter-spacing: .08em !important; }
+:is(.custom-select, .multi-select) .trigger { min-height: 48px !important; height: auto !important; padding: 0 14px !important; }
+:is(.custom-select, .multi-select) .trigger > span { max-width: none !important; font-size: 13px !important; font-weight: 700 !important; }
+:is(.custom-select, .multi-select) .trigger > small { font: 500 12px 'DM Mono' !important; }
+:is(.custom-select, .multi-select) .menu :is(button, input, b, small, p) { font-size: 12px !important; }
+:is(.custom-select, .multi-select) .options > button { min-height: 48px !important; }
+:is(.date-picker, .range-picker) :is(.date-trigger, .range-trigger) { min-height: 48px !important; height: auto !important; }
+:is(.date-picker, .range-picker) :is(.date-trigger b, .range-trigger b, .calendar header b) { font-size: 13px !important; }
+:is(.date-picker, .range-picker) :is(.week span, .days button, .calendar header small) { font: 600 11px 'DM Mono' !important; }
+:is(.date-picker, .range-picker) .days > span { height: 40px !important; }
+:is(.date-picker, .range-picker) .days button { width: 36px !important; height: 36px !important; }
+
+:is(.empty-state, .load-error, .data-loader, .section) p { font-size: 13px !important; }
+:is(.empty-state, .load-error) :is(.empty-eyebrow, span) { font: 700 12px 'DM Mono' !important; }
+.empty-state .empty-eyebrow { color: var(--accent) !important; }
+.load-error :is(span, svg) { color: var(--red) !important; }
+:is(.empty-state, .load-error) :is(a, button) { min-height: 46px !important; font: 700 12px 'DM Mono' !important; }
+.data-loader .loader-copy span { font-size: 12px !important; }
+.section h2 { font-size: 20px !important; }
+
+:is(.model-page, .props-page, .builder-page, .guarantee-page, .alter-page) p { font-size: max(13px, .8rem) !important; }
+:is(.model-page, .props-page, .builder-page, .guarantee-page, .alter-page) :is(small, label, button) { font-size: 12px !important; }
+
+.team-grid:empty, .builder-page .game-grid:empty { grid-column: 1/-1; min-height: 145px; display: grid; place-items: center; border: 1px solid var(--line); background: var(--surface); color: var(--muted); text-align: center; }
+.team-grid:empty::after { content: 'No MLB teams match the current search and league filter.'; font: 600 12px 'DM Mono'; }
+.builder-page .game-grid:empty::after { max-width: 440px; padding: 20px; content: 'No upcoming games were found in this slate. Choose another date or expand the range.'; font: 600 12px/1.6 'DM Mono'; }
+.roster-groups:not(:has(.roster-card))::after { display: block; padding: 30px; border: 1px solid var(--line); color: var(--muted); content: 'No active players were returned for this roster.'; font: 600 12px 'DM Mono'; text-align: center; }
+
+@media (max-width: 767px) {
+  .grid-auto { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
+  .mobile-hide { display: none !important; }
+  .data-table { min-width: 660px; }
+  .panel, .ninth-card { border-radius: var(--radius-xs); }
+}
+@media (max-width: 420px) { .grid-auto { grid-template-columns: 1fr; } }

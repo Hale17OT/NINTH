@@ -1,0 +1,3197 @@
+- generic [ref=e3]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "NINTH home" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: NINTH
+      - navigation "Sport workspaces" [ref=e9]:
+        - link "00 Platform" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e11]: "00"
+          - generic [ref=e12]: Platform
+        - link "01 MLB" [ref=e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=e14]: "01"
+          - generic [ref=e15]: MLB
+        - link "02 FTB" [ref=e17] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=e18]: "02"
+          - generic [ref=e19]: FTB
+        - link "03 NFL" [ref=e20] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=e21]: "03"
+          - generic [ref=e22]: NFL
+        - link "04 NBA" [ref=e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=e24]: "04"
+          - generic [ref=e25]: NBA
+        - link "05 ESP" [ref=e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=e27]: "05"
+          - generic [ref=e28]: ESP
+      - generic [ref=e29]:
+        - textbox "Search MLB" [ref=e34]
+        - button "Use light theme" [ref=e35] [cursor=pointer]
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]: PRODUCTION
+        - generic [ref=e45]: Baseball
+        - emphasis [ref=e46]: PRODUCTION
+      - navigation "Workspace navigation" [ref=e47]:
+        - link "Overview" [ref=e48] [cursor=pointer]:
+          - /url: /baseball
+        - link "Games" [ref=e49] [cursor=pointer]:
+          - /url: /schedule
+        - link "Standings" [ref=e50] [cursor=pointer]:
+          - /url: /standings
+        - link "Teams" [ref=e51] [cursor=pointer]:
+          - /url: /teams
+        - link "Players" [ref=e52] [cursor=pointer]:
+          - /url: /players
+        - link "Live" [ref=e54] [cursor=pointer]:
+          - /url: /live
+        - link "Builder" [ref=e55] [cursor=pointer]:
+          - /url: /builder
+        - link "Player props" [ref=e56] [cursor=pointer]:
+          - /url: /props-builder
+        - link "Models" [ref=e57] [cursor=pointer]:
+          - /url: /model
+        - link "Guarantees" [ref=e58] [cursor=pointer]:
+          - /url: /baseball/guarantees
+        - link "Alter ego" [ref=e59] [cursor=pointer]:
+          - /url: /alter-ego
+    - generic [ref=e60]:
+      - generic [ref=e61]: TODAY
+      - generic [ref=e63]: Official scoreboard syncing
+      - generic [ref=e64]: FEEDS CONNECTED
+  - main [ref=e66]:
+    - generic [ref=e69]:
+      - button "BACK TO PLAYERS" [ref=e70] [cursor=pointer]
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - img "Aaron Judge headshot" [ref=e77]
+          - generic [ref=e78]:
+            - generic [ref=e79]: New York Yankees · RF
+            - heading "Aaron Judge" [level=1] [ref=e80]
+            - paragraph [ref=e81]: Right BAT · Right THROW · MLB DEBUT 2016-08-13
+        - generic [ref=e82]:
+          - generic [ref=e83]: 2026 OPS
+          - generic [ref=e84]: ".908"
+      - generic [ref=e85]:
+        - generic [ref=e86]:
+          - generic [ref=e87]: Batting average
+          - strong [ref=e88]: ".248"
+          - generic [ref=e89]: 59 games
+        - generic [ref=e90]:
+          - generic [ref=e91]: OPS
+          - strong [ref=e92]: ".908"
+          - generic [ref=e93]: OBP .375
+        - generic [ref=e94]:
+          - generic [ref=e95]: Home runs
+          - strong [ref=e96]: "17"
+          - generic [ref=e97]: 38 RBI
+        - generic [ref=e98]:
+          - generic [ref=e99]: Walks
+          - strong [ref=e100]: "42"
+          - generic [ref=e101]: 72 strikeouts
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e105]:
+            - generic [ref=e106]: NINTH / DATA
+            - heading "2026 batting totals" [level=2] [ref=e107]
+          - generic [ref=e108]:
+            - 'img "Value: 4 values" [ref=e110]'
+            - generic [ref=e112]:
+              - generic [ref=e113]: SOURCE NOTE
+              - text: Bars show the labeled official season totals directly; unlike a trend line, they do not imply a time sequence. No modeled player values are displayed.
+        - generic [ref=e114]:
+          - generic [ref=e116]:
+            - generic [ref=e117]: NINTH / DATA
+            - heading "Season rates" [level=2] [ref=e118]
+          - generic [ref=e119]:
+            - generic [ref=e120]:
+              - generic [ref=e121]:
+                - generic [ref=e122]: AVG
+                - strong [ref=e123]: ".248"
+              - generic [ref=e126]: 53 hits
+            - generic [ref=e127]:
+              - generic [ref=e128]:
+                - generic [ref=e129]: OBP
+                - strong [ref=e130]: ".375"
+              - generic [ref=e133]: 42 walks
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - generic [ref=e136]: SLG
+                - strong [ref=e137]: ".533"
+              - generic [ref=e140]: 114 total bases
+      - generic [ref=e141]:
+        - generic [ref=e142]:
+          - generic [ref=e143]: INTERPRETATION
+          - heading "What the current profile says" [level=2] [ref=e144]
+        - paragraph [ref=e145]: Aaron Judge's strongest captured peer rate is Isolated power at the 99th percentile among 554 MLB hitters. The latest five average 0.80 hits, compared with 0.90 across the captured game log.
+        - generic [ref=e146]:
+          - article [ref=e147]:
+            - generic [ref=e148]: "01"
+            - generic [ref=e149]: Isolated power
+            - generic [ref=e150]: 99th percentile · 0.285
+          - article [ref=e151]:
+            - generic [ref=e152]: "02"
+            - generic [ref=e153]: BB rate
+            - generic [ref=e154]: 98th percentile · 0.161
+          - article [ref=e155]:
+            - generic [ref=e156]: "03"
+            - generic [ref=e157]: OPS
+            - generic [ref=e158]: 97th percentile · 0.908
+      - generic [ref=e159]:
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - generic [ref=e162]:
+              - generic [ref=e163]: ROLLING TREND
+              - heading "Game-by-game production" [level=2] [ref=e164]
+            - navigation [ref=e165]:
+              - button "L5" [ref=e166] [cursor=pointer]
+              - button "L10" [ref=e167] [cursor=pointer]
+              - button "ALL" [ref=e168] [cursor=pointer]
+          - 'img "Hits: 30 values; Total bases: 30 values" [ref=e170]'
+          - paragraph [ref=e172]: Official chronological game-log observations; missing games are not imputed.
+        - generic [ref=e173]:
+          - generic [ref=e174]:
+            - generic [ref=e175]: CONTEXT SPLITS
+            - heading "Latest form versus full log" [level=2] [ref=e176]
+          - article [ref=e178]:
+            - generic [ref=e179]: Latest 5
+            - strong [ref=e180]: "0.8"
+            - generic [ref=e182]:
+              - text: "0.9"
+              - emphasis [ref=e183]: Captured game average
+      - generic [ref=e184]:
+        - generic [ref=e185]:
+          - generic [ref=e186]:
+            - generic [ref=e187]: PEER PERCENTILES
+            - heading "Position players peer profile" [level=2] [ref=e188]
+          - generic [ref=e189]: 554 COMPARABLE PLAYERS
+        - generic [ref=e190]:
+          - article "Hits divided by at-bats." [ref=e191]:
+            - generic [ref=e192]:
+              - generic [ref=e193]: AVG
+              - generic [ref=e194]: "0.248"
+            - emphasis [ref=e197]: "62"
+          - article "Rate of reaching base excluding errors and fielder choices." [ref=e199]:
+            - generic [ref=e200]:
+              - generic [ref=e201]: OBP
+              - generic [ref=e202]: "0.375"
+            - emphasis [ref=e205]: "95"
+          - article "Total bases divided by at-bats." [ref=e207]:
+            - generic [ref=e208]:
+              - generic [ref=e209]: SLG
+              - generic [ref=e210]: "0.533"
+            - emphasis [ref=e213]: "96"
+          - article "On-base percentage plus slugging percentage." [ref=e215]:
+            - generic [ref=e216]:
+              - generic [ref=e217]: OPS
+              - generic [ref=e218]: "0.908"
+            - emphasis [ref=e221]: "97"
+          - article "Walks divided by plate appearances or batters faced." [ref=e223]:
+            - generic [ref=e224]:
+              - generic [ref=e225]: BB rate
+              - generic [ref=e226]: "0.161"
+            - emphasis [ref=e229]: "98"
+          - article "Strikeouts divided by plate appearances or batters faced." [ref=e231]:
+            - generic [ref=e232]:
+              - generic [ref=e233]: K rate
+              - generic [ref=e234]: "0.276"
+            - emphasis [ref=e237]: "26"
+          - article "Slugging percentage minus batting average." [ref=e239]:
+            - generic [ref=e240]:
+              - generic [ref=e241]: Isolated power
+              - generic [ref=e242]: "0.285"
+            - emphasis [ref=e245]: "99"
+      - generic [ref=e247]:
+        - generic [ref=e248]:
+          - generic [ref=e249]:
+            - generic [ref=e250]: ADVANCED PROFILE
+            - heading "Rate definitions and context" [level=2] [ref=e251]
+          - generic [ref=e252]: Official MLB Stats API season and game-log records
+        - generic [ref=e253]:
+          - article "Hits divided by at-bats." [ref=e254]:
+            - generic [ref=e255]:
+              - text: AVG
+              - generic [ref=e256]: "?"
+            - generic [ref=e257]: "0.248"
+            - emphasis [ref=e258]: P62
+          - article "Rate of reaching base excluding errors and fielder choices." [ref=e260]:
+            - generic [ref=e261]:
+              - text: OBP
+              - generic [ref=e262]: "?"
+            - generic [ref=e263]: "0.375"
+            - emphasis [ref=e264]: P95
+          - article "Total bases divided by at-bats." [ref=e266]:
+            - generic [ref=e267]:
+              - text: SLG
+              - generic [ref=e268]: "?"
+            - generic [ref=e269]: "0.533"
+            - emphasis [ref=e270]: P96
+          - article "On-base percentage plus slugging percentage." [ref=e272]:
+            - generic [ref=e273]:
+              - text: OPS
+              - generic [ref=e274]: "?"
+            - generic [ref=e275]: "0.908"
+            - emphasis [ref=e276]: P97
+          - article "Walks divided by plate appearances or batters faced." [ref=e278]:
+            - generic [ref=e279]:
+              - text: BB rate
+              - generic [ref=e280]: "?"
+            - generic [ref=e281]: "0.161"
+            - emphasis [ref=e282]: P98
+          - article "Strikeouts divided by plate appearances or batters faced." [ref=e284]:
+            - generic [ref=e285]:
+              - text: K rate
+              - generic [ref=e286]: "?"
+            - generic [ref=e287]: "0.276"
+            - emphasis [ref=e288]: P26
+          - article "Slugging percentage minus batting average." [ref=e290]:
+            - generic [ref=e291]:
+              - text: Isolated power
+              - generic [ref=e292]: "?"
+            - generic [ref=e293]: "0.285"
+            - emphasis [ref=e294]: P99
+      - generic [ref=e296]:
+        - generic [ref=e298]:
+          - generic [ref=e299]: NINTH / DATA
+          - heading "Complete 2026 game log" [level=2] [ref=e300]
+          - paragraph [ref=e301]: 59 unique games · every official per-game stat returned by MLB
+        - generic [ref=e302]:
+          - generic [ref=e303]:
+            - group "Player game log type" [ref=e304]:
+              - button "HITTING GAME LOG · 59" [ref=e305] [cursor=pointer]
+              - button "FIELDING GAME LOG · 59" [ref=e306] [cursor=pointer]
+            - generic [ref=e307]: CHRONOLOGICAL · CLICK A DATE, TEAM OR OPPONENT TO OPEN IT
+          - table [ref=e309]:
+            - rowgroup [ref=e310]:
+              - row [ref=e311]:
+                - columnheader "Date" [ref=e312]
+                - columnheader "Team" [ref=e313]
+                - columnheader "Matchup" [ref=e314]
+                - columnheader "Result" [ref=e315]
+                - columnheader "Pos" [ref=e316]
+                - columnheader "PA" [ref=e317]
+                - columnheader "AB" [ref=e318]
+                - columnheader "R" [ref=e319]
+                - columnheader "H" [ref=e320]
+                - columnheader "2B" [ref=e321]
+                - columnheader "3B" [ref=e322]
+                - columnheader "HR" [ref=e323]
+                - columnheader "RBI" [ref=e324]
+                - columnheader "BB" [ref=e325]
+                - columnheader "K" [ref=e326]
+                - columnheader "SB" [ref=e327]
+                - columnheader "TB" [ref=e328]
+                - columnheader "LOB" [ref=e329]
+                - columnheader "Pitches" [ref=e330]
+                - columnheader "AVG" [ref=e331]
+                - columnheader "OBP" [ref=e332]
+                - columnheader "SLG" [ref=e333]
+                - columnheader "OPS" [ref=e334]
+                - columnheader "AO" [ref=e335]
+                - columnheader "At Bats Per Home Run" [ref=e336]
+                - columnheader "BABIP" [ref=e337]
+                - columnheader "Catchers Interference" [ref=e338]
+                - columnheader "Caught Stealing Percentage" [ref=e339]
+                - columnheader "CS" [ref=e340]
+                - columnheader "Fly Outs" [ref=e341]
+                - columnheader "G" [ref=e342]
+                - columnheader "GIDP" [ref=e343]
+                - columnheader "GO" [ref=e344]
+                - columnheader "GO / AO" [ref=e345]
+                - columnheader "Ground Into Triple Play" [ref=e346]
+                - columnheader "HBP" [ref=e347]
+                - columnheader "IBB" [ref=e348]
+                - columnheader "SAC" [ref=e349]
+                - columnheader "SF" [ref=e350]
+                - columnheader "Stolen Base Percentage" [ref=e351]
+                - columnheader "Summary" [ref=e352]
+            - rowgroup [ref=e353]:
+              - row [ref=e354]:
+                - cell [ref=e355]:
+                  - link "Mar 25" [ref=e356] [cursor=pointer]:
+                    - /url: /games/823244
+                - cell [ref=e357]:
+                  - link "New York Yankees" [ref=e358] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e359]:
+                  - link "@ San Francisco Giants" [ref=e360] [cursor=pointer]:
+                    - /url: /teams/137
+                - cell "W" [ref=e361]
+                - cell "RF" [ref=e363]
+                - cell "5" [ref=e364]
+                - cell "5" [ref=e365]
+                - cell "0" [ref=e366]
+                - cell "0" [ref=e367]
+                - cell "0" [ref=e368]
+                - cell "0" [ref=e369]
+                - cell "0" [ref=e370]
+                - cell "0" [ref=e371]
+                - cell "0" [ref=e372]
+                - cell "4" [ref=e373]
+                - cell "0" [ref=e374]
+                - cell "0" [ref=e375]
+                - cell "4" [ref=e376]
+                - cell "24" [ref=e377]
+                - cell ".000" [ref=e378]
+                - cell ".000" [ref=e379]
+                - cell ".000" [ref=e380]
+                - cell ".000" [ref=e381]
+                - cell "0" [ref=e382]
+                - cell "-.--" [ref=e383]
+                - cell ".000" [ref=e384]
+                - cell "0" [ref=e385]
+                - cell ".---" [ref=e386]
+                - cell "0" [ref=e387]
+                - cell "0" [ref=e388]
+                - cell "1" [ref=e389]
+                - cell "0" [ref=e390]
+                - cell "1" [ref=e391]
+                - cell "1.00" [ref=e392]
+                - cell "0" [ref=e393]
+                - cell "0" [ref=e394]
+                - cell "0" [ref=e395]
+                - cell "0" [ref=e396]
+                - cell "0" [ref=e397]
+                - cell ".---" [ref=e398]
+                - cell "0-5 | 4 K" [ref=e399]
+              - row [ref=e400]:
+                - cell [ref=e401]:
+                  - link "Mar 27" [ref=e402] [cursor=pointer]:
+                    - /url: /games/823243
+                - cell [ref=e403]:
+                  - link "New York Yankees" [ref=e404] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e405]:
+                  - link "@ San Francisco Giants" [ref=e406] [cursor=pointer]:
+                    - /url: /teams/137
+                - cell "W" [ref=e407]
+                - cell "RF" [ref=e409]
+                - cell "4" [ref=e410]
+                - cell "4" [ref=e411]
+                - cell "1" [ref=e412]
+                - cell "1" [ref=e413]
+                - cell "0" [ref=e414]
+                - cell "0" [ref=e415]
+                - cell "1" [ref=e416]
+                - cell "2" [ref=e417]
+                - cell "0" [ref=e418]
+                - cell "2" [ref=e419]
+                - cell "0" [ref=e420]
+                - cell "4" [ref=e421]
+                - cell "0" [ref=e422]
+                - cell "19" [ref=e423]
+                - cell ".111" [ref=e424]
+                - cell ".111" [ref=e425]
+                - cell ".444" [ref=e426]
+                - cell ".555" [ref=e427]
+                - cell "1" [ref=e428]
+                - cell "4.00" [ref=e429]
+                - cell ".000" [ref=e430]
+                - cell "0" [ref=e431]
+                - cell ".---" [ref=e432]
+                - cell "0" [ref=e433]
+                - cell "1" [ref=e434]
+                - cell "1" [ref=e435]
+                - cell "0" [ref=e436]
+                - cell "0" [ref=e437]
+                - cell "0.00" [ref=e438]
+                - cell "0" [ref=e439]
+                - cell "0" [ref=e440]
+                - cell "0" [ref=e441]
+                - cell "0" [ref=e442]
+                - cell "0" [ref=e443]
+                - cell ".---" [ref=e444]
+                - cell "1-4 | HR, 2 K, 2 RBI" [ref=e445]
+              - row [ref=e446]:
+                - cell [ref=e447]:
+                  - link "Mar 28" [ref=e448] [cursor=pointer]:
+                    - /url: /games/823241
+                - cell [ref=e449]:
+                  - link "New York Yankees" [ref=e450] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e451]:
+                  - link "@ San Francisco Giants" [ref=e452] [cursor=pointer]:
+                    - /url: /teams/137
+                - cell "W" [ref=e453]
+                - cell "RF" [ref=e455]
+                - cell "4" [ref=e456]
+                - cell "4" [ref=e457]
+                - cell "1" [ref=e458]
+                - cell "1" [ref=e459]
+                - cell "0" [ref=e460]
+                - cell "0" [ref=e461]
+                - cell "1" [ref=e462]
+                - cell "1" [ref=e463]
+                - cell "0" [ref=e464]
+                - cell "1" [ref=e465]
+                - cell "0" [ref=e466]
+                - cell "4" [ref=e467]
+                - cell "2" [ref=e468]
+                - cell "19" [ref=e469]
+                - cell ".154" [ref=e470]
+                - cell ".154" [ref=e471]
+                - cell ".615" [ref=e472]
+                - cell ".769" [ref=e473]
+                - cell "0" [ref=e474]
+                - cell "4.00" [ref=e475]
+                - cell ".000" [ref=e476]
+                - cell "0" [ref=e477]
+                - cell ".---" [ref=e478]
+                - cell "0" [ref=e479]
+                - cell "0" [ref=e480]
+                - cell "1" [ref=e481]
+                - cell "0" [ref=e482]
+                - cell "2" [ref=e483]
+                - cell "2.00" [ref=e484]
+                - cell "0" [ref=e485]
+                - cell "0" [ref=e486]
+                - cell "0" [ref=e487]
+                - cell "0" [ref=e488]
+                - cell "0" [ref=e489]
+                - cell ".---" [ref=e490]
+                - cell "1-4 | HR, K, RBI" [ref=e491]
+              - row [ref=e492]:
+                - cell [ref=e493]:
+                  - link "Mar 30" [ref=e494] [cursor=pointer]:
+                    - /url: /games/823159
+                - cell [ref=e495]:
+                  - link "New York Yankees" [ref=e496] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e497]:
+                  - link "@ Seattle Mariners" [ref=e498] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "L" [ref=e499]
+                - cell "RF" [ref=e501]
+                - cell "4" [ref=e502]
+                - cell "3" [ref=e503]
+                - cell "0" [ref=e504]
+                - cell "1" [ref=e505]
+                - cell "0" [ref=e506]
+                - cell "0" [ref=e507]
+                - cell "0" [ref=e508]
+                - cell "0" [ref=e509]
+                - cell "1" [ref=e510]
+                - cell "1" [ref=e511]
+                - cell "0" [ref=e512]
+                - cell "1" [ref=e513]
+                - cell "0" [ref=e514]
+                - cell "14" [ref=e515]
+                - cell ".188" [ref=e516]
+                - cell ".235" [ref=e517]
+                - cell ".563" [ref=e518]
+                - cell ".798" [ref=e519]
+                - cell "0" [ref=e520]
+                - cell "-.--" [ref=e521]
+                - cell ".500" [ref=e522]
+                - cell "0" [ref=e523]
+                - cell ".---" [ref=e524]
+                - cell "0" [ref=e525]
+                - cell "0" [ref=e526]
+                - cell "1" [ref=e527]
+                - cell "0" [ref=e528]
+                - cell "1" [ref=e529]
+                - cell "1.00" [ref=e530]
+                - cell "0" [ref=e531]
+                - cell "0" [ref=e532]
+                - cell "0" [ref=e533]
+                - cell "0" [ref=e534]
+                - cell "0" [ref=e535]
+                - cell ".---" [ref=e536]
+                - cell "1-3 | BB, K" [ref=e537]
+              - row [ref=e538]:
+                - cell [ref=e539]:
+                  - link "Mar 31" [ref=e540] [cursor=pointer]:
+                    - /url: /games/823158
+                - cell [ref=e541]:
+                  - link "New York Yankees" [ref=e542] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e543]:
+                  - link "@ Seattle Mariners" [ref=e544] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "W" [ref=e545]
+                - cell "RF" [ref=e547]
+                - cell "4" [ref=e548]
+                - cell "4" [ref=e549]
+                - cell "0" [ref=e550]
+                - cell "0" [ref=e551]
+                - cell "0" [ref=e552]
+                - cell "0" [ref=e553]
+                - cell "0" [ref=e554]
+                - cell "0" [ref=e555]
+                - cell "0" [ref=e556]
+                - cell "2" [ref=e557]
+                - cell "0" [ref=e558]
+                - cell "0" [ref=e559]
+                - cell "2" [ref=e560]
+                - cell "17" [ref=e561]
+                - cell ".150" [ref=e562]
+                - cell ".190" [ref=e563]
+                - cell ".450" [ref=e564]
+                - cell ".640" [ref=e565]
+                - cell "1" [ref=e566]
+                - cell "-.--" [ref=e567]
+                - cell ".000" [ref=e568]
+                - cell "0" [ref=e569]
+                - cell ".---" [ref=e570]
+                - cell "0" [ref=e571]
+                - cell "0" [ref=e572]
+                - cell "1" [ref=e573]
+                - cell "1" [ref=e574]
+                - cell "1" [ref=e575]
+                - cell "1.00" [ref=e576]
+                - cell "0" [ref=e577]
+                - cell "0" [ref=e578]
+                - cell "0" [ref=e579]
+                - cell "0" [ref=e580]
+                - cell "0" [ref=e581]
+                - cell ".---" [ref=e582]
+                - cell "0-4 | 2 K" [ref=e583]
+              - row [ref=e584]:
+                - cell [ref=e585]:
+                  - link "Apr 1" [ref=e586] [cursor=pointer]:
+                    - /url: /games/823157
+                - cell [ref=e587]:
+                  - link "New York Yankees" [ref=e588] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e589]:
+                  - link "@ Seattle Mariners" [ref=e590] [cursor=pointer]:
+                    - /url: /teams/136
+                - cell "W" [ref=e591]
+                - cell "RF" [ref=e593]
+                - cell "4" [ref=e594]
+                - cell "4" [ref=e595]
+                - cell "0" [ref=e596]
+                - cell "0" [ref=e597]
+                - cell "0" [ref=e598]
+                - cell "0" [ref=e599]
+                - cell "0" [ref=e600]
+                - cell "0" [ref=e601]
+                - cell "0" [ref=e602]
+                - cell "1" [ref=e603]
+                - cell "0" [ref=e604]
+                - cell "0" [ref=e605]
+                - cell "1" [ref=e606]
+                - cell "11" [ref=e607]
+                - cell ".125" [ref=e608]
+                - cell ".160" [ref=e609]
+                - cell ".375" [ref=e610]
+                - cell ".535" [ref=e611]
+                - cell "2" [ref=e612]
+                - cell "-.--" [ref=e613]
+                - cell ".000" [ref=e614]
+                - cell "0" [ref=e615]
+                - cell "1.000" [ref=e616]
+                - cell "1" [ref=e617]
+                - cell "2" [ref=e618]
+                - cell "1" [ref=e619]
+                - cell "0" [ref=e620]
+                - cell "1" [ref=e621]
+                - cell "0.50" [ref=e622]
+                - cell "0" [ref=e623]
+                - cell "0" [ref=e624]
+                - cell "0" [ref=e625]
+                - cell "0" [ref=e626]
+                - cell "0" [ref=e627]
+                - cell ".000" [ref=e628]
+                - cell "0-4 | K, CS" [ref=e629]
+              - row [ref=e630]:
+                - cell [ref=e631]:
+                  - link "Apr 3" [ref=e632] [cursor=pointer]:
+                    - /url: /games/823568
+                - cell [ref=e633]:
+                  - link "New York Yankees" [ref=e634] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e635]:
+                  - link "vs Miami Marlins" [ref=e636] [cursor=pointer]:
+                    - /url: /teams/146
+                - cell "W" [ref=e637]
+                - cell "RF" [ref=e639]
+                - cell "5" [ref=e640]
+                - cell "3" [ref=e641]
+                - cell "2" [ref=e642]
+                - cell "2" [ref=e643]
+                - cell "0" [ref=e644]
+                - cell "0" [ref=e645]
+                - cell "1" [ref=e646]
+                - cell "3" [ref=e647]
+                - cell "1" [ref=e648]
+                - cell "1" [ref=e649]
+                - cell "1" [ref=e650]
+                - cell "5" [ref=e651]
+                - cell "0" [ref=e652]
+                - cell "18" [ref=e653]
+                - cell ".185" [ref=e654]
+                - cell ".267" [ref=e655]
+                - cell ".519" [ref=e656]
+                - cell ".786" [ref=e657]
+                - cell "0" [ref=e658]
+                - cell "3.00" [ref=e659]
+                - cell "1.000" [ref=e660]
+                - cell "0" [ref=e661]
+                - cell ".000" [ref=e662]
+                - cell "0" [ref=e663]
+                - cell "0" [ref=e664]
+                - cell "1" [ref=e665]
+                - cell "0" [ref=e666]
+                - cell "0" [ref=e667]
+                - cell "-.--" [ref=e668]
+                - cell "0" [ref=e669]
+                - cell "1" [ref=e670]
+                - cell "0" [ref=e671]
+                - cell "0" [ref=e672]
+                - cell "0" [ref=e673]
+                - cell "1.000" [ref=e674]
+                - cell "2-3 | HR, BB, HBP" [ref=e675]
+              - row [ref=e676]:
+                - cell [ref=e677]:
+                  - link "Apr 4" [ref=e678] [cursor=pointer]:
+                    - /url: /games/823569
+                - cell [ref=e679]:
+                  - link "New York Yankees" [ref=e680] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e681]:
+                  - link "vs Miami Marlins" [ref=e682] [cursor=pointer]:
+                    - /url: /teams/146
+                - cell "W" [ref=e683]
+                - cell "RF" [ref=e685]
+                - cell "5" [ref=e686]
+                - cell "4" [ref=e687]
+                - cell "2" [ref=e688]
+                - cell "2" [ref=e689]
+                - cell "0" [ref=e690]
+                - cell "0" [ref=e691]
+                - cell "0" [ref=e692]
+                - cell "1" [ref=e693]
+                - cell "1" [ref=e694]
+                - cell "0" [ref=e695]
+                - cell "0" [ref=e696]
+                - cell "2" [ref=e697]
+                - cell "3" [ref=e698]
+                - cell "19" [ref=e699]
+                - cell ".226" [ref=e700]
+                - cell ".314" [ref=e701]
+                - cell ".516" [ref=e702]
+                - cell ".830" [ref=e703]
+                - cell "2" [ref=e704]
+                - cell "-.--" [ref=e705]
+                - cell ".500" [ref=e706]
+                - cell "0" [ref=e707]
+                - cell ".---" [ref=e708]
+                - cell "0" [ref=e709]
+                - cell "1" [ref=e710]
+                - cell "1" [ref=e711]
+                - cell "0" [ref=e712]
+                - cell "0" [ref=e713]
+                - cell "0.00" [ref=e714]
+                - cell "0" [ref=e715]
+                - cell "0" [ref=e716]
+                - cell "0" [ref=e717]
+                - cell "0" [ref=e718]
+                - cell "0" [ref=e719]
+                - cell ".---" [ref=e720]
+                - cell "2-4 | BB, RBI, 2 R" [ref=e721]
+              - row [ref=e722]:
+                - cell [ref=e723]:
+                  - link "Apr 5" [ref=e724] [cursor=pointer]:
+                    - /url: /games/823566
+                - cell [ref=e725]:
+                  - link "New York Yankees" [ref=e726] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e727]:
+                  - link "vs Miami Marlins" [ref=e728] [cursor=pointer]:
+                    - /url: /teams/146
+                - cell "L" [ref=e729]
+                - cell "RF" [ref=e731]
+                - cell "5" [ref=e732]
+                - cell "5" [ref=e733]
+                - cell "2" [ref=e734]
+                - cell "2" [ref=e735]
+                - cell "1" [ref=e736]
+                - cell "0" [ref=e737]
+                - cell "0" [ref=e738]
+                - cell "0" [ref=e739]
+                - cell "0" [ref=e740]
+                - cell "1" [ref=e741]
+                - cell "0" [ref=e742]
+                - cell "3" [ref=e743]
+                - cell "0" [ref=e744]
+                - cell "20" [ref=e745]
+                - cell ".250" [ref=e746]
+                - cell ".325" [ref=e747]
+                - cell ".528" [ref=e748]
+                - cell ".853" [ref=e749]
+                - cell "0" [ref=e750]
+                - cell "-.--" [ref=e751]
+                - cell ".500" [ref=e752]
+                - cell "0" [ref=e753]
+                - cell ".---" [ref=e754]
+                - cell "0" [ref=e755]
+                - cell "0" [ref=e756]
+                - cell "1" [ref=e757]
+                - cell "0" [ref=e758]
+                - cell "2" [ref=e759]
+                - cell "2.00" [ref=e760]
+                - cell "0" [ref=e761]
+                - cell "0" [ref=e762]
+                - cell "0" [ref=e763]
+                - cell "0" [ref=e764]
+                - cell "0" [ref=e765]
+                - cell ".---" [ref=e766]
+                - cell "2-5 | 2B, K, 2 R" [ref=e767]
+              - row [ref=e768]:
+                - cell [ref=e769]:
+                  - link "Apr 7" [ref=e770] [cursor=pointer]:
+                    - /url: /games/823567
+                - cell [ref=e771]:
+                  - link "New York Yankees" [ref=e772] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e773]:
+                  - link "vs Athletics" [ref=e774] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "W" [ref=e775]
+                - cell "RF" [ref=e777]
+                - cell "4" [ref=e778]
+                - cell "2" [ref=e779]
+                - cell "0" [ref=e780]
+                - cell "0" [ref=e781]
+                - cell "0" [ref=e782]
+                - cell "0" [ref=e783]
+                - cell "0" [ref=e784]
+                - cell "0" [ref=e785]
+                - cell "1" [ref=e786]
+                - cell "0" [ref=e787]
+                - cell "0" [ref=e788]
+                - cell "0" [ref=e789]
+                - cell "1" [ref=e790]
+                - cell "15" [ref=e791]
+                - cell ".237" [ref=e792]
+                - cell ".326" [ref=e793]
+                - cell ".500" [ref=e794]
+                - cell ".826" [ref=e795]
+                - cell "1" [ref=e796]
+                - cell "-.--" [ref=e797]
+                - cell ".000" [ref=e798]
+                - cell "1" [ref=e799]
+                - cell ".---" [ref=e800]
+                - cell "0" [ref=e801]
+                - cell "0" [ref=e802]
+                - cell "1" [ref=e803]
+                - cell "0" [ref=e804]
+                - cell "1" [ref=e805]
+                - cell "1.00" [ref=e806]
+                - cell "0" [ref=e807]
+                - cell "0" [ref=e808]
+                - cell "0" [ref=e809]
+                - cell "0" [ref=e810]
+                - cell "0" [ref=e811]
+                - cell ".---" [ref=e812]
+                - cell "0-2 | BB" [ref=e813]
+              - row [ref=e814]:
+                - cell [ref=e815]:
+                  - link "Apr 8" [ref=e816] [cursor=pointer]:
+                    - /url: /games/823564
+                - cell [ref=e817]:
+                  - link "New York Yankees" [ref=e818] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e819]:
+                  - link "vs Athletics" [ref=e820] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "L" [ref=e821]
+                - cell "RF" [ref=e823]
+                - cell "4" [ref=e824]
+                - cell "3" [ref=e825]
+                - cell "1" [ref=e826]
+                - cell "1" [ref=e827]
+                - cell "0" [ref=e828]
+                - cell "0" [ref=e829]
+                - cell "0" [ref=e830]
+                - cell "0" [ref=e831]
+                - cell "1" [ref=e832]
+                - cell "1" [ref=e833]
+                - cell "0" [ref=e834]
+                - cell "1" [ref=e835]
+                - cell "2" [ref=e836]
+                - cell "19" [ref=e837]
+                - cell ".244" [ref=e838]
+                - cell ".340" [ref=e839]
+                - cell ".488" [ref=e840]
+                - cell ".828" [ref=e841]
+                - cell "0" [ref=e842]
+                - cell "-.--" [ref=e843]
+                - cell ".500" [ref=e844]
+                - cell "0" [ref=e845]
+                - cell ".---" [ref=e846]
+                - cell "0" [ref=e847]
+                - cell "0" [ref=e848]
+                - cell "1" [ref=e849]
+                - cell "1" [ref=e850]
+                - cell "1" [ref=e851]
+                - cell "1.00" [ref=e852]
+                - cell "0" [ref=e853]
+                - cell "0" [ref=e854]
+                - cell "0" [ref=e855]
+                - cell "0" [ref=e856]
+                - cell "0" [ref=e857]
+                - cell ".---" [ref=e858]
+                - cell "1-3 | BB, K, R" [ref=e859]
+              - row [ref=e860]:
+                - cell [ref=e861]:
+                  - link "Apr 9" [ref=e862] [cursor=pointer]:
+                    - /url: /games/823565
+                - cell [ref=e863]:
+                  - link "New York Yankees" [ref=e864] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e865]:
+                  - link "vs Athletics" [ref=e866] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "L" [ref=e867]
+                - cell "RF" [ref=e869]
+                - cell "4" [ref=e870]
+                - cell "4" [ref=e871]
+                - cell "0" [ref=e872]
+                - cell "0" [ref=e873]
+                - cell "0" [ref=e874]
+                - cell "0" [ref=e875]
+                - cell "0" [ref=e876]
+                - cell "0" [ref=e877]
+                - cell "0" [ref=e878]
+                - cell "1" [ref=e879]
+                - cell "0" [ref=e880]
+                - cell "0" [ref=e881]
+                - cell "3" [ref=e882]
+                - cell "19" [ref=e883]
+                - cell ".222" [ref=e884]
+                - cell ".314" [ref=e885]
+                - cell ".444" [ref=e886]
+                - cell ".758" [ref=e887]
+                - cell "0" [ref=e888]
+                - cell "-.--" [ref=e889]
+                - cell ".000" [ref=e890]
+                - cell "0" [ref=e891]
+                - cell ".---" [ref=e892]
+                - cell "0" [ref=e893]
+                - cell "0" [ref=e894]
+                - cell "1" [ref=e895]
+                - cell "0" [ref=e896]
+                - cell "3" [ref=e897]
+                - cell "3.00" [ref=e898]
+                - cell "0" [ref=e899]
+                - cell "0" [ref=e900]
+                - cell "0" [ref=e901]
+                - cell "0" [ref=e902]
+                - cell "0" [ref=e903]
+                - cell ".---" [ref=e904]
+                - cell "0-4 | K" [ref=e905]
+              - row [ref=e906]:
+                - cell [ref=e907]:
+                  - link "Apr 10" [ref=e908] [cursor=pointer]:
+                    - /url: /games/822997
+                - cell [ref=e909]:
+                  - link "New York Yankees" [ref=e910] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e911]:
+                  - link "@ Tampa Bay Rays" [ref=e912] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "L" [ref=e913]
+                - cell "RF" [ref=e915]
+                - cell "4" [ref=e916]
+                - cell "4" [ref=e917]
+                - cell "1" [ref=e918]
+                - cell "1" [ref=e919]
+                - cell "0" [ref=e920]
+                - cell "0" [ref=e921]
+                - cell "0" [ref=e922]
+                - cell "0" [ref=e923]
+                - cell "0" [ref=e924]
+                - cell "2" [ref=e925]
+                - cell "1" [ref=e926]
+                - cell "1" [ref=e927]
+                - cell "2" [ref=e928]
+                - cell "20" [ref=e929]
+                - cell ".224" [ref=e930]
+                - cell ".309" [ref=e931]
+                - cell ".429" [ref=e932]
+                - cell ".738" [ref=e933]
+                - cell "0" [ref=e934]
+                - cell "-.--" [ref=e935]
+                - cell ".500" [ref=e936]
+                - cell "0" [ref=e937]
+                - cell ".000" [ref=e938]
+                - cell "0" [ref=e939]
+                - cell "0" [ref=e940]
+                - cell "1" [ref=e941]
+                - cell "0" [ref=e942]
+                - cell "1" [ref=e943]
+                - cell "1.00" [ref=e944]
+                - cell "0" [ref=e945]
+                - cell "0" [ref=e946]
+                - cell "0" [ref=e947]
+                - cell "0" [ref=e948]
+                - cell "0" [ref=e949]
+                - cell "1.000" [ref=e950]
+                - cell "1-4 | 2 K, R, SB" [ref=e951]
+              - row [ref=e952]:
+                - cell [ref=e953]:
+                  - link "Apr 11" [ref=e954] [cursor=pointer]:
+                    - /url: /games/822996
+                - cell [ref=e955]:
+                  - link "New York Yankees" [ref=e956] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e957]:
+                  - link "@ Tampa Bay Rays" [ref=e958] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "L" [ref=e959]
+                - cell "RF" [ref=e961]
+                - cell "5" [ref=e962]
+                - cell "3" [ref=e963]
+                - cell "0" [ref=e964]
+                - cell "0" [ref=e965]
+                - cell "0" [ref=e966]
+                - cell "0" [ref=e967]
+                - cell "0" [ref=e968]
+                - cell "0" [ref=e969]
+                - cell "2" [ref=e970]
+                - cell "1" [ref=e971]
+                - cell "1" [ref=e972]
+                - cell "0" [ref=e973]
+                - cell "2" [ref=e974]
+                - cell "29" [ref=e975]
+                - cell ".212" [ref=e976]
+                - cell ".317" [ref=e977]
+                - cell ".404" [ref=e978]
+                - cell ".721" [ref=e979]
+                - cell "2" [ref=e980]
+                - cell "-.--" [ref=e981]
+                - cell ".000" [ref=e982]
+                - cell "0" [ref=e983]
+                - cell ".000" [ref=e984]
+                - cell "0" [ref=e985]
+                - cell "1" [ref=e986]
+                - cell "1" [ref=e987]
+                - cell "0" [ref=e988]
+                - cell "0" [ref=e989]
+                - cell "0.00" [ref=e990]
+                - cell "0" [ref=e991]
+                - cell "0" [ref=e992]
+                - cell "0" [ref=e993]
+                - cell "0" [ref=e994]
+                - cell "0" [ref=e995]
+                - cell "1.000" [ref=e996]
+                - cell "0-3 | 2 BB, K, SB" [ref=e997]
+              - row [ref=e998]:
+                - cell [ref=e999]:
+                  - link "Apr 12" [ref=e1000] [cursor=pointer]:
+                    - /url: /games/822998
+                - cell [ref=e1001]:
+                  - link "New York Yankees" [ref=e1002] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1003]:
+                  - link "@ Tampa Bay Rays" [ref=e1004] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "L" [ref=e1005]
+                - cell "DH" [ref=e1007]
+                - cell "4" [ref=e1008]
+                - cell "3" [ref=e1009]
+                - cell "2" [ref=e1010]
+                - cell "1" [ref=e1011]
+                - cell "0" [ref=e1012]
+                - cell "0" [ref=e1013]
+                - cell "1" [ref=e1014]
+                - cell "2" [ref=e1015]
+                - cell "1" [ref=e1016]
+                - cell "1" [ref=e1017]
+                - cell "0" [ref=e1018]
+                - cell "4" [ref=e1019]
+                - cell "0" [ref=e1020]
+                - cell "26" [ref=e1021]
+                - cell ".218" [ref=e1022]
+                - cell ".328" [ref=e1023]
+                - cell ".455" [ref=e1024]
+                - cell ".783" [ref=e1025]
+                - cell "1" [ref=e1026]
+                - cell "3.00" [ref=e1027]
+                - cell ".000" [ref=e1028]
+                - cell "0" [ref=e1029]
+                - cell ".---" [ref=e1030]
+                - cell "0" [ref=e1031]
+                - cell "0" [ref=e1032]
+                - cell "1" [ref=e1033]
+                - cell "0" [ref=e1034]
+                - cell "0" [ref=e1035]
+                - cell "0.00" [ref=e1036]
+                - cell "0" [ref=e1037]
+                - cell "0" [ref=e1038]
+                - cell "0" [ref=e1039]
+                - cell "0" [ref=e1040]
+                - cell "0" [ref=e1041]
+                - cell ".---" [ref=e1042]
+                - cell "1-3 | HR, BB, K" [ref=e1043]
+              - row [ref=e1044]:
+                - cell [ref=e1045]:
+                  - link "Apr 13" [ref=e1046] [cursor=pointer]:
+                    - /url: /games/823563
+                - cell [ref=e1047]:
+                  - link "New York Yankees" [ref=e1048] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1049]:
+                  - link "vs Los Angeles Angels" [ref=e1050] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "W" [ref=e1051]
+                - cell "RF" [ref=e1053]
+                - cell "5" [ref=e1054]
+                - cell "5" [ref=e1055]
+                - cell "2" [ref=e1056]
+                - cell "2" [ref=e1057]
+                - cell "0" [ref=e1058]
+                - cell "0" [ref=e1059]
+                - cell "2" [ref=e1060]
+                - cell "3" [ref=e1061]
+                - cell "0" [ref=e1062]
+                - cell "1" [ref=e1063]
+                - cell "0" [ref=e1064]
+                - cell "8" [ref=e1065]
+                - cell "2" [ref=e1066]
+                - cell "18" [ref=e1067]
+                - cell ".233" [ref=e1068]
+                - cell ".333" [ref=e1069]
+                - cell ".550" [ref=e1070]
+                - cell ".883" [ref=e1071]
+                - cell "1" [ref=e1072]
+                - cell "2.50" [ref=e1073]
+                - cell ".000" [ref=e1074]
+                - cell "0" [ref=e1075]
+                - cell ".---" [ref=e1076]
+                - cell "0" [ref=e1077]
+                - cell "0" [ref=e1078]
+                - cell "1" [ref=e1079]
+                - cell "0" [ref=e1080]
+                - cell "1" [ref=e1081]
+                - cell "1.00" [ref=e1082]
+                - cell "0" [ref=e1083]
+                - cell "0" [ref=e1084]
+                - cell "0" [ref=e1085]
+                - cell "0" [ref=e1086]
+                - cell "0" [ref=e1087]
+                - cell ".---" [ref=e1088]
+                - cell "2-5 | 2 HR, K, 3 RBI" [ref=e1089]
+              - row [ref=e1090]:
+                - cell [ref=e1091]:
+                  - link "Apr 14" [ref=e1092] [cursor=pointer]:
+                    - /url: /games/823562
+                - cell [ref=e1093]:
+                  - link "New York Yankees" [ref=e1094] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1095]:
+                  - link "vs Los Angeles Angels" [ref=e1096] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "L" [ref=e1097]
+                - cell "RF" [ref=e1099]
+                - cell "4" [ref=e1100]
+                - cell "4" [ref=e1101]
+                - cell "0" [ref=e1102]
+                - cell "1" [ref=e1103]
+                - cell "1" [ref=e1104]
+                - cell "0" [ref=e1105]
+                - cell "0" [ref=e1106]
+                - cell "0" [ref=e1107]
+                - cell "0" [ref=e1108]
+                - cell "2" [ref=e1109]
+                - cell "0" [ref=e1110]
+                - cell "2" [ref=e1111]
+                - cell "0" [ref=e1112]
+                - cell "30" [ref=e1113]
+                - cell ".234" [ref=e1114]
+                - cell ".329" [ref=e1115]
+                - cell ".547" [ref=e1116]
+                - cell ".876" [ref=e1117]
+                - cell "0" [ref=e1118]
+                - cell "-.--" [ref=e1119]
+                - cell ".500" [ref=e1120]
+                - cell "0" [ref=e1121]
+                - cell ".---" [ref=e1122]
+                - cell "0" [ref=e1123]
+                - cell "0" [ref=e1124]
+                - cell "1" [ref=e1125]
+                - cell "0" [ref=e1126]
+                - cell "1" [ref=e1127]
+                - cell "1.00" [ref=e1128]
+                - cell "0" [ref=e1129]
+                - cell "0" [ref=e1130]
+                - cell "0" [ref=e1131]
+                - cell "0" [ref=e1132]
+                - cell "0" [ref=e1133]
+                - cell ".---" [ref=e1134]
+                - cell "1-4 | 2B, 2 K" [ref=e1135]
+              - row [ref=e1136]:
+                - cell [ref=e1137]:
+                  - link "Apr 15" [ref=e1138] [cursor=pointer]:
+                    - /url: /games/823561
+                - cell [ref=e1139]:
+                  - link "New York Yankees" [ref=e1140] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1141]:
+                  - link "vs Los Angeles Angels" [ref=e1142] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "W" [ref=e1143]
+                - cell "RF" [ref=e1145]
+                - cell "4" [ref=e1146]
+                - cell "4" [ref=e1147]
+                - cell "1" [ref=e1148]
+                - cell "1" [ref=e1149]
+                - cell "0" [ref=e1150]
+                - cell "0" [ref=e1151]
+                - cell "1" [ref=e1152]
+                - cell "1" [ref=e1153]
+                - cell "0" [ref=e1154]
+                - cell "0" [ref=e1155]
+                - cell "0" [ref=e1156]
+                - cell "4" [ref=e1157]
+                - cell "0" [ref=e1158]
+                - cell "14" [ref=e1159]
+                - cell ".235" [ref=e1160]
+                - cell ".325" [ref=e1161]
+                - cell ".574" [ref=e1162]
+                - cell ".899" [ref=e1163]
+                - cell "2" [ref=e1164]
+                - cell "4.00" [ref=e1165]
+                - cell ".000" [ref=e1166]
+                - cell "0" [ref=e1167]
+                - cell ".---" [ref=e1168]
+                - cell "0" [ref=e1169]
+                - cell "0" [ref=e1170]
+                - cell "1" [ref=e1171]
+                - cell "0" [ref=e1172]
+                - cell "1" [ref=e1173]
+                - cell "0.50" [ref=e1174]
+                - cell "0" [ref=e1175]
+                - cell "0" [ref=e1176]
+                - cell "0" [ref=e1177]
+                - cell "0" [ref=e1178]
+                - cell "0" [ref=e1179]
+                - cell ".---" [ref=e1180]
+                - cell "1-4 | HR, RBI, R" [ref=e1181]
+              - row [ref=e1182]:
+                - cell [ref=e1183]:
+                  - link "Apr 16" [ref=e1184] [cursor=pointer]:
+                    - /url: /games/823560
+                - cell [ref=e1185]:
+                  - link "New York Yankees" [ref=e1186] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1187]:
+                  - link "vs Los Angeles Angels" [ref=e1188] [cursor=pointer]:
+                    - /url: /teams/108
+                - cell "L" [ref=e1189]
+                - cell "RF" [ref=e1191]
+                - cell "4" [ref=e1192]
+                - cell "4" [ref=e1193]
+                - cell "1" [ref=e1194]
+                - cell "1" [ref=e1195]
+                - cell "0" [ref=e1196]
+                - cell "0" [ref=e1197]
+                - cell "1" [ref=e1198]
+                - cell "1" [ref=e1199]
+                - cell "0" [ref=e1200]
+                - cell "1" [ref=e1201]
+                - cell "0" [ref=e1202]
+                - cell "4" [ref=e1203]
+                - cell "1" [ref=e1204]
+                - cell "20" [ref=e1205]
+                - cell ".236" [ref=e1206]
+                - cell ".321" [ref=e1207]
+                - cell ".597" [ref=e1208]
+                - cell ".918" [ref=e1209]
+                - cell "2" [ref=e1210]
+                - cell "4.00" [ref=e1211]
+                - cell ".000" [ref=e1212]
+                - cell "0" [ref=e1213]
+                - cell ".---" [ref=e1214]
+                - cell "0" [ref=e1215]
+                - cell "1" [ref=e1216]
+                - cell "1" [ref=e1217]
+                - cell "0" [ref=e1218]
+                - cell "0" [ref=e1219]
+                - cell "0.00" [ref=e1220]
+                - cell "0" [ref=e1221]
+                - cell "0" [ref=e1222]
+                - cell "0" [ref=e1223]
+                - cell "0" [ref=e1224]
+                - cell "0" [ref=e1225]
+                - cell ".---" [ref=e1226]
+                - cell "1-4 | HR, K, RBI" [ref=e1227]
+              - row [ref=e1228]:
+                - cell [ref=e1229]:
+                  - link "Apr 17" [ref=e1230] [cursor=pointer]:
+                    - /url: /games/823559
+                - cell [ref=e1231]:
+                  - link "New York Yankees" [ref=e1232] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1233]:
+                  - link "vs Kansas City Royals" [ref=e1234] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "W" [ref=e1235]
+                - cell "RF" [ref=e1237]
+                - cell "4" [ref=e1238]
+                - cell "3" [ref=e1239]
+                - cell "0" [ref=e1240]
+                - cell "1" [ref=e1241]
+                - cell "1" [ref=e1242]
+                - cell "0" [ref=e1243]
+                - cell "0" [ref=e1244]
+                - cell "0" [ref=e1245]
+                - cell "1" [ref=e1246]
+                - cell "1" [ref=e1247]
+                - cell "1" [ref=e1248]
+                - cell "2" [ref=e1249]
+                - cell "2" [ref=e1250]
+                - cell "15" [ref=e1251]
+                - cell ".240" [ref=e1252]
+                - cell ".329" [ref=e1253]
+                - cell ".600" [ref=e1254]
+                - cell ".929" [ref=e1255]
+                - cell "0" [ref=e1256]
+                - cell "-.--" [ref=e1257]
+                - cell ".500" [ref=e1258]
+                - cell "0" [ref=e1259]
+                - cell ".000" [ref=e1260]
+                - cell "0" [ref=e1261]
+                - cell "0" [ref=e1262]
+                - cell "1" [ref=e1263]
+                - cell "0" [ref=e1264]
+                - cell "1" [ref=e1265]
+                - cell "1.00" [ref=e1266]
+                - cell "0" [ref=e1267]
+                - cell "0" [ref=e1268]
+                - cell "0" [ref=e1269]
+                - cell "0" [ref=e1270]
+                - cell "0" [ref=e1271]
+                - cell "1.000" [ref=e1272]
+                - cell "1-3 | 2B, BB, K" [ref=e1273]
+              - row [ref=e1274]:
+                - cell [ref=e1275]:
+                  - link "Apr 18" [ref=e1276] [cursor=pointer]:
+                    - /url: /games/823558
+                - cell [ref=e1277]:
+                  - link "New York Yankees" [ref=e1278] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1279]:
+                  - link "vs Kansas City Royals" [ref=e1280] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "W" [ref=e1281]
+                - cell "RF" [ref=e1283]
+                - cell "4" [ref=e1284]
+                - cell "2" [ref=e1285]
+                - cell "1" [ref=e1286]
+                - cell "0" [ref=e1287]
+                - cell "0" [ref=e1288]
+                - cell "0" [ref=e1289]
+                - cell "0" [ref=e1290]
+                - cell "0" [ref=e1291]
+                - cell "2" [ref=e1292]
+                - cell "2" [ref=e1293]
+                - cell "0" [ref=e1294]
+                - cell "0" [ref=e1295]
+                - cell "2" [ref=e1296]
+                - cell "21" [ref=e1297]
+                - cell ".234" [ref=e1298]
+                - cell ".337" [ref=e1299]
+                - cell ".584" [ref=e1300]
+                - cell ".921" [ref=e1301]
+                - cell "0" [ref=e1302]
+                - cell "-.--" [ref=e1303]
+                - cell ".---" [ref=e1304]
+                - cell "0" [ref=e1305]
+                - cell ".---" [ref=e1306]
+                - cell "0" [ref=e1307]
+                - cell "0" [ref=e1308]
+                - cell "1" [ref=e1309]
+                - cell "0" [ref=e1310]
+                - cell "0" [ref=e1311]
+                - cell "-.--" [ref=e1312]
+                - cell "0" [ref=e1313]
+                - cell "0" [ref=e1314]
+                - cell "0" [ref=e1315]
+                - cell "0" [ref=e1316]
+                - cell "0" [ref=e1317]
+                - cell ".---" [ref=e1318]
+                - cell "0-2 | 2 BB, 2 K, R" [ref=e1319]
+              - row [ref=e1320]:
+                - cell [ref=e1321]:
+                  - link "Apr 19" [ref=e1322] [cursor=pointer]:
+                    - /url: /games/823556
+                - cell [ref=e1323]:
+                  - link "New York Yankees" [ref=e1324] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1325]:
+                  - link "vs Kansas City Royals" [ref=e1326] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "W" [ref=e1327]
+                - cell "RF" [ref=e1329]
+                - cell "5" [ref=e1330]
+                - cell "5" [ref=e1331]
+                - cell "1" [ref=e1332]
+                - cell "1" [ref=e1333]
+                - cell "0" [ref=e1334]
+                - cell "0" [ref=e1335]
+                - cell "1" [ref=e1336]
+                - cell "2" [ref=e1337]
+                - cell "0" [ref=e1338]
+                - cell "3" [ref=e1339]
+                - cell "0" [ref=e1340]
+                - cell "4" [ref=e1341]
+                - cell "3" [ref=e1342]
+                - cell "13" [ref=e1343]
+                - cell ".232" [ref=e1344]
+                - cell ".330" [ref=e1345]
+                - cell ".598" [ref=e1346]
+                - cell ".928" [ref=e1347]
+                - cell "1" [ref=e1348]
+                - cell "5.00" [ref=e1349]
+                - cell ".000" [ref=e1350]
+                - cell "0" [ref=e1351]
+                - cell ".---" [ref=e1352]
+                - cell "0" [ref=e1353]
+                - cell "0" [ref=e1354]
+                - cell "1" [ref=e1355]
+                - cell "0" [ref=e1356]
+                - cell "0" [ref=e1357]
+                - cell "0.00" [ref=e1358]
+                - cell "0" [ref=e1359]
+                - cell "0" [ref=e1360]
+                - cell "0" [ref=e1361]
+                - cell "0" [ref=e1362]
+                - cell "0" [ref=e1363]
+                - cell ".---" [ref=e1364]
+                - cell "1-5 | HR, 3 K, 2 RBI" [ref=e1365]
+              - row [ref=e1366]:
+                - cell [ref=e1367]:
+                  - link "Apr 21" [ref=e1368] [cursor=pointer]:
+                    - /url: /games/824773
+                - cell [ref=e1369]:
+                  - link "New York Yankees" [ref=e1370] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1371]:
+                  - link "@ Boston Red Sox" [ref=e1372] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "W" [ref=e1373]
+                - cell "RF" [ref=e1375]
+                - cell "5" [ref=e1376]
+                - cell "3" [ref=e1377]
+                - cell "1" [ref=e1378]
+                - cell "1" [ref=e1379]
+                - cell "0" [ref=e1380]
+                - cell "0" [ref=e1381]
+                - cell "0" [ref=e1382]
+                - cell "0" [ref=e1383]
+                - cell "2" [ref=e1384]
+                - cell "0" [ref=e1385]
+                - cell "0" [ref=e1386]
+                - cell "1" [ref=e1387]
+                - cell "0" [ref=e1388]
+                - cell "23" [ref=e1389]
+                - cell ".235" [ref=e1390]
+                - cell ".343" [ref=e1391]
+                - cell ".588" [ref=e1392]
+                - cell ".931" [ref=e1393]
+                - cell "0" [ref=e1394]
+                - cell "-.--" [ref=e1395]
+                - cell ".333" [ref=e1396]
+                - cell "0" [ref=e1397]
+                - cell ".---" [ref=e1398]
+                - cell "0" [ref=e1399]
+                - cell "0" [ref=e1400]
+                - cell "1" [ref=e1401]
+                - cell "0" [ref=e1402]
+                - cell "2" [ref=e1403]
+                - cell "2.00" [ref=e1404]
+                - cell "0" [ref=e1405]
+                - cell "0" [ref=e1406]
+                - cell "0" [ref=e1407]
+                - cell "0" [ref=e1408]
+                - cell "0" [ref=e1409]
+                - cell ".---" [ref=e1410]
+                - cell "1-3 | 2 BB, R" [ref=e1411]
+              - row [ref=e1412]:
+                - cell [ref=e1413]:
+                  - link "Apr 22" [ref=e1414] [cursor=pointer]:
+                    - /url: /games/824774
+                - cell [ref=e1415]:
+                  - link "New York Yankees" [ref=e1416] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1417]:
+                  - link "@ Boston Red Sox" [ref=e1418] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "W" [ref=e1419]
+                - cell "RF" [ref=e1421]
+                - cell "4" [ref=e1422]
+                - cell "2" [ref=e1423]
+                - cell "2" [ref=e1424]
+                - cell "1" [ref=e1425]
+                - cell "0" [ref=e1426]
+                - cell "0" [ref=e1427]
+                - cell "0" [ref=e1428]
+                - cell "0" [ref=e1429]
+                - cell "2" [ref=e1430]
+                - cell "0" [ref=e1431]
+                - cell "1" [ref=e1432]
+                - cell "1" [ref=e1433]
+                - cell "0" [ref=e1434]
+                - cell "20" [ref=e1435]
+                - cell ".241" [ref=e1436]
+                - cell ".359" [ref=e1437]
+                - cell ".586" [ref=e1438]
+                - cell ".945" [ref=e1439]
+                - cell "0" [ref=e1440]
+                - cell "-.--" [ref=e1441]
+                - cell ".500" [ref=e1442]
+                - cell "0" [ref=e1443]
+                - cell ".000" [ref=e1444]
+                - cell "0" [ref=e1445]
+                - cell "0" [ref=e1446]
+                - cell "1" [ref=e1447]
+                - cell "0" [ref=e1448]
+                - cell "1" [ref=e1449]
+                - cell "1.00" [ref=e1450]
+                - cell "0" [ref=e1451]
+                - cell "0" [ref=e1452]
+                - cell "0" [ref=e1453]
+                - cell "0" [ref=e1454]
+                - cell "0" [ref=e1455]
+                - cell "1.000" [ref=e1456]
+                - cell "1-2 | 2 BB, 2 R, SB" [ref=e1457]
+              - row [ref=e1458]:
+                - cell [ref=e1459]:
+                  - link "Apr 23" [ref=e1460] [cursor=pointer]:
+                    - /url: /games/824770
+                - cell [ref=e1461]:
+                  - link "New York Yankees" [ref=e1462] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1463]:
+                  - link "@ Boston Red Sox" [ref=e1464] [cursor=pointer]:
+                    - /url: /teams/111
+                - cell "W" [ref=e1465]
+                - cell "RF" [ref=e1467]
+                - cell "5" [ref=e1468]
+                - cell "4" [ref=e1469]
+                - cell "0" [ref=e1470]
+                - cell "1" [ref=e1471]
+                - cell "0" [ref=e1472]
+                - cell "0" [ref=e1473]
+                - cell "0" [ref=e1474]
+                - cell "1" [ref=e1475]
+                - cell "1" [ref=e1476]
+                - cell "3" [ref=e1477]
+                - cell "0" [ref=e1478]
+                - cell "1" [ref=e1479]
+                - cell "0" [ref=e1480]
+                - cell "24" [ref=e1481]
+                - cell ".242" [ref=e1482]
+                - cell ".361" [ref=e1483]
+                - cell ".571" [ref=e1484]
+                - cell ".932" [ref=e1485]
+                - cell "0" [ref=e1486]
+                - cell "-.--" [ref=e1487]
+                - cell "1.000" [ref=e1488]
+                - cell "0" [ref=e1489]
+                - cell ".---" [ref=e1490]
+                - cell "0" [ref=e1491]
+                - cell "0" [ref=e1492]
+                - cell "1" [ref=e1493]
+                - cell "0" [ref=e1494]
+                - cell "0" [ref=e1495]
+                - cell "-.--" [ref=e1496]
+                - cell "0" [ref=e1497]
+                - cell "0" [ref=e1498]
+                - cell "0" [ref=e1499]
+                - cell "0" [ref=e1500]
+                - cell "0" [ref=e1501]
+                - cell ".---" [ref=e1502]
+                - cell "1-4 | BB, 3 K, RBI" [ref=e1503]
+              - row [ref=e1504]:
+                - cell [ref=e1505]:
+                  - link "Apr 24" [ref=e1506] [cursor=pointer]:
+                    - /url: /games/824204
+                - cell [ref=e1507]:
+                  - link "New York Yankees" [ref=e1508] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1509]:
+                  - link "@ Houston Astros" [ref=e1510] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "W" [ref=e1511]
+                - cell "RF" [ref=e1513]
+                - cell "5" [ref=e1514]
+                - cell "2" [ref=e1515]
+                - cell "0" [ref=e1516]
+                - cell "0" [ref=e1517]
+                - cell "0" [ref=e1518]
+                - cell "0" [ref=e1519]
+                - cell "0" [ref=e1520]
+                - cell "0" [ref=e1521]
+                - cell "3" [ref=e1522]
+                - cell "0" [ref=e1523]
+                - cell "0" [ref=e1524]
+                - cell "0" [ref=e1525]
+                - cell "1" [ref=e1526]
+                - cell "18" [ref=e1527]
+                - cell ".237" [ref=e1528]
+                - cell ".372" [ref=e1529]
+                - cell ".559" [ref=e1530]
+                - cell ".931" [ref=e1531]
+                - cell "2" [ref=e1532]
+                - cell "-.--" [ref=e1533]
+                - cell ".000" [ref=e1534]
+                - cell "0" [ref=e1535]
+                - cell "1.000" [ref=e1536]
+                - cell "1" [ref=e1537]
+                - cell "2" [ref=e1538]
+                - cell "1" [ref=e1539]
+                - cell "0" [ref=e1540]
+                - cell "0" [ref=e1541]
+                - cell "0.00" [ref=e1542]
+                - cell "0" [ref=e1543]
+                - cell "0" [ref=e1544]
+                - cell "1" [ref=e1545]
+                - cell "0" [ref=e1546]
+                - cell "0" [ref=e1547]
+                - cell ".000" [ref=e1548]
+                - cell "0-2 | 3 BB, CS" [ref=e1549]
+              - row [ref=e1550]:
+                - cell [ref=e1551]:
+                  - link "Apr 25" [ref=e1552] [cursor=pointer]:
+                    - /url: /games/824203
+                - cell [ref=e1553]:
+                  - link "New York Yankees" [ref=e1554] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1555]:
+                  - link "@ Houston Astros" [ref=e1556] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "W" [ref=e1557]
+                - cell "RF" [ref=e1559]
+                - cell "5" [ref=e1560]
+                - cell "3" [ref=e1561]
+                - cell "0" [ref=e1562]
+                - cell "0" [ref=e1563]
+                - cell "0" [ref=e1564]
+                - cell "0" [ref=e1565]
+                - cell "0" [ref=e1566]
+                - cell "0" [ref=e1567]
+                - cell "2" [ref=e1568]
+                - cell "2" [ref=e1569]
+                - cell "0" [ref=e1570]
+                - cell "0" [ref=e1571]
+                - cell "4" [ref=e1572]
+                - cell "29" [ref=e1573]
+                - cell ".229" [ref=e1574]
+                - cell ".373" [ref=e1575]
+                - cell ".542" [ref=e1576]
+                - cell ".915" [ref=e1577]
+                - cell "0" [ref=e1578]
+                - cell "-.--" [ref=e1579]
+                - cell ".000" [ref=e1580]
+                - cell "0" [ref=e1581]
+                - cell ".---" [ref=e1582]
+                - cell "0" [ref=e1583]
+                - cell "0" [ref=e1584]
+                - cell "1" [ref=e1585]
+                - cell "0" [ref=e1586]
+                - cell "1" [ref=e1587]
+                - cell "1.00" [ref=e1588]
+                - cell "0" [ref=e1589]
+                - cell "0" [ref=e1590]
+                - cell "0" [ref=e1591]
+                - cell "0" [ref=e1592]
+                - cell "0" [ref=e1593]
+                - cell ".---" [ref=e1594]
+                - cell "0-3 | 2 BB, 2 K" [ref=e1595]
+              - row [ref=e1596]:
+                - cell [ref=e1597]:
+                  - link "Apr 26" [ref=e1598] [cursor=pointer]:
+                    - /url: /games/824202
+                - cell [ref=e1599]:
+                  - link "New York Yankees" [ref=e1600] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1601]:
+                  - link "@ Houston Astros" [ref=e1602] [cursor=pointer]:
+                    - /url: /teams/117
+                - cell "L" [ref=e1603]
+                - cell "RF" [ref=e1605]
+                - cell "4" [ref=e1606]
+                - cell "4" [ref=e1607]
+                - cell "1" [ref=e1608]
+                - cell "1" [ref=e1609]
+                - cell "0" [ref=e1610]
+                - cell "0" [ref=e1611]
+                - cell "1" [ref=e1612]
+                - cell "1" [ref=e1613]
+                - cell "0" [ref=e1614]
+                - cell "0" [ref=e1615]
+                - cell "0" [ref=e1616]
+                - cell "4" [ref=e1617]
+                - cell "2" [ref=e1618]
+                - cell "13" [ref=e1619]
+                - cell ".230" [ref=e1620]
+                - cell ".369" [ref=e1621]
+                - cell ".560" [ref=e1622]
+                - cell ".929" [ref=e1623]
+                - cell "3" [ref=e1624]
+                - cell "4.00" [ref=e1625]
+                - cell ".000" [ref=e1626]
+                - cell "0" [ref=e1627]
+                - cell ".---" [ref=e1628]
+                - cell "0" [ref=e1629]
+                - cell "2" [ref=e1630]
+                - cell "1" [ref=e1631]
+                - cell "0" [ref=e1632]
+                - cell "0" [ref=e1633]
+                - cell "0.00" [ref=e1634]
+                - cell "0" [ref=e1635]
+                - cell "0" [ref=e1636]
+                - cell "0" [ref=e1637]
+                - cell "0" [ref=e1638]
+                - cell "0" [ref=e1639]
+                - cell ".---" [ref=e1640]
+                - cell "1-4 | HR, RBI, R" [ref=e1641]
+              - row [ref=e1642]:
+                - cell [ref=e1643]:
+                  - link "Apr 27" [ref=e1644] [cursor=pointer]:
+                    - /url: /games/822906
+                - cell [ref=e1645]:
+                  - link "New York Yankees" [ref=e1646] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1647]:
+                  - link "@ Texas Rangers" [ref=e1648] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "W" [ref=e1649]
+                - cell "RF" [ref=e1651]
+                - cell "4" [ref=e1652]
+                - cell "3" [ref=e1653]
+                - cell "1" [ref=e1654]
+                - cell "3" [ref=e1655]
+                - cell "2" [ref=e1656]
+                - cell "0" [ref=e1657]
+                - cell "1" [ref=e1658]
+                - cell "1" [ref=e1659]
+                - cell "0" [ref=e1660]
+                - cell "0" [ref=e1661]
+                - cell "0" [ref=e1662]
+                - cell "8" [ref=e1663]
+                - cell "0" [ref=e1664]
+                - cell "23" [ref=e1665]
+                - cell ".252" [ref=e1666]
+                - cell ".389" [ref=e1667]
+                - cell ".621" [ref=e1668]
+                - cell "1.010" [ref=e1669]
+                - cell "0" [ref=e1670]
+                - cell "3.00" [ref=e1671]
+                - cell "1.000" [ref=e1672]
+                - cell "0" [ref=e1673]
+                - cell ".---" [ref=e1674]
+                - cell "0" [ref=e1675]
+                - cell "0" [ref=e1676]
+                - cell "1" [ref=e1677]
+                - cell "0" [ref=e1678]
+                - cell "0" [ref=e1679]
+                - cell "-.--" [ref=e1680]
+                - cell "0" [ref=e1681]
+                - cell "1" [ref=e1682]
+                - cell "0" [ref=e1683]
+                - cell "0" [ref=e1684]
+                - cell "0" [ref=e1685]
+                - cell ".---" [ref=e1686]
+                - cell "3-3 | HR, 2 2B, HBP" [ref=e1687]
+              - row [ref=e1688]:
+                - cell [ref=e1689]:
+                  - link "Apr 28" [ref=e1690] [cursor=pointer]:
+                    - /url: /games/822908
+                - cell [ref=e1691]:
+                  - link "New York Yankees" [ref=e1692] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1693]:
+                  - link "@ Texas Rangers" [ref=e1694] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "W" [ref=e1695]
+                - cell "RF" [ref=e1697]
+                - cell "4" [ref=e1698]
+                - cell "4" [ref=e1699]
+                - cell "2" [ref=e1700]
+                - cell "2" [ref=e1701]
+                - cell "0" [ref=e1702]
+                - cell "0" [ref=e1703]
+                - cell "1" [ref=e1704]
+                - cell "1" [ref=e1705]
+                - cell "0" [ref=e1706]
+                - cell "1" [ref=e1707]
+                - cell "0" [ref=e1708]
+                - cell "5" [ref=e1709]
+                - cell "0" [ref=e1710]
+                - cell "21" [ref=e1711]
+                - cell ".262" [ref=e1712]
+                - cell ".392" [ref=e1713]
+                - cell ".645" [ref=e1714]
+                - cell "1.037" [ref=e1715]
+                - cell "1" [ref=e1716]
+                - cell "4.00" [ref=e1717]
+                - cell ".500" [ref=e1718]
+                - cell "0" [ref=e1719]
+                - cell ".---" [ref=e1720]
+                - cell "0" [ref=e1721]
+                - cell "0" [ref=e1722]
+                - cell "1" [ref=e1723]
+                - cell "0" [ref=e1724]
+                - cell "0" [ref=e1725]
+                - cell "0.00" [ref=e1726]
+                - cell "0" [ref=e1727]
+                - cell "0" [ref=e1728]
+                - cell "0" [ref=e1729]
+                - cell "0" [ref=e1730]
+                - cell "0" [ref=e1731]
+                - cell ".---" [ref=e1732]
+                - cell "2-4 | HR, K, RBI" [ref=e1733]
+              - row [ref=e1734]:
+                - cell [ref=e1735]:
+                  - link "Apr 29" [ref=e1736] [cursor=pointer]:
+                    - /url: /games/822907
+                - cell [ref=e1737]:
+                  - link "New York Yankees" [ref=e1738] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1739]:
+                  - link "@ Texas Rangers" [ref=e1740] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "L" [ref=e1741]
+                - cell "DH" [ref=e1743]
+                - cell "4" [ref=e1744]
+                - cell "4" [ref=e1745]
+                - cell "0" [ref=e1746]
+                - cell "0" [ref=e1747]
+                - cell "0" [ref=e1748]
+                - cell "0" [ref=e1749]
+                - cell "0" [ref=e1750]
+                - cell "0" [ref=e1751]
+                - cell "0" [ref=e1752]
+                - cell "2" [ref=e1753]
+                - cell "0" [ref=e1754]
+                - cell "0" [ref=e1755]
+                - cell "3" [ref=e1756]
+                - cell "12" [ref=e1757]
+                - cell ".252" [ref=e1758]
+                - cell ".381" [ref=e1759]
+                - cell ".622" [ref=e1760]
+                - cell "1.003" [ref=e1761]
+                - cell "0" [ref=e1762]
+                - cell "-.--" [ref=e1763]
+                - cell ".000" [ref=e1764]
+                - cell "0" [ref=e1765]
+                - cell ".---" [ref=e1766]
+                - cell "0" [ref=e1767]
+                - cell "0" [ref=e1768]
+                - cell "1" [ref=e1769]
+                - cell "0" [ref=e1770]
+                - cell "2" [ref=e1771]
+                - cell "2.00" [ref=e1772]
+                - cell "0" [ref=e1773]
+                - cell "0" [ref=e1774]
+                - cell "0" [ref=e1775]
+                - cell "0" [ref=e1776]
+                - cell "0" [ref=e1777]
+                - cell ".---" [ref=e1778]
+                - cell "0-4 | 2 K" [ref=e1779]
+              - row [ref=e1780]:
+                - cell [ref=e1781]:
+                  - link "May 1" [ref=e1782] [cursor=pointer]:
+                    - /url: /games/823557
+                - cell [ref=e1783]:
+                  - link "New York Yankees" [ref=e1784] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1785]:
+                  - link "vs Baltimore Orioles" [ref=e1786] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "W" [ref=e1787]
+                - cell "RF" [ref=e1789]
+                - cell "5" [ref=e1790]
+                - cell "3" [ref=e1791]
+                - cell "2" [ref=e1792]
+                - cell "2" [ref=e1793]
+                - cell "0" [ref=e1794]
+                - cell "0" [ref=e1795]
+                - cell "0" [ref=e1796]
+                - cell "1" [ref=e1797]
+                - cell "2" [ref=e1798]
+                - cell "1" [ref=e1799]
+                - cell "0" [ref=e1800]
+                - cell "2" [ref=e1801]
+                - cell "0" [ref=e1802]
+                - cell "27" [ref=e1803]
+                - cell ".263" [ref=e1804]
+                - cell ".396" [ref=e1805]
+                - cell ".623" [ref=e1806]
+                - cell "1.019" [ref=e1807]
+                - cell "0" [ref=e1808]
+                - cell "-.--" [ref=e1809]
+                - cell "1.000" [ref=e1810]
+                - cell "0" [ref=e1811]
+                - cell ".---" [ref=e1812]
+                - cell "0" [ref=e1813]
+                - cell "0" [ref=e1814]
+                - cell "1" [ref=e1815]
+                - cell "0" [ref=e1816]
+                - cell "0" [ref=e1817]
+                - cell "-.--" [ref=e1818]
+                - cell "0" [ref=e1819]
+                - cell "0" [ref=e1820]
+                - cell "0" [ref=e1821]
+                - cell "0" [ref=e1822]
+                - cell "0" [ref=e1823]
+                - cell ".---" [ref=e1824]
+                - cell "2-3 | 2 BB, K, RBI" [ref=e1825]
+              - row [ref=e1826]:
+                - cell [ref=e1827]:
+                  - link "May 2" [ref=e1828] [cursor=pointer]:
+                    - /url: /games/823554
+                - cell [ref=e1829]:
+                  - link "New York Yankees" [ref=e1830] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1831]:
+                  - link "vs Baltimore Orioles" [ref=e1832] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "W" [ref=e1833]
+                - cell "RF" [ref=e1835]
+                - cell "5" [ref=e1836]
+                - cell "3" [ref=e1837]
+                - cell "1" [ref=e1838]
+                - cell "0" [ref=e1839]
+                - cell "0" [ref=e1840]
+                - cell "0" [ref=e1841]
+                - cell "0" [ref=e1842]
+                - cell "0" [ref=e1843]
+                - cell "2" [ref=e1844]
+                - cell "3" [ref=e1845]
+                - cell "0" [ref=e1846]
+                - cell "0" [ref=e1847]
+                - cell "2" [ref=e1848]
+                - cell "24" [ref=e1849]
+                - cell ".256" [ref=e1850]
+                - cell ".396" [ref=e1851]
+                - cell ".607" [ref=e1852]
+                - cell "1.003" [ref=e1853]
+                - cell "0" [ref=e1854]
+                - cell "-.--" [ref=e1855]
+                - cell ".---" [ref=e1856]
+                - cell "0" [ref=e1857]
+                - cell ".---" [ref=e1858]
+                - cell "0" [ref=e1859]
+                - cell "0" [ref=e1860]
+                - cell "1" [ref=e1861]
+                - cell "0" [ref=e1862]
+                - cell "0" [ref=e1863]
+                - cell "-.--" [ref=e1864]
+                - cell "0" [ref=e1865]
+                - cell "0" [ref=e1866]
+                - cell "1" [ref=e1867]
+                - cell "0" [ref=e1868]
+                - cell "0" [ref=e1869]
+                - cell ".---" [ref=e1870]
+                - cell "0-3 | 2 BB, 3 K, R" [ref=e1871]
+              - row [ref=e1872]:
+                - cell [ref=e1873]:
+                  - link "May 3" [ref=e1874] [cursor=pointer]:
+                    - /url: /games/823555
+                - cell [ref=e1875]:
+                  - link "New York Yankees" [ref=e1876] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1877]:
+                  - link "vs Baltimore Orioles" [ref=e1878] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "W" [ref=e1879]
+                - cell "RF" [ref=e1881]
+                - cell "5" [ref=e1882]
+                - cell "4" [ref=e1883]
+                - cell "2" [ref=e1884]
+                - cell "2" [ref=e1885]
+                - cell "0" [ref=e1886]
+                - cell "0" [ref=e1887]
+                - cell "1" [ref=e1888]
+                - cell "2" [ref=e1889]
+                - cell "1" [ref=e1890]
+                - cell "1" [ref=e1891]
+                - cell "0" [ref=e1892]
+                - cell "5" [ref=e1893]
+                - cell "0" [ref=e1894]
+                - cell "22" [ref=e1895]
+                - cell ".264" [ref=e1896]
+                - cell ".403" [ref=e1897]
+                - cell ".628" [ref=e1898]
+                - cell "1.031" [ref=e1899]
+                - cell "0" [ref=e1900]
+                - cell "4.00" [ref=e1901]
+                - cell ".500" [ref=e1902]
+                - cell "0" [ref=e1903]
+                - cell ".---" [ref=e1904]
+                - cell "0" [ref=e1905]
+                - cell "0" [ref=e1906]
+                - cell "1" [ref=e1907]
+                - cell "0" [ref=e1908]
+                - cell "1" [ref=e1909]
+                - cell "1.00" [ref=e1910]
+                - cell "0" [ref=e1911]
+                - cell "0" [ref=e1912]
+                - cell "0" [ref=e1913]
+                - cell "0" [ref=e1914]
+                - cell "0" [ref=e1915]
+                - cell ".---" [ref=e1916]
+                - cell "2-4 | HR, BB, K" [ref=e1917]
+              - row [ref=e1918]:
+                - cell [ref=e1919]:
+                  - link "May 4" [ref=e1920] [cursor=pointer]:
+                    - /url: /games/823552
+                - cell [ref=e1921]:
+                  - link "New York Yankees" [ref=e1922] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1923]:
+                  - link "vs Baltimore Orioles" [ref=e1924] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "W" [ref=e1925]
+                - cell "RF" [ref=e1927]
+                - cell "5" [ref=e1928]
+                - cell "4" [ref=e1929]
+                - cell "2" [ref=e1930]
+                - cell "2" [ref=e1931]
+                - cell "0" [ref=e1932]
+                - cell "0" [ref=e1933]
+                - cell "1" [ref=e1934]
+                - cell "4" [ref=e1935]
+                - cell "1" [ref=e1936]
+                - cell "0" [ref=e1937]
+                - cell "0" [ref=e1938]
+                - cell "5" [ref=e1939]
+                - cell "1" [ref=e1940]
+                - cell "18" [ref=e1941]
+                - cell ".272" [ref=e1942]
+                - cell ".409" [ref=e1943]
+                - cell ".648" [ref=e1944]
+                - cell "1.057" [ref=e1945]
+                - cell "0" [ref=e1946]
+                - cell "4.00" [ref=e1947]
+                - cell ".333" [ref=e1948]
+                - cell "0" [ref=e1949]
+                - cell ".---" [ref=e1950]
+                - cell "0" [ref=e1951]
+                - cell "0" [ref=e1952]
+                - cell "1" [ref=e1953]
+                - cell "1" [ref=e1954]
+                - cell "2" [ref=e1955]
+                - cell "2.00" [ref=e1956]
+                - cell "0" [ref=e1957]
+                - cell "0" [ref=e1958]
+                - cell "1" [ref=e1959]
+                - cell "0" [ref=e1960]
+                - cell "0" [ref=e1961]
+                - cell ".---" [ref=e1962]
+                - cell "2-4 | HR, BB, 4 RBI" [ref=e1963]
+              - row [ref=e1964]:
+                - cell [ref=e1965]:
+                  - link "May 5" [ref=e1966] [cursor=pointer]:
+                    - /url: /games/823553
+                - cell [ref=e1967]:
+                  - link "New York Yankees" [ref=e1968] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e1969]:
+                  - link "vs Texas Rangers" [ref=e1970] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "W" [ref=e1971]
+                - cell "RF" [ref=e1973]
+                - cell "4" [ref=e1974]
+                - cell "3" [ref=e1975]
+                - cell "1" [ref=e1976]
+                - cell "1" [ref=e1977]
+                - cell "1" [ref=e1978]
+                - cell "0" [ref=e1979]
+                - cell "0" [ref=e1980]
+                - cell "0" [ref=e1981]
+                - cell "1" [ref=e1982]
+                - cell "2" [ref=e1983]
+                - cell "0" [ref=e1984]
+                - cell "2" [ref=e1985]
+                - cell "0" [ref=e1986]
+                - cell "14" [ref=e1987]
+                - cell ".273" [ref=e1988]
+                - cell ".411" [ref=e1989]
+                - cell ".648" [ref=e1990]
+                - cell "1.059" [ref=e1991]
+                - cell "0" [ref=e1992]
+                - cell "-.--" [ref=e1993]
+                - cell "1.000" [ref=e1994]
+                - cell "0" [ref=e1995]
+                - cell ".---" [ref=e1996]
+                - cell "0" [ref=e1997]
+                - cell "0" [ref=e1998]
+                - cell "1" [ref=e1999]
+                - cell "0" [ref=e2000]
+                - cell "0" [ref=e2001]
+                - cell "-.--" [ref=e2002]
+                - cell "0" [ref=e2003]
+                - cell "0" [ref=e2004]
+                - cell "1" [ref=e2005]
+                - cell "0" [ref=e2006]
+                - cell "0" [ref=e2007]
+                - cell ".---" [ref=e2008]
+                - cell "1-3 | 2B, BB, 2 K" [ref=e2009]
+              - row [ref=e2010]:
+                - cell [ref=e2011]:
+                  - link "May 6" [ref=e2012] [cursor=pointer]:
+                    - /url: /games/823550
+                - cell [ref=e2013]:
+                  - link "New York Yankees" [ref=e2014] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2015]:
+                  - link "vs Texas Rangers" [ref=e2016] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "L" [ref=e2017]
+                - cell "RF" [ref=e2019]
+                - cell "4" [ref=e2020]
+                - cell "4" [ref=e2021]
+                - cell "1" [ref=e2022]
+                - cell "1" [ref=e2023]
+                - cell "0" [ref=e2024]
+                - cell "0" [ref=e2025]
+                - cell "1" [ref=e2026]
+                - cell "1" [ref=e2027]
+                - cell "0" [ref=e2028]
+                - cell "2" [ref=e2029]
+                - cell "0" [ref=e2030]
+                - cell "4" [ref=e2031]
+                - cell "0" [ref=e2032]
+                - cell "16" [ref=e2033]
+                - cell ".273" [ref=e2034]
+                - cell ".407" [ref=e2035]
+                - cell ".659" [ref=e2036]
+                - cell "1.066" [ref=e2037]
+                - cell "1" [ref=e2038]
+                - cell "4.00" [ref=e2039]
+                - cell ".000" [ref=e2040]
+                - cell "0" [ref=e2041]
+                - cell ".---" [ref=e2042]
+                - cell "0" [ref=e2043]
+                - cell "0" [ref=e2044]
+                - cell "1" [ref=e2045]
+                - cell "0" [ref=e2046]
+                - cell "0" [ref=e2047]
+                - cell "0.00" [ref=e2048]
+                - cell "0" [ref=e2049]
+                - cell "0" [ref=e2050]
+                - cell "0" [ref=e2051]
+                - cell "0" [ref=e2052]
+                - cell "0" [ref=e2053]
+                - cell ".---" [ref=e2054]
+                - cell "1-4 | HR, 2 K, RBI" [ref=e2055]
+              - row [ref=e2056]:
+                - cell [ref=e2057]:
+                  - link "May 7" [ref=e2058] [cursor=pointer]:
+                    - /url: /games/823551
+                - cell [ref=e2059]:
+                  - link "New York Yankees" [ref=e2060] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2061]:
+                  - link "vs Texas Rangers" [ref=e2062] [cursor=pointer]:
+                    - /url: /teams/140
+                - cell "W" [ref=e2063]
+                - cell "DH" [ref=e2065]
+                - cell "5" [ref=e2066]
+                - cell "5" [ref=e2067]
+                - cell "0" [ref=e2068]
+                - cell "1" [ref=e2069]
+                - cell "0" [ref=e2070]
+                - cell "0" [ref=e2071]
+                - cell "0" [ref=e2072]
+                - cell "1" [ref=e2073]
+                - cell "0" [ref=e2074]
+                - cell "1" [ref=e2075]
+                - cell "0" [ref=e2076]
+                - cell "1" [ref=e2077]
+                - cell "4" [ref=e2078]
+                - cell "17" [ref=e2079]
+                - cell ".270" [ref=e2080]
+                - cell ".401" [ref=e2081]
+                - cell ".642" [ref=e2082]
+                - cell "1.043" [ref=e2083]
+                - cell "3" [ref=e2084]
+                - cell "-.--" [ref=e2085]
+                - cell ".250" [ref=e2086]
+                - cell "0" [ref=e2087]
+                - cell ".---" [ref=e2088]
+                - cell "0" [ref=e2089]
+                - cell "2" [ref=e2090]
+                - cell "1" [ref=e2091]
+                - cell "0" [ref=e2092]
+                - cell "0" [ref=e2093]
+                - cell "0.00" [ref=e2094]
+                - cell "0" [ref=e2095]
+                - cell "0" [ref=e2096]
+                - cell "0" [ref=e2097]
+                - cell "0" [ref=e2098]
+                - cell "0" [ref=e2099]
+                - cell ".---" [ref=e2100]
+                - cell "1-5 | K, RBI" [ref=e2101]
+              - row [ref=e2102]:
+                - cell [ref=e2103]:
+                  - link "May 8" [ref=e2104] [cursor=pointer]:
+                    - /url: /games/823794
+                - cell [ref=e2105]:
+                  - link "New York Yankees" [ref=e2106] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2107]:
+                  - link "@ Milwaukee Brewers" [ref=e2108] [cursor=pointer]:
+                    - /url: /teams/158
+                - cell "L" [ref=e2109]
+                - cell "RF" [ref=e2111]
+                - cell "4" [ref=e2112]
+                - cell "4" [ref=e2113]
+                - cell "0" [ref=e2114]
+                - cell "1" [ref=e2115]
+                - cell "0" [ref=e2116]
+                - cell "0" [ref=e2117]
+                - cell "0" [ref=e2118]
+                - cell "0" [ref=e2119]
+                - cell "0" [ref=e2120]
+                - cell "2" [ref=e2121]
+                - cell "0" [ref=e2122]
+                - cell "1" [ref=e2123]
+                - cell "1" [ref=e2124]
+                - cell "13" [ref=e2125]
+                - cell ".270" [ref=e2126]
+                - cell ".398" [ref=e2127]
+                - cell ".631" [ref=e2128]
+                - cell "1.029" [ref=e2129]
+                - cell "1" [ref=e2130]
+                - cell "-.--" [ref=e2131]
+                - cell ".500" [ref=e2132]
+                - cell "0" [ref=e2133]
+                - cell ".---" [ref=e2134]
+                - cell "0" [ref=e2135]
+                - cell "0" [ref=e2136]
+                - cell "1" [ref=e2137]
+                - cell "0" [ref=e2138]
+                - cell "0" [ref=e2139]
+                - cell "0.00" [ref=e2140]
+                - cell "0" [ref=e2141]
+                - cell "0" [ref=e2142]
+                - cell "0" [ref=e2143]
+                - cell "0" [ref=e2144]
+                - cell "0" [ref=e2145]
+                - cell ".---" [ref=e2146]
+                - cell "1-4 | 2 K" [ref=e2147]
+              - row [ref=e2148]:
+                - cell [ref=e2149]:
+                  - link "May 9" [ref=e2150] [cursor=pointer]:
+                    - /url: /games/823792
+                - cell [ref=e2151]:
+                  - link "New York Yankees" [ref=e2152] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2153]:
+                  - link "@ Milwaukee Brewers" [ref=e2154] [cursor=pointer]:
+                    - /url: /teams/158
+                - cell "L" [ref=e2155]
+                - cell "RF" [ref=e2157]
+                - cell "5" [ref=e2158]
+                - cell "2" [ref=e2159]
+                - cell "0" [ref=e2160]
+                - cell "0" [ref=e2161]
+                - cell "0" [ref=e2162]
+                - cell "0" [ref=e2163]
+                - cell "0" [ref=e2164]
+                - cell "0" [ref=e2165]
+                - cell "3" [ref=e2166]
+                - cell "2" [ref=e2167]
+                - cell "0" [ref=e2168]
+                - cell "0" [ref=e2169]
+                - cell "0" [ref=e2170]
+                - cell "24" [ref=e2171]
+                - cell ".266" [ref=e2172]
+                - cell ".403" [ref=e2173]
+                - cell ".622" [ref=e2174]
+                - cell "1.025" [ref=e2175]
+                - cell "0" [ref=e2176]
+                - cell "-.--" [ref=e2177]
+                - cell ".---" [ref=e2178]
+                - cell "0" [ref=e2179]
+                - cell ".---" [ref=e2180]
+                - cell "0" [ref=e2181]
+                - cell "0" [ref=e2182]
+                - cell "1" [ref=e2183]
+                - cell "0" [ref=e2184]
+                - cell "0" [ref=e2185]
+                - cell "-.--" [ref=e2186]
+                - cell "0" [ref=e2187]
+                - cell "0" [ref=e2188]
+                - cell "1" [ref=e2189]
+                - cell "0" [ref=e2190]
+                - cell "0" [ref=e2191]
+                - cell ".---" [ref=e2192]
+                - cell "0-2 | 3 BB, 2 K" [ref=e2193]
+              - row [ref=e2194]:
+                - cell [ref=e2195]:
+                  - link "May 10" [ref=e2196] [cursor=pointer]:
+                    - /url: /games/823793
+                - cell [ref=e2197]:
+                  - link "New York Yankees" [ref=e2198] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2199]:
+                  - link "@ Milwaukee Brewers" [ref=e2200] [cursor=pointer]:
+                    - /url: /teams/158
+                - cell "L" [ref=e2201]
+                - cell "DH" [ref=e2203]
+                - cell "4" [ref=e2204]
+                - cell "3" [ref=e2205]
+                - cell "1" [ref=e2206]
+                - cell "1" [ref=e2207]
+                - cell "0" [ref=e2208]
+                - cell "0" [ref=e2209]
+                - cell "1" [ref=e2210]
+                - cell "1" [ref=e2211]
+                - cell "1" [ref=e2212]
+                - cell "2" [ref=e2213]
+                - cell "0" [ref=e2214]
+                - cell "4" [ref=e2215]
+                - cell "0" [ref=e2216]
+                - cell "17" [ref=e2217]
+                - cell ".267" [ref=e2218]
+                - cell ".406" [ref=e2219]
+                - cell ".637" [ref=e2220]
+                - cell "1.043" [ref=e2221]
+                - cell "0" [ref=e2222]
+                - cell "3.00" [ref=e2223]
+                - cell ".---" [ref=e2224]
+                - cell "0" [ref=e2225]
+                - cell "1.000" [ref=e2226]
+                - cell "1" [ref=e2227]
+                - cell "0" [ref=e2228]
+                - cell "1" [ref=e2229]
+                - cell "0" [ref=e2230]
+                - cell "0" [ref=e2231]
+                - cell "-.--" [ref=e2232]
+                - cell "0" [ref=e2233]
+                - cell "0" [ref=e2234]
+                - cell "0" [ref=e2235]
+                - cell "0" [ref=e2236]
+                - cell "0" [ref=e2237]
+                - cell ".000" [ref=e2238]
+                - cell "1-3 | HR, BB, 2 K" [ref=e2239]
+              - row [ref=e2240]:
+                - cell [ref=e2241]:
+                  - link "May 11" [ref=e2242] [cursor=pointer]:
+                    - /url: /games/824844
+                - cell [ref=e2243]:
+                  - link "New York Yankees" [ref=e2244] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2245]:
+                  - link "@ Baltimore Orioles" [ref=e2246] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "L" [ref=e2247]
+                - cell "RF" [ref=e2249]
+                - cell "4" [ref=e2250]
+                - cell "4" [ref=e2251]
+                - cell "0" [ref=e2252]
+                - cell "1" [ref=e2253]
+                - cell "1" [ref=e2254]
+                - cell "0" [ref=e2255]
+                - cell "0" [ref=e2256]
+                - cell "0" [ref=e2257]
+                - cell "0" [ref=e2258]
+                - cell "1" [ref=e2259]
+                - cell "0" [ref=e2260]
+                - cell "2" [ref=e2261]
+                - cell "1" [ref=e2262]
+                - cell "11" [ref=e2263]
+                - cell ".267" [ref=e2264]
+                - cell ".402" [ref=e2265]
+                - cell ".633" [ref=e2266]
+                - cell "1.035" [ref=e2267]
+                - cell "2" [ref=e2268]
+                - cell "-.--" [ref=e2269]
+                - cell ".333" [ref=e2270]
+                - cell "0" [ref=e2271]
+                - cell ".---" [ref=e2272]
+                - cell "0" [ref=e2273]
+                - cell "1" [ref=e2274]
+                - cell "1" [ref=e2275]
+                - cell "0" [ref=e2276]
+                - cell "0" [ref=e2277]
+                - cell "0.00" [ref=e2278]
+                - cell "0" [ref=e2279]
+                - cell "0" [ref=e2280]
+                - cell "0" [ref=e2281]
+                - cell "0" [ref=e2282]
+                - cell "0" [ref=e2283]
+                - cell ".---" [ref=e2284]
+                - cell "1-4 | 2B, K" [ref=e2285]
+              - row [ref=e2286]:
+                - cell [ref=e2287]:
+                  - link "May 12" [ref=e2288] [cursor=pointer]:
+                    - /url: /games/824843
+                - cell [ref=e2289]:
+                  - link "New York Yankees" [ref=e2290] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2291]:
+                  - link "@ Baltimore Orioles" [ref=e2292] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "W" [ref=e2293]
+                - cell "RF" [ref=e2295]
+                - cell "5" [ref=e2296]
+                - cell "3" [ref=e2297]
+                - cell "1" [ref=e2298]
+                - cell "2" [ref=e2299]
+                - cell "0" [ref=e2300]
+                - cell "0" [ref=e2301]
+                - cell "0" [ref=e2302]
+                - cell "0" [ref=e2303]
+                - cell "2" [ref=e2304]
+                - cell "0" [ref=e2305]
+                - cell "0" [ref=e2306]
+                - cell "2" [ref=e2307]
+                - cell "0" [ref=e2308]
+                - cell "22" [ref=e2309]
+                - cell ".275" [ref=e2310]
+                - cell ".413" [ref=e2311]
+                - cell ".634" [ref=e2312]
+                - cell "1.047" [ref=e2313]
+                - cell "0" [ref=e2314]
+                - cell "-.--" [ref=e2315]
+                - cell ".667" [ref=e2316]
+                - cell "0" [ref=e2317]
+                - cell ".---" [ref=e2318]
+                - cell "0" [ref=e2319]
+                - cell "0" [ref=e2320]
+                - cell "1" [ref=e2321]
+                - cell "0" [ref=e2322]
+                - cell "1" [ref=e2323]
+                - cell "1.00" [ref=e2324]
+                - cell "0" [ref=e2325]
+                - cell "0" [ref=e2326]
+                - cell "0" [ref=e2327]
+                - cell "0" [ref=e2328]
+                - cell "0" [ref=e2329]
+                - cell ".---" [ref=e2330]
+                - cell "2-3 | 2 BB, R" [ref=e2331]
+              - row [ref=e2332]:
+                - cell [ref=e2333]:
+                  - link "May 13" [ref=e2334] [cursor=pointer]:
+                    - /url: /games/824841
+                - cell [ref=e2335]:
+                  - link "New York Yankees" [ref=e2336] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2337]:
+                  - link "@ Baltimore Orioles" [ref=e2338] [cursor=pointer]:
+                    - /url: /teams/110
+                - cell "L" [ref=e2339]
+                - cell "DH" [ref=e2341]
+                - cell "4" [ref=e2342]
+                - cell "4" [ref=e2343]
+                - cell "0" [ref=e2344]
+                - cell "0" [ref=e2345]
+                - cell "0" [ref=e2346]
+                - cell "0" [ref=e2347]
+                - cell "0" [ref=e2348]
+                - cell "0" [ref=e2349]
+                - cell "0" [ref=e2350]
+                - cell "1" [ref=e2351]
+                - cell "0" [ref=e2352]
+                - cell "0" [ref=e2353]
+                - cell "3" [ref=e2354]
+                - cell "11" [ref=e2355]
+                - cell ".268" [ref=e2356]
+                - cell ".404" [ref=e2357]
+                - cell ".618" [ref=e2358]
+                - cell "1.022" [ref=e2359]
+                - cell "1" [ref=e2360]
+                - cell "-.--" [ref=e2361]
+                - cell ".000" [ref=e2362]
+                - cell "0" [ref=e2363]
+                - cell ".---" [ref=e2364]
+                - cell "0" [ref=e2365]
+                - cell "0" [ref=e2366]
+                - cell "1" [ref=e2367]
+                - cell "1" [ref=e2368]
+                - cell "2" [ref=e2369]
+                - cell "2.00" [ref=e2370]
+                - cell "0" [ref=e2371]
+                - cell "0" [ref=e2372]
+                - cell "0" [ref=e2373]
+                - cell "0" [ref=e2374]
+                - cell "0" [ref=e2375]
+                - cell ".---" [ref=e2376]
+                - cell "0-4 | K" [ref=e2377]
+              - row [ref=e2378]:
+                - cell [ref=e2379]:
+                  - link "May 15" [ref=e2380] [cursor=pointer]:
+                    - /url: /games/823629
+                - cell [ref=e2381]:
+                  - link "New York Yankees" [ref=e2382] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2383]:
+                  - link "@ New York Mets" [ref=e2384] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "W" [ref=e2385]
+                - cell "RF" [ref=e2387]
+                - cell "5" [ref=e2388]
+                - cell "4" [ref=e2389]
+                - cell "1" [ref=e2390]
+                - cell "1" [ref=e2391]
+                - cell "0" [ref=e2392]
+                - cell "0" [ref=e2393]
+                - cell "0" [ref=e2394]
+                - cell "0" [ref=e2395]
+                - cell "0" [ref=e2396]
+                - cell "1" [ref=e2397]
+                - cell "0" [ref=e2398]
+                - cell "1" [ref=e2399]
+                - cell "3" [ref=e2400]
+                - cell "12" [ref=e2401]
+                - cell ".267" [ref=e2402]
+                - cell ".401" [ref=e2403]
+                - cell ".609" [ref=e2404]
+                - cell "1.010" [ref=e2405]
+                - cell "1" [ref=e2406]
+                - cell "-.--" [ref=e2407]
+                - cell ".333" [ref=e2408]
+                - cell "1" [ref=e2409]
+                - cell ".---" [ref=e2410]
+                - cell "0" [ref=e2411]
+                - cell "1" [ref=e2412]
+                - cell "1" [ref=e2413]
+                - cell "0" [ref=e2414]
+                - cell "1" [ref=e2415]
+                - cell "1.00" [ref=e2416]
+                - cell "0" [ref=e2417]
+                - cell "0" [ref=e2418]
+                - cell "0" [ref=e2419]
+                - cell "0" [ref=e2420]
+                - cell "0" [ref=e2421]
+                - cell ".---" [ref=e2422]
+                - cell "1-4 | K, R" [ref=e2423]
+              - row [ref=e2424]:
+                - cell [ref=e2425]:
+                  - link "May 16" [ref=e2426] [cursor=pointer]:
+                    - /url: /games/823627
+                - cell [ref=e2427]:
+                  - link "New York Yankees" [ref=e2428] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2429]:
+                  - link "@ New York Mets" [ref=e2430] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "L" [ref=e2431]
+                - cell "RF" [ref=e2433]
+                - cell "5" [ref=e2434]
+                - cell "4" [ref=e2435]
+                - cell "1" [ref=e2436]
+                - cell "2" [ref=e2437]
+                - cell "1" [ref=e2438]
+                - cell "0" [ref=e2439]
+                - cell "0" [ref=e2440]
+                - cell "0" [ref=e2441]
+                - cell "1" [ref=e2442]
+                - cell "1" [ref=e2443]
+                - cell "0" [ref=e2444]
+                - cell "3" [ref=e2445]
+                - cell "0" [ref=e2446]
+                - cell "21" [ref=e2447]
+                - cell ".273" [ref=e2448]
+                - cell ".406" [ref=e2449]
+                - cell ".612" [ref=e2450]
+                - cell "1.018" [ref=e2451]
+                - cell "1" [ref=e2452]
+                - cell "-.--" [ref=e2453]
+                - cell ".667" [ref=e2454]
+                - cell "0" [ref=e2455]
+                - cell ".---" [ref=e2456]
+                - cell "0" [ref=e2457]
+                - cell "1" [ref=e2458]
+                - cell "1" [ref=e2459]
+                - cell "0" [ref=e2460]
+                - cell "0" [ref=e2461]
+                - cell "0.00" [ref=e2462]
+                - cell "0" [ref=e2463]
+                - cell "0" [ref=e2464]
+                - cell "0" [ref=e2465]
+                - cell "0" [ref=e2466]
+                - cell "0" [ref=e2467]
+                - cell ".---" [ref=e2468]
+                - cell "2-4 | 2B, BB, K" [ref=e2469]
+              - row [ref=e2470]:
+                - cell [ref=e2471]:
+                  - link "May 17" [ref=e2472] [cursor=pointer]:
+                    - /url: /games/823628
+                - cell [ref=e2473]:
+                  - link "New York Yankees" [ref=e2474] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2475]:
+                  - link "@ New York Mets" [ref=e2476] [cursor=pointer]:
+                    - /url: /teams/121
+                - cell "L" [ref=e2477]
+                - cell "DH" [ref=e2479]
+                - cell "5" [ref=e2480]
+                - cell "4" [ref=e2481]
+                - cell "0" [ref=e2482]
+                - cell "0" [ref=e2483]
+                - cell "0" [ref=e2484]
+                - cell "0" [ref=e2485]
+                - cell "0" [ref=e2486]
+                - cell "0" [ref=e2487]
+                - cell "1" [ref=e2488]
+                - cell "1" [ref=e2489]
+                - cell "0" [ref=e2490]
+                - cell "0" [ref=e2491]
+                - cell "0" [ref=e2492]
+                - cell "26" [ref=e2493]
+                - cell ".266" [ref=e2494]
+                - cell ".401" [ref=e2495]
+                - cell ".598" [ref=e2496]
+                - cell ".999" [ref=e2497]
+                - cell "2" [ref=e2498]
+                - cell "-.--" [ref=e2499]
+                - cell ".000" [ref=e2500]
+                - cell "0" [ref=e2501]
+                - cell ".---" [ref=e2502]
+                - cell "0" [ref=e2503]
+                - cell "1" [ref=e2504]
+                - cell "1" [ref=e2505]
+                - cell "0" [ref=e2506]
+                - cell "1" [ref=e2507]
+                - cell "0.50" [ref=e2508]
+                - cell "0" [ref=e2509]
+                - cell "0" [ref=e2510]
+                - cell "0" [ref=e2511]
+                - cell "0" [ref=e2512]
+                - cell "0" [ref=e2513]
+                - cell ".---" [ref=e2514]
+                - cell "0-4 | BB, K" [ref=e2515]
+              - row [ref=e2516]:
+                - cell [ref=e2517]:
+                  - link "May 18" [ref=e2518] [cursor=pointer]:
+                    - /url: /games/823549
+                - cell [ref=e2519]:
+                  - link "New York Yankees" [ref=e2520] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2521]:
+                  - link "vs Toronto Blue Jays" [ref=e2522] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "W" [ref=e2523]
+                - cell "RF" [ref=e2525]
+                - cell "4" [ref=e2526]
+                - cell "4" [ref=e2527]
+                - cell "1" [ref=e2528]
+                - cell "1" [ref=e2529]
+                - cell "0" [ref=e2530]
+                - cell "0" [ref=e2531]
+                - cell "0" [ref=e2532]
+                - cell "0" [ref=e2533]
+                - cell "0" [ref=e2534]
+                - cell "0" [ref=e2535]
+                - cell "0" [ref=e2536]
+                - cell "1" [ref=e2537]
+                - cell "1" [ref=e2538]
+                - cell "19" [ref=e2539]
+                - cell ".266" [ref=e2540]
+                - cell ".398" [ref=e2541]
+                - cell ".590" [ref=e2542]
+                - cell ".988" [ref=e2543]
+                - cell "2" [ref=e2544]
+                - cell "-.--" [ref=e2545]
+                - cell ".250" [ref=e2546]
+                - cell "0" [ref=e2547]
+                - cell ".---" [ref=e2548]
+                - cell "0" [ref=e2549]
+                - cell "2" [ref=e2550]
+                - cell "1" [ref=e2551]
+                - cell "0" [ref=e2552]
+                - cell "1" [ref=e2553]
+                - cell "0.50" [ref=e2554]
+                - cell "0" [ref=e2555]
+                - cell "0" [ref=e2556]
+                - cell "0" [ref=e2557]
+                - cell "0" [ref=e2558]
+                - cell "0" [ref=e2559]
+                - cell ".---" [ref=e2560]
+                - cell "1-4 | R" [ref=e2561]
+              - row [ref=e2562]:
+                - cell [ref=e2563]:
+                  - link "May 19" [ref=e2564] [cursor=pointer]:
+                    - /url: /games/823548
+                - cell [ref=e2565]:
+                  - link "New York Yankees" [ref=e2566] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2567]:
+                  - link "vs Toronto Blue Jays" [ref=e2568] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "W" [ref=e2569]
+                - cell "RF" [ref=e2571]
+                - cell "4" [ref=e2572]
+                - cell "3" [ref=e2573]
+                - cell "1" [ref=e2574]
+                - cell "0" [ref=e2575]
+                - cell "0" [ref=e2576]
+                - cell "0" [ref=e2577]
+                - cell "0" [ref=e2578]
+                - cell "0" [ref=e2579]
+                - cell "1" [ref=e2580]
+                - cell "3" [ref=e2581]
+                - cell "0" [ref=e2582]
+                - cell "0" [ref=e2583]
+                - cell "1" [ref=e2584]
+                - cell "22" [ref=e2585]
+                - cell ".261" [ref=e2586]
+                - cell ".395" [ref=e2587]
+                - cell ".580" [ref=e2588]
+                - cell ".975" [ref=e2589]
+                - cell "0" [ref=e2590]
+                - cell "-.--" [ref=e2591]
+                - cell ".---" [ref=e2592]
+                - cell "0" [ref=e2593]
+                - cell ".---" [ref=e2594]
+                - cell "0" [ref=e2595]
+                - cell "0" [ref=e2596]
+                - cell "1" [ref=e2597]
+                - cell "0" [ref=e2598]
+                - cell "0" [ref=e2599]
+                - cell "-.--" [ref=e2600]
+                - cell "0" [ref=e2601]
+                - cell "0" [ref=e2602]
+                - cell "0" [ref=e2603]
+                - cell "0" [ref=e2604]
+                - cell "0" [ref=e2605]
+                - cell ".---" [ref=e2606]
+                - cell "0-3 | BB, 3 K, R" [ref=e2607]
+              - row [ref=e2608]:
+                - cell [ref=e2609]:
+                  - link "May 20" [ref=e2610] [cursor=pointer]:
+                    - /url: /games/823547
+                - cell [ref=e2611]:
+                  - link "New York Yankees" [ref=e2612] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2613]:
+                  - link "vs Toronto Blue Jays" [ref=e2614] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "L" [ref=e2615]
+                - cell "RF" [ref=e2617]
+                - cell "4" [ref=e2618]
+                - cell "4" [ref=e2619]
+                - cell "0" [ref=e2620]
+                - cell "0" [ref=e2621]
+                - cell "0" [ref=e2622]
+                - cell "0" [ref=e2623]
+                - cell "0" [ref=e2624]
+                - cell "0" [ref=e2625]
+                - cell "0" [ref=e2626]
+                - cell "4" [ref=e2627]
+                - cell "0" [ref=e2628]
+                - cell "0" [ref=e2629]
+                - cell "0" [ref=e2630]
+                - cell "19" [ref=e2631]
+                - cell ".256" [ref=e2632]
+                - cell ".388" [ref=e2633]
+                - cell ".567" [ref=e2634]
+                - cell ".955" [ref=e2635]
+                - cell "0" [ref=e2636]
+                - cell "-.--" [ref=e2637]
+                - cell ".---" [ref=e2638]
+                - cell "0" [ref=e2639]
+                - cell ".---" [ref=e2640]
+                - cell "0" [ref=e2641]
+                - cell "0" [ref=e2642]
+                - cell "1" [ref=e2643]
+                - cell "0" [ref=e2644]
+                - cell "0" [ref=e2645]
+                - cell "-.--" [ref=e2646]
+                - cell "0" [ref=e2647]
+                - cell "0" [ref=e2648]
+                - cell "0" [ref=e2649]
+                - cell "0" [ref=e2650]
+                - cell "0" [ref=e2651]
+                - cell ".---" [ref=e2652]
+                - cell "0-4 | 4 K" [ref=e2653]
+              - row [ref=e2654]:
+                - cell [ref=e2655]:
+                  - link "May 21" [ref=e2656] [cursor=pointer]:
+                    - /url: /games/823545
+                - cell [ref=e2657]:
+                  - link "New York Yankees" [ref=e2658] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2659]:
+                  - link "vs Toronto Blue Jays" [ref=e2660] [cursor=pointer]:
+                    - /url: /teams/141
+                - cell "L" [ref=e2661]
+                - cell "RF" [ref=e2663]
+                - cell "4" [ref=e2664]
+                - cell "4" [ref=e2665]
+                - cell "0" [ref=e2666]
+                - cell "0" [ref=e2667]
+                - cell "0" [ref=e2668]
+                - cell "0" [ref=e2669]
+                - cell "0" [ref=e2670]
+                - cell "0" [ref=e2671]
+                - cell "0" [ref=e2672]
+                - cell "1" [ref=e2673]
+                - cell "0" [ref=e2674]
+                - cell "0" [ref=e2675]
+                - cell "2" [ref=e2676]
+                - cell "17" [ref=e2677]
+                - cell ".250" [ref=e2678]
+                - cell ".381" [ref=e2679]
+                - cell ".554" [ref=e2680]
+                - cell ".935" [ref=e2681]
+                - cell "1" [ref=e2682]
+                - cell "-.--" [ref=e2683]
+                - cell ".000" [ref=e2684]
+                - cell "0" [ref=e2685]
+                - cell ".---" [ref=e2686]
+                - cell "0" [ref=e2687]
+                - cell "0" [ref=e2688]
+                - cell "1" [ref=e2689]
+                - cell "1" [ref=e2690]
+                - cell "2" [ref=e2691]
+                - cell "2.00" [ref=e2692]
+                - cell "0" [ref=e2693]
+                - cell "0" [ref=e2694]
+                - cell "0" [ref=e2695]
+                - cell "0" [ref=e2696]
+                - cell "0" [ref=e2697]
+                - cell ".---" [ref=e2698]
+                - cell "0-4 | K" [ref=e2699]
+              - row [ref=e2700]:
+                - cell [ref=e2701]:
+                  - link "May 22" [ref=e2702] [cursor=pointer]:
+                    - /url: /games/823546
+                - cell [ref=e2703]:
+                  - link "New York Yankees" [ref=e2704] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2705]:
+                  - link "vs Tampa Bay Rays" [ref=e2706] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "L" [ref=e2707]
+                - cell "RF" [ref=e2709]
+                - cell "5" [ref=e2710]
+                - cell "4" [ref=e2711]
+                - cell "0" [ref=e2712]
+                - cell "0" [ref=e2713]
+                - cell "0" [ref=e2714]
+                - cell "0" [ref=e2715]
+                - cell "0" [ref=e2716]
+                - cell "0" [ref=e2717]
+                - cell "1" [ref=e2718]
+                - cell "1" [ref=e2719]
+                - cell "0" [ref=e2720]
+                - cell "0" [ref=e2721]
+                - cell "3" [ref=e2722]
+                - cell "22" [ref=e2723]
+                - cell ".245" [ref=e2724]
+                - cell ".377" [ref=e2725]
+                - cell ".543" [ref=e2726]
+                - cell ".920" [ref=e2727]
+                - cell "2" [ref=e2728]
+                - cell "-.--" [ref=e2729]
+                - cell ".000" [ref=e2730]
+                - cell "0" [ref=e2731]
+                - cell ".---" [ref=e2732]
+                - cell "0" [ref=e2733]
+                - cell "2" [ref=e2734]
+                - cell "1" [ref=e2735]
+                - cell "0" [ref=e2736]
+                - cell "1" [ref=e2737]
+                - cell "0.50" [ref=e2738]
+                - cell "0" [ref=e2739]
+                - cell "0" [ref=e2740]
+                - cell "0" [ref=e2741]
+                - cell "0" [ref=e2742]
+                - cell "0" [ref=e2743]
+                - cell ".---" [ref=e2744]
+                - cell "0-4 | BB, K" [ref=e2745]
+              - row [ref=e2746]:
+                - cell [ref=e2747]:
+                  - link "May 24" [ref=e2748] [cursor=pointer]:
+                    - /url: /games/823544
+                - cell [ref=e2749]:
+                  - link "New York Yankees" [ref=e2750] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2751]:
+                  - link "vs Tampa Bay Rays" [ref=e2752] [cursor=pointer]:
+                    - /url: /teams/139
+                - cell "W" [ref=e2753]
+                - cell "RF" [ref=e2755]
+                - cell "4" [ref=e2756]
+                - cell "4" [ref=e2757]
+                - cell "1" [ref=e2758]
+                - cell "2" [ref=e2759]
+                - cell "0" [ref=e2760]
+                - cell "0" [ref=e2761]
+                - cell "1" [ref=e2762]
+                - cell "2" [ref=e2763]
+                - cell "0" [ref=e2764]
+                - cell "0" [ref=e2765]
+                - cell "0" [ref=e2766]
+                - cell "5" [ref=e2767]
+                - cell "2" [ref=e2768]
+                - cell "14" [ref=e2769]
+                - cell ".250" [ref=e2770]
+                - cell ".379" [ref=e2771]
+                - cell ".557" [ref=e2772]
+                - cell ".936" [ref=e2773]
+                - cell "1" [ref=e2774]
+                - cell "4.00" [ref=e2775]
+                - cell ".333" [ref=e2776]
+                - cell "0" [ref=e2777]
+                - cell ".---" [ref=e2778]
+                - cell "0" [ref=e2779]
+                - cell "1" [ref=e2780]
+                - cell "1" [ref=e2781]
+                - cell "1" [ref=e2782]
+                - cell "1" [ref=e2783]
+                - cell "1.00" [ref=e2784]
+                - cell "0" [ref=e2785]
+                - cell "0" [ref=e2786]
+                - cell "0" [ref=e2787]
+                - cell "0" [ref=e2788]
+                - cell "0" [ref=e2789]
+                - cell ".---" [ref=e2790]
+                - cell "2-4 | HR, 2 RBI, R" [ref=e2791]
+              - row [ref=e2792]:
+                - cell [ref=e2793]:
+                  - link "May 25" [ref=e2794] [cursor=pointer]:
+                    - /url: /games/824107
+                - cell [ref=e2795]:
+                  - link "New York Yankees" [ref=e2796] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2797]:
+                  - link "@ Kansas City Royals" [ref=e2798] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "W" [ref=e2799]
+                - cell "RF" [ref=e2801]
+                - cell "4" [ref=e2802]
+                - cell "4" [ref=e2803]
+                - cell "0" [ref=e2804]
+                - cell "1" [ref=e2805]
+                - cell "1" [ref=e2806]
+                - cell "0" [ref=e2807]
+                - cell "0" [ref=e2808]
+                - cell "0" [ref=e2809]
+                - cell "0" [ref=e2810]
+                - cell "1" [ref=e2811]
+                - cell "0" [ref=e2812]
+                - cell "2" [ref=e2813]
+                - cell "0" [ref=e2814]
+                - cell "12" [ref=e2815]
+                - cell ".250" [ref=e2816]
+                - cell ".377" [ref=e2817]
+                - cell ".556" [ref=e2818]
+                - cell ".933" [ref=e2819]
+                - cell "1" [ref=e2820]
+                - cell "-.--" [ref=e2821]
+                - cell ".333" [ref=e2822]
+                - cell "0" [ref=e2823]
+                - cell ".---" [ref=e2824]
+                - cell "0" [ref=e2825]
+                - cell "0" [ref=e2826]
+                - cell "1" [ref=e2827]
+                - cell "0" [ref=e2828]
+                - cell "1" [ref=e2829]
+                - cell "1.00" [ref=e2830]
+                - cell "0" [ref=e2831]
+                - cell "0" [ref=e2832]
+                - cell "0" [ref=e2833]
+                - cell "0" [ref=e2834]
+                - cell "0" [ref=e2835]
+                - cell ".---" [ref=e2836]
+                - cell "1-4 | 2B, K" [ref=e2837]
+              - row [ref=e2838]:
+                - cell [ref=e2839]:
+                  - link "May 26" [ref=e2840] [cursor=pointer]:
+                    - /url: /games/824106
+                - cell [ref=e2841]:
+                  - link "New York Yankees" [ref=e2842] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2843]:
+                  - link "@ Kansas City Royals" [ref=e2844] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "W" [ref=e2845]
+                - cell "RF" [ref=e2847]
+                - cell "5" [ref=e2848]
+                - cell "3" [ref=e2849]
+                - cell "0" [ref=e2850]
+                - cell "2" [ref=e2851]
+                - cell "1" [ref=e2852]
+                - cell "0" [ref=e2853]
+                - cell "0" [ref=e2854]
+                - cell "1" [ref=e2855]
+                - cell "2" [ref=e2856]
+                - cell "0" [ref=e2857]
+                - cell "0" [ref=e2858]
+                - cell "3" [ref=e2859]
+                - cell "0" [ref=e2860]
+                - cell "13" [ref=e2861]
+                - cell ".256" [ref=e2862]
+                - cell ".386" [ref=e2863]
+                - cell ".563" [ref=e2864]
+                - cell ".949" [ref=e2865]
+                - cell "0" [ref=e2866]
+                - cell "-.--" [ref=e2867]
+                - cell ".667" [ref=e2868]
+                - cell "0" [ref=e2869]
+                - cell ".---" [ref=e2870]
+                - cell "0" [ref=e2871]
+                - cell "0" [ref=e2872]
+                - cell "1" [ref=e2873]
+                - cell "0" [ref=e2874]
+                - cell "1" [ref=e2875]
+                - cell "1.00" [ref=e2876]
+                - cell "0" [ref=e2877]
+                - cell "0" [ref=e2878]
+                - cell "0" [ref=e2879]
+                - cell "0" [ref=e2880]
+                - cell "0" [ref=e2881]
+                - cell ".---" [ref=e2882]
+                - cell "2-3 | 2B, 2 BB, RBI" [ref=e2883]
+              - row [ref=e2884]:
+                - cell [ref=e2885]:
+                  - link "May 27" [ref=e2886] [cursor=pointer]:
+                    - /url: /games/824104
+                - cell [ref=e2887]:
+                  - link "New York Yankees" [ref=e2888] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2889]:
+                  - link "@ Kansas City Royals" [ref=e2890] [cursor=pointer]:
+                    - /url: /teams/118
+                - cell "W" [ref=e2891]
+                - cell "RF" [ref=e2893]
+                - cell "4" [ref=e2894]
+                - cell "3" [ref=e2895]
+                - cell "0" [ref=e2896]
+                - cell "0" [ref=e2897]
+                - cell "0" [ref=e2898]
+                - cell "0" [ref=e2899]
+                - cell "0" [ref=e2900]
+                - cell "1" [ref=e2901]
+                - cell "0" [ref=e2902]
+                - cell "1" [ref=e2903]
+                - cell "0" [ref=e2904]
+                - cell "0" [ref=e2905]
+                - cell "4" [ref=e2906]
+                - cell "18" [ref=e2907]
+                - cell ".252" [ref=e2908]
+                - cell ".380" [ref=e2909]
+                - cell ".554" [ref=e2910]
+                - cell ".934" [ref=e2911]
+                - cell "2" [ref=e2912]
+                - cell "-.--" [ref=e2913]
+                - cell ".000" [ref=e2914]
+                - cell "0" [ref=e2915]
+                - cell ".---" [ref=e2916]
+                - cell "0" [ref=e2917]
+                - cell "2" [ref=e2918]
+                - cell "1" [ref=e2919]
+                - cell "1" [ref=e2920]
+                - cell "1" [ref=e2921]
+                - cell "0.50" [ref=e2922]
+                - cell "0" [ref=e2923]
+                - cell "0" [ref=e2924]
+                - cell "0" [ref=e2925]
+                - cell "0" [ref=e2926]
+                - cell "1" [ref=e2927]
+                - cell ".---" [ref=e2928]
+                - cell "0-3 | K, RBI" [ref=e2929]
+              - row [ref=e2930]:
+                - cell [ref=e2931]:
+                  - link "May 29" [ref=e2932] [cursor=pointer]:
+                    - /url: /games/825002
+                - cell [ref=e2933]:
+                  - link "New York Yankees" [ref=e2934] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2935]:
+                  - link "@ Athletics" [ref=e2936] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "W" [ref=e2937]
+                - cell "RF" [ref=e2939]
+                - cell "5" [ref=e2940]
+                - cell "4" [ref=e2941]
+                - cell "1" [ref=e2942]
+                - cell "1" [ref=e2943]
+                - cell "0" [ref=e2944]
+                - cell "0" [ref=e2945]
+                - cell "0" [ref=e2946]
+                - cell "2" [ref=e2947]
+                - cell "1" [ref=e2948]
+                - cell "1" [ref=e2949]
+                - cell "0" [ref=e2950]
+                - cell "1" [ref=e2951]
+                - cell "4" [ref=e2952]
+                - cell "25" [ref=e2953]
+                - cell ".252" [ref=e2954]
+                - cell ".380" [ref=e2955]
+                - cell ".549" [ref=e2956]
+                - cell ".929" [ref=e2957]
+                - cell "0" [ref=e2958]
+                - cell "-.--" [ref=e2959]
+                - cell ".333" [ref=e2960]
+                - cell "0" [ref=e2961]
+                - cell ".---" [ref=e2962]
+                - cell "0" [ref=e2963]
+                - cell "0" [ref=e2964]
+                - cell "1" [ref=e2965]
+                - cell "0" [ref=e2966]
+                - cell "2" [ref=e2967]
+                - cell "2.00" [ref=e2968]
+                - cell "0" [ref=e2969]
+                - cell "0" [ref=e2970]
+                - cell "0" [ref=e2971]
+                - cell "0" [ref=e2972]
+                - cell "0" [ref=e2973]
+                - cell ".---" [ref=e2974]
+                - cell "1-4 | BB, K, 2 RBI" [ref=e2975]
+              - row [ref=e2976]:
+                - cell [ref=e2977]:
+                  - link "May 30" [ref=e2978] [cursor=pointer]:
+                    - /url: /games/825000
+                - cell [ref=e2979]:
+                  - link "New York Yankees" [ref=e2980] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e2981]:
+                  - link "@ Athletics" [ref=e2982] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "L" [ref=e2983]
+                - cell "RF" [ref=e2985]
+                - cell "5" [ref=e2986]
+                - cell "4" [ref=e2987]
+                - cell "0" [ref=e2988]
+                - cell "0" [ref=e2989]
+                - cell "0" [ref=e2990]
+                - cell "0" [ref=e2991]
+                - cell "0" [ref=e2992]
+                - cell "1" [ref=e2993]
+                - cell "1" [ref=e2994]
+                - cell "0" [ref=e2995]
+                - cell "0" [ref=e2996]
+                - cell "0" [ref=e2997]
+                - cell "2" [ref=e2998]
+                - cell "17" [ref=e2999]
+                - cell ".248" [ref=e3000]
+                - cell ".376" [ref=e3001]
+                - cell ".538" [ref=e3002]
+                - cell ".914" [ref=e3003]
+                - cell "2" [ref=e3004]
+                - cell "-.--" [ref=e3005]
+                - cell ".000" [ref=e3006]
+                - cell "0" [ref=e3007]
+                - cell ".---" [ref=e3008]
+                - cell "0" [ref=e3009]
+                - cell "2" [ref=e3010]
+                - cell "1" [ref=e3011]
+                - cell "1" [ref=e3012]
+                - cell "2" [ref=e3013]
+                - cell "1.00" [ref=e3014]
+                - cell "0" [ref=e3015]
+                - cell "0" [ref=e3016]
+                - cell "0" [ref=e3017]
+                - cell "0" [ref=e3018]
+                - cell "0" [ref=e3019]
+                - cell ".---" [ref=e3020]
+                - cell "0-4 | BB, RBI" [ref=e3021]
+              - row [ref=e3022]:
+                - cell [ref=e3023]:
+                  - link "May 31" [ref=e3024] [cursor=pointer]:
+                    - /url: /games/825001
+                - cell [ref=e3025]:
+                  - link "New York Yankees" [ref=e3026] [cursor=pointer]:
+                    - /url: /teams/147
+                - cell [ref=e3027]:
+                  - link "@ Athletics" [ref=e3028] [cursor=pointer]:
+                    - /url: /teams/133
+                - cell "W" [ref=e3029]
+                - cell "RF" [ref=e3031]
+                - cell "4" [ref=e3032]
+                - cell "4" [ref=e3033]
+                - cell "1" [ref=e3034]
+                - cell "1" [ref=e3035]
+                - cell "0" [ref=e3036]
+                - cell "0" [ref=e3037]
+                - cell "0" [ref=e3038]
+                - cell "1" [ref=e3039]
+                - cell "0" [ref=e3040]
+                - cell "2" [ref=e3041]
+                - cell "0" [ref=e3042]
+                - cell "1" [ref=e3043]
+                - cell "1" [ref=e3044]
+                - cell "18" [ref=e3045]
+                - cell ".248" [ref=e3046]
+                - cell ".375" [ref=e3047]
+                - cell ".533" [ref=e3048]
+                - cell ".908" [ref=e3049]
+                - cell "1" [ref=e3050]
+                - cell "-.--" [ref=e3051]
+                - cell ".500" [ref=e3052]
+                - cell "0" [ref=e3053]
+                - cell ".---" [ref=e3054]
+                - cell "0" [ref=e3055]
+                - cell "1" [ref=e3056]
+                - cell "1" [ref=e3057]
+                - cell "0" [ref=e3058]
+                - cell "0" [ref=e3059]
+                - cell "0.00" [ref=e3060]
+                - cell "0" [ref=e3061]
+                - cell "0" [ref=e3062]
+                - cell "0" [ref=e3063]
+                - cell "0" [ref=e3064]
+                - cell "0" [ref=e3065]
+                - cell ".---" [ref=e3066]
+                - cell "1-4 | 2 K, RBI, R" [ref=e3067]
+      - generic [ref=e3068]:
+        - generic [ref=e3069]:
+          - generic [ref=e3071]:
+            - generic [ref=e3072]: NINTH / DATA
+            - heading "Season production" [level=2] [ref=e3073]
+          - article [ref=e3076]:
+            - img "Aaron Judge headshot" [ref=e3079]
+            - heading "Aaron Judge" [level=3] [ref=e3080]
+            - paragraph [ref=e3081]: 2026 season
+            - generic [ref=e3082]:
+              - generic [ref=e3083]:
+                - generic [ref=e3084]: H
+                - generic [ref=e3085]: "53"
+              - generic [ref=e3086]:
+                - generic [ref=e3087]: RBI
+                - generic [ref=e3088]: "38"
+        - generic [ref=e3089]:
+          - generic [ref=e3091]:
+            - generic [ref=e3092]: NINTH / DATA
+            - heading "Provider status" [level=2] [ref=e3093]
+          - generic [ref=e3095]:
+            - generic [ref=e3096]:
+              - generic [ref=e3097]: Official MLB feed
+              - generic [ref=e3098]: Current season totals
+            - strong [ref=e3099]: LIVE
+      - generic [ref=e3100]:
+        - generic [ref=e3102]:
+          - generic [ref=e3103]: NINTH / DATA
+          - heading "Current season statistics" [level=2] [ref=e3104]
+        - table [ref=e3107]:
+          - rowgroup [ref=e3108]:
+            - row [ref=e3109]:
+              - columnheader "G" [ref=e3110]
+              - columnheader "AB" [ref=e3111]
+              - columnheader "H" [ref=e3112]
+              - columnheader "HR" [ref=e3113]
+              - columnheader "RBI" [ref=e3114]
+              - columnheader "AVG" [ref=e3115]
+              - columnheader "OBP" [ref=e3116]
+              - columnheader "SLG" [ref=e3117]
+              - columnheader "OPS" [ref=e3118]
+          - rowgroup [ref=e3119]:
+            - row [ref=e3120]:
+              - cell "59" [ref=e3121]
+              - cell "214" [ref=e3122]
+              - cell "53" [ref=e3123]
+              - cell "17" [ref=e3124]
+              - cell "38" [ref=e3125]
+              - cell ".248" [ref=e3126]
+              - cell ".375" [ref=e3127]
+              - cell ".533" [ref=e3128]
+              - cell ".908" [ref=e3129]

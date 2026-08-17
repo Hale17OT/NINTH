@@ -1,0 +1,55 @@
+- generic [ref=f2e3]:
+  - banner [ref=f2e5]:
+    - generic [ref=f2e6]:
+      - link "NINTH home" [ref=f2e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f2e8]: NINTH
+      - navigation "Sport workspaces" [ref=f2e9]:
+        - link "00 Platform" [ref=f2e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f2e11]: "00"
+          - generic [ref=f2e12]: Platform
+        - link "01 MLB" [ref=f2e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=f2e14]: "01"
+          - generic [ref=f2e15]: MLB
+        - link "02 FTB" [ref=f2e16] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=f2e17]: "02"
+          - generic [ref=f2e18]: FTB
+        - link "03 NFL" [ref=f2e19] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=f2e20]: "03"
+          - generic [ref=f2e21]: NFL
+        - link "04 NBA" [ref=f2e22] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=f2e23]: "04"
+          - generic [ref=f2e24]: NBA
+        - link "05 ESP" [ref=f2e25] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=f2e26]: "05"
+          - generic [ref=f2e27]: ESP
+      - button "Use light theme" [ref=f2e30] [cursor=pointer]
+    - generic [ref=f2e37]:
+      - generic [ref=f2e38]:
+        - generic [ref=f2e39]: VALORANT + CS2 + LOL
+        - generic [ref=f2e40]: Esports
+        - emphasis [ref=f2e41]: RESEARCH LAB
+      - navigation "Workspace navigation" [ref=f2e42]:
+        - link "Overview" [ref=f2e43] [cursor=pointer]:
+          - /url: /esports
+        - link "Leagues" [ref=f2e44] [cursor=pointer]:
+          - /url: /esports/leagues
+        - link "Games" [ref=f2e45] [cursor=pointer]:
+          - /url: /esports/games
+        - link "Teams" [ref=f2e46] [cursor=pointer]:
+          - /url: /esports/teams
+        - link "Players" [ref=f2e47] [cursor=pointer]:
+          - /url: /esports/players
+        - link "Builder" [ref=f2e48] [cursor=pointer]:
+          - /url: /esports/builder
+        - link "Models" [ref=f2e50] [cursor=pointer]:
+          - /url: /esports/models
+        - link "Data" [ref=f2e51] [cursor=pointer]:
+          - /url: /esports/data
+  - main [ref=f2e52]

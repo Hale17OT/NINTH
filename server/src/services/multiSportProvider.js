@@ -10,9 +10,11 @@ const FOOTBALL_DATA_CSV = 'https://www.football-data.co.uk/mmz4281'
 const FPL_API = 'https://fantasy.premierleague.com/api'
 const FOOTBALL_DATA_ORG = 'https://api.football-data.org/v4'
 const NFLVERSE_SCHEDULE = 'https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv'
+const NFLVERSE_PLAYER_STATS = 'https://github.com/nflverse/nflverse-data/releases/download/player_stats/player_stats.csv'
 const HOUR = 60 * 60 * 1000
 let sportsDbQueue = Promise.resolve()
 let sportsDbLastRequest = 0
+let nflPlayerStatsCache = null
 
 const configured = (...names) => names.some(name => Boolean(process.env[name]))
 const sourceStatus = sport => {
@@ -152,6 +154,25 @@ const nflNames = {
 }
 const nbaNames = {
   ATL:'Atlanta Hawks', BOS:'Boston Celtics', BKN:'Brooklyn Nets', CHA:'Charlotte Hornets', CHI:'Chicago Bulls', CLE:'Cleveland Cavaliers', DAL:'Dallas Mavericks', DEN:'Denver Nuggets', DET:'Detroit Pistons', GSW:'Golden State Warriors', HOU:'Houston Rockets', IND:'Indiana Pacers', LAC:'Los Angeles Clippers', LAL:'Los Angeles Lakers', MEM:'Memphis Grizzlies', MIA:'Miami Heat', MIL:'Milwaukee Bucks', MIN:'Minnesota Timberwolves', NOP:'New Orleans Pelicans', NYK:'New York Knicks', OKC:'Oklahoma City Thunder', ORL:'Orlando Magic', PHI:'Philadelphia 76ers', PHX:'Phoenix Suns', POR:'Portland Trail Blazers', SAC:'Sacramento Kings', SAS:'San Antonio Spurs', TOR:'Toronto Raptors', UTA:'Utah Jazz', WAS:'Washington Wizards',
+}
+const nbaAliases = { BRK:'BKN', CHO:'CHA', NOH:'NOP', NOK:'NOP', NOR:'NOP', PHO:'PHX', SAN:'SAS' }
+let nbaAdvancedCache = null
+let footballMatchCache = null
+const readJson = path => {
+  try { return JSON.parse(readFileSync(path, 'utf8')) } catch { return null }
+}
+const nbaAdvancedRows = () => {
+  if (nbaAdvancedCache) return nbaAdvancedCache
+  const payload = readJson(join(process.cwd(), 'ml', 'data', 'multisport', 'basketball', 'nba_advanced.json'))
+  nbaAdvancedCache = payload?.rows || []
+  return nbaAdvancedCache
+}
+const footballMatchRows = () => {
+  if (footballMatchCache) return footballMatchCache
+  const path = join(process.cwd(), 'ml', 'data', 'multisport', 'football', 'raw_matches.jsonl')
+  if (!existsSync(path)) return []
+  footballMatchCache = readFileSync(path, 'utf8').split(/\r?\n/).filter(Boolean).flatMap(line => { try { return [JSON.parse(line)] } catch { return [] } })
+  return footballMatchCache
 }
 const seasonSlugs = () => {
   const now = new Date(), year = now.getUTCFullYear(), start = now.getUTCMonth() >= 6 ? year : year - 1
@@ -414,9 +435,52 @@ async function sportsDbTeams(sport, options) {
   return [...unique.values()].sort((a, b) => a.name.localeCompare(b.name))
 }
 
+const sumRows = (rows, key) => rows.reduce((total, row) => total + (Number(row[key]) || 0), 0)
+const safeRate = (numerator, denominator, scale = 1) => denominator ? numerator / denominator * scale : null
+const roundMetric = (value, digits = 2) => Number.isFinite(Number(value)) ? Number(Number(value).toFixed(digits)) : null
+const nflPositionProfile = rows => {
+  const first = rows[0] || {}, position = String(first.position || '').toUpperCase()
+  const games = rows.length, attempts = sumRows(rows, 'attempts'), completions = sumRows(rows, 'completions')
+  const carries = sumRows(rows, 'carries'), targets = sumRows(rows, 'targets'), receptions = sumRows(rows, 'receptions')
+  const passingYards = sumRows(rows, 'passing_yards'), rushingYards = sumRows(rows, 'rushing_yards'), receivingYards = sumRows(rows, 'receiving_yards')
+  const base = { games }
+  let statistics, primaryKey, secondaryKey
+  if (position === 'QB') {
+    statistics = { ...base, completions, attempts, completionRate: roundMetric(safeRate(completions, attempts, 100), 1), passingYards, passingYardsPerGame: roundMetric(safeRate(passingYards, games), 1), passingTouchdowns: sumRows(rows, 'passing_tds'), interceptions: sumRows(rows, 'interceptions'), sacks: sumRows(rows, 'sacks'), passingEpaPerDropback: roundMetric(safeRate(sumRows(rows, 'passing_epa'), attempts + sumRows(rows, 'sacks')), 3) }
+    primaryKey = 'passing_yards'; secondaryKey = 'passing_tds'
+  } else if (position === 'RB' || position === 'FB') {
+    statistics = { ...base, carries, rushingYards, rushingYardsPerGame: roundMetric(safeRate(rushingYards, games), 1), yardsPerCarry: roundMetric(safeRate(rushingYards, carries), 2), rushingTouchdowns: sumRows(rows, 'rushing_tds'), targets, receptions, receivingYards, scrimmageYards: rushingYards + receivingYards, epaPerTouch: roundMetric(safeRate(sumRows(rows, 'rushing_epa') + sumRows(rows, 'receiving_epa'), carries + targets), 3) }
+    primaryKey = 'rushing_yards'; secondaryKey = 'receiving_yards'
+  } else if (['WR', 'TE'].includes(position)) {
+    statistics = { ...base, targets, receptions, catchRate: roundMetric(safeRate(receptions, targets, 100), 1), receivingYards, receivingYardsPerGame: roundMetric(safeRate(receivingYards, games), 1), yardsPerTarget: roundMetric(safeRate(receivingYards, targets), 2), receivingTouchdowns: sumRows(rows, 'receiving_tds'), targetShare: roundMetric(rows.reduce((total, row) => total + (Number(row.target_share) || 0), 0) / games * 100, 1), airYardsShare: roundMetric(rows.reduce((total, row) => total + (Number(row.air_yards_share) || 0), 0) / games * 100, 1), receivingEpaPerTarget: roundMetric(safeRate(sumRows(rows, 'receiving_epa'), targets), 3) }
+    primaryKey = 'receiving_yards'; secondaryKey = 'targets'
+  } else {
+    statistics = { ...base, fantasyPointsPpr: roundMetric(sumRows(rows, 'fantasy_points_ppr'), 1), specialTeamsTouchdowns: sumRows(rows, 'special_teams_tds') }
+    primaryKey = 'fantasy_points_ppr'; secondaryKey = 'special_teams_tds'
+  }
+  const gameLog = rows.slice(-18).map(row => ({ label: `W${row.week}`, week: Number(row.week), opponent: row.opponent_team, primary: Number(row[primaryKey]) || 0, secondary: Number(row[secondaryKey]) || 0 }))
+  return { statistics, gameLog, primaryKey, secondaryKey, season: Number(first.season), source: 'nflverse weekly player statistics' }
+}
+async function nflPlayerProfiles(requestedSeason) {
+  if (!nflPlayerStatsCache) {
+    const body = await cache.remember('nflverse:player-stats', 12 * HOUR, () => textResponse(NFLVERSE_PLAYER_STATS))
+    const allRows = parseCsv(body).filter(row => row.player_id && row.season_type === 'REG')
+    const seasons = [...new Set(allRows.map(row => Number(row.season)).filter(Number.isFinite))].sort((a, b) => b - a)
+    const selectedSeason = seasons.find(season => season <= Number(requestedSeason)) || seasons[0]
+    const groups = new Map()
+    allRows.filter(row => Number(row.season) === selectedSeason).forEach(row => {
+      if (!groups.has(row.player_id)) groups.set(row.player_id, [])
+      groups.get(row.player_id).push(row)
+    })
+    nflPlayerStatsCache = new Map([...groups].map(([id, rows]) => [id, nflPositionProfile(rows.sort((a, b) => Number(a.week) - Number(b.week)))]))
+  }
+  return nflPlayerStatsCache
+}
+
 async function sportsDbPlayers(sport, options) {
   if (sport === 'american-football') {
     const season = Number(options.season || new Date().getUTCFullYear())
+    const profiles = await nflPlayerProfiles(season).catch(() => new Map())
     const body = await cache.remember(`nflverse:roster:${season}`, 12 * HOUR, () => textResponse(`https://github.com/nflverse/nflverse-data/releases/download/rosters/roster_${season}.csv`))
     const latest = new Map()
     for (const row of parseCsv(body)) {
@@ -425,22 +489,36 @@ async function sportsDbPlayers(sport, options) {
       const current = latest.get(id)
       if (!current || Number(row.week || 0) >= Number(current.week || 0)) latest.set(id, row)
     }
-    return [...latest.values()].map(row => ({
-      id: row.gsis_id || row.espn_id || `${row.team}:${row.full_name}`, name: row.full_name,
+    const players = [...latest.values()].map(row => {
+      const id = row.gsis_id || row.espn_id || `${row.team}:${row.full_name}`, profile = profiles.get(id)
+      return ({
+      id, name: row.full_name,
       teamId: `nfl:${row.team}`, team: nflNames[row.team] || row.team, position: row.position || 'Player',
       nationality: 'United States', born: row.birth_date || null,
       height: row.height ? `${Math.floor(Number(row.height) / 12)}' ${Number(row.height) % 12}"` : null,
       weight: row.weight ? `${row.weight} lb` : null, number: row.jersey_number || null,
       image: row.headshot_url || null, competition: 'NFL', status: row.status_description_abbr || row.status,
-    })).sort((a, b) => a.name.localeCompare(b.name))
+      statistics: profile?.statistics || {}, gameLog: profile?.gameLog || [], statisticsSeason: profile?.season || null,
+      statisticsSource: profile?.source || null, primaryMetric: profile?.primaryKey || null, secondaryMetric: profile?.secondaryKey || null,
+    })}).sort((a, b) => a.name.localeCompare(b.name))
+    return options.team ? players.filter(row => String(row.teamId) === String(options.team)) : players
   }
   if (sport === 'basketball') {
     const season = Number(options.season || new Date().getUTCFullYear())
     const rows = await cache.remember(`open-nba:players:${season}`, 12 * HOUR, async () => {
-      const file = await asyncBufferFromUrl({ url: `https://raw.githubusercontent.com/llimllib/nba_data/main/data/players_${season}.parquet` })
-      return parquetReadObjects({ file })
+      const path = `players_${season}.parquet`
+      try {
+        const file = await asyncBufferFromUrl({ url: `https://raw.githubusercontent.com/llimllib/nba_data/main/data/${path}` })
+        return await parquetReadObjects({ file })
+      } catch {
+        const payload = await json(`https://api.github.com/repos/llimllib/nba_data/contents/data/${path}`, { 'X-GitHub-Api-Version': '2022-11-28' })
+        if (payload.encoding !== 'base64' || !payload.content) throw new Error(`Open NBA roster payload unavailable for ${season}`)
+        const buffer = Buffer.from(payload.content.replace(/\s/g, ''), 'base64')
+        const file = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength)
+        return parquetReadObjects({ file })
+      }
     })
-    return rows.filter(row => row.player_name && row.team_abbreviation && Number(row.gp || 0) > 0).map(row => ({
+    const players = rows.filter(row => row.player_name && row.team_abbreviation && Number(row.gp || 0) > 0).map(row => ({
       id: String(row.player_id), name: row.player_name, teamId: `nba:${row.team_abbreviation}`,
       team: nbaNames[row.team_abbreviation] || row.team_abbreviation, position: row.position || 'NBA player',
       nationality: row.country || '—', height: row.player_height || null,
@@ -448,6 +526,7 @@ async function sportsDbPlayers(sport, options) {
       image: `https://cdn.nba.com/headshots/nba/latest/1040x760/${row.player_id}.png`, competition: 'NBA',
       statistics: { games: Number(row.gp), pointsPerGame: Number(row.pts_pergame || 0), assistsPerGame: Number(row.ast_pergame || 0), reboundsPerGame: Number(row.reb_pergame || 0), minutesPerGame: Number(row.min_pergame || 0) },
     })).sort((a, b) => a.name.localeCompare(b.name))
+    return options.team ? players.filter(row => String(row.teamId) === String(options.team)) : players
   }
   const fplPlayers = sport === 'football' && (!options.competition || options.competition === 'all' || String(options.competition).split(',').includes(FPL_COMPETITION_ID))
     ? await openFplPlayers().catch(() => []) : []
@@ -455,7 +534,8 @@ async function sportsDbPlayers(sport, options) {
   const freePlayers = sport === 'football' && configured('NINTH_FOOTBALL_DATA_TOKEN') ? await openFootballDataOrgPlayers(footballCompetitions) : []
   const teams = await sportsDbTeams(sport, options)
   const freeCovered = new Set(configured('NINTH_FOOTBALL_DATA_TOKEN') ? footballCompetitions.filter(competition => footballDataOrgCodes[competition.id]).map(competition => String(competition.id)) : [])
-  const selectedTeams = teams.filter(team => !(sport === 'football' && (String(team.competitionId) === FPL_COMPETITION_ID || freeCovered.has(String(team.competitionId))))).slice(0, SPORTS_DB_KEY === '123' ? 20 : teams.length)
+  const requestedTeam = String(options.team || '')
+  const selectedTeams = teams.filter(team => (!requestedTeam || String(team.id) === requestedTeam) && !(sport === 'football' && (String(team.competitionId) === FPL_COMPETITION_ID || freeCovered.has(String(team.competitionId))))).slice(0, SPORTS_DB_KEY === '123' ? 20 : teams.length)
   let successfulRequests = 0, lastError = null
   const batches = await Promise.all(selectedTeams.map(async team => {
     let payload = null
@@ -472,9 +552,156 @@ async function sportsDbPlayers(sport, options) {
     catch (error) { lastError = error }
     return (payload?.player || payload?.players || []).map(row => normalizePlayer(row, team))
   }))
-  if (selectedTeams.length && !successfulRequests && lastError) throw lastError
+  if (selectedTeams.length && !successfulRequests && lastError && !fplPlayers.length && !freePlayers.length) throw lastError
   const unique = new Map([...fplPlayers, ...freePlayers, ...batches.flat()].map(row => [row.id, row]))
-  return [...unique.values()].sort((a, b) => a.name.localeCompare(b.name))
+  const players = [...unique.values()].sort((a, b) => a.name.localeCompare(b.name))
+  return requestedTeam ? players.filter(row => String(row.teamId) === requestedTeam) : players
+}
+
+const average = (rows, key) => rows.length ? rows.reduce((sum, row) => sum + Number(row?.[key] || 0), 0) / rows.length : null
+const last = (rows, count = 10) => [...rows].slice(-count)
+const completed = game => /completed|final/i.test(String(game.status || '')) || (game.home?.score != null && game.away?.score != null)
+const includesTeam = (game, team) => [game.home, game.away].some(side => String(side?.id) === String(team.id) || side?.name?.toLowerCase() === team.name?.toLowerCase())
+const teamGameResult = (game, team) => {
+  const home = String(game.home?.id) === String(team.id) || game.home?.name?.toLowerCase() === team.name?.toLowerCase()
+  const scored = Number((home ? game.home : game.away)?.score || 0), allowed = Number((home ? game.away : game.home)?.score || 0)
+  return { id: game.id, date: game.date, opponent: (home ? game.away : game.home)?.name, home, scored, allowed, result: scored > allowed ? 'W' : scored < allowed ? 'L' : 'D' }
+}
+const buildStandings = (sport, teams, games) => {
+  if (sport === 'basketball') {
+    const rows = nbaAdvancedRows(), season = Math.max(...rows.map(row => Number(row.season || 0)))
+    return teams.map(team => {
+      const code = String(team.code || team.id?.split(':').pop()), aliases = new Set([code, ...Object.entries(nbaAliases).filter(([, value]) => value === code).map(([key]) => key)])
+      const teamRows = rows.filter(row => Number(row.season) === season && aliases.has(String(row.tmName)))
+      const wins = teamRows.filter(row => Number(row.win) === 1).length
+      return { ...team, played: teamRows.length, wins, losses: teamRows.length - wins, pct: teamRows.length ? wins / teamRows.length : 0, pointsFor: average(teamRows, 'pts'), pointsAgainst: average(teamRows, 'oppPts') }
+    }).sort((a, b) => b.pct - a.pct)
+  }
+  return teams.map(team => {
+    const results = games.filter(game => completed(game) && includesTeam(game, team)).map(game => teamGameResult(game, team))
+    const wins = results.filter(row => row.result === 'W').length, draws = results.filter(row => row.result === 'D').length
+    return { ...team, played: results.length, wins, draws, losses: results.length - wins - draws, points: sport === 'football' ? wins * 3 + draws : wins, scored: results.reduce((sum, row) => sum + row.scored, 0), allowed: results.reduce((sum, row) => sum + row.allowed, 0), form: last(results, 5).map(row => row.result) }
+  }).sort((a, b) => b.points - a.points || (b.scored - b.allowed) - (a.scored - a.allowed))
+}
+const percentileRank = (value, peers, lowerIsBetter = false) => {
+  const numericPeers = peers.map(Number).filter(Number.isFinite)
+  if (!Number.isFinite(Number(value)) || !numericPeers.length) return null
+  const favorable = numericPeers.filter(peer => lowerIsBetter ? peer >= Number(value) : peer <= Number(value)).length
+  return Math.round(favorable / numericPeers.length * 100)
+}
+const nbaMetricsForRows = rows => [
+  { label: 'Offensive rating', value: rows.length ? average(rows, 'pts') / average(rows, 'totPoss') * 100 : null, unit: 'PTS / 100' },
+  { label: 'Defensive rating', value: rows.length ? average(rows, 'oppPts') / average(rows, 'oppPoss') * 100 : null, unit: 'OPP / 100', lowerIsBetter: true },
+  { label: 'Pace', value: average(rows, 'totPoss'), unit: 'POSS' },
+  { label: 'Effective FG', value: average(rows, 'eFG'), unit: 'RATE' },
+  { label: 'Turnovers', value: average(rows, 'tov1'), unit: 'PER GAME', lowerIsBetter: true },
+  { label: 'Rebounds', value: average(rows, 'rebounder'), unit: 'PER GAME' },
+]
+const nbaAnalytics = team => {
+  const code = String(team?.code || team?.id?.split(':').pop() || ''), normalized = nbaAliases[code] || code
+  const rows = nbaAdvancedRows(), season = Math.max(...rows.map(row => Number(row.season || 0)))
+  const seasonRows = rows.filter(row => Number(row.season) === season)
+  const teamRows = seasonRows.filter(row => (nbaAliases[String(row.tmName)] || String(row.tmName)) === normalized)
+  const peerGroups = new Map()
+  seasonRows.forEach(row => { const key = nbaAliases[String(row.tmName)] || String(row.tmName); if (!peerGroups.has(key)) peerGroups.set(key, []); peerGroups.get(key).push(row) })
+  const peerMetrics = [...peerGroups.values()].map(nbaMetricsForRows)
+  const metrics = nbaMetricsForRows(teamRows).map((metric, index) => ({ ...metric, percentile: percentileRank(metric.value, peerMetrics.map(profile => profile[index]?.value), metric.lowerIsBetter) }))
+  const recent = last(teamRows, 10)
+  return {
+    season, sample: teamRows.length, peerSample: peerGroups.size,
+    metrics,
+    trends: { labels: recent.map((_, index) => `G${Math.max(1, teamRows.length - recent.length + index + 1)}`), scored: recent.map(row => Number(row.pts)), allowed: recent.map(row => Number(row.oppPts)), pace: recent.map(row => Number(row.totPoss)), efficiency: recent.map(row => Number(row.eFG)) },
+    question: recent.length ? `${team?.name} has averaged ${average(recent, 'pts').toFixed(1)} points across its latest ${recent.length} captured games at ${average(recent, 'totPoss').toFixed(1)} possessions.` : 'No captured NBA team-game sample is available.',
+  }
+}
+const footballAnalytics = team => {
+  const name = String(team?.name || '').toLowerCase(), ledger = footballMatchRows(), rows = ledger.filter(row => [row.HomeTeam, row.AwayTeam].some(value => String(value || '').toLowerCase() === name))
+  const metricsFor = (club, sourceRows) => {
+    const recentRows = last(sourceRows.filter(row => [row.HomeTeam, row.AwayTeam].some(value => String(value || '').toLowerCase() === club)), 10).map(row => {
+      const home = String(row.HomeTeam || '').toLowerCase() === club
+      return { scored: Number(home ? row.FTHG : row.FTAG), allowed: Number(home ? row.FTAG : row.FTHG), shots: Number(home ? row.HS : row.AS), shotsOnTarget: Number(home ? row.HST : row.AST), corners: Number(home ? row.HC : row.AC) }
+    })
+    return [
+      { label: 'Goals for', value: average(recentRows, 'scored'), unit: 'LAST 10' }, { label: 'Goals against', value: average(recentRows, 'allowed'), unit: 'LAST 10', lowerIsBetter: true },
+      { label: 'Shots', value: average(recentRows, 'shots'), unit: 'LAST 10' }, { label: 'Shots on target', value: average(recentRows, 'shotsOnTarget'), unit: 'LAST 10' },
+      { label: 'Corners', value: average(recentRows, 'corners'), unit: 'LAST 10' },
+    ]
+  }
+  const recent = last(rows, 10).map(row => {
+    const home = String(row.HomeTeam || '').toLowerCase() === name
+    return { date: row.Date, scored: Number(home ? row.FTHG : row.FTAG), allowed: Number(home ? row.FTAG : row.FTHG), shots: Number(home ? row.HS : row.AS), shotsOnTarget: Number(home ? row.HST : row.AST), corners: Number(home ? row.HC : row.AC) }
+  })
+  const division = rows.at(-1)?.Div, peerRows = division ? ledger.filter(row => row.Div === division) : ledger
+  const clubs = [...new Set(peerRows.flatMap(row => [row.HomeTeam, row.AwayTeam]).filter(Boolean).map(value => String(value).toLowerCase()))]
+  const peers = clubs.map(club => metricsFor(club, peerRows))
+  const metrics = metricsFor(name, peerRows).map((metric, index) => ({ ...metric, percentile: percentileRank(metric.value, peers.map(profile => profile[index]?.value), metric.lowerIsBetter) }))
+  return { sample: rows.length, peerSample: clubs.length, metrics, trends: { labels: recent.map((_, index) => `M${index + 1}`), scored: recent.map(row => row.scored), allowed: recent.map(row => row.allowed), shots: recent.map(row => row.shots) },
+  question: recent.length ? `${team?.name} has a ${average(recent, 'scored').toFixed(2)} to ${average(recent, 'allowed').toFixed(2)} average-goal profile across the latest ${recent.length} open-data matches.` : 'This club has no matching advanced open-data history in the current ledger.' }
+}
+const genericAnalytics = (team, games) => {
+  const results = games.filter(game => completed(game) && includesTeam(game, team)).map(game => teamGameResult(game, team)), recent = last(results, 10)
+  const teamStats = team?.statistics || {}
+  return { sample: results.length, metrics: Object.entries(teamStats).filter(([, value]) => Number.isFinite(Number(value))).slice(0, 6).map(([label, value]) => ({ label: label.replace(/([A-Z])/g, ' $1'), value: Number(value), unit: 'CURRENT' })), trends: { labels: recent.map((_, index) => `M${index + 1}`), scored: recent.map(row => row.scored), allowed: recent.map(row => row.allowed) }, question: recent.length ? `${team?.name} is ${recent.filter(row => row.result === 'W').length}-${recent.filter(row => row.result !== 'W').length} across its latest ${recent.length} captured decisions.` : 'No completed match sample is available for this team.' }
+}
+
+const metricDefinitions = {
+  completionRate: 'Completed passes divided by pass attempts.', passingEpaPerDropback: 'Expected points added on passing plays divided by attempts plus sacks.',
+  epaPerTouch: 'Rushing and receiving expected points added divided by carries plus targets.', receivingEpaPerTarget: 'Receiving expected points added divided by targets.',
+  targetShare: 'Average share of team pass targets in games played.', airYardsShare: 'Average share of team intended air yards in games played.',
+  pointsPerGame: 'Points scored divided by games played.', pointsPer36: 'Points per game scaled to 36 minutes using the captured minutes rate.',
+  assistsPer36: 'Assists per game scaled to 36 minutes.', reboundsPer36: 'Rebounds per game scaled to 36 minutes.',
+  goalsPer90: 'Goals divided by minutes played and scaled to 90 minutes.', assistsPer90: 'Assists divided by minutes played and scaled to 90 minutes.',
+  expectedGoalsPer90: 'Expected goals divided by minutes played and scaled to 90 minutes.', expectedAssistsPer90: 'Expected assists divided by minutes played and scaled to 90 minutes.',
+}
+const playerDerivedStats = (sport, player) => {
+  const stats = { ...(player?.statistics || {}) }
+  if (sport === 'basketball' && Number(stats.minutesPerGame) > 0) {
+    stats.pointsPer36 = roundMetric(Number(stats.pointsPerGame) / Number(stats.minutesPerGame) * 36, 1)
+    stats.assistsPer36 = roundMetric(Number(stats.assistsPerGame) / Number(stats.minutesPerGame) * 36, 1)
+    stats.reboundsPer36 = roundMetric(Number(stats.reboundsPerGame) / Number(stats.minutesPerGame) * 36, 1)
+  }
+  if (sport === 'football' && Number(stats.minutes) > 0) {
+    const per90 = 90 / Number(stats.minutes)
+    stats.goalsPer90 = roundMetric(Number(stats.goals || 0) * per90, 2)
+    stats.assistsPer90 = roundMetric(Number(stats.assists || 0) * per90, 2)
+    stats.expectedGoalsPer90 = roundMetric(Number(stats.expectedGoals || 0) * per90, 2)
+    stats.expectedAssistsPer90 = roundMetric(Number(stats.expectedAssists || 0) * per90, 2)
+  }
+  return stats
+}
+const ordinal = value => { const number = Number(value), mod100 = number % 100, suffix = mod100 >= 11 && mod100 <= 13 ? 'th' : ({1:'st',2:'nd',3:'rd'}[number % 10] || 'th'); return `${number}${suffix}` }
+const playerAnalytics = (sport, player, peers) => {
+  const position = String(player?.position || '').toLowerCase()
+  const peerGroup = peers.filter(row => !position || String(row.position || '').toLowerCase() === position)
+  const stats = playerDerivedStats(sport, player)
+  const peerStats = peerGroup.map(row => playerDerivedStats(sport, row))
+  const exclude = new Set(['games', 'starts', 'minutes', 'attempts', 'completions', 'carries', 'targets', 'receptions'])
+  const keys = Object.keys(stats).filter(key => Number.isFinite(Number(stats[key])) && (!exclude.has(key) || Object.keys(stats).length < 6))
+  const prioritized = keys.sort((a, b) => Number(metricDefinitions[b] != null) - Number(metricDefinitions[a] != null)).slice(0, 10)
+  const metrics = prioritized.map(key => ({
+    key, label: key.replace(/([A-Z])/g, ' $1').replace(/^./, value => value.toUpperCase()), value: Number(stats[key]),
+    percentile: percentileRank(stats[key], peerStats.map(row => row[key])), definition: metricDefinitions[key] || 'Current source-backed season production.',
+  }))
+  const gameLog = Array.isArray(player.gameLog) ? player.gameLog : []
+  const recent = last(gameLog, 5), seasonAverage = average(gameLog, 'primary'), recentAverage = average(recent, 'primary')
+  const lead = [...metrics].filter(metric => metric.percentile != null).sort((a, b) => b.percentile - a.percentile)[0]
+  let interpretation = lead ? `${player.name}'s strongest captured peer signal is ${lead.label.toLowerCase()} at the ${ordinal(lead.percentile)} percentile among ${peerGroup.length} ${player.position || 'role'} peers.` : `NINTH has ${metrics.length} comparable source-backed fields for this profile.`
+  if (recent.length && seasonAverage != null) {
+    const delta = recentAverage - seasonAverage
+    interpretation += ` The latest ${recent.length} games average ${recentAverage.toFixed(1)} ${String(player.primaryMetric || 'primary output').replaceAll('_', ' ')}, ${Math.abs(delta).toFixed(1)} ${delta >= 0 ? 'above' : 'below'} the captured season-game average.`
+  }
+  return {
+    positionGroup: player.position || 'Player', peerSample: peerGroup.length, metrics,
+    trends: { labels: gameLog.map(row => row.label), primary: gameLog.map(row => row.primary), secondary: gameLog.map(row => row.secondary), primaryLabel: String(player.primaryMetric || 'Primary output').replaceAll('_', ' '), secondaryLabel: String(player.secondaryMetric || 'Secondary output').replaceAll('_', ' ') },
+    splits: recent.length ? [{ label: 'Latest 5', value: roundMetric(recentAverage, 1), comparison: roundMetric(seasonAverage, 1), context: 'Season game average' }] : [],
+    interpretation, source: player.statisticsSource || (sport === 'basketball' ? 'Open NBA season player table' : sport === 'football' ? 'Fantasy Premier League open season feed' : 'Current provider profile'),
+    season: player.statisticsSeason || new Date().getUTCFullYear(),
+  }
+}
+const attachSportPredictions = (sport, games) => {
+  if (!['football', 'american-football'].includes(sport)) return games
+  const predictions = sportPredictions(sport)
+  return games.map(game => ({ ...game, prediction: predictions.get(String(game.id)) || game.prediction || null }))
 }
 
 function filterCompetitions(sport, requested) {
@@ -485,10 +712,90 @@ function filterCompetitions(sport, requested) {
 }
 
 export const multiSportProvider = {
+  async workspace(sport, scope, id, options = {}) {
+    if (!competitionCatalog[sport]) throw Object.assign(new Error(`Unsupported sport: ${sport}`), { status: 404 })
+    const requestedId = String(id)
+    if (scope === 'league') {
+      const leagues = sport === 'esports' ? await esportsDirectory('leagues', options) : competitionCatalog[sport]
+      const league = leagues.find(row => String(row.id) === requestedId)
+      if (!league) throw Object.assign(new Error('Competition not found'), { status: 404 })
+      let identity = league
+      if (sport !== 'esports' && /^\d+$/.test(requestedId)) {
+        const payload = await get(`lookupleague.php?id=${requestedId}`, 24 * HOUR).catch(() => null)
+        const row = payload?.leagues?.[0]
+        if (row) identity = { ...league, badge: row.strBadge || row.strLogo || null, banner: row.strFanart1 || row.strPoster || null, formed: row.intFormedYear || null, description: row.strDescriptionEN || '' }
+      }
+      const query = sport === 'esports' ? { discipline: league.discipline, tournament: league.id } : { competition: league.id }
+      const [rawGames, allTeams] = sport === 'esports'
+        ? await Promise.all([esportsDirectory('games', query), esportsDirectory('teams', query)])
+        : await Promise.all([sportsDbGames(sport, query), sportsDbTeams(sport, query)])
+      const allGames = attachSportPredictions(sport, rawGames)
+      const teamNames = new Set(allGames.flatMap(game => [game.home?.name, game.away?.name]).filter(Boolean))
+      const teams = sport === 'esports' ? allTeams.filter(team => teamNames.has(team.name)) : allTeams
+      const standings = buildStandings(sport, teams, allGames)
+      const upcoming = allGames.filter(game => !completed(game)).slice(0, 18)
+      const recent = allGames.filter(completed).slice(0, 18)
+      const predictions = upcoming.filter(game => game.prediction).sort((a, b) => Math.max(...Object.values(b.prediction?.markets || {}).map(Number)) - Math.max(...Object.values(a.prediction?.markets || {}).map(Number)))
+      return { sport, scope, identity, games: { upcoming, recent }, teams, standings, predictions: predictions.slice(0, 8), generatedAt: new Date().toISOString(), source: sport === 'esports' ? 'Liquipedia MediaWiki API + CS API supplement' : sport === 'football' ? 'Open Football Data + FPL + TheSportsDB' : sport === 'basketball' ? 'Open NBA data + TheSportsDB' : 'nflverse + TheSportsDB' }
+    }
+    if (scope === 'team') {
+      const query = { competition: options.competition, discipline: options.discipline }
+      const teams = sport === 'esports' ? await esportsDirectory('teams', query) : await sportsDbTeams(sport, query)
+      const requestedCode = requestedId.includes(':') ? requestedId.split(':').pop().toUpperCase() : ''
+      const canonicalCode = sport === 'basketball' ? (nbaAliases[requestedCode] || requestedCode) : requestedCode
+      const requestedName = sport === 'basketball' ? nbaNames[canonicalCode] : sport === 'american-football' ? nflNames[canonicalCode] : ''
+      const team = teams.find(row => String(row.id) === requestedId)
+        || teams.find(row => canonicalCode && String(row.code || '').toUpperCase() === canonicalCode)
+        || teams.find(row => requestedName && String(row.name || '').toLowerCase() === requestedName.toLowerCase())
+      if (!team) throw Object.assign(new Error('Team not found'), { status: 404 })
+      const gameQuery = sport === 'esports' ? { discipline: team.competitionId } : { competition: team.competitionId }
+      const rawGames = sport === 'esports' ? await esportsDirectory('games', gameQuery) : await sportsDbGames(sport, gameQuery)
+      const games = attachSportPredictions(sport, rawGames)
+      const teamGames = games.filter(game => includesTeam(game, team))
+      let roster = []
+      const rosterTeamId = sport === 'basketball' ? `nba:${team.code}` : team.id
+      try { roster = sport === 'esports' ? await esportsDirectory('players', { discipline: team.competitionId, team: rosterTeamId }) : await sportsDbPlayers(sport, { competition: team.competitionId, team: rosterTeamId }) } catch { roster = [] }
+      const analytics = sport === 'basketball' ? nbaAnalytics(team) : sport === 'football' ? footballAnalytics(team) : genericAnalytics(team, teamGames)
+      const standing = buildStandings(sport, teams, games).find(row => String(row.id) === String(team.id)) || null
+      return { sport, scope, identity: team, league: (competitionCatalog[sport] || []).find(row => String(row.id) === String(team.competitionId)) || null, standing, roster, games: { upcoming: teamGames.filter(game => !completed(game)).slice(0, 12), recent: teamGames.filter(completed).slice(0, 12) }, analytics, generatedAt: new Date().toISOString() }
+    }
+    if (scope === 'player') {
+      const teamId = options.team || ''
+      const query = { competition: options.competition, discipline: options.discipline, team: teamId }
+      // FPL identities already carry a complete, canonical competition context.
+      // Taking the direct open-data path avoids querying every unrelated football
+      // competition before a Premier League player page can render.
+      const directFpl = sport === 'football' && requestedId.startsWith('fpl:')
+      const players = directFpl
+        ? await openFplPlayers()
+        : sport === 'esports' ? await esportsDirectory('players', query) : await sportsDbPlayers(sport, query)
+      const player = players.find(row => String(row.id) === requestedId)
+      if (!player) throw Object.assign(new Error('Player not found. Open the player from a team roster so its competition context is preserved.'), { status: 404 })
+      const teams = directFpl
+        ? await openFplTeams()
+        : sport === 'esports' ? await esportsDirectory('teams', query) : await sportsDbTeams(sport, query)
+      const teamCode = String(player.teamId || '').split(':').pop()
+      const team = teams.find(row => String(row.id) === String(player.teamId) || String(row.code) === teamCode) || null
+      let peers = players
+      if (!directFpl && ['basketball', 'american-football', 'football'].includes(sport)) {
+        try { peers = await sportsDbPlayers(sport, { competition: options.competition || team?.competitionId, season: options.season }) } catch { peers = players }
+      }
+      return { sport, scope, identity: player, team, league: (competitionCatalog[sport] || []).find(row => String(row.id) === String(team?.competitionId)) || null, analytics: playerAnalytics(sport, player, peers), generatedAt: new Date().toISOString() }
+    }
+    if (scope === 'game') {
+      const query = { competition: options.competition, discipline: options.discipline, tournament: options.tournament }
+      const rawGames = sport === 'esports' ? await esportsDirectory('games', query) : await sportsDbGames(sport, query)
+      const games = attachSportPredictions(sport, rawGames)
+      const game = games.find(row => String(row.id) === requestedId)
+      if (!game) throw Object.assign(new Error('Match not found'), { status: 404 })
+      return { sport, scope, identity: game, league: (competitionCatalog[sport] || []).find(row => String(row.id) === String(game.competitionId)) || null, generatedAt: new Date().toISOString() }
+    }
+    throw Object.assign(new Error(`Unsupported workspace: ${scope}`), { status: 404 })
+  },
   async directory(sport, type, options = {}) {
     if (!competitionCatalog[sport]) throw Object.assign(new Error(`Unsupported sport: ${sport}`), { status: 404 })
     if (!['leagues', 'games', 'teams', 'players', 'status'].includes(type)) throw Object.assign(new Error(`Unsupported directory: ${type}`), { status: 404 })
-    const competitions = competitionCatalog[sport]
+    let competitions = competitionCatalog[sport]
     if (type === 'status') {
       const esports = sport === 'esports' ? await esportsStatus() : null
       const sources = esports?.sources || sourceStatus(sport)
@@ -506,12 +813,34 @@ export const multiSportProvider = {
       }
     }
     let items
-    if (type === 'leagues') items = competitions
+    if (type === 'leagues') {
+      items = sport === 'esports' ? await esportsDirectory('leagues', options) : competitions
+      if (sport === 'esports') competitions = competitionCatalog.esports
+    }
     else if (sport === 'esports') items = await esportsDirectory(type, options)
     else if (type === 'games') {
       items = await sportsDbGames(sport, options)
       if (sport === 'football') {
-        const predictions = sportPredictions('football')
+        const payload = sportPredictionPayload('football')
+        const predictions = new Map((payload.predictions || []).map(row => [String(row.event_id), row]))
+        const existing = new Set(items.map(item => String(item.id)))
+        const requestedCompetitions = !options.competition || options.competition === 'all'
+          ? null : new Set(String(options.competition).split(','))
+        for (const row of payload.predictions || []) {
+          if (existing.has(String(row.event_id)) || (requestedCompetitions && !requestedCompetitions.has(String(row.competition_id)))) continue
+          const at = String(row.event_time || '')
+          items.push({
+            id: String(row.event_id), competitionId: String(row.competition_id || ''),
+            competition: row.competition || 'Football', competitionCode: row.competition_code || '',
+            group: 'Source-backed fixture', round: 'Scheduled', date: at.slice(0, 10), time: at.slice(11, 16) || 'TBD',
+            timestamp: at, status: 'Scheduled', venue: 'Venue listed by competition source',
+            home: { id: `prediction:${teamSlug(row.home_team)}`, name: row.home_team, badge: null, score: null },
+            away: { id: `prediction:${teamSlug(row.away_team)}`, name: row.away_team, badge: null, score: null },
+            source: row.source || 'NINTH open football feeds', sourceUrl: null,
+          })
+          existing.add(String(row.event_id))
+        }
+        items.sort(sortDirectoryEvents)
         items = items.map(item => ({ ...item, prediction: predictions.get(String(item.id)) || null }))
       }
       if (sport === 'american-football') {

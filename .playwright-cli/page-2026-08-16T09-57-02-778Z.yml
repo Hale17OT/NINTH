@@ -1,0 +1,55 @@
+- generic [ref=f6e3]:
+  - banner [ref=f6e5]:
+    - generic [ref=f6e6]:
+      - link "NINTH home" [ref=f6e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f6e8]: NINTH
+      - navigation "Sport workspaces" [ref=f6e9]:
+        - link "00 Platform" [ref=f6e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f6e11]: "00"
+          - generic [ref=f6e12]: Platform
+        - link "01 MLB" [ref=f6e13] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=f6e14]: "01"
+          - generic [ref=f6e15]: MLB
+        - link "02 FTB" [ref=f6e16] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=f6e17]: "02"
+          - generic [ref=f6e18]: FTB
+        - link "03 NFL" [ref=f6e20] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=f6e21]: "03"
+          - generic [ref=f6e22]: NFL
+        - link "04 NBA" [ref=f6e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=f6e24]: "04"
+          - generic [ref=f6e25]: NBA
+        - link "05 ESP" [ref=f6e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=f6e27]: "05"
+          - generic [ref=f6e28]: ESP
+      - button "Use light theme" [ref=f6e30] [cursor=pointer]
+    - generic [ref=f6e37]:
+      - generic [ref=f6e38]:
+        - generic [ref=f6e39]: TOP FIVE LEAGUES
+        - generic [ref=f6e40]: Football
+        - emphasis [ref=f6e41]: RESEARCH LAB
+      - navigation "Workspace navigation" [ref=f6e42]:
+        - link "Overview" [ref=f6e43] [cursor=pointer]:
+          - /url: /football
+        - link "Leagues" [ref=f6e44] [cursor=pointer]:
+          - /url: /football/leagues
+        - link "Games" [ref=f6e45] [cursor=pointer]:
+          - /url: /football/games
+        - link "Teams" [ref=f6e46] [cursor=pointer]:
+          - /url: /football/teams
+        - link "Players" [ref=f6e47] [cursor=pointer]:
+          - /url: /football/players
+        - link "Builder" [ref=f6e48] [cursor=pointer]:
+          - /url: /football/builder
+        - link "Models" [ref=f6e50] [cursor=pointer]:
+          - /url: /football/models
+        - link "Data" [ref=f6e51] [cursor=pointer]:
+          - /url: /football/data
+  - main [ref=f6e52]

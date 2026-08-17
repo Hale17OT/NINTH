@@ -3,10 +3,11 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router/index.js'
 import './assets/main.css'
+import './assets/builder-system.css'
 
 // Apply the persisted theme before Vue mounts. This boot-critical work must not
 // depend on a component action that may temporarily be stale during hot reload.
-const initialTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+const initialTheme = localStorage.getItem('theme') || 'dark'
 document.documentElement.classList.toggle('dark', initialTheme === 'dark')
 document.documentElement.classList.toggle('light', initialTheme === 'light')
 

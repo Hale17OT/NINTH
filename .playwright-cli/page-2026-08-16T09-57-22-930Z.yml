@@ -1,0 +1,42 @@
+- generic [ref=f8e3]:
+  - banner [ref=f8e5]:
+    - generic [ref=f8e6]:
+      - link "NINTH home" [ref=f8e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f8e8]: NINTH
+      - navigation "Sport workspaces" [ref=f8e9]:
+        - link "00 Platform" [ref=f8e10] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f8e11]: "00"
+          - generic [ref=f8e12]: Platform
+        - link "01 MLB" [ref=f8e14] [cursor=pointer]:
+          - /url: /baseball
+          - generic [ref=f8e15]: "01"
+          - generic [ref=f8e16]: MLB
+        - link "02 FTB" [ref=f8e17] [cursor=pointer]:
+          - /url: /football
+          - generic [ref=f8e18]: "02"
+          - generic [ref=f8e19]: FTB
+        - link "03 NFL" [ref=f8e20] [cursor=pointer]:
+          - /url: /american-football
+          - generic [ref=f8e21]: "03"
+          - generic [ref=f8e22]: NFL
+        - link "04 NBA" [ref=f8e23] [cursor=pointer]:
+          - /url: /basketball
+          - generic [ref=f8e24]: "04"
+          - generic [ref=f8e25]: NBA
+        - link "05 ESP" [ref=f8e26] [cursor=pointer]:
+          - /url: /esports
+          - generic [ref=f8e27]: "05"
+          - generic [ref=f8e28]: ESP
+      - button "Use light theme" [ref=f8e30] [cursor=pointer]
+    - generic [ref=f8e37]:
+      - generic [ref=f8e38]:
+        - generic [ref=f8e39]: DECISION SYSTEM
+        - generic [ref=f8e40]: All sports
+      - navigation "Workspace navigation" [ref=f8e41]:
+        - link "Platform" [ref=f8e42] [cursor=pointer]:
+          - /url: /
+        - link "All-sports builder" [ref=f8e43] [cursor=pointer]:
+          - /url: /build
+  - main [ref=f8e45]

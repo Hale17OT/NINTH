@@ -2,7 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   buildGuaranteeCandidates,
+  DEFAULT_GUARANTEE_ROBUST_FLOOR,
   guaranteeOddsFloor,
+  guaranteeRobustProbability,
   isExactGuaranteePick,
   selectGuaranteeCandidates,
 } from "./playerPropGuaranteeRecommendations.js";
@@ -23,6 +25,47 @@ test("candidate requires the exact player, role, prop, side and line plus eligib
   assert.equal(buildGuaranteeCandidates([game(1, 1.19)], [matching], { minimumOdds: "all" }).length, 0);
   assert.equal(buildGuaranteeCandidates([candidateGame], [{ ...matching, line: 1.5 }], { minimumOdds: "all" }).length, 0);
   assert.equal(isExactGuaranteePick(matching, candidateGame.players[0], candidateGame.players[0].props[0], "under", { line: .5 }), false);
+});
+
+test("Guarantee excludes low-probability longshots even when their historical identity qualifies", () => {
+  const candidateGame = game(1, 5.5);
+  candidateGame.players[0].props[0].thresholds[0].over_probability = .21;
+  const matching = {
+    ...record,
+    player_id: 8,
+    samples: 20,
+    correct: 18,
+    accuracy: .9,
+    wilson_lower: .82,
+    recent_10_correct: 9,
+  };
+
+  assert.equal(DEFAULT_GUARANTEE_ROBUST_FLOOR, .6);
+  assert.equal(buildGuaranteeCandidates([candidateGame], [matching], {
+    minimumOdds: "all",
+    minimumRobustProbability: null,
+  }).length, 0);
+  assert.equal(guaranteeRobustProbability(matching, .21), .21);
+  assert.equal(buildGuaranteeCandidates([candidateGame], [matching], { minimumOdds: "all" }).length, 0);
+  assert.equal(buildGuaranteeCandidates([candidateGame], [matching], {
+    minimumOdds: "all",
+    minimumRobustProbability: .2,
+  }).length, 1);
+});
+
+test("Guarantee requires historical strength as well as today's model probability", () => {
+  const candidateGame = game(1, 1.3);
+  const weakHistory = {
+    ...record,
+    player_id: 8,
+    samples: 10,
+    correct: 5,
+    accuracy: .5,
+    wilson_lower: .32,
+    recent_10_correct: 5,
+  };
+
+  assert.equal(buildGuaranteeCandidates([candidateGame], [weakHistory], { minimumOdds: "all" }).length, 0);
 });
 
 test("selection keeps one leg per game and enforces build-style market-side caps", () => {

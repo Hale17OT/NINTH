@@ -181,7 +181,35 @@ async function disciplineCatalog(discipline) {
 export async function esportsDirectory(type, options = {}) {
   const disciplines = selectedDisciplines(options.discipline || options.competition)
   const catalogs = await Promise.all(disciplines.map(disciplineCatalog))
-  if (type === 'games' || type === 'teams' || type === 'players') return catalogs.flatMap(catalog => catalog[type])
+  if (type === 'leagues') {
+    const tournaments = new Map()
+    for (const catalog of catalogs) for (const game of catalog.games) {
+      const name = clean(game.competition).replace(new RegExp(`^${DISCIPLINES[catalog.discipline].name}\\s*[·•-]\\s*`, 'i'), '')
+      const id = `${catalog.discipline}:${slug(name)}`
+      const current = tournaments.get(id) || {
+        id, code: DISCIPLINES[catalog.discipline].code, name,
+        country: 'International', group: DISCIPLINES[catalog.discipline].name,
+        discipline: catalog.discipline, badge: null, matchCount: 0,
+        nextMatchAt: null, source: game.source,
+      }
+      current.matchCount += 1
+      if (game.status === 'Scheduled' && game.timestamp && (!current.nextMatchAt || game.timestamp < current.nextMatchAt)) current.nextMatchAt = game.timestamp
+      tournaments.set(id, current)
+    }
+    return [...tournaments.values()].sort((a, b) => Number(Boolean(b.nextMatchAt)) - Number(Boolean(a.nextMatchAt)) || a.name.localeCompare(b.name))
+  }
+  if (type === 'games') {
+    const requestedTournament = options.tournament || options.league
+    const rows = catalogs.flatMap(catalog => catalog.games)
+    if (!requestedTournament) return rows
+    return rows.filter(game => `${game.competitionId}:${slug(clean(game.competition).replace(new RegExp(`^${DISCIPLINES[game.competitionId].name}\\s*[·•-]\\s*`, 'i'), ''))}` === requestedTournament)
+  }
+  if (type === 'teams' || type === 'players') {
+    const rows = catalogs.flatMap(catalog => catalog[type])
+    const team = String(options.team || '')
+    if (!team) return rows
+    return rows.filter(row => String(row.id) === team || String(row.teamId) === team)
+  }
   return []
 }
 

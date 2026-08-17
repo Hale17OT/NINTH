@@ -1,0 +1,37 @@
+@keyframes ninth-pulse {
+  0%, 100% { opacity: .45; transform: scale(.9); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ninth-border-travel {
+  to { transform: translateX(380%); }
+}
+
+.motion-surface {
+  transition: border-color var(--motion-base) var(--ease-standard),
+    background-color var(--motion-base) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard),
+    transform var(--motion-base) var(--ease-emphasized);
+}
+
+.motion-surface:hover { border-color: var(--line-strong); }
+
+.signal-trail { position: relative; overflow: hidden; }
+.signal-trail::after {
+  position: absolute;
+  inset: 0 auto auto -35%;
+  width: 28%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  content: '';
+  animation: ninth-border-travel 3.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
