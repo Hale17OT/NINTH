@@ -115,6 +115,7 @@ class ProjectionIntegrityTests(unittest.TestCase):
 
         with (
             patch.object(APP, "PLAYER_PROP_RERANKER_SHADOW_AUDIT", str(audit)),
+            patch.object(APP, "maintenance_status", return_value={"last_sync_date": "2026-08-17"}),
             patch.dict(APP.os.environ, {
                 "NINTH_MAINTENANCE_HOUR": "3",
                 "NINTH_MAINTENANCE_MINUTE": "15",
@@ -405,7 +406,12 @@ class ProjectionIntegrityTests(unittest.TestCase):
             {"game_id": 823443, "recorded_at": "2026-07-14T23:50:00+00:00", "phase": "live", "home_win_probability": .47, "away_win_probability": .53, "reasons": [], "context": {}},
             {"game_id": 823443, "recorded_at": "2026-07-15T03:13:00+00:00", "home_win_probability": .4494, "away_win_probability": .5506, "reasons": [], "context": {}},
         ])
-        projection = APP.locked_pregame_projection(823443, "2026-07-15T00:00:00Z")
+        bundle = {
+            "confidence_model": unittest.mock.Mock(predict=unittest.mock.Mock(return_value=[.6])),
+            "report": {"selective_accuracy": []},
+        }
+        with patch.object(APP, "load_bundle", return_value=bundle):
+            projection = APP.locked_pregame_projection(823443, "2026-07-15T00:00:00Z")
         self.assertEqual(projection["projected_side"], "home")
         self.assertEqual(projection["home_win_probability"], .5109)
         self.assertEqual(projection["snapshot_at"], "2026-07-14T23:42:56+00:00")
