@@ -19,7 +19,15 @@
     "stats": {
       "root": ".",
       "runtime": "container",
-      "entrypoint": "Dockerfile.vercel"
+      "entrypoint": "Dockerfile.vercel",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "api",
+          "format": "url",
+          "env": "NINTH_MODEL_API_URL"
+        }
+      ]
     }
   },
   "rewrites": [

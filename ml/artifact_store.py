@@ -10,7 +10,7 @@ import tempfile
 import threading
 import time
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
 
@@ -34,13 +34,35 @@ def _download(base_url, key, bucket, object_path, destination):
         shutil.copyfileobj(response, output, length=1024 * 1024)
 
 
+def _download_from_proxy(proxy_url, token, object_path, destination):
+    separator = "&" if "?" in proxy_url else "?"
+    sign_url = f"{proxy_url}{separator}{urlencode({'path': object_path})}"
+    request = Request(sign_url, headers={"Authorization": f"Bearer {token}"})
+    with urlopen(request, timeout=30) as response:
+        signed_url = json.load(response)["url"]
+    with urlopen(signed_url, timeout=180) as response, destination.open("wb") as output:
+        shutil.copyfileobj(response, output, length=1024 * 1024)
+
+
 def ensure_current(force=False):
     """Download, verify and atomically activate the production manifest."""
     base_url = os.getenv("SUPABASE_URL", "").rstrip("/")
     key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_SECRET_KEY", "")
     bucket = os.getenv("NINTH_MODEL_BUCKET", "ninth-models")
-    if not base_url or not key:
+    proxy_base = os.getenv("NINTH_MODEL_API_URL", "").rstrip("/")
+    proxy_url = os.getenv("NINTH_MODEL_PROXY_URL", "") or (
+        f"{proxy_base}/api/internal/model-artifacts/sign" if proxy_base else ""
+    )
+    proxy_token = os.getenv("NINTH_MODEL_PROXY_TOKEN", "")
+    direct_storage = bool(base_url and key)
+    proxied_storage = bool(proxy_url and proxy_token)
+    if not direct_storage and not proxied_storage:
         return {"status": "bundled", "release_id": None}
+    download = (
+        (lambda object_path, destination: _download(base_url, key, bucket, object_path, destination))
+        if direct_storage
+        else (lambda object_path, destination: _download_from_proxy(proxy_url, proxy_token, object_path, destination))
+    )
     ttl = max(30, int(os.getenv("NINTH_MODEL_SYNC_SECONDS", "300")))
     with _LOCK:
         if not force and time.monotonic() - _STATE["checked_at"] < ttl:
@@ -48,7 +70,7 @@ def ensure_current(force=False):
         stage = Path(tempfile.mkdtemp(prefix="ninth-model-sync-"))
         try:
             manifest_file = stage / "manifest.json"
-            _download(base_url, key, bucket, "production/manifest.json", manifest_file)
+            download("production/manifest.json", manifest_file)
             manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
             release_id = str(manifest["release_id"])
             artifact_dir = Path(os.getenv("NINTH_ARTIFACT_DIR", "/tmp/ninth/artifacts"))
@@ -62,7 +84,7 @@ def ensure_current(force=False):
                 for entry in manifest.get("files", []):
                     stored = stage / Path(entry["stored_path"]).name
                     remote = f"releases/{entry['stored_path']}"
-                    _download(base_url, key, bucket, remote, stored)
+                    download(remote, stored)
                     if _sha256(stored) != entry["sha256"]:
                         raise RuntimeError(f"model release checksum mismatch: {entry['logical_path']}")
                     logical = Path(entry["logical_path"])

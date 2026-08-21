@@ -139,6 +139,46 @@ class ModelReleaseTests(unittest.TestCase):
             restored = json.loads((root / "artifacts" / "report.json").read_text())
             self.assertEqual(restored["model"], "verified")
 
+    def test_runtime_store_can_activate_through_internal_signing_proxy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            payload = b'{"model":"proxied"}'
+            entry = {
+                "logical_path": "artifacts/report.json",
+                "stored_path": "release-proxy/artifacts/report.json",
+                "compression": None,
+                "sha256": hashlib.sha256(payload).hexdigest(),
+            }
+            remote = {
+                "production/manifest.json": json.dumps({
+                    "release_id": "release-proxy", "files": [entry],
+                }).encode(),
+                "releases/release-proxy/artifacts/report.json": payload,
+            }
+
+            def download(proxy_url, token, object_path, destination):
+                self.assertEqual(proxy_url, "https://internal.example/api/internal/model-artifacts/sign")
+                self.assertEqual(token, "proxy-token")
+                destination.write_bytes(remote[object_path])
+
+            with (
+                patch.object(artifact_store, "_download_from_proxy", side_effect=download),
+                patch.dict("os.environ", {
+                    "SUPABASE_URL": "",
+                    "SUPABASE_SERVICE_ROLE_KEY": "",
+                    "SUPABASE_SECRET_KEY": "",
+                    "NINTH_MODEL_API_URL": "https://internal.example",
+                    "NINTH_MODEL_PROXY_TOKEN": "proxy-token",
+                    "NINTH_ARTIFACT_DIR": str(root / "artifacts"),
+                    "NINTH_DATA_DIR": str(root / "data"),
+                }, clear=False),
+            ):
+                artifact_store._STATE.update({"checked_at": 0.0, "release_id": None})
+                result = artifact_store.ensure_current(force=True)
+            self.assertEqual(result["release_id"], "release-proxy")
+            restored = json.loads((root / "artifacts" / "report.json").read_text())
+            self.assertEqual(restored["model"], "proxied")
+
 
 if __name__ == "__main__":
     unittest.main()
