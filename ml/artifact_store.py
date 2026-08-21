@@ -67,7 +67,8 @@ def ensure_current(force=False):
     )
     ttl = max(30, int(os.getenv("NINTH_MODEL_SYNC_SECONDS", "300")))
     with _LOCK:
-        if not force and time.monotonic() - _STATE["checked_at"] < ttl:
+        checked_at = _STATE["checked_at"]
+        if not force and checked_at > 0 and time.monotonic() - checked_at < ttl:
             return {"status": "current", "release_id": _STATE["release_id"]}
         stage = Path(tempfile.mkdtemp(prefix="ninth-model-sync-"))
         try:

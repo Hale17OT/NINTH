@@ -208,6 +208,34 @@ class ModelReleaseTests(unittest.TestCase):
                 result = artifact_store.ensure_current(force=True)
             self.assertEqual(result["release_id"], "release-empty")
 
+    def test_runtime_store_does_not_skip_first_sync_on_a_fresh_container_clock(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = json.dumps({"release_id": "release-cold-start", "files": []}).encode()
+
+            def download(_url, _token, object_path, destination):
+                self.assertEqual(object_path, "production/manifest.json")
+                destination.write_bytes(manifest)
+
+            with (
+                patch.object(artifact_store, "_download_from_proxy", side_effect=download),
+                patch.object(artifact_store.time, "monotonic", return_value=1.0),
+                patch.dict("os.environ", {
+                    "SUPABASE_URL": "",
+                    "SUPABASE_SERVICE_ROLE_KEY": "",
+                    "SUPABASE_SECRET_KEY": "",
+                    "NINTH_MODEL_API_URL": "https://internal.example",
+                    "NINTH_MODEL_PROXY_URL": "",
+                    "NINTH_MODEL_PROXY_TOKEN": "proxy-token",
+                    "VERCEL_URL": "",
+                    "NINTH_ARTIFACT_DIR": str(root / "artifacts"),
+                    "NINTH_DATA_DIR": str(root / "data"),
+                }, clear=False),
+            ):
+                artifact_store._STATE.update({"checked_at": 0.0, "release_id": None})
+                result = artifact_store.ensure_current()
+            self.assertEqual(result["release_id"], "release-cold-start")
+
 
 if __name__ == "__main__":
     unittest.main()
