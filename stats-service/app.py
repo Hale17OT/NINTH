@@ -26,6 +26,7 @@ os.environ.setdefault("OMP_NUM_THREADS", _MODEL_INFERENCE_THREADS)
 import statsapi
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ml.artifact_store import ensure_current as ensure_runtime_release
 from ml.predict import context_completeness, load_bundle, predict as model_predict
 from ml.totals_predict import load_bundle as load_totals_bundle, predict as totals_model_predict
 from ml.player_props_predict import (
@@ -4812,6 +4813,12 @@ class Handler(BaseHTTPRequestHandler):
         parsed = self.parsed_request()
         query = parse_qs(parsed.query)
         try:
+            release_sync = None
+            if parsed.path in {
+                "/health", "/model", "/model/results", "/projection-board",
+                "/player-props", "/player-props/guarantees",
+            }:
+                release_sync = ensure_runtime_release()
             if parsed.path == "/health":
                 self.send_json({
                     "status": "ok", "provider": "MLB-StatsAPI", "version": statsapi.__version__,
@@ -4819,6 +4826,7 @@ class Handler(BaseHTTPRequestHandler):
                     "player_prop_monitor": _player_prop_monitor,
                     "maintenance_catchup": _maintenance_catchup,
                     "model_release": runtime_release_status(),
+                    "model_sync": release_sync,
                 })
             elif parsed.path == "/model":
                 with open(MODEL_REPORT, "r", encoding="utf-8") as handle:

@@ -1693,6 +1693,22 @@ class ProjectionIntegrityTests(unittest.TestCase):
         self.assertEqual(direct.path, "/health")
         self.assertEqual(direct.query, "verbose=1")
 
+    def test_health_waits_for_runtime_model_release_after_server_start(self):
+        handler = APP.Handler.__new__(APP.Handler)
+        handler.path = "/api/stats/health"
+        sent = {}
+        handler.send_json = lambda payload, status=200: sent.update({
+            "payload": payload, "status": status,
+        })
+        sync = {"status": "activated", "release_id": "release-ready"}
+
+        with patch.object(APP, "ensure_runtime_release", return_value=sync) as ensure:
+            handler.do_GET()
+
+        ensure.assert_called_once_with()
+        self.assertEqual(sent["status"], 200)
+        self.assertEqual(sent["payload"]["model_sync"], sync)
+
 
 if __name__ == "__main__":
     unittest.main()
