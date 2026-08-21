@@ -1,6 +1,40 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { dirname, join } from 'node:path'
 import { competitionCatalog, multiSportProvider, predictionGame } from './multiSportProvider.js'
+
+const fixtureRoot = mkdtempSync(join(tmpdir(), 'ninth-model-status-'))
+const artifactRoot = join(fixtureRoot, 'artifacts')
+const dataRoot = join(fixtureRoot, 'data')
+process.env.NINTH_ML_ARTIFACT_DIR = artifactRoot
+process.env.NINTH_ML_DATA_DIR = dataRoot
+process.on('exit', () => rmSync(fixtureRoot, { recursive: true, force: true }))
+
+const writeJson = (path, value) => {
+  mkdirSync(dirname(path), { recursive: true })
+  writeFileSync(path, JSON.stringify(value))
+}
+
+const nflMarkets = ['home_win', 'away_team_points', 'home_margin', 'home_team_points', 'moneyline', 'spread', 'total', 'total_points']
+writeJson(join(artifactRoot, 'multisport', 'football_nfl_model_report.json'), {
+  models: nflMarkets.map((market, index) => ({
+    sport: 'american-football', market, model_name: market, model_family: String(index).padStart(2, '0'),
+    model_version: 'fixture', feature_version: 'fixture', dataset_version: 'fixture', algorithm: 'fixture',
+    decision: market === 'home_win' ? 'USE' : market === 'moneyline' ? 'LIMITED' : 'SHADOW',
+    prediction_count: 200, combined_holdout_results: { brier: .22 }, comparison_to_baseline: { brier: .25 },
+  })),
+})
+writeJson(join(dataRoot, 'multisport', 'american-football', 'predictions.json'), {
+  readiness: { automatic_builder_eligible: { home_win: false } },
+  live_audit: { snapshot_rule: 'first generated forecast within 48 hours of kickoff' },
+})
+for (const sport of ['valorant', 'cs2', 'lol']) writeJson(join(artifactRoot, 'multisport', sport, 'match_winner.json'), {
+  sport, market: 'match_winner', status: 'shadow', method: 'fixture', samples: { untouched_test: 100 },
+  untouched_candidate: { brier: .23 }, historical_walk_forward: {}, historical_readiness: { passed: false },
+  promotion: { passed: false }, odds_independent: true, time_range: {},
+})
 
 test('football catalog covers top five, UEFA competitions and domestic cups', () => {
   const names = new Set(competitionCatalog.football.map(row => row.name))

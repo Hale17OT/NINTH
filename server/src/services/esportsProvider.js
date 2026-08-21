@@ -7,7 +7,9 @@ const HOUR = 60 * 60 * 1000
 const LIQUIPEDIA = 'https://liquipedia.net'
 const CSAPI = 'https://api.csapi.de'
 const USER_AGENT = 'NINTHAnalytics/1.0 (personal local research; contact: local-user)'
-const SNAPSHOT_DIR = join(process.cwd(), 'ml', 'data', 'multisport', 'esports')
+const artifactRoot = () => process.env.NINTH_ML_ARTIFACT_DIR || join(process.cwd(), 'ml', 'artifacts')
+const dataRoot = () => process.env.NINTH_ML_DATA_DIR || join(process.cwd(), 'ml', 'data')
+const snapshotDir = () => join(dataRoot(), 'multisport', 'esports')
 const DISCIPLINES = {
   valorant: { name: 'Valorant', code: 'VAL', wiki: 'valorant', source: 'Liquipedia MediaWiki API' },
   cs2: { name: 'Counter-Strike 2', code: 'CS2', wiki: 'counterstrike', source: 'Liquipedia API + CS API' },
@@ -28,9 +30,9 @@ const json = async url => (await request(url, { headers: { Accept: 'application/
 let liquipediaQueue = Promise.resolve()
 let liquipediaLastParse = 0
 const liquipediaRefreshes = new Map()
-const snapshotPath = wiki => join(SNAPSHOT_DIR, `liquipedia-${wiki}-main.json`)
+const snapshotPath = wiki => join(snapshotDir(), `liquipedia-${wiki}-main.json`)
 const historicalReport = discipline => {
-  const path = join(process.cwd(), 'ml', 'artifacts', 'multisport', discipline, 'match_winner.json')
+  const path = join(artifactRoot(), 'multisport', discipline, 'match_winner.json')
   if (!existsSync(path)) return null
   try { return JSON.parse(readFileSync(path, 'utf8')) } catch { return null }
 }
@@ -48,7 +50,7 @@ const refreshLiquipediaMainPage = wiki => {
     const url = `${LIQUIPEDIA}/${wiki}/api.php?action=parse&page=Main%20Page&prop=text&format=json&formatversion=2`
     const payload = await json(url)
     const html = payload?.parse?.text || ''
-    mkdirSync(SNAPSHOT_DIR, { recursive: true })
+    mkdirSync(snapshotDir(), { recursive: true })
     writeFileSync(snapshotPath(wiki), JSON.stringify({ fetchedAt: new Date().toISOString(), html }))
     return html
   })
@@ -214,14 +216,18 @@ export async function esportsDirectory(type, options = {}) {
 }
 
 export async function esportsStatus() {
-  const catalogs = await Promise.all(['valorant', 'cs2', 'lol'].map(disciplineCatalog))
+  const disciplines = ['valorant', 'cs2', 'lol']
+  const reports = disciplines.map(historicalReport)
+  const catalogs = reports.every(Boolean)
+    ? disciplines.map(discipline => ({ discipline }))
+    : await Promise.all(disciplines.map(disciplineCatalog))
   return {
     sources: [
       { id: 'liquipedia-api', name: 'Liquipedia MediaWiki API', role: 'Valorant, CS2 and League of Legends current and historical match evidence', env: 'No key', configured: true, state: 'ready', detail: 'The three-year backfill is incremental, cached and rate-limited to 1 parse per 30 seconds. Normal HTML endpoints are never scraped.' },
       { id: 'csapi', name: 'CS API', role: 'CS2 results, rankings and player performance', env: 'No key', configured: true, state: 'ready', detail: 'Keyless professional CS2 history and current ranking evidence.' },
     ],
-    models: catalogs.map(catalog => {
-      const report = historicalReport(catalog.discipline)
+    models: catalogs.map((catalog, index) => {
+      const report = reports[index]
       if (report) return {
         sport: report.sport, market: report.market, status: report.status, method: report.method,
         samples: report.samples, metrics: report.untouched_candidate,

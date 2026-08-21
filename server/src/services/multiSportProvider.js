@@ -15,6 +15,8 @@ const HOUR = 60 * 60 * 1000
 let sportsDbQueue = Promise.resolve()
 let sportsDbLastRequest = 0
 let nflPlayerStatsCache = null
+const artifactRoot = () => process.env.NINTH_ML_ARTIFACT_DIR || join(process.cwd(), 'ml', 'artifacts')
+const dataRoot = () => process.env.NINTH_ML_DATA_DIR || join(process.cwd(), 'ml', 'data')
 
 const configured = (...names) => names.some(name => Boolean(process.env[name]))
 const sourceStatus = sport => {
@@ -45,7 +47,7 @@ const sourceStatus = sport => {
 
 const modelReports = sport => {
   if (['football', 'american-football'].includes(sport)) {
-    const consolidatedPath = join(process.cwd(), 'ml', 'artifacts', 'multisport', 'football_nfl_model_report.json')
+    const consolidatedPath = join(artifactRoot(), 'multisport', 'football_nfl_model_report.json')
     if (existsSync(consolidatedPath)) {
       try {
         const payload = JSON.parse(readFileSync(consolidatedPath, 'utf8'))
@@ -66,7 +68,7 @@ const modelReports = sport => {
   }
   const directories = sport === 'esports' ? ['valorant', 'cs2', 'lol'] : [sport]
   return directories.flatMap(directory => {
-    const path = join(process.cwd(), 'ml', 'artifacts', 'multisport', directory)
+    const path = join(artifactRoot(), 'multisport', directory)
     if (!existsSync(path)) return []
     return readdirSync(path).filter(file => file.endsWith('.json')).flatMap(file => {
       try {
@@ -110,7 +112,7 @@ const modelReports = sport => {
   }).sort((a, b) => a.market.localeCompare(b.market))
 }
 const sportPredictions = sport => {
-  const path = join(process.cwd(), 'ml', 'data', 'multisport', sport, 'predictions.json')
+  const path = join(dataRoot(), 'multisport', sport, 'predictions.json')
   if (!existsSync(path)) return new Map()
   try {
     const payload = JSON.parse(readFileSync(path, 'utf8'))
@@ -118,7 +120,7 @@ const sportPredictions = sport => {
   } catch { return new Map() }
 }
 const sportPredictionPayload = sport => {
-  const path = join(process.cwd(), 'ml', 'data', 'multisport', sport, 'predictions.json')
+  const path = join(dataRoot(), 'multisport', sport, 'predictions.json')
   if (!existsSync(path)) return {}
   try { return JSON.parse(readFileSync(path, 'utf8')) } catch { return {} }
 }
