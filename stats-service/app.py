@@ -44,7 +44,9 @@ from ml.melbet_history import (
 )
 
 HOST = os.getenv("MLB_STATS_HOST", "127.0.0.1")
-PORT = int(os.getenv("MLB_STATS_PORT") or os.getenv("PORT") or "3002")
+# Container platforms inject PORT. Prefer it over the local development
+# override so a stale MLB_STATS_PORT cannot make the service unreachable.
+PORT = int(os.getenv("PORT") or os.getenv("MLB_STATS_PORT") or "3002")
 SLIP_TIMEZONE_OFFSET_HOURS = float(os.getenv("NINTH_SLIP_TIMEZONE_OFFSET_HOURS", "3"))
 _detail_cache = {}
 _projection_board_cache = {}
