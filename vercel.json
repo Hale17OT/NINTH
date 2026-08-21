@@ -1,18 +1,39 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "vite",
-  "buildCommand": "npm run auth:generate && npm run build",
-  "outputDirectory": "dist",
-  "functions": {
-    "api/**/*.py": {
-      "memory": 2048,
-      "maxDuration": 300,
-      "includeFiles": "{stats-service/app.py,ml/**/*.py}",
-      "excludeFiles": "{ml/data/**,ml/artifacts/**,ml/releases/**,ml/test_*.py,stats-service/test_*.py,src/**,public/**,server/**,docs/**,scripts/**,output/**,logs/**,node_modules/**,dist/**,**/__pycache__/**,**/*.log}"
+  "services": {
+    "web": {
+      "root": ".",
+      "framework": "vite",
+      "buildCommand": "npm run auth:generate && npm run build",
+      "outputDirectory": "dist",
+      "routes": [
+        { "handle": "filesystem" },
+        { "src": "/(.*)", "dest": "/index.html" }
+      ]
+    },
+    "api": {
+      "root": ".",
+      "framework": "express",
+      "entrypoint": "api/[...path].js"
+    },
+    "stats": {
+      "root": ".",
+      "runtime": "python",
+      "entrypoint": "api/stats/[...path].py",
+      "functions": {
+        "api/stats/[...path].py": {
+          "memory": 2048,
+          "maxDuration": 300,
+          "includeFiles": "{stats-service/app.py,ml/**/*.py}",
+          "excludeFiles": "{ml/data/**,ml/artifacts/**,ml/releases/**,ml/test_*.py,stats-service/test_*.py,src/**,public/**,server/**,docs/**,scripts/**,output/**,logs/**,node_modules/**,dist/**,**/__pycache__/**,**/*.log}"
+        }
+      }
     }
   },
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/api/stats", "destination": { "service": "stats" } },
+    { "source": "/api/stats/(.*)", "destination": { "service": "stats" } },
+    { "source": "/api/(.*)", "destination": { "service": "api" } },
+    { "source": "/(.*)", "destination": { "service": "web" } }
   ]
 }
