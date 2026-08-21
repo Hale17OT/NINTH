@@ -991,6 +991,9 @@ def refresh_player_prop_archive():
 def player_prop_archive_loop():
     """Keep the deployment ledger populated even when the builder is never opened."""
     interval = max(60, int(os.getenv("NINTH_PLAYER_PROP_REFRESH_SECONDS", "300")))
+    if os.getenv("NINTH_PLAYER_PROP_MONITOR_ENABLED", "1").lower() in ("0", "false", "no"):
+        _player_prop_monitor.update({"running": False, "refresh_seconds": interval, "last_error": None})
+        return
     _player_prop_monitor.update({"running": True, "refresh_seconds": interval})
     while True:
         started = time.monotonic()

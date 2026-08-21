@@ -1709,6 +1709,21 @@ class ProjectionIntegrityTests(unittest.TestCase):
         self.assertEqual(sent["status"], 200)
         self.assertEqual(sent["payload"]["model_sync"], sync)
 
+    def test_serverless_player_prop_monitor_exits_without_archiving(self):
+        with (
+            patch.dict(APP.os.environ, {
+                "NINTH_PLAYER_PROP_MONITOR_ENABLED": "0",
+                "NINTH_PLAYER_PROP_REFRESH_SECONDS": "300",
+            }, clear=False),
+            patch.object(APP, "refresh_player_prop_archive") as refresh,
+        ):
+            APP.player_prop_archive_loop()
+
+        refresh.assert_not_called()
+        self.assertFalse(APP._player_prop_monitor["running"])
+        self.assertEqual(APP._player_prop_monitor["refresh_seconds"], 300)
+        self.assertIsNone(APP._player_prop_monitor["last_error"])
+
 
 if __name__ == "__main__":
     unittest.main()
