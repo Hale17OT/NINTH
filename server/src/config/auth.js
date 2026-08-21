@@ -1,6 +1,15 @@
 const production = process.env.NODE_ENV === 'production'
 
 const commaList = value => String(value || '').split(',').map(item => item.trim()).filter(Boolean)
+const httpsOrigin = value => value ? `https://${String(value).replace(/^https?:\/\//, '').replace(/\/$/, '')}` : ''
+const currentVercelOrigin = httpsOrigin(process.env.VERCEL_URL)
+const productionVercelOrigin = httpsOrigin(process.env.VERCEL_PROJECT_PRODUCTION_URL) || currentVercelOrigin
+const configuredFrontend = process.env.FRONTEND_URL || (production ? productionVercelOrigin : 'http://localhost:5173')
+const configuredBackend = process.env.BACKEND_URL || (production ? productionVercelOrigin : 'http://localhost:3001')
+const trustedOrigins = [
+  ...commaList(process.env.TRUSTED_FRONTEND_ORIGINS || configuredFrontend || (production ? '' : 'http://localhost:5173,http://127.0.0.1:5173')),
+  ...(production ? [currentVercelOrigin, productionVercelOrigin] : []),
+].filter((value, index, values) => value && values.indexOf(value) === index)
 const positiveNumber = (value, fallback) => {
   const parsed = Number(value)
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback
@@ -9,10 +18,10 @@ const positiveNumber = (value, fallback) => {
 export const authConfig = {
   production,
   databaseUrl: process.env.DATABASE_URL || '',
-  frontendUrl: process.env.FRONTEND_URL || (production ? '' : 'http://localhost:5173'),
-  backendUrl: process.env.BACKEND_URL || (production ? '' : 'http://localhost:3001'),
-  appUrl: process.env.APP_URL || process.env.FRONTEND_URL || (production ? '' : 'http://localhost:5173'),
-  trustedOrigins: commaList(process.env.TRUSTED_FRONTEND_ORIGINS || process.env.FRONTEND_URL || (production ? '' : 'http://localhost:5173,http://127.0.0.1:5173')),
+  frontendUrl: configuredFrontend,
+  backendUrl: configuredBackend,
+  appUrl: process.env.APP_URL || configuredFrontend,
+  trustedOrigins,
   sessionSecret: process.env.SESSION_SECRET || (production ? '' : 'ninth-development-only-session-secret'),
   sessionCookieName: production ? '__Host-ninth-session' : 'ninth_session',
   csrfCookieName: production ? '__Host-ninth-csrf' : 'ninth_csrf',
@@ -23,7 +32,9 @@ export const authConfig = {
   shortSessionHours: positiveNumber(process.env.SESSION_SHORT_HOURS, 24),
   googleClientId: process.env.GOOGLE_CLIENT_ID || '',
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-  googleRedirectUri: process.env.GOOGLE_REDIRECT_URI || (production ? '' : 'http://localhost:3001/api/auth/google/callback'),
+  googleRedirectUri: process.env.GOOGLE_REDIRECT_URI || (production && configuredBackend
+    ? `${configuredBackend}/api/auth/google/callback`
+    : 'http://localhost:3001/api/auth/google/callback'),
 }
 
 export const assertProductionAuthConfig = () => {

@@ -216,8 +216,14 @@ The Node process reads `.env` from the project root through `dotenv`. The Python
 | `NINTH_MELBET_MAX_BACKOFF_SECONDS` | `1800` | Maximum MelBet failure backoff |
 | `NINTH_SLIP_TIMEZONE_OFFSET_HOURS` | `3` | Time-zone offset used to interpret printed slip timestamps |
 | `NINTH_MAINTENANCE_ENABLED` | `1` | Enable guarded model/data maintenance checks |
-| `NINTH_MAINTENANCE_HOUR` / `NINTH_MAINTENANCE_MINUTE` | `3` / `15` | Local nightly full-maintenance time; startup only runs lightweight missed-result settlement when that window was missed |
-| `NINTH_MAINTENANCE_CATCHUP_ENABLED` | `1` | Settle missed player-prop and deployment audits after a post-window startup without collection or retraining |
+| `NINTH_MAINTENANCE_HOUR` / `NINTH_MAINTENANCE_MINUTE` | `11` / `15` | Local nightly full-maintenance time, after the previous MLB slate is expected to be final |
+| `NINTH_MAINTENANCE_CATCHUP_ENABLED` | `1` | Resume one genuinely missed full maintenance cycle after startup; incomplete settlement never advances the watermark |
+| `NINTH_TRAIN_THREADS` | `2` | CPU-thread ceiling inherited by local candidate-training subprocesses |
+| `NINTH_PLAYER_PROP_TRAIN_TIMEOUT_SECONDS` | `10800` | Maximum wall time for the full historical prop candidate before the run fails closed |
+| `NINTH_MODEL_PUBLISH_ENABLED` | `0` | Publish a verified nightly release to private Supabase Storage after local maintenance |
+| `NINTH_MODEL_BUCKET` | `ninth-models` | Private Supabase Storage bucket containing immutable runtime releases |
+| `NINTH_MODEL_RELEASE_RETENTION` | `14` | Number of immutable cloud releases retained for rollback within the free storage quota |
+| `NINTH_MODEL_SYNC_SECONDS` | `300` | Vercel runtime manifest refresh interval |
 | `NINTH_READINESS_HOUR` / `NINTH_READINESS_MINUTE` | `3` / `45` | Local nightly NFL/Football readiness refresh time; results under six hours old are skipped |
 | `NINTH_ENRICH_WORKERS` | `6` | Worker count for scheduled context enrichment |
 | `NINTH_RETRAIN_GAME_THRESHOLD` | `100` | Retrain after this many new completed games |
@@ -247,8 +253,12 @@ NINTH_MELBET_MAX_BACKOFF_SECONDS=1800
 NINTH_SLIP_TIMEZONE_OFFSET_HOURS=3
 
 NINTH_MAINTENANCE_ENABLED=1
-NINTH_MAINTENANCE_HOUR=3
+NINTH_MAINTENANCE_HOUR=11
 NINTH_MAINTENANCE_MINUTE=15
+NINTH_MAINTENANCE_CATCHUP_ENABLED=1
+NINTH_MODEL_PUBLISH_ENABLED=0
+NINTH_MODEL_BUCKET=ninth-models
+NINTH_MODEL_SYNC_SECONDS=300
 NINTH_READINESS_HOUR=3
 NINTH_READINESS_MINUTE=45
 NINTH_ENRICH_WORKERS=6
@@ -844,89 +854,56 @@ Verify at minimum:
 
 ## Production deployment
 
-`npm run build` creates static files in `dist/`. The local `npm start` daily
-profile serves that bundle through Vite Preview and proxies `/api` to Express.
-An internet-facing deployment should still use a static web server or CDN plus
-a reverse proxy rather than Vite Preview.
-
-### Recommended VPS layout
+The production layout keeps code deployment and model training independent:
 
 ```text
-Internet
-   |
- HTTPS
-   |
-Nginx
-   |-- /        -> project/dist
-   |-- /api/*   -> 127.0.0.1:3001
-                         |
-                         -> 127.0.0.1:3002
+GitHub main ──> Vercel ──> Vue + Express + Python inference
+       └──────> Supabase Git integration ──> schema migrations + private bucket
+Local 11:15 maintenance ──> gated model release ──> Supabase Storage manifest
 ```
 
-### Build
+Vercel uses [`vercel.json`](vercel.json), deploys every push to `main`, and
+creates previews for other branches. Supabase watches [`supabase/`](supabase/)
+and applies new migrations and bucket configuration after its GitHub integration
+is enabled with working directory `.` and production branch `main`.
 
-```bash
-npm ci
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r stats-service/requirements.txt
-npm run build
+The private `ninth-models` bucket stores immutable, checksum-verified releases.
+Large audit JSON is gzip-compressed and polling logs are compacted to the final
+pregame snapshot per game. `production/manifest.json` is uploaded last, so a
+failed upload cannot activate a partial release. Vercel verifies every checksum
+before atomically replacing files in its writable `/tmp` cache.
+
+### Local nightly model publisher
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-nightly-maintenance-task.ps1
 ```
 
-Transfer or train the required model artifacts after deployment:
+This installs the hidden `NINTH Nightly Maintenance` task at 11:15 local time.
+It loads the ignored `.env`, settles every completed game, catches up data,
+trains isolated candidates, promotes only candidates that clear chronological
+gates, then creates a rollback-safe release. Publishing fails closed when the
+release was built from an uncommitted worktree, preserving its Git provenance.
+Add these local-only variables to
+publish the approved release automatically:
 
-```text
-ml/artifacts/moneyline.joblib
-ml/artifacts/report.json
-ml/artifacts/totals.joblib
-ml/artifacts/totals_report.json
-ml/artifacts/player_props.joblib
-ml/artifacts/player_props_report.json
-ml/artifacts/market_slip_calibration.json
-ml/artifacts/maintenance_state.json
+```dotenv
+SUPABASE_URL=https://PROJECT_REF.supabase.co
+SUPABASE_SECRET_KEY=store-only-in-secret-managers
+NINTH_MODEL_PUBLISH_ENABLED=1
 ```
 
-### Example Nginx server block
+Create a release manually or restore only its production artifacts:
 
-```nginx
-server {
-    listen 80;
-    server_name ninth.example.com;
-
-    root /srv/ninth/dist;
-    index index.html;
-
-    location /api/ {
-        proxy_pass http://127.0.0.1:3001;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
+```powershell
+npm run release:models
+python -m ml.model_release --restore RELEASE_ID
 ```
 
-Add TLS with the VPS provider or Certbot before exposing the application publicly.
-
-### Process supervision
-
-Run Express and Python as separately supervised services rather than relying on a terminal session. The working directory must be the project root so `.env`, model artifacts and data paths resolve correctly.
-
-Example commands for a supervisor:
-
-```bash
-/usr/bin/node /srv/ninth/server/src/server.js
-/srv/ninth/.venv/bin/python /srv/ninth/stats-service/app.py
-```
-
-Do not expose port 3002 publicly. Keep both backend ports behind the firewall and allow public traffic only through Nginx.
-
-Before a multi-user release, complete the database and authentication work described above. The current filesystem slip store is suitable only for a single trusted user.
+Runtime data restoration is deliberately opt-in (`--restore-runtime-data`) so a
+rollback cannot replace the full local training history with the compact cloud
+copy. Production authentication and required secrets are documented in
+[`docs/authentication.md`](docs/authentication.md).
 
 ## Project structure
 

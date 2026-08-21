@@ -29,6 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_DIR = Path(os.getenv("NINTH_ARTIFACT_DIR", ROOT / "ml" / "artifacts"))
 ARTIFACT = ARTIFACT_DIR / "player_props.joblib"
 REPORT = ARTIFACT_DIR / "player_props_report.json"
+TRAIN_JOBS = max(1, int(os.getenv("NINTH_TRAIN_THREADS", "2")))
 COUNT_HEADS = {
     value.strip() for value in os.getenv(
         "NINTH_PROP_COUNT_HEADS",
@@ -260,7 +261,7 @@ def train_one(dataset, kind, prop, lines):
             if decay else None
         )
         model = lgb.LGBMClassifier(
-            objective="binary", n_estimators=450, random_state=42, n_jobs=-1,
+            objective="binary", n_estimators=450, random_state=42, n_jobs=TRAIN_JOBS,
             verbosity=-1, **model_params,
         ).fit(
             x[train], y[train], eval_set=[(x[calibration], y[calibration])],
@@ -299,7 +300,7 @@ def train_one(dataset, kind, prop, lines):
         count_model = lgb.LGBMRegressor(
             objective="poisson", n_estimators=500, learning_rate=.025,
             num_leaves=23, reg_lambda=15.0, min_child_samples=220,
-            feature_fraction=.8, random_state=42, n_jobs=-1, verbosity=-1,
+            feature_fraction=.8, random_state=42, n_jobs=TRAIN_JOBS, verbosity=-1,
         ).fit(
             base_x[count_train], counts[count_train],
             eval_set=[(base_x[count_calibration], counts[count_calibration])],
@@ -366,7 +367,7 @@ def train_one(dataset, kind, prop, lines):
         iterations = int(getattr(model, "best_iteration_", 0) or 450)
         refit_model = lgb.LGBMClassifier(
             objective="binary", n_estimators=iterations, random_state=42,
-            n_jobs=-1, verbosity=-1, **model_params,
+            n_jobs=TRAIN_JOBS, verbosity=-1, **model_params,
         ).fit(x[refit_train], y[refit_train], sample_weight=sample_weight)
         refit_raw = refit_model.predict_proba(x[validation])[:, 1]
         refit_blended = (

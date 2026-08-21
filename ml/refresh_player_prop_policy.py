@@ -95,11 +95,12 @@ def _read_json(path: Path) -> dict:
 
 
 def refresh(through: str | None = None, workers: int = 8) -> dict:
-    through = through or (date.today() - timedelta(days=1)).isoformat()
-    targets = target_games(through)
+    requested_through = through or (date.today() - timedelta(days=1)).isoformat()
+    targets = target_games(requested_through)
     existing = {int(row["game_id"]) for row in (_lines(BOXES) or [])}
     pending = sorted((game_id, played) for game_id, played in targets.items() if game_id not in existing)
     completed, deferred, errors = [], [], []
+    failed_game_ids = set()
     if pending:
         with ThreadPoolExecutor(max_workers=max(1, min(workers, len(pending)))) as pool:
             futures = {pool.submit(_fetch_target, item): item for item in pending}
@@ -112,12 +113,27 @@ def refresh(through: str | None = None, workers: int = 8) -> dict:
                     else:
                         deferred.append(item[0])
                 except Exception as exc:  # noqa: BLE001 - leave the job resumable
+                    failed_game_ids.add(item[0])
                     errors.append(f"game {item[0]}: {exc}")
     if completed:
         BOXES.parent.mkdir(parents=True, exist_ok=True)
         with BOXES.open("a", encoding="utf-8", buffering=1) as output:
             for row in sorted(completed, key=lambda value: int(value["game_id"])):
                 output.write(json.dumps(row, separators=(",", ":")) + "\n")
+
+    unresolved_game_ids = set(deferred) | failed_game_ids
+    unresolved_dates = sorted({
+        str(targets[game_id])[:10]
+        for game_id in unresolved_game_ids
+        if game_id in targets and targets[game_id]
+    })
+    if unresolved_dates:
+        settled_through = (
+            date.fromisoformat(unresolved_dates[0]) - timedelta(days=1)
+        ).isoformat()
+    else:
+        settled_through = requested_through
+    settlement_complete = settled_through >= requested_through
 
     projection_stale = bool(completed) or _audit_stale(PROJECTION_AUDIT, SNAPSHOTS, BOXES)
     build_stale = bool(completed) or _audit_stale(BUILD_AUDIT, BUILDS, BOXES)
@@ -142,13 +158,13 @@ def refresh(through: str | None = None, workers: int = 8) -> dict:
         or _audit_stale(
             RERANKER_SHADOW_AUDIT, BUILDS, BOXES, BUILD_AUDIT, RERANKER_SHADOW_SCRIPT,
         )
-        or _read_json(RERANKER_SHADOW_AUDIT).get("through") != through
+        or _read_json(RERANKER_SHADOW_AUDIT).get("through") != settled_through
     )
     if reranker_shadow_stale:
         subprocess.run(
             [
                 sys.executable, "-m", "ml.player_prop_reranker_shadow_candidate",
-                "--through", through, "--historical-days", "4",
+                "--through", settled_through, "--historical-days", "4",
             ],
             cwd=ROOT, check=True, capture_output=True, text=True,
         )
@@ -159,7 +175,11 @@ def refresh(through: str | None = None, workers: int = 8) -> dict:
     forward_policy = json.loads(frozen.stdout.strip() or "{}")
     reranker_shadow = _read_json(RERANKER_SHADOW_AUDIT)
     return {
-        "through": through,
+        # Keep `through` as the verified watermark for existing consumers.
+        "through": settled_through,
+        "requested_through": requested_through,
+        "settled_through": settled_through,
+        "settlement_complete": settlement_complete,
         "target_games": len(targets),
         "new_boxscores": len(completed),
         "deferred_games": deferred,

@@ -1,6 +1,7 @@
 import { cache } from "./cache.js";
 
-const baseUrl = process.env.MLB_STATS_URL || "http://127.0.0.1:3002";
+const deploymentUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/api/stats` : null;
+const baseUrl = process.env.MLB_STATS_URL || deploymentUrl || "http://127.0.0.1:3002";
 
 async function request(path, options = {}) {
   const { timeoutMs = 30000, ...fetchOptions } = options;

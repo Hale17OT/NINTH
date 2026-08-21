@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 from collections import defaultdict, deque
 from datetime import date
 from pathlib import Path
@@ -12,8 +13,9 @@ from scipy.stats import nbinom, poisson
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BOX_PATH = ROOT / "ml" / "data" / "player_boxscores.jsonl"
-STATCAST_PATH = ROOT / "ml" / "data" / "statcast_rich_games.jsonl"
+DATA_ROOT = Path(os.getenv("NINTH_DATA_DIR", ROOT / "ml" / "data"))
+BOX_PATH = DATA_ROOT / "player_boxscores.jsonl"
+STATCAST_PATH = DATA_ROOT / "statcast_rich_games.jsonl"
 
 BATTER_PROPS = {
     "hits": (0.5, 1.5, 2.5),

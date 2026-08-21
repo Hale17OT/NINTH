@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import os
 import threading
 import warnings
 from collections import deque
@@ -19,7 +20,7 @@ from ml.player_props_features import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ARTIFACT = ROOT / "ml" / "artifacts" / "player_props.joblib"
+ARTIFACT = Path(os.getenv("NINTH_ARTIFACT_DIR", ROOT / "ml" / "artifacts")) / "player_props.joblib"
 PRIMARY_BATTER_LINES = {
     "hits": .5, "total_bases": 1.5, "home_runs": .5, "runs": .5, "rbi": .5,
     "walks": .5, "strikeouts": .5, "doubles": .5, "stolen_bases": .5,

@@ -33,6 +33,49 @@ STATE = ARTIFACTS / "maintenance_state.json"
 LOCK = ARTIFACTS / ".maintenance.lock"
 CANDIDATE = ARTIFACTS / "candidate"
 MULTISPORT_ARTIFACTS = ARTIFACTS / "multisport"
+FOOTBALL_START_SEASON = 2018
+
+
+class CandidateDataBlocked(RuntimeError):
+    """Raised when a candidate cannot be trained from complete temporal data."""
+
+
+def _lock_is_stale(path=LOCK):
+    """Return true only for a lock that cannot represent a live maintenance run."""
+    try:
+        payload = read_json(path, {})
+        created_at = datetime.fromisoformat(str(payload.get("created_at") or "").replace("Z", "+00:00"))
+        if created_at.tzinfo is None:
+            created_at = created_at.replace(tzinfo=timezone.utc)
+        maximum_hours = max(1, int(os.getenv("NINTH_MAINTENANCE_LOCK_HOURS", "6")))
+        return datetime.now(timezone.utc) - created_at > timedelta(hours=maximum_hours)
+    except (OSError, TypeError, ValueError):
+        try:
+            maximum_hours = max(1, int(os.getenv("NINTH_MAINTENANCE_LOCK_HOURS", "6")))
+            modified = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc)
+            return datetime.now(timezone.utc) - modified > timedelta(hours=maximum_hours)
+        except OSError:
+            return False
+
+
+def acquire_lock(path=LOCK):
+    """Acquire maintenance lock and recover a lock abandoned by a killed process."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    for attempt in range(2):
+        try:
+            fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            payload = json.dumps({
+                "pid": os.getpid(),
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            }).encode("utf8")
+            os.write(fd, payload)
+            return fd
+        except FileExistsError:
+            if attempt == 0 and _lock_is_stale(path):
+                path.unlink(missing_ok=True)
+                continue
+            return None
+    return None
 
 
 def read_json(path, default=None):
@@ -49,9 +92,22 @@ def write_json(path, value):
 
 
 def game_rows():
-    if not DATA.exists():
+    return game_rows_from(DATA)
+
+
+def game_rows_from(path):
+    if not path.exists():
         return []
-    return [json.loads(line) for line in DATA.read_text(encoding="utf8").splitlines() if line.strip()]
+    rows = []
+    with path.open(encoding="utf8") as handle:
+        for raw in handle:
+            if not raw.strip():
+                continue
+            try:
+                rows.append(json.loads(raw.replace("\x00", "")))
+            except json.JSONDecodeError:
+                continue
+    return rows
 
 
 def metric(report, section, key, default=0.0):
@@ -156,6 +212,23 @@ def run(command, env=None, timeout=3600):
     return result.stdout
 
 
+def multisport_report_summary(report):
+    samples = report.get("samples") or {}
+    holdout = ((report.get("holdout_results") or {}).get("combined") or {}).get("candidate") or {}
+    candidate = report.get("untouched_candidate") or holdout
+    return {
+        "samples": int(
+            samples.get("all")
+            or samples.get("all_in_fixed_window")
+            or samples.get("holdout")
+            or 0
+        ),
+        "brier": candidate.get("brier"),
+        "status": report.get("status"),
+        "historical_ready": (report.get("historical_readiness") or {}).get("passed"),
+    }
+
+
 def refresh_open_multisport_models():
     """Refresh no-cost research ledgers without affecting production MLB."""
     now = datetime.now(timezone.utc)
@@ -164,7 +237,7 @@ def refresh_open_multisport_models():
     artifact_dir = MULTISPORT_ARTIFACTS / "football"
     run([
         sys.executable, "-m", "ml.multisport.collect_football_open",
-        "--start-season", "2020", "--end-season", str(end_season),
+        "--start-season", str(FOOTBALL_START_SEASON), "--end-season", str(end_season),
         "--output-dir", str(data_dir),
     ])
     artifact_dir.mkdir(parents=True, exist_ok=True)
@@ -176,11 +249,7 @@ def refresh_open_multisport_models():
             "--sport", "football", "--market", market, "--output", str(target),
         ])
         report = read_json(target, {})
-        refreshed[market] = {
-            "samples": (report.get("samples") or {}).get("all", 0),
-            "brier": (report.get("untouched_candidate") or {}).get("brier"),
-            "status": report.get("status"),
-        }
+        refreshed[market] = multisport_report_summary(report)
     prediction_output = data_dir / "predictions.json"
     run([
         sys.executable, "-m", "ml.multisport.predict_football_open",
@@ -203,7 +272,7 @@ def refresh_open_multisport_models():
             target = sport_artifacts / f"{market}.json"
             run([sys.executable, "-m", "ml.multisport.train", str(sport_data / f"{market}.jsonl"), "--sport", sport, "--market", market, "--output", str(target)])
             report = read_json(target, {})
-            result[sport][market] = {"samples": (report.get("samples") or {}).get("all", 0), "brier": (report.get("untouched_candidate") or {}).get("brier"), "status": report.get("status")}
+            result[sport][market] = multisport_report_summary(report)
         if sport == "american-football":
             score_report = sport_artifacts / "score.json"
             run([
@@ -322,19 +391,67 @@ def maintenance_day(now=None):
     return (current.astimezone(timezone.utc) - timedelta(hours=cutoff_hour)).date().isoformat()
 
 
-def maintain(force=False, dry_run=False):
+def maintenance_target_date(state, through=None):
+    if through:
+        return str(through)[:10]
+    pending = state.get("last_attempt_result") or {}
+    requested = str(pending.get("requested_through") or "")[:10]
+    last_sync = str(state.get("last_sync_date") or "")[:10]
+    if pending.get("status") == "settlement_incomplete" and requested > last_sync:
+        return requested
+    return maintenance_day()
+
+
+def retry_pending_model_release(state):
+    previous = state.get("last_result") or {}
+    release_id = (previous.get("model_release") or {}).get("release_id")
+    enabled = os.getenv("NINTH_MODEL_PUBLISH_ENABLED", "0").lower() in {"1", "true", "yes"}
+    if not enabled or not release_id or not previous.get("model_release_error"):
+        return None
+    try:
+        from ml.publish_model_release import publish
+        published = publish(release_id)
+        previous["model_release"].update(published)
+        previous.pop("model_release_error", None)
+        state["last_result"] = previous
+        write_json(STATE, state)
+        return {"status": "published", **published}
+    except Exception as exc:
+        return {"status": "failed", "release_id": release_id, "error": str(exc)[-2000:]}
+
+
+def maintain(force=False, dry_run=False, through=None):
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
     state = read_json(STATE, {})
-    today = maintenance_day()
+    today = maintenance_target_date(state, through)
+    try:
+        date.fromisoformat(today)
+    except ValueError as exc:
+        raise ValueError("maintenance through date must use YYYY-MM-DD") from exc
     if dry_run:
         return {"status": "dry_run", "would_sync_season": date.today().year}
 
-    # Outcome settlement is a lightweight daily policy dependency, not a model
+    # Outcome settlement is a daily policy dependency, not a model retraining
     # retraining dependency. Run it before the same-day maintenance shortcut so
     # yesterday's exact Build Best results cannot leave today's policy stale.
     policy_refresh = json.loads(run([
-        sys.executable, "-m", "ml.refresh_player_prop_policy",
+        sys.executable, "-m", "ml.refresh_player_prop_policy", "--through", today,
     ]).strip() or "{}")
+    if not policy_refresh.get("settlement_complete", True):
+        result = {
+            "status": "settlement_incomplete",
+            "requested_through": today,
+            "settled_through": policy_refresh.get("settled_through"),
+            "deferred_games": policy_refresh.get("deferred_games", []),
+            "errors": policy_refresh.get("errors", []),
+            "player_prop_policy_refresh": policy_refresh,
+        }
+        state.update({
+            "last_attempt_at": datetime.now(timezone.utc).isoformat(),
+            "last_attempt_result": result,
+        })
+        write_json(STATE, state)
+        return result
     if not force and state.get("last_sync_date") == today:
         deployment_audit_stale = artifact_stale(
             DEPLOYMENT_SELECTION_AUDIT,
@@ -343,13 +460,19 @@ def maintain(force=False, dry_run=False):
         if deployment_audit_stale:
             run([sys.executable, "-m", "ml.evaluate_deployment_selection"])
         player_prop_audit_refreshed = refresh_player_prop_audit()
-        return {
+        result = {
             "status": "already_checked",
             "last_sync_date": today,
             "deployment_audit_refreshed": deployment_audit_stale,
             "player_prop_audit_refreshed": player_prop_audit_refreshed,
             "player_prop_policy_refresh": policy_refresh,
         }
+        release_retry = retry_pending_model_release(state)
+        if release_retry:
+            result["model_release_retry"] = release_retry
+            if release_retry["status"] == "failed":
+                result["model_release_error"] = release_retry["error"]
+        return result
 
     run([sys.executable, "ml/collect.py", "--start-season", str(date.today().year), "--end-season", str(date.today().year)])
     run([
@@ -362,7 +485,7 @@ def maintain(force=False, dry_run=False):
     run([
         sys.executable, "ml/statcast_collect.py",
         "--start", f"{date.today().year}-01-01",
-        "--end", (date.today() - timedelta(days=1)).isoformat(),
+        "--end", today,
         "--workers", os.getenv("NINTH_STATCAST_WORKERS", "3"),
         "--output", str(STATCAST_RICH), "--manifest", str(STATCAST_RICH_DAYS),
     ])
@@ -392,15 +515,17 @@ def maintain(force=False, dry_run=False):
     if should_train:
         CANDIDATE.mkdir(parents=True, exist_ok=True)
         env = os.environ.copy(); env["NINTH_ARTIFACT_DIR"] = str(CANDIDATE)
+        training_threads = str(max(1, int(os.getenv("NINTH_TRAIN_THREADS", "2"))))
+        env["NINTH_TRAIN_THREADS"] = training_threads
+        for variable in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+            env.setdefault(variable, training_threads)
         training_errors = {}
+        training_rejections = {}
+        training_blockers = {}
         training_steps = (
             ("moneyline", [
                 [sys.executable, "-m", "ml.train_v3"],
             ], (CANDIDATE / "report.json", CANDIDATE / "moneyline.joblib")),
-            ("totals", [
-                [sys.executable, "-m", "ml.research_pitching_availability_v1"],
-                [sys.executable, "-m", "ml.train_totals_v5"],
-            ], (CANDIDATE / "totals_report.json", CANDIDATE / "totals.joblib")),
         )
         for name, commands, outputs in training_steps:
             for output in outputs:
@@ -410,7 +535,37 @@ def maintain(force=False, dry_run=False):
                     run(command, env=env)
             except Exception as exc:  # keep other independently gated models moving
                 training_errors[name] = str(exc)[-2000:]
+        for output in (CANDIDATE / "totals_report.json", CANDIDATE / "totals.joblib"):
+            output.unlink(missing_ok=True)
         try:
+            run([sys.executable, "-m", "ml.research_pitching_availability_v1"], env=env)
+            totals_research = read_json(CANDIDATE / "pitching_availability_v1_research.json", {})
+            totals_section = totals_research.get("totals") or {}
+            totals_gate = totals_section.get("promotion_gate") or {}
+            if totals_section.get("selected_on_2022_2024") != "combined" or not totals_gate.get("passed"):
+                training_rejections["totals"] = {
+                    "reason": "Pitching-availability challenger did not clear its preregistered promotion gate.",
+                    "selected_on_2022_2024": totals_section.get("selected_on_2022_2024"),
+                    "promotion_gate": totals_gate,
+                }
+            else:
+                run([sys.executable, "-m", "ml.train_totals_v5"], env=env)
+        except Exception as exc:
+            training_errors["totals"] = str(exc)[-2000:]
+        try:
+            prop_coverage = {}
+            for row in game_rows_from(PLAYER_BOXSCORES):
+                season = int(row.get("season") or 0)
+                group = "train" if season <= 2023 else "calibration" if season == 2024 else "audit"
+                prop_coverage[group] = prop_coverage.get(group, 0) + 1
+            missing_groups = [name for name in ("train", "calibration", "audit") if not prop_coverage.get(name)]
+            if missing_groups:
+                training_blockers["player_props"] = {
+                    "reason": "Historical player box scores are incomplete.",
+                    "missing_temporal_groups": missing_groups,
+                    "coverage": prop_coverage,
+                }
+                raise CandidateDataBlocked("player-prop temporal coverage is incomplete")
             raw_props = CANDIDATE / "player_props_full"
             raw_props.mkdir(parents=True, exist_ok=True)
             for output in (
@@ -423,7 +578,12 @@ def maintain(force=False, dry_run=False):
             prop_env = env.copy()
             prop_env["NINTH_ARTIFACT_DIR"] = str(raw_props)
             prop_env.setdefault("NINTH_PROP_COUNT_HEADS", "batter:hits_runs_rbi")
-            run([sys.executable, "-m", "ml.train_player_props"], env=prop_env)
+            run(
+                [sys.executable, "-m", "ml.train_player_props"], env=prop_env,
+                timeout=max(3600, int(os.getenv(
+                    "NINTH_PLAYER_PROP_TRAIN_TIMEOUT_SECONDS", "10800",
+                ))),
+            )
             comparison = CANDIDATE / "player_props_comparison.json"
             run([
                 sys.executable, "-m", "ml.evaluate_observed_prop_lines",
@@ -439,12 +599,16 @@ def maintain(force=False, dry_run=False):
                 "--audit", str(comparison),
                 "--output-dir", str(CANDIDATE),
             ])
+        except CandidateDataBlocked:
+            pass
         except Exception as exc:
             training_errors["player_props"] = str(exc)[-2000:]
         promotion = promote_available_candidates()
         promoted = promotion["promoted_models"]
         result["promotion_checks"] = promotion["promotion_checks"]
         result["training_errors"] = training_errors
+        result["training_rejections"] = training_rejections
+        result["training_blockers"] = training_blockers
         result["promoted_models"] = promoted
         if promoted:
             state["last_promotion_at"] = datetime.now(timezone.utc).isoformat()
@@ -454,12 +618,33 @@ def maintain(force=False, dry_run=False):
                 except Exception as exc:
                     training_errors["slip_calibration"] = str(exc)[-2000:]
             result["status"] = "partially_promoted" if training_errors else "promoted"
-        elif training_errors:
+        elif training_errors or training_blockers:
             result["status"] = "training_failed"
         else:
             result["status"] = "candidates_rejected"
 
-    state.update({"last_sync_date": today, "last_run_at": datetime.now(timezone.utc).isoformat(), "last_result": result})
+    state_update = {
+        "last_run_at": datetime.now(timezone.utc).isoformat(),
+        "last_result": result,
+    }
+    if result.get("status") != "training_failed":
+        state_update["last_sync_date"] = today
+    state.update(state_update)
+    write_json(STATE, state)
+    try:
+        from ml.model_release import build_release
+        release = build_release()
+        result["model_release"] = {
+            "release_id": release["release_id"],
+            "release_sha256": release["release_sha256"],
+            "files": len(release.get("files", [])),
+        }
+        if os.getenv("NINTH_MODEL_PUBLISH_ENABLED", "0").lower() in {"1", "true", "yes"}:
+            from ml.publish_model_release import publish
+            result["model_release"].update(publish(release["release_id"]))
+    except Exception as exc:
+        result["model_release_error"] = str(exc)[-2000:]
+    state["last_result"] = result
     write_json(STATE, state)
     return result
 
@@ -469,11 +654,11 @@ def main():
     parser.add_argument("--once", action="store_true")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--through", help="Explicit settled-results date (YYYY-MM-DD)")
     parser.add_argument("--promote-candidates", action="store_true")
     args = parser.parse_args()
-    try:
-        fd = os.open(LOCK, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-    except FileExistsError:
+    fd = acquire_lock()
+    if fd is None:
         print(json.dumps({"status": "maintenance_already_running"}))
         return
     try:
@@ -492,7 +677,12 @@ def main():
             write_json(STATE, state)
             print(json.dumps(result))
         else:
-            print(json.dumps(maintain(force=args.force, dry_run=args.dry_run)))
+            result = maintain(
+                force=args.force, dry_run=args.dry_run, through=args.through,
+            )
+            print(json.dumps(result))
+            if result.get("status") in {"settlement_incomplete", "training_failed"} or result.get("model_release_error"):
+                raise SystemExit(1)
     finally:
         LOCK.unlink(missing_ok=True)
 

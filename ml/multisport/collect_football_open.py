@@ -333,7 +333,7 @@ def collect(start_season: int, end_season: int, output_dir: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     now = datetime.now()
-    parser.add_argument("--start-season", type=int, default=2020)
+    parser.add_argument("--start-season", type=int, default=2018)
     parser.add_argument("--end-season", type=int, default=now.year if now.month >= 7 else now.year - 1)
     parser.add_argument("--output-dir", type=Path, default=Path("ml/data/multisport/football"))
     args = parser.parse_args()

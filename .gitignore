@@ -47,6 +47,7 @@ pip-wheel-metadata/
 # Generated ML datasets, trained artifacts, and large local model files
 ml/data/
 ml/artifacts/
+ml/releases/
 *.joblib
 *.pkl
 *.pickle

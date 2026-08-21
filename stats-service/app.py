@@ -93,6 +93,7 @@ _melbet_totals_snapshot_loaded = False
 _melbet_player_props_cache = {"updated_at": None, "last_attempt_at": None, "markets": [], "error": None, "consecutive_failures": 0, "retry_after": None}
 _melbet_player_props_lock = threading.Lock()
 _player_props_bundle = None
+_player_props_bundle_mtime = None
 _player_props_bundle_lock = threading.Lock()
 _player_props_board_cache = {}
 _player_props_refreshing = set()
@@ -126,8 +127,11 @@ _maintenance_catchup = {
     "running": False, "target_date": None, "last_started_at": None,
     "last_finished_at": None, "last_error": None, "last_result": None,
 }
-PROJECTION_LOG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ml", "data", "projection_snapshots.jsonl")
-MODEL_REPORT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ml", "artifacts", "report.json")
+APP_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ARTIFACT_DIR = os.getenv("NINTH_ARTIFACT_DIR", os.path.join(APP_ROOT, "ml", "artifacts"))
+DATA_DIR = os.getenv("NINTH_DATA_DIR", os.path.join(APP_ROOT, "ml", "data"))
+PROJECTION_LOG = os.path.join(DATA_DIR, "projection_snapshots.jsonl")
+MODEL_REPORT = os.path.join(ARTIFACT_DIR, "report.json")
 TOTALS_REPORT = os.path.join(os.path.dirname(MODEL_REPORT), "totals_report.json")
 MARKET_SLIP_CALIBRATION = os.path.join(os.path.dirname(MODEL_REPORT), "market_slip_calibration.json")
 MAINTENANCE_STATE = os.path.join(os.path.dirname(MODEL_REPORT), "maintenance_state.json")
@@ -202,27 +206,22 @@ PLAYER_PROP_RERANKER_SHADOW_AUDIT = os.path.join(
 )
 DEPLOYMENT_SELECTION_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "deployment_selection_audit.json")
 PLAYER_PROP_PROJECTION_LOG = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "ml", "data", "player_prop_projection_snapshots.jsonl",
+    DATA_DIR, "player_prop_projection_snapshots.jsonl",
 )
 PLAYER_PROP_PRICED_BOARD_LOG = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "ml", "data", "player_prop_priced_board_snapshots.jsonl",
+    DATA_DIR, "player_prop_priced_board_snapshots.jsonl",
 )
 PLAYER_PROP_PRICED_BOARD_AUDIT = os.path.join(
     os.path.dirname(MODEL_REPORT), "player_prop_priced_board_audit.json",
 )
 PLAYER_PROP_BUILD_LOG = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "ml", "data", "player_prop_build_snapshots.jsonl",
+    DATA_DIR, "player_prop_build_snapshots.jsonl",
 )
 PLAYER_BOXSCORES = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "ml", "data", "player_boxscores.jsonl",
+    DATA_DIR, "player_boxscores.jsonl",
 )
 MELBET_TOTALS_SNAPSHOT_LOG = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "ml", "data", "melbet_totals_snapshots.jsonl",
+    DATA_DIR, "melbet_totals_snapshots.jsonl",
 )
 
 # MelBet exposes player selections in a linked Player's Stats sub-game. These
@@ -267,11 +266,14 @@ MELBET_PLAYER_PROP_GROUPS = {
 
 
 def player_props_bundle():
-    global _player_props_bundle
-    if _player_props_bundle is None:
+    global _player_props_bundle, _player_props_bundle_mtime
+    model_path = os.path.join(ARTIFACT_DIR, "player_props.joblib")
+    model_mtime = os.stat(model_path).st_mtime_ns
+    if _player_props_bundle is None or _player_props_bundle_mtime != model_mtime:
         with _player_props_bundle_lock:
-            if _player_props_bundle is None:
+            if _player_props_bundle is None or _player_props_bundle_mtime != model_mtime:
                 _player_props_bundle = load_player_props_bundle()
+                _player_props_bundle_mtime = model_mtime
     return _player_props_bundle
 
 
@@ -1008,10 +1010,18 @@ def maintenance_status():
         return {"status": "not_run"}
 
 
+def runtime_release_status():
+    try:
+        with open(os.path.join(ARTIFACT_DIR, ".release.json"), encoding="utf-8") as handle:
+            return json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return {"release_id": None, "source": "local-artifacts"}
+
+
 def missed_nightly_settlement_date(now=None):
     """Return the missed settlement date after tonight's maintenance window."""
     now = (now or datetime.now().astimezone()).astimezone()
-    hour = max(0, min(23, int(os.getenv("NINTH_MAINTENANCE_HOUR", "3"))))
+    hour = max(0, min(23, int(os.getenv("NINTH_MAINTENANCE_HOUR", "11"))))
     minute = max(0, min(59, int(os.getenv("NINTH_MAINTENANCE_MINUTE", "15"))))
     scheduled = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
     if now < scheduled:
@@ -1030,16 +1040,22 @@ def lightweight_maintenance_catchup_due(now=None):
             settled_through = str(json.load(handle).get("through") or "")[:10]
     except (OSError, json.JSONDecodeError):
         settled_through = ""
-    return target if settled_through < target else None
+    state_through = str(maintenance_status().get("last_sync_date") or "")[:10]
+    return target if min(settled_through, state_through) < target else None
 
 
 def queue_lightweight_maintenance_catchup(now=None):
-    """Settle missed results without running collection/retraining at startup."""
+    """Resume one genuinely missed nightly maintenance cycle in the background."""
     target = lightweight_maintenance_catchup_due(now)
     if not target:
         return False
     with _maintenance_catchup_lock:
-        if _maintenance_catchup["running"] or _maintenance_catchup["target_date"] == target:
+        completed_target = (
+            _maintenance_catchup.get("target_date") == target
+            and (_maintenance_catchup.get("last_result") or {}).get("status")
+            not in (None, "settlement_incomplete", "training_failed")
+        )
+        if _maintenance_catchup["running"] or completed_target:
             return False
         _maintenance_catchup.update({
             "running": True, "target_date": target,
@@ -1050,26 +1066,26 @@ def queue_lightweight_maintenance_catchup(now=None):
     def catch_up():
         global _prediction_results_cache, _player_prop_results_cache, _player_prop_guarantee_cache
         root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        outputs = []
         try:
-            for command, timeout in (
-                ([sys.executable, "-m", "ml.refresh_player_prop_policy", "--through", target, "--workers", "4"], 15 * 60),
-                ([sys.executable, "-m", "ml.evaluate_deployment_selection"], 10 * 60),
-            ):
-                result = subprocess.run(
-                    command, cwd=root, capture_output=True, text=True,
-                    timeout=timeout, check=True,
+            result = subprocess.run(
+                [
+                    sys.executable, "-m", "ml.maintenance", "--once",
+                    "--through", target,
+                ],
+                cwd=root, capture_output=True, text=True,
+                timeout=2 * 60 * 60, check=True,
+            )
+            payload = json.loads((result.stdout or "{}").strip().splitlines()[-1])
+            if payload.get("status") == "settlement_incomplete":
+                raise RuntimeError(
+                    f"Settlement is incomplete through {target}; deferred games remain."
                 )
-                outputs.append((result.stdout or result.stderr).strip())
             _prediction_results_cache = None
             _player_prop_results_cache = None
             _player_prop_guarantee_cache = None
             _projection_board_cache.clear()
-            _maintenance_catchup["last_result"] = {
-                "status": "settled", "through": target,
-                "jobs": [value for value in outputs if value],
-            }
-            print(f"[model-maintenance] lightweight catch-up settled through {target}", flush=True)
+            _maintenance_catchup["last_result"] = payload
+            print(f"[model-maintenance] catch-up completed through {target}", flush=True)
         except Exception as exc:
             _maintenance_catchup["last_error"] = str(exc)
             print(f"[model-maintenance] lightweight catch-up failed: {exc}", flush=True)
@@ -4789,6 +4805,7 @@ class Handler(BaseHTTPRequestHandler):
                     "maintenance": maintenance_status(), "projection_monitor": _projection_monitor,
                     "player_prop_monitor": _player_prop_monitor,
                     "maintenance_catchup": _maintenance_catchup,
+                    "model_release": runtime_release_status(),
                 })
             elif parsed.path == "/model":
                 with open(MODEL_REPORT, "r", encoding="utf-8") as handle:
@@ -4814,6 +4831,7 @@ class Handler(BaseHTTPRequestHandler):
                 except (OSError, json.JSONDecodeError):
                     report["player_props_model"] = None
                 report["maintenance"] = maintenance_status()
+                report["model_release"] = runtime_release_status()
                 self.send_json(report)
             elif parsed.path == "/model/results":
                 prop_types = None
@@ -5003,7 +5021,7 @@ def maintenance_loop():
         return
     while True:
         now = datetime.now().astimezone()
-        hour = max(0, min(23, int(os.getenv("NINTH_MAINTENANCE_HOUR", "3"))))
+        hour = max(0, min(23, int(os.getenv("NINTH_MAINTENANCE_HOUR", "11"))))
         minute = max(0, min(59, int(os.getenv("NINTH_MAINTENANCE_MINUTE", "15"))))
         next_run = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
         if next_run <= now:

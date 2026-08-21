@@ -1,4 +1,4 @@
-import sys
+import os, sys
 from pathlib import Path
 import joblib, numpy as np
 from copy import deepcopy
@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]; sys.path.insert(0, str(ROOT))
 from ml.features import FEATURE_NAMES, apply_result, matchup_features, reset_season_records
 from ml.lineup_talent import FEATURE_NAMES as LINEUP_TALENT_FEATURES, features as lineup_talent_features
 from ml.starter_statcast_experiment import advantages as starter_advantages, summary as starter_statcast_summary
-ARTIFACT = ROOT / "ml" / "artifacts" / "moneyline.joblib"
+ARTIFACT = Path(os.getenv("NINTH_ARTIFACT_DIR", ROOT / "ml" / "artifacts")) / "moneyline.joblib"
 _BUNDLE_CACHE = {"mtime": None, "bundle": None}
 LABELS = {"elo_difference":"long-term team strength", "last_5_win_pct_difference":"last-five form adjustment", "last_10_win_pct_difference":"last-ten form adjustment", "last_20_win_pct_difference":"last-twenty form adjustment", "last_10_run_margin_difference":"recent scoring margin", "last_20_run_margin_difference":"twenty-game scoring margin", "rolling_runs_scored_difference":"rolling offense", "rolling_runs_allowed_advantage":"rolling run prevention", "season_win_pct_difference":"season record", "pythagorean_win_pct_difference":"run-based expected record", "home_away_split_difference":"home/road performance split", "rest_days_difference":"team rest adjustment", "starter_elo_difference":"starter track record", "starter_rest_difference":"starter rest adjustment", "starter_era_difference":"starting-pitcher ERA signal", "starter_whip_difference":"starting-pitcher WHIP signal", "lineup_ops_difference":"lineup composition signal", "bullpen_3day_pitches_difference":"recent bullpen workload signal", "temperature_f":"game-time temperature signal", "wind_speed_mph":"game-time wind signal", "context_available":"pregame context coverage"}
 LABELS.update({"starter_statcast_long_xwoba_advantage":"starter expected contact quality","starter_statcast_long_hard_hit_advantage":"starter hard-hit suppression","starter_statcast_long_barrel_advantage":"starter barrel suppression","starter_statcast_long_whiff_advantage":"starter swing-and-miss ability","starter_statcast_long_kbb_advantage":"starter strikeout-to-walk quality","starter_statcast_long_velocity_advantage":"starter velocity profile","starter_statcast_joint_reliability":"starter Statcast sample reliability","starter_statcast_start_count_difference":"starter history depth"})

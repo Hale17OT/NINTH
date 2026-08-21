@@ -1,0 +1,10 @@
+project_id = "ninth"
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[storage.buckets."ninth-models"]
+public = false
+file_size_limit = "49MiB"
+allowed_mime_types = ["application/octet-stream", "application/gzip", "application/json"]

@@ -1,6 +1,7 @@
 """Production inference for the NINTH market-free total-runs model."""
 from copy import deepcopy
 from pathlib import Path
+import os
 import sys
 
 import joblib
@@ -13,7 +14,7 @@ from ml.lineup_talent import TOTAL_FEATURE_NAMES as LINEUP_TALENT_FEATURE_NAMES,
 from ml.pitching_availability import features as pitching_features, hydrate_state as hydrate_pitching_state
 from ml.totals_features import apply_totals_result, hydrate_totals_state, reset_totals_season, totals_features
 
-ARTIFACT = ROOT / "ml" / "artifacts" / "totals.joblib"
+ARTIFACT = Path(os.getenv("NINTH_ARTIFACT_DIR", ROOT / "ml" / "artifacts")) / "totals.joblib"
 _CACHE = {"mtime": None, "bundle": None}
 LABELS = {
     "league_recent_runs": "recent MLB scoring environment", "home_offense_20": "home offense",
