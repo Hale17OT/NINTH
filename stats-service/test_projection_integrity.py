@@ -1681,6 +1681,18 @@ class ProjectionIntegrityTests(unittest.TestCase):
         self.assertIsNone(selected["recommended_line"])
         self.assertTrue(any("empirical residuals" in row.get("reason", "") for row in selected["automatic_selection_rejections"]))
 
+    def test_public_stats_mount_is_normalized_without_changing_direct_routes(self):
+        handler = APP.Handler.__new__(APP.Handler)
+        handler.path = "/api/stats/health?verbose=1"
+        mounted = handler.parsed_request()
+        self.assertEqual(mounted.path, "/health")
+        self.assertEqual(mounted.query, "verbose=1")
+
+        handler.path = "/health?verbose=1"
+        direct = handler.parsed_request()
+        self.assertEqual(direct.path, "/health")
+        self.assertEqual(direct.query, "verbose=1")
+
 
 if __name__ == "__main__":
     unittest.main()

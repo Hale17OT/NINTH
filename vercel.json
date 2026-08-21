@@ -18,16 +18,8 @@
     },
     "stats": {
       "root": ".",
-      "runtime": "python",
-      "entrypoint": "api/stats/[...path].py",
-      "functions": {
-        "api/stats/[...path].py": {
-          "memory": 2048,
-          "maxDuration": 300,
-          "includeFiles": "{stats-service/app.py,ml/**/*.py}",
-          "excludeFiles": "{ml/data/**,ml/artifacts/**,ml/releases/**,ml/test_*.py,stats-service/test_*.py,src/**,public/**,server/**,docs/**,scripts/**,output/**,logs/**,node_modules/**,dist/**,**/__pycache__/**,**/*.log}"
-        }
-      }
+      "runtime": "container",
+      "entrypoint": "deploy/vercel-stats/Dockerfile.vercel"
     }
   },
   "rewrites": [

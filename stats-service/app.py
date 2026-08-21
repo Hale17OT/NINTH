@@ -43,7 +43,8 @@ from ml.melbet_history import (
     snapshot as melbet_history_snapshot,
 )
 
-PORT = int(os.getenv("MLB_STATS_PORT", "3002"))
+HOST = os.getenv("MLB_STATS_HOST", "127.0.0.1")
+PORT = int(os.getenv("MLB_STATS_PORT") or os.getenv("PORT") or "3002")
 SLIP_TIMEZONE_OFFSET_HOURS = float(os.getenv("NINTH_SLIP_TIMEZONE_OFFSET_HOURS", "3"))
 _detail_cache = {}
 _projection_board_cache = {}
@@ -4786,6 +4787,16 @@ def pitcher_profile(person, game_datetime=None, current_game_id=None):
 
 
 class Handler(BaseHTTPRequestHandler):
+    def parsed_request(self):
+        """Accept both direct local paths and the public /api/stats mount."""
+        parsed = urlparse(self.path)
+        prefix = "/api/stats"
+        if parsed.path == prefix:
+            return parsed._replace(path="/")
+        if parsed.path.startswith(prefix + "/"):
+            return parsed._replace(path=parsed.path[len(prefix):])
+        return parsed
+
     def send_json(self, payload, status=200):
         body = json.dumps(payload, default=str).encode("utf-8")
         self.send_response(status)
@@ -4796,7 +4807,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
-        parsed = urlparse(self.path)
+        parsed = self.parsed_request()
         query = parse_qs(parsed.query)
         try:
             if parsed.path == "/health":
@@ -4899,7 +4910,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json({"error": "The MLB data provider request failed", "provider": "MLB-StatsAPI"}, 502)
 
     def do_POST(self):
-        parsed = urlparse(self.path)
+        parsed = self.parsed_request()
         try:
             length = int(self.headers.get("Content-Length", "0"))
             payload = json.loads(self.rfile.read(length).decode("utf-8"))
@@ -5045,5 +5056,5 @@ if __name__ == "__main__":
     threading.Thread(target=projection_refresh_loop, name="projection-refresh", daemon=True).start()
     threading.Thread(target=maintenance_loop, name="model-maintenance", daemon=True).start()
     threading.Thread(target=player_prop_archive_loop, name="player-props-archive", daemon=True).start()
-    print(f"MLB Stats provider listening on {PORT}")
-    ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+    print(f"MLB Stats provider listening on {HOST}:{PORT}")
+    ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()

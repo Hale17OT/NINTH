@@ -1,0 +1,21 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    MLB_STATS_HOST=0.0.0.0 \
+    NINTH_ARTIFACT_DIR=/tmp/ninth/artifacts \
+    NINTH_DATA_DIR=/tmp/ninth/data \
+    NINTH_MAINTENANCE_CATCHUP_ENABLED=0 \
+    NINTH_MAINTENANCE_ENABLED=0 \
+    NINTH_MODEL_INFERENCE_THREADS=1
+
+WORKDIR /app
+
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir --disable-pip-version-check -r requirements.txt
+
+COPY ml ./ml
+COPY stats-service ./stats-service
+COPY deploy/vercel-stats/start.py ./deploy/vercel-stats/start.py
+
+CMD ["python", "deploy/vercel-stats/start.py"]
