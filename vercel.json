@@ -19,7 +19,7 @@
     "stats": {
       "root": ".",
       "runtime": "container",
-      "entrypoint": "deploy/vercel-stats/Dockerfile.vercel"
+      "entrypoint": "Dockerfile.stats.vercel"
     }
   },
   "rewrites": [
