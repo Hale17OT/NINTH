@@ -28,6 +28,7 @@ jobs:
           server/src/services/oddsHistoryStore.test.js
           server/src/services/multiSportProvider.test.js
           server/src/services/modelArtifactSigner.test.js
+          server/src/services/mlbStatsProvider.test.js
 
   model-safety:
     runs-on: ubuntu-latest
