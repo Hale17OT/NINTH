@@ -1,0 +1,221 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING_VERIFICATION
+  SUSPENDED
+  DELETED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum UserPlan {
+  FREE
+  PRO
+  PREMIUM
+}
+
+enum AuthProvider {
+  PASSWORD
+  GOOGLE
+}
+
+enum OddsFormat {
+  DECIMAL
+  AMERICAN
+  FRACTIONAL
+}
+
+model User {
+  id                  String                   @id @default(cuid())
+  email               String
+  emailNormalized     String                   @unique
+  displayName         String
+  avatarUrl           String?
+  emailVerifiedAt     DateTime?
+  status              UserStatus               @default(PENDING_VERIFICATION)
+  role                UserRole                 @default(USER)
+  plan                UserPlan                 @default(FREE)
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+  lastLoginAt         DateTime?
+  authAccounts        AuthAccount[]
+  sessions            Session[]
+  verificationTokens  EmailVerificationToken[]
+  passwordResetTokens PasswordResetToken[]
+  preferences         UserPreference?
+  savedPredictions    SavedPrediction[]
+  savedBuilders       SavedBuilder[]
+  savedSlips          SavedSlip[]
+  securityEvents      SecurityEvent[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model AuthAccount {
+  id                String       @id @default(cuid())
+  userId            String
+  provider          AuthProvider
+  providerAccountId String
+  passwordHash      String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id               String   @id @default(cuid())
+  userId           String
+  sessionTokenHash String   @unique
+  expiresAt        DateTime
+  idleExpiresAt    DateTime
+  lastActiveAt     DateTime @default(now())
+  userAgent        String?
+  ipHash           String?
+  createdAt        DateTime @default(now())
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([idleExpiresAt])
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model OAuthState {
+  id           String   @id @default(cuid())
+  stateHash    String   @unique
+  codeVerifier String
+  returnTo     String
+  remember     Boolean  @default(true)
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([expiresAt])
+}
+
+model UserPreference {
+  id                      String     @id @default(cuid())
+  userId                  String     @unique
+  preferredSport          String?
+  preferredLeague         String?
+  oddsFormat              OddsFormat @default(DECIMAL)
+  timezone                String     @default("UTC")
+  notificationPreferences Json       @default("{}")
+  createdAt               DateTime   @default(now())
+  updatedAt               DateTime   @updatedAt
+  user                    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SavedPrediction {
+  id             String   @id @default(cuid())
+  userId         String
+  sport          String
+  league         String?
+  eventId        String
+  predictionType String
+  selection      String
+  probability    Float?
+  modelName      String
+  modelVersion   String
+  generatedAt    DateTime
+  inputSnapshot  Json?
+  output         Json?
+  oddsSnapshot   Json?
+  metadata       Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, eventId])
+}
+
+model SavedBuilder {
+  id            String   @id @default(cuid())
+  userId        String
+  name          String
+  sport         String
+  buildStyle    String?
+  selections    Json
+  configuration Json?
+  modelName     String?
+  modelVersion  String?
+  generatedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model SavedSlip {
+  id         String    @id @default(cuid())
+  userId     String
+  externalId String?
+  provider   String    @default("MELBET")
+  status     String?
+  placedAt   DateTime?
+  odds       Float?
+  stake      Float?
+  payout     Float?
+  selections Json
+  metadata   Json?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, provider, externalId])
+  @@index([userId, createdAt])
+}
+
+model SecurityEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  type      String
+  ipHash    String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([type, createdAt])
+}

@@ -1,8 +1,8 @@
 # NINTH
 
-NINTH is a responsive, market-free MLB decision workspace. It combines official schedules, live scores, standings, rosters, player profiles, matchup context, weather, personal slip tracking, and a transparent moneyline prediction model in one application.
+NINTH is a responsive multi-sport decision workspace with MLB as its mature reference implementation and operational Football, NFL, basketball and esports workspaces. It combines schedules, results, teams, players, matchup context, personal slip tracking and transparent probabilistic models in one application.
 
-The model estimates which team is more likely to win outright. Sportsbook prices and bookmaker odds are intentionally excluded from production training and inference. NINTH is decision-support software, not a guarantee of results.
+Model probabilities remain separate from sportsbook prices. Prices are excluded from model features, normalized into no-vig market probabilities where paired outcomes exist, and used only for filtering, fair-odds comparison and explicitly labelled betting audits. NINTH is decision-support software, not a guarantee of results.
 
 ## Contents
 
@@ -48,6 +48,9 @@ NINTH currently provides:
 - Personal PDF slip import, matching, result tracking, alerts, pagination, and chronological archives.
 - A Model Lab exposing walk-forward evaluation, selective accuracy, feature groups, parlay hit rates, and dated/paginated completed records for all three model families.
 - Light and dark themes, responsive layouts, custom selects and calendars, loading states, empty states, and recoverable provider errors.
+- Football competition workspaces covering the European top five leagues, Championship, UEFA competitions and supported domestic cups, with a four-day active builder window and complete Home/Draw/Away score-distribution forecasts.
+- An NFL week-based builder with separate moneyline, spread and total distributions, expected score, current-line probabilities, fair odds, no-vig comparisons and independent evidence gates.
+- An all-sports builder that retains sport-native model identity and permits only one independent selection per event.
 
 No placeholder games, simulated prices, fake players, or mock projections are intentionally displayed. Missing provider data is represented as pending, unavailable, or unconfirmed.
 
@@ -89,6 +92,7 @@ The Vite development server proxies `/api` to Express. Express then communicates
 - Pinia
 - Vite
 - Chart.js and vue-chartjs
+- Motion for Vue (`motion-v`)
 - Lucide icons
 - Custom responsive CSS with light and dark design tokens
 
@@ -123,6 +127,9 @@ The Vite development server proxies `/api` to Express. Express then communicates
 | Pitch-level starter history | [Baseball Savant](https://baseballsavant.mlb.com/) | Collected as compact prior-game aggregates; raw pitch downloads are discarded |
 | Optional sportsbook adapter | [The Odds API](https://the-odds-api.com/) | Not used by the production model; no simulated odds are shown without a key |
 | Currently listed builder markets | MelBet line feed | Event IDs, totals thresholds, player-prop thresholds, and decimal odds try `mel-bet.et` first and automatically retry through `melbet-322491.top`; odds are display/filter metadata only and never model inputs |
+| Football history | Football-Data.co.uk + StatsBomb Open Data | Top five leagues and Championship; archived prices remain outside features and are retained only for labelled evaluation |
+| Football fixtures and presentation | Fantasy Premier League + TheSportsDB | Current fixtures, clubs, competition presentation and public fallbacks |
+| NFL schedule and advanced history | nflverse | 2018–2025 schedules and point-in-time rolling EPA, success, explosive, pressure and play-volume aggregates |
 
 The health endpoint includes `syntheticData: false` so provider status can be audited directly.
 
@@ -209,7 +216,8 @@ The Node process reads `.env` from the project root through `dotenv`. The Python
 | `NINTH_MELBET_MAX_BACKOFF_SECONDS` | `1800` | Maximum MelBet failure backoff |
 | `NINTH_SLIP_TIMEZONE_OFFSET_HOURS` | `3` | Time-zone offset used to interpret printed slip timestamps |
 | `NINTH_MAINTENANCE_ENABLED` | `1` | Enable guarded model/data maintenance checks |
-| `NINTH_MAINTENANCE_HOUR` / `NINTH_MAINTENANCE_MINUTE` | `3` / `15` | Local nightly maintenance time; maintenance does not run at startup |
+| `NINTH_MAINTENANCE_HOUR` / `NINTH_MAINTENANCE_MINUTE` | `3` / `15` | Local nightly full-maintenance time; startup only runs lightweight missed-result settlement when that window was missed |
+| `NINTH_MAINTENANCE_CATCHUP_ENABLED` | `1` | Settle missed player-prop and deployment audits after a post-window startup without collection or retraining |
 | `NINTH_READINESS_HOUR` / `NINTH_READINESS_MINUTE` | `3` / `45` | Local nightly NFL/Football readiness refresh time; results under six hours old are skipped |
 | `NINTH_ENRICH_WORKERS` | `6` | Worker count for scheduled context enrichment |
 | `NINTH_RETRAIN_GAME_THRESHOLD` | `100` | Retrain after this many new completed games |
@@ -311,9 +319,38 @@ python -m ml.maintenance --once
 
 # Inspect maintenance without changing data or artifacts
 python -m ml.maintenance --once --dry-run
+
+# Collect the mandatory Football and NFL historical windows
+python -m ml.multisport.collect_football_open --start-season 2018 --end-season 2025
+python -m ml.multisport.collect_nfl_open --start-season 2018 --advanced-start 2018
+
+# Train the fixed-window binary and coherent score-distribution models
+python -m ml.multisport.backfill --sports football
+python -m ml.multisport.backfill --sports american-football
+
+# Regenerate the complete two-season scorecard and immutable model registry
+python -m ml.multisport.model_report
+
+# Refresh exact-event forecasts from the frozen evaluated artifacts
+python -m ml.multisport.predict_football_open
+python -m ml.multisport.predict_nfl_open
 ```
 
 Large collection jobs are resumable where manifests are available. Review provider load and rate limits before increasing worker counts.
+
+### Football and NFL evaluation contract
+
+Football development is fixed to 2018/19–2023/24; 2024/25 and 2025/26 are separate untouched holdouts. NFL development is fixed to 2018–2023; 2024 and 2025 are separate untouched holdouts. Development selection and calibration use expanding-season folds. Holdouts are excluded from fitting, feature selection, algorithm choice and threshold selection.
+
+COVID-era Football seasons are retained. Across the six collected development leagues, the 2020/21 home-goal advantage was 0.162 goals per match versus 0.281 across the adjacent 2019/20 and 2021/22 seasons. This diagnostic is reported in the consolidated model report; it was not used to retune models after viewing the holdouts.
+
+Actual trained artifacts live under `ml/artifacts/multisport/<sport>/`. The consolidated scorecard is `ml/artifacts/multisport/football_nfl_model_report.json` (plus its Markdown companion), and `ml/artifacts/multisport/model_registry.json` binds sport, market, model family, artifact version, feature version, dataset version, training window, holdouts and evidence decision. Immutable current predictions and pre-event audit ledgers live under `ml/data/multisport/<sport>/`.
+
+Archived opening/closing prices are never model features. Because exact prediction-time historical odds are not present, ROI is explicitly labelled as a closing-line audit and CLV remains null. No missing price, event, participant or market is replaced with a guessed value.
+
+### Odds providers and canonical markets
+
+`server/src/services/oddsProvider.js` implements a common provider contract for The Odds API and MelBet. MelBet uses explicit competition mappings, primary/fallback hosts, bounded retries, caching and dynamic market discovery; unmapped competitions fail closed. Provider labels are converted to canonical market identities in `server/src/domain/markets.js`. `oddsHistoryStore.js` persists deduplicated, append-only timestamped snapshots directly from successfully mapped MelBet discovery results, while `entityResolver.js` refuses ambiguous team/player joins.
 
 ## Application pages
 
@@ -943,9 +980,13 @@ Notable additions since the initial release include `melbet-helper/`; `src/compo
 
 Generated logs, temporary images, `node_modules/`, `dist/`, ML data, and model artifacts should not be committed.
 
+## Accounts and PostgreSQL
+
+Production-style accounts, Google OAuth integration, server-managed sessions, preferences, and user-owned saved content are documented in [`docs/authentication.md`](docs/authentication.md). Keep all credentials in the ignored `.env` or a deployment secret store.
+
 ## Known limitations
 
-- This is currently a single-user application with no database or authentication.
+- Google Sign-In and email delivery require their deployment credentials before they become live; password accounts and PostgreSQL persistence work locally without those external providers.
 - The supported slip parser is specific to text-based MelBet-style PDFs.
 - MelBet exposes only a short current market window and can change or remove listed lines at any time.
 - The optional helper depends on MelBet's current DOM/canvas layout. Exact validation deliberately stops the handoff when that layout or a line changes.

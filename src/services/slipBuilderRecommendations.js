@@ -3,6 +3,13 @@ function totalsExposureKey(candidate) {
   return option.market === "totals" ? `${option.side}:${Number(option.line)}` : null;
 }
 
+export function moneylineBuilderProbability(game) {
+  const adjusted = Number(game?.moneyline_builder_probability);
+  return Number.isFinite(adjusted)
+    ? adjusted
+    : Number(game?.recommended_probability || 0);
+}
+
 function permitsTotalsExposure(selected, candidate, maximum, excludedIndex = -1) {
   const key = totalsExposureKey(candidate);
   if (!key) return true;

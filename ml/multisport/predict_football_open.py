@@ -1,7 +1,8 @@
-"""Generate free-source Football shadow forecasts for current fixtures."""
+"""Generate free-source Football forecasts for current fixtures."""
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import time
@@ -22,7 +23,8 @@ from .score_models import dixon_coles_matrix
 SPORTS_DB = "https://www.thesportsdb.com/api/v1/json/123"
 FPL_API = "https://fantasy.premierleague.com/api"
 COMPETITIONS = {
-    "4328": ("E0", "Premier League"), "4335": ("SP1", "La Liga"), "4331": ("D1", "Bundesliga"),
+    "4328": ("E0", "Premier League"), "4329": ("E1", "Championship"),
+    "4335": ("SP1", "La Liga"), "4331": ("D1", "Bundesliga"),
     "4332": ("I1", "Serie A"), "4334": ("F1", "Ligue 1"), "4480": ("UCL", "UEFA Champions League"),
     "4481": ("UEL", "UEFA Europa League"), "5071": ("UECL", "UEFA Conference League"),
     "4482": ("FAC", "FA Cup"), "4570": ("EFL", "EFL Cup"), "4483": ("CDR", "Copa del Rey"),
@@ -56,18 +58,24 @@ def _read_report(path: Path) -> dict:
         return {}
 
 
+def artifact_version(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()[:12]
+
+
 def model_readiness(artifact_dir: Path, live_audit: dict | None = None) -> dict:
     live_audit = live_audit or {}
-    historical = {}
-    for market in ("home_win", "over_2_5", "both_teams_score"):
-        report = _read_report(artifact_dir / f"{market}.json")
-        historical[market] = bool((report.get("historical_readiness") or {}).get("passed"))
+    final_report = _read_report(artifact_dir.parent / "football_nfl_model_report.json")
+    decisions = {
+        market: next((row.get("decision") for row in final_report.get("models", []) if row.get("sport") == "football" and row.get("model_family") == "score_distribution" and row.get("market") == market), "UNAVAILABLE")
+        for market in ("home_win", "over_2_5", "both_teams_score")
+    }
+    historical = {market: decision == "USE" for market, decision in decisions.items()}
     live = live_audit.get("markets") or {}
     eligible = {
         market: bool(historical[market] and (live.get(market) or {}).get("passed"))
         for market in historical
     }
-    return {"historical": historical, "live": live, "automatic_builder_eligible": eligible}
+    return {"historical": historical, "evaluated_decision":decisions, "live": live, "automatic_builder_eligible": eligible}
 
 
 def _fpl_events(now: datetime, horizon_days: int = 21) -> tuple[list[dict], dict[str, dict]]:
@@ -173,6 +181,13 @@ def model_probability(bundle: dict, features: dict) -> float:
     return float(bundle["calibrator"].predict([raw])[0])
 
 
+def score_distribution(bundle: dict, features: dict) -> tuple[float, float, dict]:
+    row = np.asarray([[features.get(name, np.nan) for name in bundle["features"]]], dtype=float)
+    home_xg = max(.08, float(bundle["models"]["home_goals"].predict(row)[0]))
+    away_xg = max(.08, float(bundle["models"]["away_goals"].predict(row)[0]))
+    return home_xg, away_xg, dixon_coles_matrix(home_xg, away_xg)
+
+
 def consistency_blend(trained: float | None, structural: float, trained_weight: float = .25) -> float:
     """Keep a discriminative candidate subordinate to the joint score model."""
     if trained is None or not math.isfinite(trained):
@@ -213,7 +228,8 @@ def refresh_live_audit(
             "generated_at": prediction["generated_at"], "competition": prediction.get("competition"),
             "competition_code": prediction.get("competition_code"),
             "home_team": prediction["home_team"], "away_team": prediction["away_team"],
-            "markets": prediction["markets"],
+            "markets": prediction["markets"], "model_version": prediction.get("model_version"),
+            "feature_version": prediction.get("feature_version"),
         })
     ledger_path.parent.mkdir(parents=True, exist_ok=True)
     ledger_path.write_text(
@@ -240,7 +256,10 @@ def refresh_live_audit(
     markets = {}
     for market, values in scored.items():
         report = _read_report(artifact_dir / f"{market}.json")
-        baseline = float((report.get("untouched_climatology") or {}).get("brier") or .25)
+        baseline = float(
+            (report.get("holdout_results", {}).get("combined", {}).get("baseline") or {}).get("brier")
+            or (report.get("untouched_climatology") or {}).get("brier") or .25
+        )
         brier = sum((probability - actual) ** 2 for probability, actual in values) / len(values) if values else None
         markets[market] = {
             "samples": len(values), "brier": brier, "baseline_brier": baseline,
@@ -269,7 +288,12 @@ def forecast(raw_path: Path, artifact_dir: Path, now: datetime | None = None, li
             "FTHG": str(result["home_score"]), "FTAG": str(result["away_score"]),
         })
     _, states = build_ledgers_and_states(rows, load_statsbomb(raw_path.parent / "statsbomb_team_games.json"))
-    bundles = {path.stem: joblib.load(path) for path in artifact_dir.glob("*.joblib")}
+    bundles = {
+        path.stem: joblib.load(path) for path in artifact_dir.glob("*.joblib")
+        if path.stem in {"home_win", "over_2_5", "both_teams_score"}
+    }
+    score_bundle = joblib.load(artifact_dir / "score_distribution.joblib")
+    score_version = artifact_version(artifact_dir / "score_distribution.joblib")
     readiness = model_readiness(artifact_dir, live_audit)
     predictions = []
     for fixture in fixtures:
@@ -286,16 +310,8 @@ def forecast(raw_path: Path, artifact_dir: Path, now: datetime | None = None, li
             at = parse_date(fixture["event_time"][:10])
         features = feature_row(home, away, at)
         trained = {market: model_probability(bundle, features) for market, bundle in bundles.items()}
-        raw_home_xg = .55 * features["home_goals_for_10"] + .45 * features["away_goals_against_10"] + .12
-        raw_away_xg = .55 * features["away_goals_for_10"] + .45 * features["home_goals_against_10"]
-        home_xg = max(.35, min(2.8, .68 * raw_home_xg + .32 * 1.45))
-        away_xg = max(.30, min(2.5, .68 * raw_away_xg + .32 * 1.15))
-        score = dixon_coles_matrix(home_xg, away_xg)
-        home_probability = consistency_blend(trained.get("home_win"), score["home_win"])
-        remaining = max(0.0, 1 - home_probability)
-        away_draw_mass = score["away_win"] + score["draw"]
-        draw_probability = remaining * score["draw"] / away_draw_mass if away_draw_mass else remaining / 2
-        away_probability = remaining - draw_probability
+        home_xg, away_xg, score = score_distribution(score_bundle, features)
+        home_probability, draw_probability, away_probability = score["home_win"], score["draw"], score["away_win"]
         likely_scores = sorted(score["matrix"].items(), key=lambda item: item[1], reverse=True)[:3]
         eligibility = readiness["automatic_builder_eligible"]
         audited_scope = fixture["competition_code"] in LEAGUES
@@ -309,14 +325,27 @@ def forecast(raw_path: Path, artifact_dir: Path, now: datetime | None = None, li
             "expected_goals": {"home": home_xg, "away": away_xg, "total": home_xg + away_xg},
             "markets": {
                 "home_win": home_probability, "draw": draw_probability, "away_win": away_probability,
-                "over_2_5": consistency_blend(trained.get("over_2_5"), score["over_2_5"]),
-                "under_2_5": 1 - consistency_blend(trained.get("over_2_5"), score["over_2_5"]),
-                "both_teams_score": consistency_blend(trained.get("both_teams_score"), score["both_teams_score"]),
+                "over_2_5": score["over_2_5"], "under_2_5": score["under_2_5"],
+                "both_teams_score": score["both_teams_score"],
             },
             "likely_scores": [{"score": value, "probability": probability} for value, probability in likely_scores],
             "market_eligibility": market_eligibility,
-            "status": "production_eligible" if any(market_eligibility.values()) else "shadow_only",
+            "status": "builder_eligible" if any(market_eligibility.values()) else "model_forecast",
             "builder_eligible": any(market_eligibility.values()), "readiness": readiness,
+            "model_consensus": {
+                market: (trained.get(market, .5) >= .5) == (score[market] >= .5)
+                for market in ("home_win", "over_2_5", "both_teams_score")
+            },
+            "model": "Coherent score distribution",
+            "model_version": score_version,
+            "feature_version": hashlib.sha256("|".join(score_bundle["features"]).encode()).hexdigest()[:12],
+            "fair_odds": {
+                "home_win": round(1 / home_probability, 3), "draw": round(1 / draw_probability, 3),
+                "away_win": round(1 / away_probability, 3), "over_2_5": round(1 / score["over_2_5"], 3),
+                "under_2_5": round(1 / score["under_2_5"], 3),
+                "both_teams_score": round(1 / score["both_teams_score"], 3),
+            },
+            "market_analysis": {"state": "no_edge_data", "reason": "No current matched price snapshot is attached to this fixture."},
             "source": "Football-Data.co.uk + Fantasy Premier League + TheSportsDB public feeds",
         })
     return {"generated_at": now.isoformat(), "count": len(predictions), "readiness": readiness, "predictions": predictions}, completed
@@ -344,11 +373,11 @@ def main() -> None:
             "both_teams_score": audited_scope and eligibility["both_teams_score"],
         })
         prediction["builder_eligible"] = any(prediction["market_eligibility"].values())
-        prediction["status"] = "production_eligible" if prediction["builder_eligible"] else "shadow_only"
+        prediction["status"] = "builder_eligible" if prediction["builder_eligible"] else "model_forecast"
         prediction["readiness"] = result["readiness"]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2), encoding="utf-8")
-    print(json.dumps({"status": "shadow_predictions_refreshed", "count": result["count"]}, indent=2))
+    print(json.dumps({"status": "predictions_refreshed", "count": result["count"]}, indent=2))
 
 
 if __name__ == "__main__":

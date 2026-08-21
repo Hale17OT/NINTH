@@ -6,6 +6,7 @@ import {
   guaranteeOddsFloor,
   guaranteeRobustProbability,
   isExactGuaranteePick,
+  rankGuaranteeCandidates,
   selectGuaranteeCandidates,
 } from "./playerPropGuaranteeRecommendations.js";
 
@@ -74,4 +75,43 @@ test("selection keeps one leg per game and enforces build-style market-side caps
   const candidates = buildGuaranteeCandidates(games, records, { minimumOdds: "all" });
   assert.equal(selectGuaranteeCandidates(candidates, 4, { sweep: true }).length, 2);
   assert.equal(selectGuaranteeCandidates(candidates, 4, { sweep: false }).length, 3);
+});
+
+test("Guarantee ranking requires today's reranker support", () => {
+  const candidateGame = game(1, 1.3);
+  const matching = { ...record, player_id: 8 };
+  const candidates = buildGuaranteeCandidates([candidateGame], [matching], { minimumOdds: "all" });
+  candidates[0].player.lineup_status = "projected";
+  candidates[0].player.opponent_starter_id = null;
+  candidates[0].sportsbookProbability = .25;
+
+  assert.equal(rankGuaranteeCandidates(candidates, {}, { minimumSupportProbability: .6 }).length, 0);
+});
+
+test("independent Guarantee rotation excludes prior exact legs and abstains", () => {
+  const games = [1, 2, 3].map(id => game(id));
+  const records = games.map(row => ({ ...record, player_id: row.players[0].player_id }));
+  const candidates = buildGuaranteeCandidates(games, records, { minimumOdds: "all" });
+  const first = selectGuaranteeCandidates(candidates, 2, { sweep: true });
+  const prior = new Set(first.map(candidate => [
+    candidate.game.game_id,
+    candidate.player.player_id,
+    candidate.prop.prop,
+    candidate.side,
+    Number(candidate.line.line),
+  ].join(":")));
+  const second = selectGuaranteeCandidates(candidates, 2, {
+    sweep: true,
+    priorExposureKeys: prior,
+    avoidPriorExposure: true,
+  });
+
+  assert.equal(second.length, 1);
+  assert.ok(!prior.has([
+    second[0].game.game_id,
+    second[0].player.player_id,
+    second[0].prop.prop,
+    second[0].side,
+    Number(second[0].line.line),
+  ].join(":")));
 });

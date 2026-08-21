@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: ninth-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ninth
+      POSTGRES_USER: ninth
+      POSTGRES_PASSWORD: ninth_local_dev_only
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - ninth-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ninth -d ninth"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  ninth-postgres-data:

@@ -9,6 +9,7 @@ import { createSharedPoller } from './services/polling'
 const store = useAppStore()
 const route = useRoute()
 const isBaseball = computed(() => route.meta?.sport === 'baseball')
+const pageLayout = computed(() => route.meta?.authLayout ? 'div' : AppLayout)
 const reduced = useReducedMotion()
 let dashboardPoller
 
@@ -26,13 +27,13 @@ onBeforeUnmount(() => dashboardPoller?.stop())
 
 <template>
   <MotionConfig :transition="{ duration: .32, ease: [.16, 1, .3, 1] }" reduced-motion="user">
-  <AppLayout>
-    <div v-if="isBaseball && store.error" class="provider-error panel">
+  <component :is="pageLayout" :class="{'auth-layout-root':route.meta?.authLayout}">
+    <div v-if="!route.meta?.authLayout && isBaseball && store.error" class="provider-error panel">
       <span>OFFICIAL DATA PROVIDER UNAVAILABLE</span>
       <p>{{ store.error }}</p>
       <button @click="store.load(true)">RETRY CONNECTION</button>
     </div>
-    <div v-if="isBaseball && store.syncError" class="sync-warning">
+    <div v-if="!route.meta?.authLayout && isBaseball && store.syncError" class="sync-warning">
       <span>LIVE FEED RETRYING · CURRENT PAGE REMAINS AVAILABLE</span>
       <button @click="store.load(true)">RETRY NOW</button>
     </div>
@@ -48,7 +49,7 @@ onBeforeUnmount(() => dashboardPoller?.stop())
         ><component :is="Component" /></motion.div>
       </AnimatePresence>
     </RouterView>
-  </AppLayout>
+  </component>
   </MotionConfig>
 </template>
 

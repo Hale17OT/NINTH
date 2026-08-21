@@ -85,7 +85,7 @@ onMounted(() => store.load())
       <article class="edge-card card-shell">
         <EvidenceBadge :state="strongest?.modelTeam ? 'positive' : 'warning'">STRONGEST AUDITED EDGE</EvidenceBadge>
         <div class="edge-value"><strong>{{strongest?.modelTeam?.abbr || '—'}}</strong><h3>{{percent(strongest?.modelProbability)}}</h3></div>
-        <p>{{strongest?.combinedStandingLabel || 'Waiting for a complete production-grade matchup snapshot.'}}</p>
+        <p>{{strongest?.combinedStandingLabel || 'Waiting for a complete matchup snapshot.'}}</p>
       </article>
       <RouterLink to="/build" class="build-card">
         <BorderTrail/><Layers3/><span class="mono">COMBINED BUILDER</span><h3>One card.<br>Every arena.</h3><p>Join only evidence-eligible outputs while controlling shared exposure.</p><i><ArrowUpRight/></i>
@@ -95,7 +95,7 @@ onMounted(() => store.load())
     <MotionPanel class="analytics-feature" :delay=".06">
       <header><div><EvidenceBadge state="brand">ANALYTICS & INSIGHTS</EvidenceBadge><h2>Sharp evidence.<br><i>Fewer assumptions.</i></h2></div><RouterLink to="/model">Open model lab <ArrowRight/></RouterLink></header>
       <div class="analytics-grid">
-        <article class="metric-story coverage"><span class="mono">01 / CURRENT COVERAGE</span><strong class="mono"><AnimatedNumber :value="gameCount"/></strong><p>MLB events on the current live and upcoming production board.</p><div class="sparkline"><i v-for="height in [28,42,35,58,50,73,64,88]" :key="height" :style="{height:`${height}%`}"></i></div></article>
+        <article class="metric-story coverage"><span class="mono">01 / CURRENT COVERAGE</span><strong class="mono"><AnimatedNumber :value="gameCount"/></strong><p>MLB events on the current live and upcoming board.</p><div class="sparkline"><i v-for="height in [28,42,35,58,50,73,64,88]" :key="height" :style="{height:`${height}%`}"></i></div></article>
         <article class="metric-story calibration"><span class="mono">02 / EVIDENCE STANDARD</span><strong>CALIBRATED</strong><p>Brier quality, Wilson bounds and chronological audits precede builder promotion.</p><div class="rings"><i></i><i></i><i></i><b>9</b></div></article>
         <article class="heatmap"><span class="mono">03 / DECISION TERRAIN</span><div class="heat-grid"><i v-for="n in 48" :key="n" :class="{hot:[8,13,17,18,24,29,37,44].includes(n),warm:[4,9,12,23,30,32,41,46].includes(n)}"></i></div><p>Signal density is visualized only when supported by a real prediction board.</p></article>
       </div>
@@ -108,7 +108,7 @@ onMounted(() => store.load())
           <RouterLink :to="sport.route" :style="{'--sport':sport.accent}">
             <span class="number mono">{{ sport.numeral }}</span>
             <div class="workspace-copy"><small class="mono">{{ sport.eyebrow }}</small><h3>{{ sport.name }}</h3><p>{{sport.description}}</p></div>
-            <em class="mono">{{ sport.status === 'live' ? 'PRODUCTION' : 'RESEARCH LAB' }}</em>
+            <em class="mono">{{ sport.status === 'live' ? 'LIVE ANALYTICS' : 'MODEL LAB' }}</em>
             <img :src="`/media/sports/${sport.id}-hero.png`" alt="" loading="lazy">
             <span class="workspace-arrow"><ArrowUpRight/></span>
           </RouterLink>
@@ -119,7 +119,7 @@ onMounted(() => store.load())
     <AnimatedGroup as="section" class="platform-contract" v-slot="{ item }">
       <motion.article v-bind="item"><Database/><span class="mono">01</span><div><b>Point-in-time data</b><p>Only information available before the event enters a training row.</p></div></motion.article>
       <motion.article v-bind="item"><Binary/><span class="mono">02</span><div><b>Sport-native models</b><p>Possessions, drives, scorelines, maps and innings retain separate engines.</p></div></motion.article>
-      <motion.article v-bind="item"><ShieldCheck/><span class="mono">03</span><div><b>Evidence-gated release</b><p>Research becomes production only after locked chronological and live audits.</p></div></motion.article>
+      <motion.article v-bind="item"><ShieldCheck/><span class="mono">03</span><div><b>Evidence-gated use</b><p>Builder access follows locked chronological and recent performance audits.</p></div></motion.article>
       <motion.article v-bind="item" class="contract-signal"><Sparkles/><span class="mono">09</span><div><b>One decision system</b><p>Every surface shows provenance, confidence and uncertainty without decoration masquerading as evidence.</p></div></motion.article>
     </AnimatedGroup>
   </div>

@@ -46,12 +46,12 @@ onMounted(load)
       <div class="builder-control-bar"><div class="builder-control"><small>EVIDENCE</small><select disabled><option>Chronological audit required</option></select></div><div class="builder-control"><small>TARGET LEGS</small><select disabled><option>5 legs</option></select></div><button class="builder-refresh" :disabled="loading" @click="load"><RefreshCw :class="{spin:loading}"/> REFRESH</button></div>
     </UnifiedBuilderHero>
 
-    <UnifiedBuilderScore :available="false" :selected="0" :target="5" :average="0" title="Automatic NBA card locked" description="The model artifacts exist, but Build Best stays unavailable until predictions are bound to exact game IDs and pass live chronological promotion." detail="No standings-derived favorite or synthetic total is substituted for a missing point-in-time forecast." fourth-label="RELEASE" fourth-value="SHADOW">
+    <UnifiedBuilderScore :available="false" :selected="0" :target="5" :average="0" title="Automatic NBA card locked" description="The model artifacts exist, but Build Best stays unavailable until predictions are bound to exact game IDs and pass recent chronological evaluation." detail="No standings-derived favorite or synthetic total is substituted for a missing point-in-time forecast." fourth-label="EVIDENCE" fourth-value="REQUIRED">
       <template #actions><button class="primary" disabled><LockKeyhole/> BUILD BEST LOCKED</button><button :disabled="loading" @click="load"><RefreshCw :class="{spin:loading}"/> REFRESH BOARD</button></template>
     </UnifiedBuilderScore>
 
     <section class="builder-model-strip">
-      <article v-for="model in models" :key="model.market" :class="{ready:model.promotion?.passed}"><span>{{sentenceCase(model.market)}}</span><b>{{model.promotion?.passed?'AUDIT PASSED':'SHADOW LOCKED'}}</b><small>BRIER {{model.metrics?.brier!=null?Number(model.metrics.brier).toFixed(4):'—'}} · {{String(model.status||'research').toUpperCase()}}</small></article>
+      <article v-for="model in models" :key="model.market" :class="{ready:model.promotion?.passed}"><span>{{sentenceCase(model.market)}}</span><b>{{model.promotion?.passed?'EVIDENCE PASSED':'MORE EVIDENCE REQUIRED'}}</b><small>BRIER {{model.metrics?.brier!=null?Number(model.metrics.brier).toFixed(4):'—'}} · MODEL PERFORMANCE</small></article>
       <article v-if="!models.length"><span>NBA model audit</span><b>ARTIFACT PENDING</b><small>No scored NBA model artifact was returned.</small></article>
     </section>
 
@@ -66,7 +66,7 @@ onMounted(load)
         <div class="builder-matchup"><div class="builder-team"><SportIdentity :identity="game.away" :size="38"/><span><small>AWAY</small><b>{{game.away?.name}}</b></span></div><i class="builder-versus">AT</i><div class="builder-team home"><SportIdentity :identity="game.home" :size="38"/><span><small>HOME</small><b>{{game.home?.name}}</b></span></div></div>
         <div class="builder-market-label">{{marketMode==='moneyline'?'Moneyline':'Total points'}}<span>NBA</span></div>
         <button class="builder-selection" disabled><span><small>EXACT-EVENT FORECAST REQUIRED</small><b>No synthetic selection</b></span><strong>—</strong><LockKeyhole/></button>
-        <footer class="builder-card-footer"><span>{{game.venue||'Venue pending'}}</span><b>SHADOW EVIDENCE ONLY</b></footer>
+        <footer class="builder-card-footer"><span>{{game.venue||'Venue pending'}}</span><b>MODEL FORECAST ONLY</b></footer>
       </motion.article></AnimatePresence></motion.div></LayoutGroup>
     </section>
   </div>

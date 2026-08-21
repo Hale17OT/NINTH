@@ -1,3 +1,10 @@
+import {
+  applyWithinGameReranking,
+  noVigSportsbookProbability,
+  playerPropExposureKey,
+  playerPropPortfolioContextKey,
+} from "./playerPropRecommendations.js";
+
 const numberOrNull = value => Number.isFinite(Number(value)) ? Number(value) : null;
 
 export const DEFAULT_GUARANTEE_ROBUST_FLOOR = 0.6;
@@ -88,7 +95,8 @@ export function buildGuaranteeCandidates(games, records, options = {}) {
         recommendationProbability: historyProbability,
         robustProbability,
         processProbability: robustProbability,
-        sportsbookProbability: 1 / Number(melbetSelection.decimal_odds),
+        sportsbookProbability: noVigSportsbookProbability(line, side)
+          ?? 1 / Number(melbetSelection.decimal_odds),
         melbetSelection,
         guaranteeRecord: record,
         guaranteeScore: recordScore(record, probability),
@@ -103,20 +111,70 @@ export function buildGuaranteeCandidates(games, records, options = {}) {
     || Number(a.melbetSelection.decimal_odds) - Number(b.melbetSelection.decimal_odds));
 }
 
+export function rankGuaranteeCandidates(candidates, policy = {}, options = {}) {
+  const supportFloor = guaranteeRobustFloor(
+    options.minimumSupportProbability ?? DEFAULT_GUARANTEE_ROBUST_FLOOR,
+  );
+  return (candidates || []).map(candidate => {
+    const reranked = applyWithinGameReranking(candidate, policy);
+    // Guarantee needs agreement between its exact historical record, today's
+    // model and the independent within-game support score.  A strong record
+    // cannot rescue a fragile or sportsbook-contradicted alternate by itself.
+    const guaranteeSupportScore = Math.min(
+      Number(candidate.robustProbability || 0),
+      Math.max(0, Number(reranked.shadowRerankScore || 0)),
+    );
+    return {
+      ...reranked,
+      guaranteeSupportScore,
+      guaranteeRankScore: .65 * guaranteeSupportScore + .35 * Number(candidate.guaranteeScore || 0),
+    };
+  }).filter(candidate => candidate.guaranteeSupportScore >= supportFloor)
+    .sort((a, b) => Number(b.guaranteeRankScore) - Number(a.guaranteeRankScore)
+      || Number(b.guaranteeSupportScore) - Number(a.guaranteeSupportScore)
+      || Number(b.guaranteeRecord?.samples || 0) - Number(a.guaranteeRecord?.samples || 0))
+    .map((candidate, index) => ({ ...candidate, candidateRank: index + 1 }));
+}
+
 export function selectGuaranteeCandidates(candidates, target, options = {}) {
   const limit = Math.max(0, Number(target || 0));
   const marketSideCap = options.sweep ? 2 : 3;
+  const priorExposure = options.priorExposureKeys instanceof Set
+    ? options.priorExposureKeys
+    : new Set(options.priorExposureKeys || []);
+  const priorContextExposure = options.priorContextExposureKeys instanceof Set
+    ? options.priorContextExposureKeys
+    : new Set(options.priorContextExposureKeys || []);
+  const avoidPriorExposure = options.avoidPriorExposure === true;
+  const contextPenalty = Number(options.contextReusePenalty ?? .08);
   const selected = [];
   const games = new Set();
   const marketSides = new Map();
-  for (const candidate of candidates || []) {
+  const remaining = (candidates || []).filter(candidate => (
+    !avoidPriorExposure || !priorExposure.has(playerPropExposureKey(candidate))
+  ));
+  while (selected.length < limit) {
+    const eligible = remaining.filter(candidate => {
+      const gameKey = String(candidate.game?.game_id);
+      const marketSideKey = `${candidate.player?.kind}:${candidate.prop?.prop}:${candidate.side}`;
+      return !games.has(gameKey) && Number(marketSides.get(marketSideKey) || 0) < marketSideCap;
+    });
+    if (!eligible.length) break;
+    eligible.sort((a, b) => {
+      const score = candidate => Number(candidate.guaranteeRankScore
+        ?? candidate.guaranteeSupportScore ?? candidate.guaranteeScore ?? 0)
+        - (priorContextExposure.has(playerPropPortfolioContextKey(candidate)) ? contextPenalty : 0);
+      return score(b) - score(a)
+        || Number(b.guaranteeSupportScore ?? b.robustProbability ?? 0)
+          - Number(a.guaranteeSupportScore ?? a.robustProbability ?? 0);
+    });
+    const candidate = eligible[0];
     const gameKey = String(candidate.game?.game_id);
     const marketSideKey = `${candidate.player?.kind}:${candidate.prop?.prop}:${candidate.side}`;
-    if (games.has(gameKey) || Number(marketSides.get(marketSideKey) || 0) >= marketSideCap) continue;
     selected.push({ ...candidate, candidateRank: selected.length + 1, withinGameRank: 1 });
     games.add(gameKey);
     marketSides.set(marketSideKey, Number(marketSides.get(marketSideKey) || 0) + 1);
-    if (selected.length >= limit) break;
+    remaining.splice(remaining.indexOf(candidate), 1);
   }
   return selected;
 }

@@ -29,6 +29,9 @@ class ForwardPlayerPropPolicyTests(unittest.TestCase):
             self.assertTrue(second["reused"])
             self.assertEqual(len(history.read_text(encoding="utf-8").splitlines()), 1)
             self.assertEqual(first["training_through"], "2026-08-07")
+            self.assertFalse(first["reranker_promoted"])
+            self.assertEqual(first["shadow_candidate"]["target_legs"], 3)
+            self.assertEqual(first["shadow_candidate"]["minimum_odds"], 1.3)
 
 
 if __name__ == "__main__":

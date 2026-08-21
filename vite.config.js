@@ -4,6 +4,7 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     port: 5173,
+    allowedHosts: ['hp.snapper-cod.ts.net'],
     proxy: { '/api': 'http://localhost:3001' },
     watch: {
       ignored: [
@@ -15,5 +16,9 @@ export default defineConfig({
       ],
     },
   },
-  preview: { port: 5173, proxy: { '/api': 'http://localhost:3001' } },
+  preview: {
+    port: 5173,
+    allowedHosts: ['hp.snapper-cod.ts.net'],
+    proxy: { '/api': 'http://localhost:3001' },
+  },
 })

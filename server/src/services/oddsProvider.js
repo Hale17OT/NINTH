@@ -1,4 +1,6 @@
 import { cache } from './cache.js'
+import { MarketType, canonicalMarket } from '../domain/markets.js'
+import { oddsHistory } from './oddsHistoryStore.js'
 
 const baseUrl = 'https://api.the-odds-api.com/v4'
 const apiKey = () => process.env.THE_ODDS_API_KEY?.trim()
@@ -55,8 +57,15 @@ function normalizeEvent(event) {
   }
 }
 
-export const oddsProvider = {
-  configured: () => Boolean(apiKey()),
+export class OddsProvider {
+  constructor(name) { this.name = name }
+  configured() { return false }
+  status() { return { provider: this.name, status: this.configured() ? 'configured' : 'unavailable' } }
+}
+
+export class TheOddsApiProvider extends OddsProvider {
+  constructor() { super('The Odds API') }
+  configured() { return Boolean(apiKey()) }
   async mlbOdds() {
     return cache.remember('odds:mlb', 2 * 60_000, async () => {
       const response = await request('/sports/baseball_mlb/odds', {
@@ -64,8 +73,105 @@ export const oddsProvider = {
       })
       return { events: response.data.map(normalizeEvent), quota: response.quota }
     })
-  },
+  }
   status() {
     return { provider: 'The Odds API', status: apiKey() ? 'configured' : 'awaiting-key', region: region(), format: format() }
-  },
+  }
 }
+
+const MELBET_COMPETITIONS = Object.freeze({
+  '4328': { championId: 88637, slug: 'england-premier-league' },
+  '4329': { championId: 105759, slug: 'england-championship' },
+})
+const MELBET_HOSTS = ['https://mel-bet.et', 'https://melbet-322491.top']
+const melbetMarketType = label => {
+  const value = String(label || '').toLowerCase()
+  if (/both teams.*score|btts/.test(value)) return MarketType.BTTS
+  if (/total/.test(value)) return MarketType.TOTAL_GOALS
+  if (/double chance/.test(value)) return MarketType.DOUBLE_CHANCE
+  if (/correct score/.test(value)) return MarketType.CORRECT_SCORE
+  if (/corner/.test(value)) return MarketType.CORNERS
+  if (/card/.test(value)) return MarketType.CARDS
+  if (/1x2|match result|winner/.test(value)) return MarketType.MATCH_WINNER_3WAY
+  return null
+}
+
+export class MelBetOddsProvider extends OddsProvider {
+  constructor({ hosts = MELBET_HOSTS, fetcher = fetch, history = oddsHistory } = {}) {
+    super('MelBet'); this.hosts = hosts; this.fetcher = fetcher; this.history = history
+  }
+  configured() { return true }
+  async request(path, params, usable = value => Boolean(value)) {
+    const errors = []
+    for (const host of this.hosts) {
+      for (let attempt = 0; attempt < 2; attempt += 1) {
+        const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 8000)
+        try {
+          const query = new URLSearchParams(params)
+          const response = await this.fetcher(`${host}${path}?${query}`, { signal: controller.signal, headers: { Accept:'application/json', Referer:`${host}/en/line/football` } })
+          if (!response.ok) throw new Error(`HTTP ${response.status}`)
+          const value = (await response.json()).Value || {}
+          if (!usable(value)) throw new Error('empty market payload')
+          return { value, host, observedAt: new Date().toISOString() }
+        } catch (error) {
+          errors.push(`${host} attempt ${attempt + 1}: ${error.message}`)
+          if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 250))
+        } finally { clearTimeout(timeout) }
+      }
+    }
+    throw new Error(`MelBet unavailable: ${errors.join(' | ')}`)
+  }
+  discoverMarkets(payload, context) {
+    const discovered = (payload?.GE || []).map(group => {
+      const providerLabel = group.GN || group.N || group.Name || `MelBet group ${group.G}`
+      const market = melbetMarketType(providerLabel)
+      return {
+        provider: this.name, providerMarketId: String(group.G || ''), providerLabel,
+        canonicalMarket: market,
+        supported: Boolean(market),
+        selections: flattenMelBetSelections(group.E).map(row => ({
+          providerTypeId: String(row.T || ''), providerLabel: row.N || row.PL?.N || '',
+          line: row.P == null ? null : Number(row.P), price: row.C == null ? null : Number(row.C),
+          canonical: market ? canonicalMarket({ ...context, market, selection: row.N || row.PL?.N, line: row.P }) : null,
+        })),
+      }
+    })
+    if (context?.sport && context?.eventId) {
+      for (const group of discovered) {
+        for (const selection of group.selections) {
+          if (!selection.canonical || !Number.isFinite(selection.price) || selection.price <= 1) continue
+          this.history.record({
+            ...selection.canonical,
+            price: selection.price,
+            provider: this.name,
+            providerMarketId: group.providerMarketId,
+            providerTypeId: selection.providerTypeId,
+          })
+        }
+      }
+    }
+    return discovered
+  }
+  async footballCompetition(competitionId) {
+    const competition = MELBET_COMPETITIONS[String(competitionId)]
+    if (!competition) throw new Error(`MelBet competition ${competitionId} is not mapped and will not be guessed`)
+    const result = await cache.remember(`odds:melbet:football:${competitionId}`, 5 * 60_000, () => this.request(
+      '/service-api/LineFeed/GetChampZip',
+      { sport:1, champ:competition.championId, lng:'en', partner:1 },
+      value => Boolean(value.G),
+    ))
+    return { ...result, competitionId:String(competitionId), championId:competition.championId }
+  }
+  status() { return { provider:this.name, status:'available-with-fallback', competitions:Object.keys(MELBET_COMPETITIONS), freshnessSeconds:300 } }
+}
+
+function flattenMelBetSelections(value) {
+  if (Array.isArray(value)) return value.flatMap(flattenMelBetSelections)
+  if (!value || typeof value !== 'object') return []
+  if ('T' in value) return [value]
+  return Object.values(value).flatMap(flattenMelBetSelections)
+}
+
+export const oddsProvider = new TheOddsApiProvider()
+export const melBetOddsProvider = new MelBetOddsProvider()
+export const oddsProviders = new Map([[oddsProvider.name, oddsProvider], [melBetOddsProvider.name, melBetOddsProvider]])

@@ -13,6 +13,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from ml.player_prop_reranker_shadow_config import candidate_definition
+
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT / "ml" / "artifacts"
@@ -22,6 +24,7 @@ AUDITS = (
     ARTIFACTS / "live_player_prop_audit.json",
     ARTIFACTS / "live_player_prop_build_audit.json",
     ARTIFACTS / "player_props_report.json",
+    ARTIFACTS / "player_prop_reranker_shadow_candidate.json",
 )
 
 
@@ -41,7 +44,8 @@ def freeze(force: bool = False, policy_date: str | None = None) -> dict:
             pass
     hashes = {path.name: digest(path) for path in AUDITS}
     identity = hashlib.sha256(json.dumps({
-        "policy_date": policy_date, "hashes": hashes, "version": "within_game_v1",
+        "policy_date": policy_date, "hashes": hashes,
+        "version": "within_game_v1-shadow-sweep3-odds1.30-probability0.65",
     }, sort_keys=True).encode()).hexdigest()[:16]
     report = {
         "policy_id": f"{policy_date}-within-game-v1-{identity}",
@@ -50,6 +54,7 @@ def freeze(force: bool = False, policy_date: str | None = None) -> dict:
         "training_through": (datetime.fromisoformat(policy_date).date() - timedelta(days=1)).isoformat(),
         "reranker_version": "within_game_v1",
         "reranker_promoted": False,
+        "shadow_candidate": candidate_definition(),
         "line_clearance_ranking_weight": .035,
         "sportsbook_disagreement_ranking_weight": .35,
         "unpaired_price_fragility_penalty": .015,

@@ -33,12 +33,11 @@ def main() -> None:
     selected = set(args.sports.split(","))
     now = datetime.now()
     current_year = now.year
-    current_football_season = current_year if now.month >= 7 else current_year - 1
     if args.refresh_sources and "football" in selected:
-        run(sys.executable, "-m", "ml.multisport.collect_football_statsbomb", "--start-year", str(current_year - args.years), "--end-year", str(current_year))
-        run(sys.executable, "-m", "ml.multisport.collect_football_open", "--start-season", str(current_year - 6), "--end-season", str(current_football_season))
+        run(sys.executable, "-m", "ml.multisport.collect_football_statsbomb", "--start-year", "2018", "--end-year", "2025")
+        run(sys.executable, "-m", "ml.multisport.collect_football_open", "--start-season", "2018", "--end-season", "2025")
     if args.refresh_sources and "american-football" in selected:
-        run(sys.executable, "-m", "ml.multisport.collect_nfl_open", "--start-season", str(current_year - 12), "--advanced-start", str(current_year - args.years))
+        run(sys.executable, "-m", "ml.multisport.collect_nfl_open", "--start-season", "2018", "--advanced-start", "2018")
     if args.refresh_sources and "basketball" in selected:
         run(sys.executable, "-m", "ml.multisport.collect_nba_open", "--start-season", str(current_year - 7), "--end-season", str(current_year))
     if args.refresh_sources and "esports" in selected:
@@ -48,6 +47,10 @@ def main() -> None:
     for sport in selected - {"esports"}:
         for path in (DATA / sport).glob("*.jsonl"):
             if path.name in {"raw_matches.jsonl", "over_total.jsonl", "live_prediction_audit.jsonl", "score.jsonl"}:
+                continue
+            if sport == "american-football" and path.stem != "home_win":
+                # Fixed-line classifiers such as over_44_5 are superseded by the
+                # score distribution's line-aware probability calculation.
                 continue
             ledgers.append((path, sport, path.stem))
     if "esports" in selected:
@@ -65,6 +68,15 @@ def main() -> None:
             "--model-output", str(nfl_score_report.with_suffix(".joblib")),
         )
         reports.append(json.loads(nfl_score_report.read_text(encoding="utf-8")))
+    football_score_ledger = DATA / "football" / "score.jsonl"
+    if "football" in selected and football_score_ledger.exists() and football_score_ledger.stat().st_size:
+        football_score_report = ARTIFACTS / "football" / "score_distribution.json"
+        run(
+            sys.executable, "-m", "ml.multisport.train_football_scores", str(football_score_ledger),
+            "--output", str(football_score_report),
+            "--model-output", str(football_score_report.with_suffix(".joblib")),
+        )
+        reports.append(json.loads(football_score_report.read_text(encoding="utf-8")))
     output = ARTIFACTS / "historical_readiness.json"
     previous = json.loads(output.read_text(encoding="utf-8")) if output.exists() else {"models": []}
     updated_sports = {row["sport"] for row in reports}
@@ -73,10 +85,14 @@ def main() -> None:
         "generated_at": datetime.now(timezone.utc).isoformat(), "odds_independent": True,
         "models": prior_models + [{
             "sport": row["sport"], "market": row["market"],
-            "samples": row.get("historical_walk_forward", {}).get("samples", 0),
-            "brier": row.get("historical_walk_forward", {}).get("candidate", {}).get("brier"),
-            "accuracy": row.get("historical_walk_forward", {}).get("candidate", {}).get("accuracy"),
-            "historical_ready": row.get("historical_readiness", {}).get("passed", False),
+            "samples": row.get("holdout_results", {}).get("sample_size", row.get("historical_walk_forward", {}).get("samples", 0)),
+            "brier": row.get("holdout_results", {}).get("combined", {}).get("candidate", {}).get("brier"),
+            "accuracy": row.get("holdout_results", {}).get("combined", {}).get("candidate", {}).get("accuracy"),
+            "historical_ready": (
+                row.get("historical_readiness", {}).get("passed", False)
+                if isinstance(row.get("historical_readiness"), dict)
+                else False
+            ),
             "production_ready": row.get("promotion", {}).get("passed", False),
         } for row in reports],
     }

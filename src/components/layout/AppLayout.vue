@@ -10,6 +10,7 @@ import TeamLogo from '../team/TeamLogo.vue'
 import PlayerHeadshot from '../player/PlayerHeadshot.vue'
 import SharedIndicator from '../motion/SharedIndicator.vue'
 import ProgressiveBlur from '../motion/ProgressiveBlur.vue'
+import AccountMenu from '../../features/auth/components/AccountMenu.vue'
 
 const store = useAppStore()
 const router = useRouter()
@@ -77,13 +78,14 @@ onBeforeUnmount(() => { clearTimeout(searchTimer); document.removeEventListener(
               </motion.div>
             </AnimatePresence>
           </form>
+          <AccountMenu/>
           <button class="theme-toggle icon-only" type="button" :aria-label="store.theme === 'dark' ? 'Use light theme' : 'Use dark theme'" @click="store.toggleTheme()"><Sun v-if="store.theme==='dark'"/><Moon v-else/></button>
           <button class="sport-menu icon-only" type="button" :aria-expanded="sportOpen" aria-label="Choose sport" @click="sportOpen=!sportOpen"><X v-if="sportOpen"/><Menu v-else/></button>
         </div>
       </div>
 
       <div class="context-row">
-        <div class="workspace-title"><small>{{ activeSport ? activeSport.eyebrow : 'DECISION SYSTEM' }}</small><b>{{ activeSport ? activeSport.name : 'All sports' }}</b><em v-if="activeSport">{{ activeSport.status === 'live' ? 'PRODUCTION' : 'RESEARCH LAB' }}</em></div>
+        <div class="workspace-title"><small>{{ activeSport ? activeSport.eyebrow : 'DECISION SYSTEM' }}</small><b>{{ activeSport ? activeSport.name : 'All sports' }}</b><em v-if="activeSport">{{ activeSport.status === 'live' ? 'LIVE ANALYTICS' : 'MODEL LAB' }}</em></div>
         <nav class="context-nav" :class="{open:navOpen}" aria-label="Workspace navigation"><RouterLink v-for="item in nav" :key="item[1]" :to="item[1]" :class="{active:isNavActive(item[1])}">{{ item[0] }}<SharedIndicator v-if="isNavActive(item[1])" layout-id="context-nav"/></RouterLink></nav>
         <button v-if="nav.length" class="nav-menu icon-only" type="button" :aria-expanded="navOpen" aria-label="Open workspace navigation" @click="navOpen=!navOpen"><X v-if="navOpen"/><Menu v-else/></button>
       </div>

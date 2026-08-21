@@ -25,7 +25,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.base import clone
 
-from .evaluation import binary_metrics, historical_readiness, promotion_decision
+from .evaluation import binary_metrics, closing_line_betting_metrics, historical_readiness, promotion_decision
+from .windows import WINDOWS, partition_fixed_window, window_metadata
 
 
 def parse_time(value: str) -> datetime:
@@ -144,6 +145,152 @@ def historical_walk_forward(rows: list[dict], names: list[str], years: int = 3) 
     }
 
 
+def _fixed_oof(rows: list[dict], names: list[str], sport: str) -> dict:
+    partition = partition_fixed_window(rows, sport)
+    window = partition["window"]
+    x, y = matrix(rows, names), np.asarray([int(row["label"]) for row in rows])
+    indices = {id(row): index for index, row in enumerate(rows)}
+    candidate_predictions = {name: [] for name in candidate_models()}
+    labels, seasons, baselines, folds = [], [], [], []
+    for target_season in window.development[1:]:
+        history_rows = [row for season in window.development if season < target_season for row in partition["by_season"][season]]
+        target_rows = partition["by_season"][target_season]
+        history = np.asarray([indices[id(row)] for row in history_rows], dtype=int)
+        target = np.asarray([indices[id(row)] for row in target_rows], dtype=int)
+        if len(history) < 100 or len(target) < 20 or len(np.unique(y[history])) < 2:
+            continue
+        selected_by_fold = {}
+        for name, candidate in candidate_models().items():
+            model = clone(candidate).fit(x[history], y[history])
+            probability = model.predict_proba(x[target])[:, 1]
+            candidate_predictions[name].extend(float(value) for value in probability)
+            selected_by_fold[name] = binary_metrics(y[target], probability)["brier"]
+        labels.extend(int(value) for value in y[target])
+        baselines.extend([float(y[history].mean())] * len(target))
+        seasons.extend([target_season] * len(target))
+        folds.append({
+            "target_season": window.label(target_season),
+            "training_seasons": [window.label(value) for value in window.development if value < target_season],
+            "train_samples": int(len(history)), "validation_samples": int(len(target)),
+            "candidate_brier": selected_by_fold,
+        })
+    if not labels:
+        raise ValueError(f"{sport} development seasons did not produce chronological folds")
+    candidate_metrics = {
+        name: binary_metrics(labels, values) for name, values in candidate_predictions.items()
+    }
+    selected_name = min(candidate_metrics, key=lambda name: candidate_metrics[name]["brier"])
+    raw_probability = np.asarray(candidate_predictions[selected_name], dtype=float)
+    calibrator = IsotonicRegression(out_of_bounds="clip").fit(raw_probability, labels)
+    calibrated = calibrator.predict(raw_probability)
+    diagnostics = {}
+    for season in sorted(set(seasons)):
+        take = [index for index, value in enumerate(seasons) if value == season]
+        diagnostics[window.label(season)] = {
+            "candidate": binary_metrics([labels[index] for index in take], [calibrated[index] for index in take]),
+            "baseline": binary_metrics([labels[index] for index in take], [baselines[index] for index in take]),
+        }
+    return {
+        "partition": partition, "selected": selected_name, "calibrator": calibrator,
+        "candidate_comparison": candidate_metrics,
+        "candidate": binary_metrics(labels, calibrated),
+        "baseline": binary_metrics(labels, baselines),
+        "diagnostics": diagnostics, "folds": folds,
+    }
+
+
+def train_fixed_window(rows: list[dict], sport: str, market: str, names: list[str], model_output: Path | None) -> dict:
+    oof = _fixed_oof(rows, names, sport)
+    partition, window = oof["partition"], oof["partition"]["window"]
+    x, y = matrix(rows, names), np.asarray([int(row["label"]) for row in rows])
+    indices = {id(row): index for index, row in enumerate(rows)}
+    development_index = np.asarray([indices[id(row)] for row in partition["development"]], dtype=int)
+    model = clone(candidate_models()[oof["selected"]]).fit(x[development_index], y[development_index])
+    holdout_reports, holdout_probabilities, holdout_labels, holdout_rows = {}, [], [], []
+    baseline_probability = float(y[development_index].mean())
+    for season in window.holdout:
+        season_rows = partition["by_season"][season]
+        season_index = np.asarray([indices[id(row)] for row in season_rows], dtype=int)
+        probability = oof["calibrator"].predict(model.predict_proba(x[season_index])[:, 1])
+        candidate = binary_metrics(y[season_index], probability)
+        baseline = binary_metrics(y[season_index], [baseline_probability] * len(season_index))
+        holdout_reports[window.label(season)] = {
+            "candidate": candidate, "baseline": baseline,
+            "closing_line_betting": closing_line_betting_metrics(season_rows, probability, market),
+        }
+        holdout_probabilities.extend(float(value) for value in probability)
+        holdout_labels.extend(int(value) for value in y[season_index])
+        holdout_rows.extend(season_rows)
+    combined_candidate = binary_metrics(holdout_labels, holdout_probabilities)
+    combined_baseline = binary_metrics(holdout_labels, [baseline_probability] * len(holdout_labels))
+    season_skill = [
+        values["baseline"].get("brier", 1) - values["candidate"].get("brier", 1)
+        for values in holdout_reports.values()
+    ]
+    stability = (
+        "stable_across_both_holdouts" if all(value > 0 for value in season_skill)
+        else "mixed_holdout_performance" if any(value > 0 for value in season_skill)
+        else "failed_to_beat_baseline_in_both_holdouts"
+    )
+    readiness = historical_readiness(
+        combined_candidate, combined_baseline,
+        holdout_reports[window.label(window.holdout[-1])]["candidate"],
+        holdout_reports[window.label(window.holdout[-1])]["baseline"],
+    )
+    if model_output is not None:
+        model_output.parent.mkdir(parents=True, exist_ok=True)
+        joblib.dump({
+            "sport": sport, "market": market, "features": names,
+            "model": model, "calibrator": oof["calibrator"],
+            "development_seasons": list(window.development),
+            "holdout_seasons": list(window.holdout),
+            "trained_through": partition["development"][-1]["event_time"],
+            "holdouts_excluded_from_fit": True,
+        }, model_output)
+    return {
+        "sport": sport, "market": market, "status": "evaluation_complete",
+        "method": oof["selected"], "algorithm": oof["selected"], "features": names,
+        "samples": {
+            "all_in_fixed_window": len(partition["development"]) + len(partition["holdout"]),
+            "development": len(partition["development"]), "holdout": len(partition["holdout"]),
+        },
+        **window_metadata(partition),
+        "development_validation": {
+            "method": "expanding-season out-of-fold model selection and calibration",
+            "candidate_comparison": oof["candidate_comparison"],
+            "combined_candidate": oof["candidate"], "combined_baseline": oof["baseline"],
+            "season_by_season": oof["diagnostics"], "folds": oof["folds"],
+        },
+        "holdout_results": {
+            "season_by_season": holdout_reports,
+            "combined": {
+                "candidate": combined_candidate, "baseline": combined_baseline,
+                "closing_line_betting": closing_line_betting_metrics(holdout_rows, holdout_probabilities, market),
+            },
+            "sample_size": len(holdout_labels), "stability_assessment": stability,
+        },
+        "historical_walk_forward": {
+            "samples": len(holdout_labels), "candidate": combined_candidate,
+            "baseline": combined_baseline,
+            "recent_candidate": holdout_reports[window.label(window.holdout[-1])]["candidate"],
+            "recent_baseline": holdout_reports[window.label(window.holdout[-1])]["baseline"],
+            "folds": oof["folds"],
+        },
+        "historical_readiness": readiness,
+        "promotion": {
+            "passed": False,
+            "reason": "Historical evaluation is complete; operational release remains separately gated.",
+        },
+        "calibration": {
+            "type": "isotonic fitted only to development-period out-of-fold predictions",
+            "x": [float(value) for value in oof["calibrator"].X_thresholds_],
+            "y": [float(value) for value in oof["calibrator"].y_thresholds_],
+        },
+        "odds_independent": True,
+        "odds_evaluation": "Archived prices are excluded from features and used only in labelled closing-line audits.",
+    }
+
+
 def train(rows: list[dict], sport: str, market: str, model_output: Path | None = None) -> dict:
     forbidden = ("odds", "price", "market_", "spread_line", "total_line")
     names = sorted({
@@ -152,6 +299,8 @@ def train(rows: list[dict], sport: str, market: str, model_output: Path | None =
     })
     if not names:
         raise ValueError("No numeric features were found")
+    if sport in WINDOWS:
+        return train_fixed_window(rows, sport, market, names, model_output)
     x, y = matrix(rows, names), np.asarray([int(row["label"]) for row in rows])
     train_slice, validation_slice, test_slice = chronological_slices(len(rows))
     candidates = {}
@@ -213,7 +362,12 @@ def main():
     report["dataset_sha256"] = hashlib.sha256(raw).hexdigest()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    print(json.dumps({key: report[key] for key in ("sport", "market", "status", "samples", "untouched_candidate", "promotion")}, indent=2))
+    summary = {key: report.get(key) for key in ("sport", "market", "status", "samples", "promotion")}
+    summary["holdout_candidate"] = (
+        report.get("holdout_results", {}).get("combined", {}).get("candidate")
+        or report.get("untouched_candidate")
+    )
+    print(json.dumps(summary, indent=2))
 
 
 if __name__ == "__main__":

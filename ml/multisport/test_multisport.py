@@ -4,7 +4,12 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from ml.multisport.evaluation import binary_metrics, promotion_decision
+from ml.multisport.evaluation import (
+    binary_metrics,
+    closing_line_betting_metrics,
+    no_vig_probabilities,
+    promotion_decision,
+)
 from ml.multisport.ratings import TimeDecayElo
 from ml.multisport.score_models import dixon_coles_matrix, series_win_probability
 from ml.multisport.train import train
@@ -36,6 +41,19 @@ class MultisportFoundationTests(unittest.TestCase):
         self.assertLess(candidate["brier"], baseline["brier"])
         self.assertFalse(decision["passed"])
         self.assertFalse(decision["checks"]["live_samples"])
+
+    def test_no_vig_and_closing_line_audit_are_explicit(self):
+        no_vig = no_vig_probabilities(2.0, 3.5, 4.0)
+        self.assertAlmostEqual(sum(no_vig), 1.0)
+        rows = [{
+            "label": 1,
+            "competition": "Premier League",
+            "archived_prices": {"closing": {"home": 2.0, "draw": 3.5, "away": 4.0}},
+        }]
+        audit = closing_line_betting_metrics(rows, [.75], "home_win")
+        self.assertEqual(audit["qualifying_bets"], 1)
+        self.assertFalse(audit["odds_at_prediction_available"])
+        self.assertIsNone(audit["clv"])
 
     def test_training_contract_excludes_market_and_odds_features(self):
         start = datetime(2022, 1, 1, tzinfo=timezone.utc)

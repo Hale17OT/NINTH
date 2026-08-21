@@ -35,7 +35,13 @@ from ml.player_props_predict import (
     projected_lineup,
 )
 from ml.slips import load_slips, normalize_team as normalize_slip_team, parse_pdf, placed_at_iso, save_slip
-from ml.melbet_history import save_slip as save_melbet_history_slip, save_slips as save_melbet_history_slips, snapshot as melbet_history_snapshot
+from ml.melbet_history import (
+    analyse_history as analyse_melbet_history,
+    normalize_slip as normalize_melbet_history_slip,
+    save_slip as save_melbet_history_slip,
+    save_slips as save_melbet_history_slips,
+    snapshot as melbet_history_snapshot,
+)
 
 PORT = int(os.getenv("MLB_STATS_PORT", "3002"))
 SLIP_TIMEZONE_OFFSET_HOURS = float(os.getenv("NINTH_SLIP_TIMEZONE_OFFSET_HOURS", "3"))
@@ -115,6 +121,11 @@ _player_prop_monitor = {
     "archived_games": 0,
     "last_error": None,
 }
+_maintenance_catchup_lock = threading.Lock()
+_maintenance_catchup = {
+    "running": False, "target_date": None, "last_started_at": None,
+    "last_finished_at": None, "last_error": None, "last_result": None,
+}
 PROJECTION_LOG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ml", "data", "projection_snapshots.jsonl")
 MODEL_REPORT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ml", "artifacts", "report.json")
 TOTALS_REPORT = os.path.join(os.path.dirname(MODEL_REPORT), "totals_report.json")
@@ -186,6 +197,9 @@ PLAYER_PROPS_REPORT = os.path.join(os.path.dirname(MODEL_REPORT), "player_props_
 LIVE_PLAYER_PROPS_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "live_player_prop_audit.json")
 LIVE_PLAYER_PROP_BUILD_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "live_player_prop_build_audit.json")
 PLAYER_PROP_FORWARD_POLICY = os.path.join(os.path.dirname(MODEL_REPORT), "player_prop_forward_policy.json")
+PLAYER_PROP_RERANKER_SHADOW_AUDIT = os.path.join(
+    os.path.dirname(MODEL_REPORT), "player_prop_reranker_shadow_candidate.json",
+)
 DEPLOYMENT_SELECTION_AUDIT = os.path.join(os.path.dirname(MODEL_REPORT), "deployment_selection_audit.json")
 PLAYER_PROP_PROJECTION_LOG = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -466,6 +480,7 @@ def player_prop_automatic_policy():
         "portfolio_context_reuse_penalty": .08,
         "reranker_version": forward_policy.get("reranker_version") or "within_game_v1",
         "reranker_promoted": bool(forward_policy.get("reranker_promoted", False)),
+        "reranker_shadow_candidate": forward_policy.get("shadow_candidate"),
         "line_clearance_ranking_weight": float(forward_policy.get("line_clearance_ranking_weight") or .035),
         "sportsbook_disagreement_ranking_weight": float(forward_policy.get("sportsbook_disagreement_ranking_weight") or .35),
         "unpaired_price_fragility_penalty": float(forward_policy.get("unpaired_price_fragility_penalty") or .015),
@@ -991,6 +1006,81 @@ def maintenance_status():
             return json.load(handle)
     except (OSError, json.JSONDecodeError):
         return {"status": "not_run"}
+
+
+def missed_nightly_settlement_date(now=None):
+    """Return the missed settlement date after tonight's maintenance window."""
+    now = (now or datetime.now().astimezone()).astimezone()
+    hour = max(0, min(23, int(os.getenv("NINTH_MAINTENANCE_HOUR", "3"))))
+    minute = max(0, min(59, int(os.getenv("NINTH_MAINTENANCE_MINUTE", "15"))))
+    scheduled = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+    if now < scheduled:
+        return None
+    return (now.date() - timedelta(days=1)).isoformat()
+
+
+def lightweight_maintenance_catchup_due(now=None):
+    if os.getenv("NINTH_MAINTENANCE_CATCHUP_ENABLED", "1").lower() in ("0", "false", "no"):
+        return None
+    target = missed_nightly_settlement_date(now)
+    if not target:
+        return None
+    try:
+        with open(PLAYER_PROP_RERANKER_SHADOW_AUDIT, encoding="utf-8") as handle:
+            settled_through = str(json.load(handle).get("through") or "")[:10]
+    except (OSError, json.JSONDecodeError):
+        settled_through = ""
+    return target if settled_through < target else None
+
+
+def queue_lightweight_maintenance_catchup(now=None):
+    """Settle missed results without running collection/retraining at startup."""
+    target = lightweight_maintenance_catchup_due(now)
+    if not target:
+        return False
+    with _maintenance_catchup_lock:
+        if _maintenance_catchup["running"] or _maintenance_catchup["target_date"] == target:
+            return False
+        _maintenance_catchup.update({
+            "running": True, "target_date": target,
+            "last_started_at": datetime.now(timezone.utc).isoformat(),
+            "last_finished_at": None, "last_error": None, "last_result": None,
+        })
+
+    def catch_up():
+        global _prediction_results_cache, _player_prop_results_cache, _player_prop_guarantee_cache
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        outputs = []
+        try:
+            for command, timeout in (
+                ([sys.executable, "-m", "ml.refresh_player_prop_policy", "--through", target, "--workers", "4"], 15 * 60),
+                ([sys.executable, "-m", "ml.evaluate_deployment_selection"], 10 * 60),
+            ):
+                result = subprocess.run(
+                    command, cwd=root, capture_output=True, text=True,
+                    timeout=timeout, check=True,
+                )
+                outputs.append((result.stdout or result.stderr).strip())
+            _prediction_results_cache = None
+            _player_prop_results_cache = None
+            _player_prop_guarantee_cache = None
+            _projection_board_cache.clear()
+            _maintenance_catchup["last_result"] = {
+                "status": "settled", "through": target,
+                "jobs": [value for value in outputs if value],
+            }
+            print(f"[model-maintenance] lightweight catch-up settled through {target}", flush=True)
+        except Exception as exc:
+            _maintenance_catchup["last_error"] = str(exc)
+            print(f"[model-maintenance] lightweight catch-up failed: {exc}", flush=True)
+        finally:
+            _maintenance_catchup.update({
+                "running": False,
+                "last_finished_at": datetime.now(timezone.utc).isoformat(),
+            })
+
+    threading.Thread(target=catch_up, name="model-maintenance-catchup", daemon=True).start()
+    return True
 
 
 def game_summary(game_id):
@@ -3366,6 +3456,8 @@ def board_schedule(start_date, end_date):
                     "game_id": game.get("gamePk"),
                     "game_datetime": game.get("gameDate"),
                     "game_date": day.get("date"),
+                    "doubleheader": game.get("doubleHeader", "N"),
+                    "game_number": int(game.get("gameNumber") or 1),
                     "status": game.get("status", {}).get("detailedState", "Scheduled"),
                     "away_name": away.get("name", "Away"),
                     "home_name": home.get("name", "Home"),
@@ -3455,6 +3547,20 @@ def enqueue_baseline_projections(games):
 
     threading.Thread(target=warm, name="baseline-projection-warmup", daemon=True).start()
     return len(queued)
+
+
+def moneyline_builder_probability(probability, doubleheader="N", game_number=1):
+    """Shrink doubleheader recommendations toward a coin flip for ranking only.
+
+    Same-day rematches have extra lineup, bullpen and availability uncertainty.
+    The model probability remains visible/auditable; this conservative value is
+    used only by automatic builders so a doubleheader cannot look more certain
+    than the evidence supports.
+    """
+    probability = max(0.0, min(1.0, float(probability)))
+    is_doubleheader = str(doubleheader or "N").upper() != "N" or int(game_number or 1) > 1
+    multiplier = .75 if is_doubleheader else 1.0
+    return round(.5 + (probability - .5) * multiplier, 6), multiplier
 
 
 def projection_board(start_date, days=7):
@@ -3553,8 +3659,13 @@ def projection_board(start_date, days=7):
         away_probability = projection["away_win_probability"]
         selected_home = home_probability >= away_probability
         selected_probability = max(home_probability, away_probability)
+        builder_probability, uncertainty_multiplier = moneyline_builder_probability(
+            selected_probability, game.get("doubleheader"), game.get("game_number"),
+        )
         games.append({
             "game_id": int(game["game_id"]), "starts_at": game["game_datetime"],
+            "doubleheader": game.get("doubleheader", "N"),
+            "game_number": int(game.get("game_number") or 1),
             "status": game.get("status", "Scheduled"), "venue": game.get("venue_name") or "Venue TBD",
             "away": {"id": int(game["away_id"]), "name": game.get("away_name"), "abbr": (game.get("away_name") or "AWY")[:3].upper()},
             "home": {"id": int(game["home_id"]), "name": game.get("home_name"), "abbr": (game.get("home_name") or "HME")[:3].upper()},
@@ -3562,6 +3673,8 @@ def projection_board(start_date, days=7):
             "recommended_side": "home" if selected_home else "away",
             "recommended_team_id": int(game["home_id"] if selected_home else game["away_id"]),
             "recommended_probability": selected_probability,
+            "moneyline_builder_probability": builder_probability,
+            "moneyline_uncertainty_multiplier": uncertainty_multiplier,
             "automatic_moneyline_eligible": True,
             "model_confidence": projection.get("confidence_score"),
             "historical_tier": projection.get("historical_tier"),
@@ -3575,7 +3688,9 @@ def projection_board(start_date, days=7):
     # Start slower official personnel/weather work only after the usable board
     # has been built, avoiding resource contention on the initial response.
     enrichment_pending = enqueue_projection_enrichment(context_candidates)
-    recommendation = sorted(games, key=lambda item: item["recommended_probability"], reverse=True)[:5] if len(games) >= 5 else []
+    recommendation = sorted(
+        games, key=lambda item: item["moneyline_builder_probability"], reverse=True,
+    )[:5] if len(games) >= 5 else []
     try:
         with open(MODEL_REPORT, "r", encoding="utf-8") as handle:
             model_report = json.load(handle)
@@ -4673,6 +4788,7 @@ class Handler(BaseHTTPRequestHandler):
                     "status": "ok", "provider": "MLB-StatsAPI", "version": statsapi.__version__,
                     "maintenance": maintenance_status(), "projection_monitor": _projection_monitor,
                     "player_prop_monitor": _player_prop_monitor,
+                    "maintenance_catchup": _maintenance_catchup,
                 })
             elif parsed.path == "/model":
                 with open(MODEL_REPORT, "r", encoding="utf-8") as handle:
@@ -4690,6 +4806,11 @@ class Handler(BaseHTTPRequestHandler):
                             report["player_props_model"]["live_shadow_audit"] = json.load(handle)
                     except (OSError, json.JSONDecodeError):
                         report["player_props_model"]["live_shadow_audit"] = None
+                    try:
+                        with open(PLAYER_PROP_RERANKER_SHADOW_AUDIT, "r", encoding="utf-8") as handle:
+                            report["player_props_model"]["reranker_shadow_candidate"] = json.load(handle)
+                    except (OSError, json.JSONDecodeError):
+                        report["player_props_model"]["reranker_shadow_candidate"] = None
                 except (OSError, json.JSONDecodeError):
                     report["player_props_model"] = None
                 report["maintenance"] = maintenance_status()
@@ -4768,6 +4889,20 @@ class Handler(BaseHTTPRequestHandler):
                 slip = save_slip(parse_pdf(payload["data"], payload.get("filename", "slip.pdf")))
                 queue_slip_refresh()
                 self.send_json(slip, 201)
+            elif parsed.path == "/slips/parse":
+                self.send_json(parse_pdf(payload["data"], payload.get("filename", "slip.pdf")), 200)
+            elif parsed.path == "/alter-ego/normalize":
+                self.send_json(normalize_melbet_history_slip(payload.get("slip") or payload), 200)
+            elif parsed.path == "/alter-ego/normalize-batch":
+                slips = payload.get("slips") or []
+                if not isinstance(slips, list) or not slips or len(slips) > 500:
+                    raise ValueError("MelBet batch import must contain between 1 and 500 slips.")
+                self.send_json({"slips": [normalize_melbet_history_slip(slip) for slip in slips]}, 200)
+            elif parsed.path == "/alter-ego/analyse":
+                slips = payload.get("slips") or []
+                if not isinstance(slips, list) or len(slips) > 5000:
+                    raise ValueError("Alter Ego analysis accepts no more than 5,000 slips.")
+                self.send_json(analyse_melbet_history({"version": 1, "slips": slips}), 200)
             elif parsed.path == "/alter-ego/import":
                 save_melbet_history_slip(payload.get("slip") or payload)
                 self.send_json(melbet_history_snapshot(), 201)
@@ -4888,6 +5023,7 @@ def maintenance_loop():
 
 
 if __name__ == "__main__":
+    queue_lightweight_maintenance_catchup()
     threading.Thread(target=projection_refresh_loop, name="projection-refresh", daemon=True).start()
     threading.Thread(target=maintenance_loop, name="model-maintenance", daemon=True).start()
     threading.Thread(target=player_prop_archive_loop, name="player-props-archive", daemon=True).start()

@@ -13,7 +13,7 @@ const props = defineProps({
   target: { type: Number, default: 0 },
   average: { type: Number, default: 0 },
   fourthLabel: { type: String, default: 'EVIDENCE' },
-  fourthValue: { type: String, default: 'SHADOW' },
+  fourthValue: { type: String, default: 'MODEL' },
 })
 const reduced = useReducedMotion()
 const pct = value => `${(Number(value || 0) * 100).toFixed(1)}%`

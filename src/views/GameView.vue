@@ -16,6 +16,7 @@ import AnimatedNumber from '../components/ui/AnimatedNumber.vue'
 import LoadingState from '../components/ui/LoadingState.vue'
 import LoadError from '../components/ui/LoadError.vue'
 import { createSharedPoller } from '../services/polling'
+import SavePredictionButton from '../features/auth/components/SavePredictionButton.vue'
 
 const route = useRoute()
 const fromBuilder = computed(() => route.query.from === 'builder')
@@ -29,6 +30,20 @@ const actualSide = computed(() => Number(game.value?.home?.score) === Number(gam
 const actualWinner = computed(() => actualSide.value ? game.value?.[actualSide.value] : null)
 const projectedTeam = computed(() => game.value?.projection?.projected_side === 'home' ? game.value?.home : game.value?.away)
 const pickCorrect = computed(() => Boolean(actualSide.value && game.value?.projection?.projected_side === actualSide.value))
+const savableProjection = computed(() => ({
+  sport: 'baseball',
+  league: 'MLB',
+  eventId: String(game.value?.id || route.params.id),
+  predictionType: 'moneyline',
+  selection: projectedTeam.value?.name || '',
+  probability: selectedProbability.value,
+  modelName: game.value?.projection?.model?.name || 'NINTH moneyline',
+  modelVersion: String(game.value?.projection?.model?.version || game.value?.projection?.model?.holdout_season || 'production'),
+  generatedAt: game.value?.contextUpdatedAt || new Date().toISOString(),
+  inputSnapshot: { completeness: game.value?.projection?.input_completeness, projectedSide: projectedSide.value },
+  output: { awayWinProbability: game.value?.projection?.away_win_probability, homeWinProbability: game.value?.projection?.home_win_probability },
+  metadata: { matchup: `${game.value?.away?.name} at ${game.value?.home?.name}`, source: 'matchup' },
+}))
 let poller
 let clockTimer
 let pendingReload = false
@@ -215,7 +230,7 @@ watch(() => route.params.id, () => poller?.trigger())
       <div class="prob"><small>{{ isFinal ? 'FINAL MODEL REVIEW' : 'PROJECTION MONITOR' }}</small><strong class="mono">{{ refreshing ? 'SYNCING' : isFinal ? 'RESULT LOCKED' : 'LIVE INPUTS' }}</strong><p>{{ refreshLabel }}<template v-if="game.contextUpdatedAt"> · checked {{ new Date(game.contextUpdatedAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'}) }}</template></p></div>
     </section>
     <section v-if="game.projection?.available" class="opening-verdict panel">
-      <div class="verdict-pick"><span class="eyebrow">MODEL VERDICT</span><h2>{{ projectedTeam?.name }}</h2><p>Favored by <b>{{ ((selectedProbability-.5)*100).toFixed(1) }} probability points</b> over a neutral matchup.</p><ProbabilityRing :value="selectedProbability" :label="`${projectedTeam?.abbr} win`" :detail="`${game.projection.confidence_label} confidence · ${Math.round(game.projection.input_completeness*100)}% inputs`" :size="178"/></div>
+      <div class="verdict-pick"><span class="eyebrow">MODEL VERDICT</span><h2>{{ projectedTeam?.name }}</h2><p>Favored by <b>{{ ((selectedProbability-.5)*100).toFixed(1) }} probability points</b> over a neutral matchup.</p><ProbabilityRing :value="selectedProbability" :label="`${projectedTeam?.abbr} win`" :detail="`${game.projection.confidence_label} confidence · ${Math.round(game.projection.input_completeness*100)}% inputs`" :size="178"/><SavePredictionButton :prediction="savableProjection"/></div>
       <div class="verdict-score"><span class="eyebrow">EXPECTED GAME SHAPE</span><strong>{{ totals?.expected_total_runs ? `${totals.expected_total_runs.toFixed(1)} runs` : 'Total pending' }}</strong><p>{{ totals?.prediction_interval_80 ? `80% interval ${totals.prediction_interval_80[0]}–${totals.prediction_interval_80[1]}` : 'The exact score distribution is still loading.' }}</p><div><template v-for="side in ['away','home']" :key="side"><RouterLink v-if="starters[side]?.id" :to="`/players/${starters[side].id}`"><PlayerHeadshot :player="starters[side]" :size="48"/><span><small>{{game[side].abbr}} STARTER</small><b>{{starters[side].name}}</b><em>{{starters[side].era??'—'}} ERA · {{starters[side].whip??'—'}} WHIP</em></span></RouterLink></template></div></div>
       <div class="verdict-signals"><article><span>DECISIVE FACTOR</span><b>{{decisiveFactor?.label||'No single dominant signal'}}</b><p v-if="decisiveFactor">Moves the forecast {{reasonImpact(decisiveFactor)}} toward {{reasonTeam(decisiveFactor)?.name}}.</p></article><article class="risk"><span>PRIMARY RISK</span><b>{{primaryRisk?.label||missingInputs[0]||'No tracked counter-signal'}}</b><p v-if="primaryRisk">Currently pushes {{reasonImpact(primaryRisk)}} toward {{reasonTeam(primaryRisk)?.name}}.</p><p v-else>{{missingInputs.length?`${missingInputs.length} live inputs remain unresolved.`:'All tracked inputs are confirmed.'}}</p></article></div>
     </section>

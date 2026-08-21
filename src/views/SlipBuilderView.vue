@@ -16,7 +16,11 @@ import MelbetHandoff from "../components/builder/MelbetHandoff.vue";
 import OddsFloorSelect from "../components/builder/OddsFloorSelect.vue";
 import ProbabilityRing from "../components/charts/ProbabilityRing.vue";
 import { Check, Sparkles, Trash2 } from "lucide-vue-next";
-import { selectMixedCandidates, selectTotalsCandidates } from "../services/slipBuilderRecommendations";
+import {
+  moneylineBuilderProbability,
+  selectMixedCandidates,
+  selectTotalsCandidates,
+} from "../services/slipBuilderRecommendations";
 
 const reduced = useReducedMotion();
 
@@ -195,7 +199,7 @@ const marketOptionsForGame = (game) => {
   const moneyline = oddsEligible(moneylineOddsValue) ? {
     market: "moneyline",
     side: game.recommended_side,
-    probability: Number(game.recommended_probability || 0),
+    probability: moneylineBuilderProbability(game),
     odds: moneylineOddsValue,
   } : null;
   const total = game.totals_projection?.available
@@ -526,7 +530,7 @@ onBeforeUnmount(() => {
           {{ mode === "daily" ? dateLabel(date).toUpperCase() : `${dateLabel(dateRange.start).toUpperCase()} – ${dateLabel(dateRange.end).toUpperCase()}` }}
           · AUTO {{ board.refresh_seconds || 15 }}S</span
         >
-        <p v-if="canRecommend">“Best {{ targetLegs }}” selects exactly {{ targetLegs }} highest-probability games that satisfy {{ minimumOdds === 'all' ? 'the All odds setting' : `minimum MelBet decimal odds of ${minimumOdds}` }}.<template v-if="marketMode === 'combined'"> Mixed cards retain at least one eligible moneyline and one eligible total.</template> Moneyline has no probability cutoff; totals use the held-out production calibration. Odds only control eligibility and never enter either model.</p>
+        <p v-if="canRecommend">“Best {{ targetLegs }}” selects exactly {{ targetLegs }} highest-probability games that satisfy {{ minimumOdds === 'all' ? 'the All odds setting' : `minimum MelBet decimal odds of ${minimumOdds}` }}.<template v-if="marketMode === 'combined'"> Mixed cards retain at least one eligible moneyline and one eligible total.</template> Moneyline has no probability cutoff; totals use the held-out calibration. Odds only control eligibility and never enter either model.</p>
         <p v-else>Only {{ eligibleRecommendationCount }} of {{ targetLegs }} requested games satisfy {{ minimumOdds === 'all' ? 'the automatic-selection policy' : 'the current odds floor and automatic-selection policy' }}. Build Best will select those {{ eligibleRecommendationCount }} instead of doing nothing. Totals remain manual-only when no calibrated or distribution-consistent listed line is available.</p>
       </div>
       <section v-for="group in groupedGames" :key="group[0]" class="day-group">

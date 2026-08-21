@@ -35,7 +35,7 @@ const plans = computed(() => ({
   esports: [
     ['Series engine', 'Separate Valorant, CS2 and League of Legends ratings with chronological time decay'],
     ['Context layer', 'Roster continuity, map or side strength, patch context and conditional pick-ban trees'],
-    ['Markets', 'Live shadow match winners now; map winners, handicaps and totals stay separately gated'],
+    ['Markets', 'Current match-winner probabilities; map winners, handicaps and totals remain separately evidence-gated'],
   ],
 }[active.value.id] || []))
 
@@ -50,11 +50,11 @@ const modelCards = computed(() => status.value?.models?.length
       const audit = hasWalkForward ? report.historical.candidate : report.metrics || {}
       const ready = Boolean(report.historicalReadiness?.passed)
       return {
-        id: `${report.sport}:${report.market}`, state: ready ? 'HISTORICAL READY / LIVE CHECK' : hasWalkForward ? 'THREE-YEAR WALK-FORWARD' : 'CHRONOLOGICAL HOLDOUT', title: `${({ valorant:'Valorant', cs2:'CS2', lol:'League of Legends' }[report.sport] || report.sport)} · ${marketLabel(report.market)}`,
-        description: `${report.method?.replaceAll('_', ' ')} · audited through ${(hasWalkForward ? report.historical?.end : report.timeRange?.training_through)?.slice(0, 10) || '—'}`,
+        id: `${report.sport}:${report.modelFamily||report.modelName||''}:${report.market}`, state: report.decision ? `${report.decision} · TWO-SEASON HOLDOUT` : ready ? 'HISTORICAL READY / LIVE CHECK' : hasWalkForward ? 'THREE-YEAR WALK-FORWARD' : 'CHRONOLOGICAL HOLDOUT', title: `${report.modelName || ({ valorant:'Valorant', cs2:'CS2', lol:'League of Legends' }[report.sport] || report.sport)} · ${marketLabel(report.market)}`,
+        description: `${report.method?.replaceAll('_', ' ')} · development data through ${(hasWalkForward ? report.historical?.end : report.timeRange?.trainingThrough || report.timeRange?.training_through)?.slice(0, 10) || '—'}`,
         brier: decimal(audit.brier), calibration: percent(audit.expected_calibration_error),
         samples: hasWalkForward ? report.historical.samples : report.samples?.untouched_test || 0, sampleLabel: hasWalkForward ? 'WALK-FORWARD N' : 'HOLDOUT N', accuracy: percent(audit.accuracy),
-        passed: ready, oddsIndependent: report.oddsIndependent === true,
+        passed: ready, decision:report.decision, oddsIndependent: report.oddsIndependent === true,
       }
     })
   : plans.value.map(plan => ({ id: plan[0], state: modelState.value, title: plan[0], description: plan[1], brier: '—', calibration: '—', samples: 0, accuracy: '—', passed: false })))
@@ -73,7 +73,7 @@ onMounted(loadStatus)
   <div class="sport-hub" :style="{ '--sport': active.accent }">
     <section class="sport-hero">
       <div class="sport-beam" aria-hidden="true"></div>
-      <div class="sport-copy"><EvidenceBadge state="brand">{{ active.eyebrow }} / NINTH RESEARCH LAB</EvidenceBadge><h1>{{ active.name }}<br><i>intelligence.</i></h1><p>{{ active.description }}</p><div class="lab-state"><i></i> {{ active.id === 'esports' ? 'LIVE DATA · SHADOW MODELS' : 'SHADOW FOUNDATION · NOT YET PRODUCTION ELIGIBLE' }}</div></div>
+      <div class="sport-copy"><EvidenceBadge state="brand">{{ active.eyebrow }} / NINTH MODEL LAB</EvidenceBadge><h1>{{ active.name }}<br><i>intelligence.</i></h1><p>{{ active.description }}</p><div class="lab-state"><i></i> {{ active.id === 'esports' ? 'LIVE DATA · MODEL PROBABILITIES' : 'HISTORICAL EVIDENCE · BUILDER GATES APPLY' }}</div></div>
       <motion.div class="sport-object" :initial="{opacity:0,scale:.86,rotate:-8}" :animate="{opacity:1,scale:1,rotate:0}" :transition="{type:'spring',stiffness:120,damping:19}"><SportVisual :sport="active.id" :accent="active.accent" compact/></motion.div>
       <aside><BorderTrail/><Orbit :size="36"/><span>MODEL STATE</span><b>Evidence before exposure.</b><p>No selection enters the all-sports builder until it beats its sport-specific baseline on untouched chronological data and survives live forward testing.</p></aside>
     </section>
@@ -88,13 +88,13 @@ onMounted(loadStatus)
         </article>
       </section>
       <section class="architecture"><header><span class="eyebrow">SPORT-NATIVE ARCHITECTURE</span><h2>Built around how {{ active.name.toLowerCase() }} is actually played.</h2></header><div><article v-for="(plan,index) in plans" :key="plan[0]"><small>0{{ index + 1 }}</small><Activity/><h3>{{ plan[0] }}</h3><p>{{ plan[1] }}</p></article></div></section>
-      <section class="release-gate"><div><LockKeyhole/><span><small>PRODUCTION CONTRACT</small><b>Locked before it is trusted.</b></span></div><ul><li><CheckCircle2/> Expanding-window, season-separated validation</li><li><CheckCircle2/> Brier, log loss, calibration error and Wilson bounds</li><li><CheckCircle2/> Immutable pre-event prediction ledger and live shadow period</li></ul></section>
+      <section class="release-gate"><div><LockKeyhole/><span><small>EVIDENCE CONTRACT</small><b>Locked before it is trusted.</b></span></div><ul><li><CheckCircle2/> Expanding-window, season-separated validation</li><li><CheckCircle2/> Brier, log loss, calibration error and Wilson bounds</li><li><CheckCircle2/> Immutable pre-event prediction ledger and recent forward record</li></ul></section>
     </template>
 
     <section v-else-if="section === 'models'" class="lab-page">
-      <header><span class="eyebrow">MODEL LAB / LIVE REGISTRY</span><h2>Candidate families and promotion gates.</h2><p>This page reports the actual source and release state. It never invents accuracy metrics before a chronological prediction ledger exists.</p><button class="status-refresh" :disabled="statusLoading" @click="loadStatus"><RefreshCw :class="{spin:statusLoading}"/> REFRESH STATUS</button></header>
+      <header><span class="eyebrow">MODEL LAB / PERFORMANCE</span><h2>Model families and evidence gates.</h2><p>This page reports the actual source and evaluation state. It never invents accuracy metrics before a chronological prediction ledger exists.</p><button class="status-refresh" :disabled="statusLoading" @click="loadStatus"><RefreshCw :class="{spin:statusLoading}"/> REFRESH STATUS</button></header>
       <div v-if="statusError" class="status-error">{{ statusError }}</div>
-      <div class="model-cards"><article v-for="model in modelCards" :key="model.id"><span>{{ model.state }}</span><h3>{{ model.title }}</h3><p>{{ model.description }}</p><dl><div><dt>OOS BRIER</dt><dd>{{ model.brier }}</dd></div><div><dt>CALIBRATION</dt><dd>{{ model.calibration }}</dd></div><div><dt>{{ model.sampleLabel || 'AUDIT N' }}</dt><dd>{{ model.samples }}</dd></div></dl><footer><span>OOS ACCURACY {{ model.accuracy }}<template v-if="model.oddsIndependent"> · NO ODDS</template></span><em>{{ model.passed ? 'LIVE PIPELINE CHECK' : 'SHADOW LOCKED' }}</em></footer></article></div>
+      <div class="model-cards"><article v-for="model in modelCards" :key="model.id"><span>{{ model.state }}</span><h3>{{ model.title }}</h3><p>{{ model.description }}</p><dl><div><dt>OOS BRIER</dt><dd>{{ model.brier }}</dd></div><div><dt>CALIBRATION</dt><dd>{{ model.calibration }}</dd></div><div><dt>{{ model.sampleLabel || 'AUDIT N' }}</dt><dd>{{ model.samples }}</dd></div></dl><footer><span>OOS ACCURACY {{ model.accuracy }}<template v-if="model.oddsIndependent"> · ODDS EXCLUDED FROM FEATURES</template></span><em>{{ model.decision || (model.passed ? 'HISTORICAL EVIDENCE' : 'MORE EVIDENCE REQUIRED') }}</em></footer></article></div>
     </section>
 
     <section v-else class="lab-page sources-page">

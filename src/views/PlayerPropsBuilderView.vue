@@ -21,6 +21,7 @@ import {
   buildGuaranteeCandidates,
   DEFAULT_GUARANTEE_ROBUST_FLOOR,
   guaranteeOddsFloor,
+  rankGuaranteeCandidates,
   selectGuaranteeCandidates,
 } from "../services/playerPropGuaranteeRecommendations";
 import {
@@ -142,7 +143,12 @@ const maxTargetLegs = computed(() => {
   if (propPreset.value === "guarantee") return Math.max(1, selectGuaranteeCandidates(
     allGuaranteeCandidates.value,
     999,
-    { sweep: isSweepMode.value },
+    {
+      sweep: isSweepMode.value,
+      priorExposureKeys: new Set(cardExposureKeys.value),
+      priorContextExposureKeys: new Set(cardExposureContextKeys.value),
+      avoidPriorExposure: portfolioMode.value === "independent",
+    },
   ).length);
   return Math.max(1, (board.value.games || []).filter(game => (game.players || []).some(player => (player.props || []).some(prop => propIncluded(player, prop) && eligibleThresholds(prop).length))).length);
 });
@@ -389,15 +395,15 @@ const allAutomaticCandidates = computed(() => (board.value?.games || []).flatMap
   (a, b) => Number(b.rerankScore) - Number(a.rerankScore)
     || b.robustProbability - a.robustProbability || b.recommendationProbability - a.recommendationProbability,
 ));
-const allGuaranteeCandidates = computed(() => buildGuaranteeCandidates(
-  board.value?.games || [],
-  guaranteePayload.value?.records || [],
-  { minimumOdds: minimumOdds.value, minimumSamples: 3 },
-).map((candidate, index) => ({
-  ...candidate,
-  candidateRank: index + 1,
-  withinGameRank: (index + 1),
-})));
+const allGuaranteeCandidates = computed(() => rankGuaranteeCandidates(
+  buildGuaranteeCandidates(
+    board.value?.games || [],
+    guaranteePayload.value?.records || [],
+    { minimumOdds: minimumOdds.value, minimumSamples: 3 },
+  ),
+  recommendationPolicy.value,
+  { minimumSupportProbability: DEFAULT_GUARANTEE_ROBUST_FLOOR },
+));
 const alternateAutomaticCandidates = computed(() => (board.value?.games || []).flatMap(game => rerankWithinGameCandidates(
   allAutomaticCandidates.value.filter(candidate => String(candidate.game.game_id) === String(game.game_id)).map(candidate => applyBuildSelectionCalibration(
     candidate,
@@ -428,7 +434,12 @@ const automaticCandidates = computed(() => selectDiversifiedCandidates(
 const guaranteeCandidates = computed(() => selectGuaranteeCandidates(
   allGuaranteeCandidates.value,
   Number(targetLegs.value),
-  { sweep: isSweepMode.value },
+  {
+    sweep: isSweepMode.value,
+    priorExposureKeys: new Set(cardExposureKeys.value),
+    priorContextExposureKeys: new Set(cardExposureContextKeys.value),
+    avoidPriorExposure: portfolioMode.value === "independent",
+  },
 ));
 const activeCandidates = computed(() => propPreset.value === "guarantee"
   ? guaranteeCandidates.value
@@ -801,7 +812,7 @@ async function recommend() {
   exposureSlate.value = currentExposureSlate.value;
   if (portfolioMode.value === "independent") {
     marketNotice.value = reused
-      ? `${reused} prior ${reused === 1 ? "leg was" : "legs were"} reused because no independent eligible replacement remained.`
+      ? "Independent Guarantee rotation was stopped because a prior exact leg would have been reused."
       : "Built with no repeated legs from earlier cards in this slate.";
   }
   bulkAlternateKeys.value = [];

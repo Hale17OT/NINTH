@@ -70,6 +70,80 @@ def binary_metrics(y_true: Sequence[int], probabilities: Sequence[float], confid
     }
 
 
+def no_vig_probabilities(*decimal_odds: float | None) -> list[float | None]:
+    if any(value is None or not math.isfinite(float(value)) or float(value) <= 1 for value in decimal_odds):
+        return [None for _ in decimal_odds]
+    implied = [1 / float(value) for value in decimal_odds]
+    margin = sum(implied)
+    return [value / margin for value in implied]
+
+
+def _selection_price(row: dict, market: str, positive: bool) -> tuple[float | None, float | None]:
+    prices = row.get("archived_prices") or {}
+    closing = prices.get("closing") or {}
+    if market == "home_win":
+        # Football's negative class is draw-or-away and is not one bettable
+        # selection. NFL is binary and can safely map it to the away price.
+        if row.get("competition"):
+            home, draw, away = closing.get("home"), closing.get("draw"), closing.get("away")
+            no_vig = no_vig_probabilities(home, draw, away)
+            return (home, no_vig[0]) if positive else (None, None)
+        home, away = closing.get("home"), closing.get("away")
+        no_vig = no_vig_probabilities(home, away)
+        return (home, no_vig[0]) if positive else (away, no_vig[1])
+    if market == "over_2_5":
+        over, under = closing.get("over_2_5"), closing.get("under_2_5")
+        no_vig = no_vig_probabilities(over, under)
+        return (over, no_vig[0]) if positive else (under, no_vig[1])
+    return None, None
+
+
+def closing_line_betting_metrics(rows: Sequence[dict], probabilities: Sequence[float], market: str) -> dict:
+    """Evaluate a declared closing-line zero-edge strategy without inventing prices.
+
+    These results are never labelled as prediction-time ROI or CLV because the
+    source does not provide the exact price timestamp matching knowledge_time.
+    """
+    bets = []
+    for row, probability in zip(rows, probabilities):
+        positive = float(probability) >= .5
+        selected_probability = float(probability) if positive else 1 - float(probability)
+        price, no_vig = _selection_price(row, market, positive)
+        if price is None or no_vig is None:
+            continue
+        edge = selected_probability - float(no_vig)
+        if edge <= 0:
+            continue
+        actual = int(row["label"])
+        won = actual == int(positive)
+        profit = float(price) - 1 if won else -1.0
+        bets.append({"won": won, "price": float(price), "edge": edge, "profit": profit})
+    cumulative = peak = drawdown = 0.0
+    losing = longest_losing = 0
+    for bet in bets:
+        cumulative += bet["profit"]
+        peak = max(peak, cumulative)
+        drawdown = max(drawdown, peak - cumulative)
+        losing = 0 if bet["won"] else losing + 1
+        longest_losing = max(longest_losing, losing)
+    wins = sum(int(bet["won"]) for bet in bets)
+    profit = sum(bet["profit"] for bet in bets)
+    return {
+        "strategy": "closing-line positive model edge; no threshold optimization",
+        "odds_at_prediction_available": False,
+        "qualifying_bets": len(bets), "wins": wins, "losses": len(bets) - wins,
+        "hit_rate": wins / len(bets) if bets else None,
+        "average_market_odds": sum(bet["price"] for bet in bets) / len(bets) if bets else None,
+        "average_estimated_edge": sum(bet["edge"] for bet in bets) / len(bets) if bets else None,
+        "roi": profit / len(bets) if bets else None,
+        "yield": profit / len(bets) if bets else None,
+        "clv": None,
+        "maximum_drawdown_units": drawdown,
+        "longest_losing_streak": longest_losing,
+        "limitation": "Archived closing prices are available, but exact prediction-time prices are not; this is a closing-line strategy audit, not live-simulated ROI or CLV.",
+    }
+
+
 @dataclass(frozen=True)
 class PromotionGate:
     minimum_test_samples: int = 300

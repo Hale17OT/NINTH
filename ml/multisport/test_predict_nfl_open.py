@@ -42,15 +42,16 @@ def test_feature_row_uses_only_pre_event_state():
 
 
 def test_forecast_updates_completed_state_and_emits_future_only(tmp_path):
-    joblib.dump(_bundle(.70), tmp_path / "home_win.joblib")
-    joblib.dump(_score_bundle(), tmp_path / "score.joblib")
-    (tmp_path / "home_win.json").write_text('{"historical_readiness":{"passed":true}}')
-    (tmp_path / "score.json").write_text('{"historical_readiness":{"moneyline":true,"spread":false,"total":false}}')
+    artifacts = tmp_path / "american-football"
+    artifacts.mkdir()
+    joblib.dump(_bundle(.70), artifacts / "home_win.joblib")
+    joblib.dump(_score_bundle(), artifacts / "score.joblib")
+    (tmp_path / "football_nfl_model_report.json").write_text('{"models":[{"sport":"american-football","model_family":"score","market":"moneyline","decision":"USE"},{"sport":"american-football","model_family":"score","market":"spread","decision":"REJECT"},{"sport":"american-football","model_family":"score","market":"total","decision":"REJECT"}]}')
     rows = [
         {"game_id": "old", "gameday": "2026-01-01", "gametime": "12:00", "home_team": "A", "away_team": "B", "home_score": "28", "away_score": "14"},
         {"game_id": "future", "gameday": "2026-09-01", "gametime": "12:00", "home_team": "A", "away_team": "B", "home_score": "", "away_score": "", "total_line": "45.5"},
     ]
-    result = forecast(rows, tmp_path, datetime(2026, 8, 12, tzinfo=timezone.utc))
+    result = forecast(rows, artifacts, datetime(2026, 8, 12, tzinfo=timezone.utc))
     assert result["count"] == 1
     assert result["predictions"][0]["event_id"] == "future"
     assert result["predictions"][0]["markets"]["home_win"] == .63

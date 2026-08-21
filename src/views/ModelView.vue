@@ -183,6 +183,19 @@ const totalsVersion = computed(() => {
 });
 const playerPropsReport = computed(() => report.value?.player_props_model || null);
 const livePropAudit = computed(() => playerPropsReport.value?.live_shadow_audit || null);
+const rerankerShadow = computed(() =>
+  playerPropsReport.value?.reranker_shadow_candidate || null,
+);
+const rerankerHistorical = computed(() =>
+  rerankerShadow.value?.historical_context || {},
+);
+const rerankerArchived = computed(() =>
+  rerankerShadow.value?.all_archived_context || {},
+);
+const metricPercent = (value) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? `${(parsed * 100).toFixed(1)}%` : "—";
+};
 const allPlayerPropModels = computed(() =>
   Object.values(playerPropsReport.value?.models || {}),
 );
@@ -413,17 +426,23 @@ const groups = [
     </section>
     <section v-if="totalsReport" class="totals-audit">
       <header><div><span class="eyebrow">TOTAL RUNS MODEL · {{ totalsVersion }}</span><h2>A full threshold forecast, audited without market prices.</h2><p>The totals model forecasts six run thresholds, selects its architecture on older rolling-origin folds, and reserves 2025–2026 as the final temporal audit.</p></div><strong class="mono">{{ (totalsBrierSkill*100).toFixed(2) }}%<small>BRIER IMPROVEMENT VS PRIOR MODEL</small></strong></header>
-      <div class="totals-metrics"><article><small>UNSEEN BRIER</small><b class="mono">{{ totalsBrier.toFixed(5) }}</b><span>Prior production {{ totalsBaselineBrier.toFixed(5) }}</span></article><article><small>SELECTED-LINE ACCURACY</small><b class="mono">{{ (totalsReport.unseen_recommended.accuracy*100).toFixed(1) }}%</b><span>{{ totalsReport.unseen_recommended.games.toLocaleString() }} unseen games</span></article><article><small>SELECTED-LINE BRIER</small><b class="mono">{{ totalsReport.unseen_recommended.brier_score.toFixed(5) }}</b><span>Mean probability {{ (totalsReport.unseen_recommended.mean_probability*100).toFixed(1) }}%</span></article><article><small>TRAINING GAMES</small><b class="mono">{{ totalsReport.training_games.toLocaleString() }}</b><span>Through {{ totalsReport.trained_through_date }}</span></article></div>
+      <div class="totals-metrics"><article><small>UNSEEN BRIER</small><b class="mono">{{ totalsBrier.toFixed(5) }}</b><span>Prior baseline {{ totalsBaselineBrier.toFixed(5) }}</span></article><article><small>SELECTED-LINE ACCURACY</small><b class="mono">{{ (totalsReport.unseen_recommended.accuracy*100).toFixed(1) }}%</b><span>{{ totalsReport.unseen_recommended.games.toLocaleString() }} unseen games</span></article><article><small>SELECTED-LINE BRIER</small><b class="mono">{{ totalsReport.unseen_recommended.brier_score.toFixed(5) }}</b><span>Mean probability {{ (totalsReport.unseen_recommended.mean_probability*100).toFixed(1) }}%</span></article><article><small>TRAINING GAMES</small><b class="mono">{{ totalsReport.training_games.toLocaleString() }}</b><span>Through {{ totalsReport.trained_through_date }}</span></article></div>
       <div class="line-audit"><span v-for="line in totalsReport.lines" :key="line"><small>OVER / UNDER {{ line }}</small><b class="mono">{{ totalsReport.unseen_2025_2026.per_line[String(line)].toFixed(5) }}</b></span></div>
       <p class="totals-note">A {{ (totalsReport.unseen_recommended.accuracy*100).toFixed(1) }}% selected-line hit rate is not a profitability claim: the model chooses its own run threshold and intentionally has no sportsbook line or price. Mixed-card confidence remains an independence estimate until a separate joint calibration passes its promotion gate.</p>
     </section>
     <section v-if="playerPropsReport" class="props-audit">
       <header><div><span class="eyebrow">PLAYER PROP MODELS · V{{ playerPropsReport.version }}</span><h2>Every threshold earns its probability.</h2><p>Official player-game box scores are replayed chronologically. Models train through 2023, calibrate on 2024, and report the untouched 2025–26 Brier result shown below.</p></div><strong class="mono">{{ (playerPropSkill * 100).toFixed(2) }}%<small>MEAN BRIER SKILL VS LINE CLIMATOLOGY</small></strong></header>
       <div v-if="livePropAudit" class="props-shadow">
-        <article><small>LIVE SHADOW SAMPLE</small><b class="mono">{{ livePropAudit.completed_games }} games</b><span>{{ livePropAudit.selections.toLocaleString() }} exact pregame listed lines</span></article>
+        <article><small>RECENT FORWARD SAMPLE</small><b class="mono">{{ livePropAudit.completed_games }} games</b><span>{{ livePropAudit.selections.toLocaleString() }} exact pregame listed lines</span></article>
         <article><small>ALL LISTED SELECTIONS</small><b class="mono">{{ (livePropAudit.overall.accuracy * 100).toFixed(1) }}%</b><span>Brier {{ livePropAudit.overall.brier.toFixed(3) }}</span></article>
         <article><small>AUDITED 65% FLOOR</small><b class="mono">{{ (livePropAudit.confidence_bands['0.65'].accuracy * 100).toFixed(1) }}%</b><span>{{ (livePropAudit.confidence_bands['0.65'].coverage * 100).toFixed(1) }}% line coverage</span></article>
-        <article><small>ONE PER GAME · NO HR</small><b class="mono">{{ (livePropAudit.automatic_one_per_game_excluding_home_runs['0.65'].accuracy * 100).toFixed(1) }}%</b><span>Small-sample shadow result, not a guarantee</span></article>
+        <article><small>ONE PER GAME · NO HR</small><b class="mono">{{ (livePropAudit.automatic_one_per_game_excluding_home_runs['0.65'].accuracy * 100).toFixed(1) }}%</b><span>Small forward sample, not a guarantee</span></article>
+      </div>
+      <div v-if="rerankerShadow" class="props-shadow reranker-shadow">
+        <article><small>RERANKER EVALUATION LANE</small><b class="mono">3-LEG SWEEP</b><span>1.30+ odds · 65%+ process probability</span></article>
+        <article><small>RECENT HISTORICAL CONTEXT</small><b class="mono">{{ metricPercent(rerankerHistorical.reranker?.leg_accuracy) }}</b><span>Recent baseline {{ metricPercent(rerankerHistorical.baseline?.leg_accuracy) }} · full archive {{ metricPercent(rerankerArchived.reranker?.leg_accuracy) }} vs {{ metricPercent(rerankerArchived.baseline?.leg_accuracy) }}</span></article>
+        <article><small>CLEAN-SWEEP DELTA</small><b class="mono" :class="{ positive: Number(rerankerHistorical.clean_sweep_delta) > 0 }">{{ Number(rerankerHistorical.clean_sweep_delta) > 0 ? '+' : '' }}{{ Number(rerankerHistorical.clean_sweep_delta || 0) }}</b><span>{{ rerankerHistorical.reranker?.clean_cards || 0 }} reranked vs {{ rerankerHistorical.baseline?.clean_cards || 0 }} baseline cards</span></article>
+        <article><small>FORWARD SAMPLE</small><b class="mono">{{ rerankerShadow.promotion_gate?.observed_forward_dates || 0 }}/{{ rerankerShadow.promotion_gate?.minimum_forward_dates || 10 }} dates</b><span>Manual review required</span></article>
       </div>
       <div class="props-table"><article v-for="item in playerPropModels" :key="`${item.kind}:${item.prop}`"><span><small>{{ item.kind.toUpperCase() }}</small><b>{{ item.prop.replaceAll('_', ' ') }}</b></span><span><small>UNSEEN BRIER</small><b class="mono">{{ item.unseen.brier.toFixed(5) }}</b></span><span><small>BASELINE</small><b class="mono">{{ item.climatology.brier.toFixed(5) }}</b></span><span><small>BRIER SKILL</small><b class="mono" :class="{ positive: item.brier_skill_vs_climatology > 0 }">{{ (item.brier_skill_vs_climatology * 100).toFixed(2) }}%</b></span><span><small>60%+ COVERAGE / HIT</small><b class="mono">{{ (item.confidence_60.coverage * 100).toFixed(1) }}% / {{ item.confidence_60.accuracy == null ? '—' : `${(item.confidence_60.accuracy * 100).toFixed(1)}%` }}</b></span></article></div>
       <p class="props-note">Low raw Brier scores for rare outcomes such as home runs and steals are not compared directly with high-frequency props. Brier skill measures each model against its own line-specific baseline; negative skill is a warning, not hidden.</p>
@@ -632,7 +651,7 @@ const groups = [
     <section class="prediction-ledger">
       <header>
         <div>
-          <span class="eyebrow">LIVE DEPLOYMENT RECORD</span>
+          <span class="eyebrow">LIVE MODEL RECORD</span>
           <h2>Finished predictions.</h2>
           <p>
             Only projections archived before first pitch are eligible. Every
@@ -799,7 +818,7 @@ const groups = [
     </section>
     <section class="prediction-ledger props-deployment-ledger">
       <header>
-        <div><span class="eyebrow">LIVE PLAYER-PROP RECORD</span><h2>Finished player-prop predictions.</h2><p>This deployment audit is separate from the 2025–26 training backtest above. Only exact recommendations archived before first pitch are scored.</p></div>
+        <div><span class="eyebrow">LIVE PLAYER-PROP RECORD</span><h2>Finished player-prop predictions.</h2><p>This forward audit is separate from the 2025–26 training backtest above. Only exact recommendations archived before first pitch are scored.</p></div>
         <div class="prop-record-controls"><CustomMultiSelect v-model="finishedPropTypes" label="Prop statistics" placeholder="No prop statistics selected" :options="playerPropOptions"/><div class="ledger-score"><small>RUNNING HIT RATE</small><strong class="mono">{{propsLedger.accuracy===null?'—':`${(propsLedger.accuracy*100).toFixed(1)}%`}}</strong><span>{{propsLedger.correct}} / {{propsLedger.evaluated}} · Brier {{propsLedger.brier_score==null?'—':propsLedger.brier_score.toFixed(3)}}</span></div></div>
       </header>
       <div v-if="propsLedger.prop_breakdown?.length" class="props-deployment-breakdown">
@@ -816,7 +835,7 @@ const groups = [
           <em :class="result.correct?'correct':'missed'">{{result.correct?'CORRECT':'MISSED'}}</em>
         </RouterLink>
       </div>
-      <div v-else class="ledger-empty">The deployment ledger is active. Settled predictions will appear after an archived player-prop slate reaches an official final.</div>
+      <div v-else class="ledger-empty">The prediction ledger is active. Settled predictions will appear after an archived player-prop slate reaches an official final.</div>
       <nav v-if="propsLedger.total_pages>1" class="ledger-pagination" aria-label="Completed player-prop prediction pages">
         <button type="button" :disabled="propsPage===1" @click="changePropsPage(propsPage-1)"><ChevronLeft/></button>
         <button v-for="number in propsPageNumbers" :key="`prop-page-${number}`" type="button" :class="{current:propsPage===number}" @click="changePropsPage(number)">{{number}}</button>
@@ -830,7 +849,7 @@ const groups = [
       <p>
         V4 combines the stable capped-run-margin signal with a conservative
         nonlinear challenger and shrinks measured overconfidence. Recent and
-        live deployment audits remain visible because this is decision support,
+        recent forward audits remain visible because this is decision support,
         not a guarantee.
       </p>
       <a

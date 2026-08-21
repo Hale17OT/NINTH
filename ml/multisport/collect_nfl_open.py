@@ -50,6 +50,13 @@ def _float(value, default=0.0):
         return default
 
 
+def _american_to_decimal(value) -> float | None:
+    price = _float(value, 0.0)
+    if not price:
+        return None
+    return round(1 + (price / 100 if price > 0 else 100 / abs(price)), 6)
+
+
 def _download(url: str, path: Path) -> Path:
     complete = path.with_suffix(path.suffix + ".complete")
     if path.exists() and path.stat().st_size > 1_000_000 and complete.exists():
@@ -129,9 +136,18 @@ def pbp_summaries(seasons: list[int], cache_dir: Path) -> dict[tuple[str, str], 
 
 def advanced_summaries(start: int, end: int, output: Path) -> dict[tuple[str, str], dict]:
     path = output / "nflverse_advanced.json"
-    if not path.exists():
+    payload = None
+    if path.exists():
+        try:
+            cached = json.loads(path.read_text(encoding="utf-8"))
+            cached_start, cached_end = cached.get("seasons", [None, None])
+            if cached_start is not None and int(cached_start) <= start and int(cached_end) >= end:
+                payload = cached
+        except (ValueError, TypeError, OSError):
+            payload = None
+    if payload is None:
         subprocess.run(["node", "ml/multisport/export_nfl_advanced.mjs", str(path), str(start), str(end)], check=True)
-    payload = json.loads(path.read_text(encoding="utf-8"))
+        payload = json.loads(path.read_text(encoding="utf-8"))
     return {(row["game_id"], row["team"]): row for row in payload.get("rows", [])}
 
 
@@ -164,7 +180,25 @@ def build(rows: list[dict], start_season: int, advanced: dict[tuple[str, str], d
             "home_drive_score_10": avg(home.drive_score_rate, .36), "away_drive_score_10": avg(away.drive_score_rate, .36),
             "home_pass_oe_10": avg(home.pass_over_expected, 0.0), "away_pass_oe_10": avg(away.pass_over_expected, 0.0),
         }
-        common = {"event_id": row["game_id"], "event_time": at.isoformat(), "knowledge_time": (at - timedelta(minutes=1)).isoformat(), "home_team": row["home_team"], "away_team": row["away_team"], "features": features}
+        common = {
+            "event_id": row["game_id"], "event_time": at.isoformat(),
+            "knowledge_time": (at - timedelta(minutes=1)).isoformat(),
+            "season": int(row["season"]), "week": row.get("week"),
+            "home_team": row["home_team"], "away_team": row["away_team"],
+            "features": features,
+            "archived_prices": {
+                "provider": "nflverse schedules",
+                "closing": {
+                    "home": _american_to_decimal(row.get("home_moneyline")),
+                    "away": _american_to_decimal(row.get("away_moneyline")),
+                    "over": _american_to_decimal(row.get("over_odds")),
+                    "under": _american_to_decimal(row.get("under_odds")),
+                    "home_spread": _american_to_decimal(row.get("home_spread_odds")),
+                    "away_spread": _american_to_decimal(row.get("away_spread_odds")),
+                },
+                "timestamp_note": "nflverse archived pregame line; exact price timestamp unavailable",
+            },
+        }
         home_score, away_score = int(float(row["home_score"])), int(float(row["away_score"]))
         ledgers["home_win"].append({**common, "label": int(home_score > away_score)})
         ledgers["score"].append({

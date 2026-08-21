@@ -1,4 +1,4 @@
-from ml.multisport.collect_football_open import build_ledgers, devig, parse_date, season_slug
+from ml.multisport.collect_football_open import LEAGUES, build_ledgers, devig, parse_date, season_slug
 from ml.multisport.predict_football_open import consistency_blend
 
 
@@ -24,6 +24,23 @@ def test_features_are_locked_before_result_update():
     assert ledger[0]["knowledge_time"] < ledger[0]["event_time"]
     assert not any("market" in name or "odds" in name for name in ledger[0]["features"])
     assert ledger[1]["features"]["home_shot_share_10"] > .5
+
+
+def test_championship_score_and_archived_prices_are_preserved_outside_features():
+    row = {
+        "Div": "E1", "Date": "01/08/2025", "Time": "15:00",
+        "HomeTeam": "Alpha", "AwayTeam": "Beta", "FTHG": "2", "FTAG": "1",
+        "AvgH": "2.10", "AvgD": "3.20", "AvgA": "3.70",
+        "AvgCH": "2.00", "AvgCD": "3.30", "AvgCA": "3.90",
+        "Avg>2.5": "1.90", "Avg<2.5": "1.95",
+        "AvgC>2.5": "1.85", "AvgC<2.5": "2.00", "NINTHSeason": 2025,
+    }
+    ledgers = build_ledgers([row])
+    assert LEAGUES["E1"] == "Championship"
+    assert ledgers["score"][0]["home_goals"] == 2
+    assert ledgers["score"][0]["season"] == 2025
+    assert ledgers["home_win"][0]["archived_prices"]["closing"]["home"] == 2.0
+    assert "archived_prices" not in ledgers["home_win"][0]["features"]
 
 
 def test_discriminative_extremes_cannot_override_score_distribution():

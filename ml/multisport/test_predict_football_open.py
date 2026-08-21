@@ -18,6 +18,10 @@ class FootballReadinessAuditTests(unittest.TestCase):
                 "historical_readiness": {"passed": True},
                 "untouched_climatology": {"brier": .25},
             }), encoding="utf-8")
+        (self.artifacts.parent / "football_nfl_model_report.json").write_text(json.dumps({"models":[
+            {"sport":"football","model_family":"score_distribution","market":market,"decision":"USE"}
+            for market in ("home_win","over_2_5","both_teams_score")
+        ]}), encoding="utf-8")
 
     def tearDown(self):
         self.temporary.cleanup()

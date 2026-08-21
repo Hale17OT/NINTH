@@ -1,12 +1,31 @@
 const REQUEST_TIMEOUT_MS = 12_000;
 const RETRY_DELAY_MS = 350;
 const inFlight = new Map();
+let csrfToken = "";
+let csrfPromise;
 
 const wait = (milliseconds) =>
   new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
+async function ensureCsrf() {
+  if (csrfToken) return csrfToken;
+  if (!csrfPromise) csrfPromise = fetch("/api/auth/csrf", {
+    credentials: "include",
+    cache: "no-store",
+  }).then(async response => {
+    if (!response.ok) throw new Error("Account security could not be initialized.");
+    const payload = await response.json();
+    csrfToken = payload.csrfToken;
+    return csrfToken;
+  }).finally(() => { csrfPromise = null; });
+  return csrfPromise;
+}
+
 async function fetchOnce(path, options = {}) {
   const { timeoutMs = REQUEST_TIMEOUT_MS, ...fetchOptions } = options;
+  const method = String(fetchOptions.method || "GET").toUpperCase();
+  const headers = new Headers(fetchOptions.headers || {});
+  if (!["GET", "HEAD", "OPTIONS"].includes(method)) headers.set("X-CSRF-Token", await ensureCsrf());
   const controller = new AbortController();
   const timeout = window.setTimeout(
     () => controller.abort(),
@@ -15,6 +34,8 @@ async function fetchOnce(path, options = {}) {
   try {
     const response = await fetch(`/api${path}`, {
       ...fetchOptions,
+      headers,
+      credentials: "include",
       signal: controller.signal,
     });
     const payload = await response.json().catch(() => null);
@@ -23,6 +44,8 @@ async function fetchOnce(path, options = {}) {
         payload?.error || `Official data request failed (${response.status})`,
       );
       error.status = response.status;
+      error.code = payload?.code;
+      error.fields = payload?.fields || {};
       throw error;
     }
     return payload;
@@ -65,6 +88,26 @@ const request = (path, options = {}) => {
 };
 
 export const api = {
+  authConfig: () => request("/auth/config"),
+  authMe: () => request("/auth/me", { timeoutMs: 8000 }),
+  authRegister: payload => request("/auth/register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }),
+  authLogin: payload => request("/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }),
+  authLogout: () => request("/auth/logout", { method: "POST" }),
+  authForgotPassword: email => request("/auth/forgot-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) }),
+  authResetPassword: payload => request("/auth/reset-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }),
+  authVerifyEmail: token => request("/auth/verify-email", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token }) }),
+  authResendVerification: () => request("/auth/resend-verification", { method: "POST" }),
+  authGoogleUrl: (returnTo = "/", remember = true) => request(`/auth/google?${new URLSearchParams({ format: "json", returnTo, remember: remember ? "1" : "0" })}`),
+  account: () => request("/user/account"),
+  updateProfile: payload => request("/user/profile", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }),
+  updatePreferences: payload => request("/user/preferences", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }),
+  changePassword: payload => request("/user/change-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }),
+  accountSessions: () => request("/user/sessions"),
+  revokeSession: id => request(`/user/sessions/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  savedList: type => request(`/saved/${encodeURIComponent(type)}`),
+  savedGet: (type, id) => request(`/saved/${encodeURIComponent(type)}/${encodeURIComponent(id)}`),
+  savedCreate: (type, payload) => request(`/saved/${encodeURIComponent(type)}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }),
+  savedDelete: (type, id) => request(`/saved/${encodeURIComponent(type)}/${encodeURIComponent(id)}`, { method: "DELETE" }),
   sportDirectory: (sport, type, filters = {}) => request(`/multisport/${encodeURIComponent(sport)}/${encodeURIComponent(type)}?${new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([,value]) => value && value !== 'all')))}`, { timeoutMs: 120_000 }),
   sportWorkspace: (sport, scope, id, filters = {}) => request(`/multisport/${encodeURIComponent(sport)}/workspace/${encodeURIComponent(scope)}/${encodeURIComponent(id)}?${new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([,value]) => value && value !== 'all')))}`, { timeoutMs: 120_000 }),
   model: () => request("/model"),

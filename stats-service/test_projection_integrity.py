@@ -98,6 +98,34 @@ class ProjectionIntegrityTests(unittest.TestCase):
             self.assertEqual(cache["refresh_seconds"], 600)
             self.assertGreater(cache["retry_after"], now)
 
+    def test_doubleheader_moneylines_are_shrunk_for_builder_ranking_only(self):
+        adjusted, multiplier = APP.moneyline_builder_probability(.64, "S", 2)
+        ordinary, ordinary_multiplier = APP.moneyline_builder_probability(.64, "N", 1)
+
+        self.assertEqual(adjusted, .605)
+        self.assertEqual(multiplier, .75)
+        self.assertEqual(ordinary, .64)
+        self.assertEqual(ordinary_multiplier, 1.0)
+
+    def test_lightweight_catchup_only_becomes_due_after_a_missed_window(self):
+        audit = Path(self.temp.name) / "reranker_shadow.json"
+        audit.write_text(json.dumps({"through": "2026-08-16"}), encoding="utf-8")
+        before = APP.datetime(2026, 8, 18, 3, 14).astimezone()
+        after = APP.datetime(2026, 8, 18, 3, 16).astimezone()
+
+        with (
+            patch.object(APP, "PLAYER_PROP_RERANKER_SHADOW_AUDIT", str(audit)),
+            patch.dict(APP.os.environ, {
+                "NINTH_MAINTENANCE_HOUR": "3",
+                "NINTH_MAINTENANCE_MINUTE": "15",
+                "NINTH_MAINTENANCE_CATCHUP_ENABLED": "1",
+            }),
+        ):
+            self.assertIsNone(APP.lightweight_maintenance_catchup_due(before))
+            self.assertEqual(APP.lightweight_maintenance_catchup_due(after), "2026-08-17")
+            audit.write_text(json.dumps({"through": "2026-08-17"}), encoding="utf-8")
+            self.assertIsNone(APP.lightweight_maintenance_catchup_due(after))
+
     def test_guarantee_history_uses_exact_pick_identity_and_sample_aware_rank(self):
         rows = []
         for day in range(1, 11):

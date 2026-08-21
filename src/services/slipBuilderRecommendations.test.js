@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { selectMixedCandidates, selectTotalsCandidates } from "./slipBuilderRecommendations.js";
+import {
+  moneylineBuilderProbability,
+  selectMixedCandidates,
+  selectTotalsCandidates,
+} from "./slipBuilderRecommendations.js";
 
 const candidate = (game, market, probability) => ({ game: { game_id: game }, option: { market, probability } });
 
@@ -39,4 +43,12 @@ test("mixed selection applies the same totals line-side exposure cap", () => {
   const selected = selectMixedCandidates(candidates, 8);
   assert.ok(selected.filter(row => row.option.market === "totals"
     && row.option.side === "over" && row.option.line === 8.5).length <= 3);
+});
+
+test("moneyline builder uses the conservative ranking probability when supplied", () => {
+  assert.equal(moneylineBuilderProbability({ recommended_probability: .64 }), .64);
+  assert.equal(moneylineBuilderProbability({
+    recommended_probability: .64,
+    moneyline_builder_probability: .605,
+  }), .605);
 });

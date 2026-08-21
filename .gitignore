@@ -82,6 +82,7 @@ pnpm-debug.log*
 
 # Browser and end-to-end test output
 .playwright-mcp/
+.playwright-cli/
 playwright-report/
 test-results/
 blob-report/

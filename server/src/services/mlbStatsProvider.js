@@ -123,6 +123,12 @@ export const mlbStatsProvider = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     }),
+  parseSlip: (payload) =>
+    request("/slips/parse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }),
   alterEgo: () => request("/alter-ego"),
   importMelbetHistory: (payload) =>
     request("/alter-ego/import", {
@@ -135,6 +141,26 @@ export const mlbStatsProvider = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
+      timeoutMs: 120000,
+    }),
+  normalizeMelbetHistory: (payload) =>
+    request("/alter-ego/normalize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }),
+  normalizeMelbetHistoryBatch: (payload) =>
+    request("/alter-ego/normalize-batch", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      timeoutMs: 120000,
+    }),
+  analyseMelbetHistory: (slips) =>
+    request("/alter-ego/analyse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slips }),
       timeoutMs: 120000,
     }),
 };

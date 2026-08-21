@@ -27,6 +27,8 @@ BOXES = ROOT / "ml" / "data" / "player_boxscores.jsonl"
 PROJECTION_AUDIT = ROOT / "ml" / "artifacts" / "live_player_prop_audit.json"
 BUILD_AUDIT = ROOT / "ml" / "artifacts" / "live_player_prop_build_audit.json"
 PRICED_BOARD_AUDIT = ROOT / "ml" / "artifacts" / "player_prop_priced_board_audit.json"
+RERANKER_SHADOW_AUDIT = ROOT / "ml" / "artifacts" / "player_prop_reranker_shadow_candidate.json"
+RERANKER_SHADOW_SCRIPT = ROOT / "ml" / "player_prop_reranker_shadow_candidate.py"
 STATUS_URL = "https://statsapi.mlb.com/api/v1.1/game/{game_id}/feed/live"
 
 
@@ -85,6 +87,13 @@ def _audit_stale(output: Path, *inputs: Path) -> bool:
     return any(path.exists() and path.stat().st_mtime > output.stat().st_mtime for path in inputs)
 
 
+def _read_json(path: Path) -> dict:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
 def refresh(through: str | None = None, workers: int = 8) -> dict:
     through = through or (date.today() - timedelta(days=1)).isoformat()
     targets = target_games(through)
@@ -128,11 +137,27 @@ def refresh(through: str | None = None, workers: int = 8) -> dict:
             [sys.executable, "-m", "ml.evaluate_player_prop_priced_board"],
             cwd=ROOT, check=True, capture_output=True, text=True,
         )
+    reranker_shadow_stale = (
+        bool(completed)
+        or _audit_stale(
+            RERANKER_SHADOW_AUDIT, BUILDS, BOXES, BUILD_AUDIT, RERANKER_SHADOW_SCRIPT,
+        )
+        or _read_json(RERANKER_SHADOW_AUDIT).get("through") != through
+    )
+    if reranker_shadow_stale:
+        subprocess.run(
+            [
+                sys.executable, "-m", "ml.player_prop_reranker_shadow_candidate",
+                "--through", through, "--historical-days", "4",
+            ],
+            cwd=ROOT, check=True, capture_output=True, text=True,
+        )
     frozen = subprocess.run(
         [sys.executable, "-m", "ml.freeze_player_prop_forward_policy"],
         cwd=ROOT, check=True, capture_output=True, text=True,
     )
     forward_policy = json.loads(frozen.stdout.strip() or "{}")
+    reranker_shadow = _read_json(RERANKER_SHADOW_AUDIT)
     return {
         "through": through,
         "target_games": len(targets),
@@ -142,6 +167,9 @@ def refresh(through: str | None = None, workers: int = 8) -> dict:
         "projection_audit_refreshed": projection_stale,
         "build_audit_refreshed": build_stale,
         "priced_board_audit_refreshed": priced_board_stale,
+        "reranker_shadow_refreshed": reranker_shadow_stale,
+        "reranker_shadow_candidate_id": (reranker_shadow.get("candidate") or {}).get("candidate_id"),
+        "reranker_shadow_through": reranker_shadow.get("through"),
         "forward_policy_id": forward_policy.get("policy_id"),
         "forward_policy_reused": forward_policy.get("reused"),
     }

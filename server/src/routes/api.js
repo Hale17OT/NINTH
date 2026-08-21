@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { apiController as c } from "../controllers/apiController.js";
+import { requireAuth } from "../middleware/authenticate.js";
+import { requireCsrf } from "../middleware/csrf.js";
 
 const r = Router();
 const wrap = (fn) => (req, res, next) =>
@@ -13,12 +15,12 @@ r.get("/model", wrap(c.model));
 r.get("/projection-board", wrap(c.projectionBoard));
 r.get("/player-props", wrap(c.playerProps));
 r.get("/player-props/guarantees", wrap(c.playerPropGuarantees));
-r.post("/player-props/build-snapshots", wrap(c.recordPlayerPropBuild));
-r.get("/slips", wrap(c.slips));
-r.post("/slips/import", wrap(c.importSlip));
-r.get("/alter-ego", wrap(c.alterEgo));
-r.post("/alter-ego/import", wrap(c.importMelbetHistory));
-r.post("/alter-ego/import-batch", wrap(c.importMelbetHistoryBatch));
+r.post("/player-props/build-snapshots", requireCsrf, ...requireAuth, wrap(c.recordPlayerPropBuild));
+r.get("/slips", ...requireAuth, wrap(c.slips));
+r.post("/slips/import", requireCsrf, ...requireAuth, wrap(c.importSlip));
+r.get("/alter-ego", ...requireAuth, wrap(c.alterEgo));
+r.post("/alter-ego/import", requireCsrf, ...requireAuth, wrap(c.importMelbetHistory));
+r.post("/alter-ego/import-batch", requireCsrf, ...requireAuth, wrap(c.importMelbetHistoryBatch));
 r.get("/dashboard", wrap(c.dashboard));
 r.get("/games/live", wrap(c.games));
 r.get("/games/today", wrap(c.games));

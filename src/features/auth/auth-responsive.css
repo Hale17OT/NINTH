@@ -1,0 +1,24 @@
+@media (min-width: 931px) and (max-height: 820px) {
+  .auth-canvas { padding: 18px; }
+  .auth-frame { min-height: calc(100vh - 36px); }
+  .auth-story { min-height: calc(100vh - 36px); padding: 26px 32px 22px; }
+  .auth-story .story-copy { margin-top: 40px; }
+  .auth-story .story-copy h1 { font-size: 3.7rem; }
+  .auth-story .story-copy p { font-size: 13px; }
+  .auth-story .trust-row { margin-top: 16px; }
+  .auth-story .signal-field { height: 190px; transform: scale(.82); transform-origin: right center; }
+  .auth-panel { padding: 26px 52px; }
+  .auth-form-head { margin-bottom: 18px; }
+  .auth-form-head h2 { margin: 10px 0 7px; font-size: 2.55rem; }
+  .auth-form-head p { font-size: 12px; }
+  .auth-form form { gap: 11px; }
+  .auth-field { gap: 5px; }
+  .auth-field input { height: 46px; min-height: 46px; }
+  .password-wrap button { top: 2px; }
+  .strength { gap: 5px; }
+  .requirements li { padding: 3px 6px; }
+  .auth-submit { min-height: 46px; }
+  .auth-divider { margin: 12px 0; }
+  .google-button { min-height: 46px !important; }
+  .auth-switch { margin-top: 12px; }
+}

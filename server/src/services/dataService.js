@@ -1,6 +1,8 @@
 import { mlbStatsProvider } from "./mlbStatsProvider.js";
 import { weatherProvider } from "./weatherProvider.js";
 import { oddsProvider } from "./oddsProvider.js";
+import { personalHistoryService } from "../modules/saved/personalHistory.service.js";
+import { databaseAvailable, prisma } from "../db/prisma.js";
 
 const aliases = {
   nyy: 147,
@@ -789,20 +791,20 @@ export const dataService = {
   async teams() {
     return mlbStatsProvider.teams();
   },
-  async slips() {
-    return mlbStatsProvider.slips();
+  async slips(userId) {
+    return personalHistoryService.slips(userId);
   },
-  async importSlip(payload) {
-    return mlbStatsProvider.importSlip(payload);
+  async importSlip(userId, payload) {
+    return personalHistoryService.importSlip(userId, payload);
   },
-  async alterEgo() {
-    return mlbStatsProvider.alterEgo();
+  async alterEgo(userId) {
+    return personalHistoryService.alterEgo(userId);
   },
-  async importMelbetHistory(payload) {
-    return mlbStatsProvider.importMelbetHistory(payload);
+  async importMelbetHistory(userId, payload) {
+    return personalHistoryService.importMelbetHistory(userId, payload);
   },
-  async importMelbetHistoryBatch(payload) {
-    return mlbStatsProvider.importMelbetHistoryBatch(payload);
+  async importMelbetHistoryBatch(userId, payload) {
+    return personalHistoryService.importMelbetHistoryBatch(userId, payload);
   },
   async team(id) {
     const all = await mlbStatsProvider.teams(),
@@ -1307,9 +1309,19 @@ export const dataService = {
   },
   async health() {
     try {
+      let database = { configured: databaseAvailable(), status: "not-configured" };
+      if (database.configured) {
+        try {
+          await prisma.$queryRaw`SELECT 1`;
+          database = { configured: true, status: "ready", provider: "PostgreSQL" };
+        } catch {
+          database = { configured: true, status: "unavailable", provider: "PostgreSQL" };
+        }
+      }
       return {
         status: "ok",
         stats: await mlbStatsProvider.health(),
+        database,
         weather: { provider: "Open-Meteo", status: "ready" },
         odds: oddsProvider.status(),
         syntheticData: false,

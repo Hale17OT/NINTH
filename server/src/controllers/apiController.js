@@ -70,12 +70,12 @@ export const apiController = {
     req.params.id,
     { ...req.query },
   )),
-  slips: async (req, res) => res.json(await data.slips()),
+  slips: async (req, res) => res.json(await data.slips(req.auth.user.id)),
   importSlip: async (req, res) =>
-    res.status(201).json(await data.importSlip(req.body)),
-  alterEgo: async (req, res) => res.json(await data.alterEgo()),
+    res.status(201).json(await data.importSlip(req.auth.user.id, req.body)),
+  alterEgo: async (req, res) => res.json(await data.alterEgo(req.auth.user.id)),
   importMelbetHistory: async (req, res) =>
-    res.status(201).json(await data.importMelbetHistory(req.body)),
+    res.status(201).json(await data.importMelbetHistory(req.auth.user.id, req.body)),
   importMelbetHistoryBatch: async (req, res) =>
-    res.status(201).json(await data.importMelbetHistoryBatch(req.body)),
+    res.status(201).json(await data.importMelbetHistoryBatch(req.auth.user.id, req.body)),
 };

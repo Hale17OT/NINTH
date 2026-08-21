@@ -21,12 +21,13 @@ from urllib.request import Request, urlopen
 BASE_URL = "https://www.football-data.co.uk/mmz4281"
 LEAGUES = {
     "E0": "Premier League",
+    "E1": "Championship",
     "SP1": "La Liga",
     "D1": "Bundesliga",
     "I1": "Serie A",
     "F1": "Ligue 1",
 }
-MARKETS = ("home_win", "over_2_5", "both_teams_score")
+MARKETS = ("home_win", "over_2_5", "both_teams_score", "score")
 
 
 def season_slug(start_year: int) -> str:
@@ -77,6 +78,33 @@ def devig(*odds: float | None) -> list[float | None]:
     inverses = [1 / float(value) for value in odds]
     total = sum(inverses)
     return [value / total for value in inverses]
+
+
+def first_number(row: dict, *names: str) -> float | None:
+    value = number(row, *names)
+    return value if value is not None and value > 1 else None
+
+
+def archived_prices(row: dict) -> dict:
+    """Keep source-labelled opening/closing prices outside model features."""
+    return {
+        "provider": "Football-Data.co.uk",
+        "opening": {
+            "home": first_number(row, "AvgH", "B365H"),
+            "draw": first_number(row, "AvgD", "B365D"),
+            "away": first_number(row, "AvgA", "B365A"),
+            "over_2_5": first_number(row, "Avg>2.5", "B365>2.5"),
+            "under_2_5": first_number(row, "Avg<2.5", "B365<2.5"),
+        },
+        "closing": {
+            "home": first_number(row, "AvgCH", "B365CH", "AvgH", "B365H"),
+            "draw": first_number(row, "AvgCD", "B365CD", "AvgD", "B365D"),
+            "away": first_number(row, "AvgCA", "B365CA", "AvgA", "B365A"),
+            "over_2_5": first_number(row, "AvgC>2.5", "B365C>2.5", "Avg>2.5", "B365>2.5"),
+            "under_2_5": first_number(row, "AvgC<2.5", "B365C<2.5", "Avg<2.5", "B365<2.5"),
+        },
+        "timestamp_note": "Football-Data archived opening/closing columns; no exact intra-day prediction timestamp",
+    }
 
 
 def average(values: deque[float], default: float) -> float:
@@ -191,9 +219,12 @@ def build_ledgers_and_states(raw_rows: list[dict], statsbomb: dict[tuple[str, st
             "event_time": at.isoformat(),
             "knowledge_time": (at - timedelta(minutes=1)).isoformat(),
             "competition": LEAGUES.get(league, league),
+            "competition_code": league,
+            "season": int(row.get("NINTHSeason") or (at.year if at.month >= 7 else at.year - 1)),
             "home_team": home_name,
             "away_team": away_name,
             "features": features,
+            "archived_prices": archived_prices(row),
         }
         labels = {
             "home_win": int(home_goals > away_goals),
@@ -202,6 +233,12 @@ def build_ledgers_and_states(raw_rows: list[dict], statsbomb: dict[tuple[str, st
         }
         for market, label in labels.items():
             ledgers[market].append({**common, "label": label})
+        ledgers["score"].append({
+            **common,
+            "home_goals": home_goals,
+            "away_goals": away_goals,
+            "total_goals": home_goals + away_goals,
+        })
 
         expected = 1 / (1 + 10 ** (-(home.elo + 65 - away.elo) / 400))
         result = 1.0 if home_goals > away_goals else .5 if home_goals == away_goals else 0.0
@@ -268,6 +305,8 @@ def collect(start_season: int, end_season: int, output_dir: Path) -> dict:
                 downloads.append({"league": league, "season": season, "rows": 0, "error": str(error)})
                 continue
             rows.extend(batch)
+            for row in batch:
+                row["NINTHSeason"] = season
             downloads.append({"league": league, "season": season, "rows": len(batch)})
     statsbomb = load_statsbomb(output_dir / "statsbomb_team_games.json")
     ledgers = build_ledgers(rows, statsbomb)

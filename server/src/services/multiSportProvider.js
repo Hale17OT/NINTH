@@ -26,13 +26,13 @@ const sourceStatus = sport => {
   if (sport === 'football') return [
     presentation,
     { id: 'fpl-open', name: 'Fantasy Premier League', role: 'Current Premier League fixtures, clubs, players and availability', env: 'No key', configured: true, state: 'ready', detail: 'Keyless read-only season feed; cached to avoid unnecessary requests.' },
-    { id: 'open-results', name: 'Football-Data.co.uk', role: 'Top-five fixtures, results, shots, corners and discipline', env: 'No key', configured: true, state: 'ready', detail: 'Odds columns are discarded. Rolling shot-quality, territorial and discipline features are locked before each result.' },
+    { id: 'open-results', name: 'Football-Data.co.uk', role: 'Top-five and Championship results, shots, corners, discipline and archived market snapshots', env: 'No key', configured: true, state: 'ready', detail: 'Archived opening/closing prices are isolated from model features and retained only for labelled post-prediction evaluation. Rolling form features are locked before each result.' },
     { id: 'open-events', name: 'StatsBomb Open Data', role: 'xG, pressures, progressive actions, events and selected 360 data', env: 'No key', configured: true, state: 'available', detail: 'The collector enriches only openly covered league-seasons and reports the missing coverage explicitly.' },
     { id: 'free-supplement', name: 'football-data.org free tier', role: 'Top-five clubs, squads and competition supplement', env: 'NINTH_FOOTBALL_DATA_TOKEN', configured: configured('NINTH_FOOTBALL_DATA_TOKEN'), state: configured('NINTH_FOOTBALL_DATA_TOKEN') ? 'ready' : 'optional', detail: 'A free account token completes squad coverage outside the Premier League; no paid plan is required.' },
   ]
   if (sport === 'american-football') return [
     presentation,
-    { id: 'historical', name: 'nflverse', role: 'Play-by-play EPA, success, explosives, pressure, schedules and current market anchors', env: 'Open data', configured: true, state: 'ready', detail: 'Three recent seasons are aggregated before each game. Pregame prices are displayed and lines are evaluated as thresholds, but neither is fitted as a forecast feature.' },
+    { id: 'historical', name: 'nflverse', role: 'Play-by-play EPA, success, explosives, pressure, schedules and archived market anchors', env: 'Open data', configured: true, state: 'ready', detail: '2018–2025 play-by-play is aggregated before each game. Prices and lines are excluded from model features and retained only for evaluation and display.' },
     { id: 'tracking', name: 'Tracking / availability supplement', role: 'Tracking aggregates, injuries and confirmed participants', env: 'Optional', configured: false, state: 'optional', detail: 'Improves the model but does not block the open nflverse baseline.' },
   ]
   if (sport === 'basketball') return [
@@ -44,6 +44,26 @@ const sourceStatus = sport => {
 }
 
 const modelReports = sport => {
+  if (['football', 'american-football'].includes(sport)) {
+    const consolidatedPath = join(process.cwd(), 'ml', 'artifacts', 'multisport', 'football_nfl_model_report.json')
+    if (existsSync(consolidatedPath)) {
+      try {
+        const payload = JSON.parse(readFileSync(consolidatedPath, 'utf8'))
+        return (payload.models || []).filter(row => row.sport === sport).map(row => ({
+          sport:row.sport, market:row.market, modelName:row.model_name, modelFamily:row.model_family,
+          modelVersion:row.model_version, featureVersion:row.feature_version, datasetVersion:row.dataset_version,
+          decision:row.decision, status:'evaluated', method:typeof row.algorithm === 'string' ? row.algorithm : Object.values(row.algorithm || {}).join(' + '),
+          samples:{ untouched_test:row.prediction_count }, metrics:row.combined_holdout_results || {},
+          baseline:row.comparison_to_baseline || {}, promotion:{ builder_eligible:row.decision === 'USE' },
+          historicalReadiness:{ passed:['USE','LIMITED'].includes(row.decision), detail:row.overall_assessment },
+          oddsIndependent:true,
+          timeRange:{ first:row.development_dataset_start, trainingThrough:row.development_dataset_end, holdoutThrough:row.holdout_seasons?.at(-1) },
+          holdoutResults:{ season_by_season:row.season_by_season_results, combined:row.combined_holdout_results, stability_assessment:row.holdout_stability_assessment },
+          betting:{ roi:row.holdout_roi, yield:row.holdout_yield, clv:row.holdout_clv, maximumDrawdown:row.holdout_maximum_drawdown },
+        })).sort((a,b) => a.modelFamily.localeCompare(b.modelFamily) || a.market.localeCompare(b.market))
+      } catch { /* Fall back to individual artifact reports below. */ }
+    }
+  }
   const directories = sport === 'esports' ? ['valorant', 'cs2', 'lol'] : [sport]
   return directories.flatMap(directory => {
     const path = join(process.cwd(), 'ml', 'artifacts', 'multisport', directory)
@@ -59,16 +79,31 @@ const modelReports = sport => {
             promotion: report.promotion,
             historicalReadiness: { passed: report.historical_readiness?.[market] === true },
             oddsIndependent: report.odds_used_as_features === false,
-            timeRange: report.time_range, datasetSha256: report.dataset_sha256,
+            timeRange: { first:report.development_dataset_start, trainingThrough:report.development_dataset_end, holdoutThrough:report.holdout_dataset_end },
+            holdoutResults: report.holdout_results, datasetSha256: report.dataset_sha256,
           }))
         }
+        if (report.sport === 'football' && report.market === 'score_distribution') {
+          const metrics = report.holdout_results?.combined?.markets?.score || {}
+          return [{
+            sport:report.sport, market:'score_distribution', status:report.status, method:report.method,
+            samples:report.samples, metrics, baseline:{}, promotion:report.promotion,
+            historicalReadiness:{ passed:false, detail:'Exact-score output is contextual evidence, not an automatic builder market.' },
+            oddsIndependent:report.odds_used_as_features === false,
+            timeRange:{ first:report.development_dataset_start, trainingThrough:report.development_dataset_end, holdoutThrough:report.holdout_dataset_end },
+            holdoutResults:report.holdout_results,
+          }]
+        }
+        const combined = report.holdout_results?.combined || {}
         return [{
           sport: report.sport, market: report.market, status: report.status, method: report.method,
-          samples: report.samples, metrics: report.untouched_candidate,
-          baseline: report.untouched_climatology, promotion: report.promotion,
-          historical: report.historical_walk_forward, historicalReadiness: report.historical_readiness,
+          samples: report.samples, metrics: combined.candidate || report.untouched_candidate || {},
+          baseline: combined.baseline || report.untouched_climatology || {}, promotion: report.promotion,
+          historical: report.development_validation || report.historical_walk_forward,
+          historicalReadiness: report.historical_readiness,
           oddsIndependent: report.odds_independent === true,
-          timeRange: report.time_range, datasetSha256: report.dataset_sha256,
+          timeRange: report.time_range || { first:report.development_dataset_start, trainingThrough:report.development_dataset_end, holdoutThrough:report.holdout_dataset_end },
+          holdoutResults:report.holdout_results, datasetSha256: report.dataset_sha256,
         }]
       } catch { return [] }
     })
@@ -91,6 +126,7 @@ const sportPredictionPayload = sport => {
 export const competitionCatalog = {
   football: [
     { id: '4328', code: 'EPL', name: 'Premier League', country: 'England', group: 'Domestic league' },
+    { id: '4329', code: 'ECH', name: 'Championship', country: 'England', group: 'Domestic league' },
     { id: '4335', code: 'LAL', name: 'La Liga', country: 'Spain', group: 'Domestic league' },
     { id: '4331', code: 'BUN', name: 'Bundesliga', country: 'Germany', group: 'Domestic league' },
     { id: '4332', code: 'SEA', name: 'Serie A', country: 'Italy', group: 'Domestic league' },
@@ -146,7 +182,7 @@ const parseCsv = body => {
     return Object.fromEntries(headers.map((header, index) => [header, values[index] || '']))
   })
 }
-const footballCsvCodes = { '4328': 'E0', '4335': 'SP1', '4331': 'D1', '4332': 'I1', '4334': 'F1' }
+const footballCsvCodes = { '4328': 'E0', '4329': 'E1', '4335': 'SP1', '4331': 'D1', '4332': 'I1', '4334': 'F1' }
 const footballDataOrgCodes = { '4328': 'PL', '4335': 'PD', '4331': 'BL1', '4332': 'SA', '4334': 'FL1', '4480': 'CL', '4481': 'EL' }
 const FPL_COMPETITION_ID = '4328'
 const nflNames = {
@@ -703,6 +739,29 @@ const attachSportPredictions = (sport, games) => {
   const predictions = sportPredictions(sport)
   return games.map(game => ({ ...game, prediction: predictions.get(String(game.id)) || game.prediction || null }))
 }
+export const predictionGame = row => {
+  const at = String(row.event_time || '')
+  return {
+    id:String(row.event_id), competitionId:String(row.competition_id || (row.event_id?.match(/^\d{4}_/) ? '4391' : '')),
+    competition:row.competition || (row.event_id?.match(/^\d{4}_/) ? 'NFL' : 'Football'), competitionCode:row.competition_code || '',
+    group:'Source-backed fixture', round:row.round || 'Scheduled', date:at.slice(0,10), time:at.slice(11,16) || 'TBD', timestamp:at,
+    status:'Scheduled', venue:row.venue || 'Venue pending source confirmation',
+    home:{id:`prediction:${teamSlug(row.home_team)}`,name:row.home_team,badge:null,score:null},
+    away:{id:`prediction:${teamSlug(row.away_team)}`,name:row.away_team,badge:null,score:null},
+    prediction:row, source:row.source || 'NINTH immutable prediction feed', sourceUrl:null,
+  }
+}
+const mergePredictionGames = (sport, games, competition = null) => {
+  if (!['football','american-football'].includes(sport)) return attachSportPredictions(sport, games)
+  const payload = sportPredictionPayload(sport), predictions = new Map((payload.predictions || []).map(row => [String(row.event_id), row]))
+  const merged = games.map(game => ({...game,prediction:predictions.get(String(game.id))||game.prediction||null}))
+  const existing = new Set(merged.map(game=>String(game.id)))
+  for (const row of payload.predictions || []) {
+    if (competition && String(row.competition_id || (sport==='american-football'?'4391':'')) !== String(competition)) continue
+    if (!existing.has(String(row.event_id))) merged.push(predictionGame(row))
+  }
+  return merged.sort(sortDirectoryEvents)
+}
 
 function filterCompetitions(sport, requested) {
   const all = competitionCatalog[sport] || []
@@ -729,7 +788,7 @@ export const multiSportProvider = {
       const [rawGames, allTeams] = sport === 'esports'
         ? await Promise.all([esportsDirectory('games', query), esportsDirectory('teams', query)])
         : await Promise.all([sportsDbGames(sport, query), sportsDbTeams(sport, query)])
-      const allGames = attachSportPredictions(sport, rawGames)
+      const allGames = mergePredictionGames(sport, rawGames, league.id)
       const teamNames = new Set(allGames.flatMap(game => [game.home?.name, game.away?.name]).filter(Boolean))
       const teams = sport === 'esports' ? allTeams.filter(team => teamNames.has(team.name)) : allTeams
       const standings = buildStandings(sport, teams, allGames)
@@ -744,13 +803,18 @@ export const multiSportProvider = {
       const requestedCode = requestedId.includes(':') ? requestedId.split(':').pop().toUpperCase() : ''
       const canonicalCode = sport === 'basketball' ? (nbaAliases[requestedCode] || requestedCode) : requestedCode
       const requestedName = sport === 'basketball' ? nbaNames[canonicalCode] : sport === 'american-football' ? nflNames[canonicalCode] : ''
+      const predictionSlug = requestedId.startsWith('prediction:') ? requestedId.slice('prediction:'.length) : ''
+      const predicted = predictionSlug ? (sportPredictionPayload(sport).predictions || []).find(row => [row.home_team,row.away_team].some(name=>teamSlug(name)===predictionSlug)) : null
+      const predictedName = predicted && (teamSlug(predicted.home_team)===predictionSlug ? predicted.home_team : predicted.away_team)
       const team = teams.find(row => String(row.id) === requestedId)
         || teams.find(row => canonicalCode && String(row.code || '').toUpperCase() === canonicalCode)
         || teams.find(row => requestedName && String(row.name || '').toLowerCase() === requestedName.toLowerCase())
+        || teams.find(row => predictedName && teamSlug(row.name) === teamSlug(predictedName))
+        || (predictedName ? {id:requestedId,name:predictedName,code:'',badge:null,competitionId:String(predicted.competition_id || options.competition || (sport==='american-football'?'4391':''))} : null)
       if (!team) throw Object.assign(new Error('Team not found'), { status: 404 })
       const gameQuery = sport === 'esports' ? { discipline: team.competitionId } : { competition: team.competitionId }
       const rawGames = sport === 'esports' ? await esportsDirectory('games', gameQuery) : await sportsDbGames(sport, gameQuery)
-      const games = attachSportPredictions(sport, rawGames)
+      const games = mergePredictionGames(sport, rawGames, team.competitionId)
       const teamGames = games.filter(game => includesTeam(game, team))
       let roster = []
       const rosterTeamId = sport === 'basketball' ? `nba:${team.code}` : team.id
@@ -785,7 +849,7 @@ export const multiSportProvider = {
     if (scope === 'game') {
       const query = { competition: options.competition, discipline: options.discipline, tournament: options.tournament }
       const rawGames = sport === 'esports' ? await esportsDirectory('games', query) : await sportsDbGames(sport, query)
-      const games = attachSportPredictions(sport, rawGames)
+      const games = mergePredictionGames(sport, rawGames, options.competition)
       const game = games.find(row => String(row.id) === requestedId)
       if (!game) throw Object.assign(new Error('Match not found'), { status: 404 })
       return { sport, scope, identity: game, league: (competitionCatalog[sport] || []).find(row => String(row.id) === String(game.competitionId)) || null, generatedAt: new Date().toISOString() }
@@ -806,10 +870,10 @@ export const multiSportProvider = {
         sport, type, sources, competitions, models, generatedAt: new Date().toISOString(),
         presentationReady: sport === 'esports' ? sources.some(source => source.configured) : sources.some(source => source.id === 'presentation') && sources.some(source => source.configured),
         modelSourcesReady,
-        modelState: models.some(model => model.historicalReadiness?.passed) ? 'HISTORICAL READY / LIVE PIPELINE CHECK' : models.length ? 'THREE-YEAR AUDITS TRAINED / SHADOW LOCKED' : modelSourcesReady ? 'COLLECTION READY / AUDIT REQUIRED' : 'SOURCE REQUIREMENTS OPEN',
+        modelState: models.some(model => model.historicalReadiness?.passed) ? 'HISTORICAL EVIDENCE AVAILABLE' : models.length ? 'EVALUATED / MORE EVIDENCE REQUIRED' : modelSourcesReady ? 'COLLECTION READY / EVALUATION REQUIRED' : 'SOURCE REQUIREMENTS OPEN',
         builderEligible: Object.values(predictionPayload.readiness?.automatic_builder_eligible || {}).some(Boolean),
         liveAudit: predictionPayload.live_audit || null,
-        evaluationMode: 'odds-independent three-year chronological walk-forward',
+        evaluationMode: ['football','american-football'].includes(sport) ? 'fixed development seasons with two untouched season holdouts' : 'odds-independent chronological walk-forward',
       }
     }
     let items
@@ -821,31 +885,11 @@ export const multiSportProvider = {
     else if (type === 'games') {
       items = await sportsDbGames(sport, options)
       if (sport === 'football') {
-        const payload = sportPredictionPayload('football')
-        const predictions = new Map((payload.predictions || []).map(row => [String(row.event_id), row]))
-        const existing = new Set(items.map(item => String(item.id)))
-        const requestedCompetitions = !options.competition || options.competition === 'all'
-          ? null : new Set(String(options.competition).split(','))
-        for (const row of payload.predictions || []) {
-          if (existing.has(String(row.event_id)) || (requestedCompetitions && !requestedCompetitions.has(String(row.competition_id)))) continue
-          const at = String(row.event_time || '')
-          items.push({
-            id: String(row.event_id), competitionId: String(row.competition_id || ''),
-            competition: row.competition || 'Football', competitionCode: row.competition_code || '',
-            group: 'Source-backed fixture', round: 'Scheduled', date: at.slice(0, 10), time: at.slice(11, 16) || 'TBD',
-            timestamp: at, status: 'Scheduled', venue: 'Venue listed by competition source',
-            home: { id: `prediction:${teamSlug(row.home_team)}`, name: row.home_team, badge: null, score: null },
-            away: { id: `prediction:${teamSlug(row.away_team)}`, name: row.away_team, badge: null, score: null },
-            source: row.source || 'NINTH open football feeds', sourceUrl: null,
-          })
-          existing.add(String(row.event_id))
-        }
-        items.sort(sortDirectoryEvents)
-        items = items.map(item => ({ ...item, prediction: predictions.get(String(item.id)) || null }))
+        const requested = !options.competition || options.competition === 'all' ? null : String(options.competition).split(',')[0]
+        items = mergePredictionGames('football', items, requested)
       }
       if (sport === 'american-football') {
-        const predictions = sportPredictions('american-football')
-        items = items.map(item => ({ ...item, prediction: predictions.get(String(item.id)) || null }))
+        items = mergePredictionGames('american-football', items, options.competition || '4391')
       }
     }
     else if (type === 'teams') items = await sportsDbTeams(sport, options)
@@ -854,10 +898,10 @@ export const multiSportProvider = {
       sport, type, items, competitions, count: items.length, generatedAt: new Date().toISOString(),
       source: sport === 'esports' ? 'Liquipedia MediaWiki API + CS API supplement' : sport === 'football' ? 'Open Football Data + FPL + TheSportsDB' : sport === 'american-football' ? 'nflverse + TheSportsDB' : 'Open NBA data + TheSportsDB',
       presentationOnly: false,
-      coverage: sport === 'esports' ? 'Keyless Valorant, CS2 and League of Legends schedules, results, teams, players and shadow forecasts' : sport === 'football' && type === 'players' ? configured('NINTH_FOOTBALL_DATA_TOKEN') ? 'Free-tier top-five squad coverage plus keyless Premier League roster' : 'Complete keyless Premier League roster; add the optional free token for the other top-five leagues' : 'Keyless open and public coverage',
+      coverage: sport === 'esports' ? 'Keyless Valorant, CS2 and League of Legends schedules, results, teams, players and evaluated forecasts' : sport === 'football' && type === 'players' ? configured('NINTH_FOOTBALL_DATA_TOKEN') ? 'Free-tier top-five squad coverage plus keyless Premier League roster' : 'Complete keyless Premier League roster; add the optional free token for the other top-five leagues' : 'Keyless open and public coverage',
       limited: sport === 'football' && type === 'players' && !configured('NINTH_FOOTBALL_DATA_TOKEN'),
       modelTrainingAllowed: true,
-      warning: sport === 'esports' ? 'Forecasts are live shadow outputs and remain builder-locked until the chronological audit gate passes.' : 'Presentation rows remain separate from the immutable model-training ledger.',
+      warning: sport === 'esports' ? 'Forecasts remain unavailable for automatic builder use until their chronological evidence gate passes.' : 'Presentation rows remain separate from the immutable model-training ledger.',
     }
   },
 }

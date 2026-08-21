@@ -1,7 +1,7 @@
 export const sports = [
   {
     id: 'baseball', name: 'Baseball', short: 'MLB', route: '/baseball', status: 'live',
-    eyebrow: 'PRODUCTION', accent: '#c7f04b', numeral: '01',
+    eyebrow: 'LIVE ANALYTICS', accent: '#c7f04b', numeral: '01',
     description: 'Pregame, live, totals and player-prop intelligence with immutable audits.',
     leagues: ['MLB'],
   },
