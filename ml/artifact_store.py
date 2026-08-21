@@ -50,6 +50,8 @@ def ensure_current(force=False):
     key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_SECRET_KEY", "")
     bucket = os.getenv("NINTH_MODEL_BUCKET", "ninth-models")
     proxy_base = os.getenv("NINTH_MODEL_API_URL", "").rstrip("/")
+    if not proxy_base and os.getenv("VERCEL_URL"):
+        proxy_base = f"https://{os.environ['VERCEL_URL'].strip('/')}"
     proxy_url = os.getenv("NINTH_MODEL_PROXY_URL", "") or (
         f"{proxy_base}/api/internal/model-artifacts/sign" if proxy_base else ""
     )

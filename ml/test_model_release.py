@@ -179,6 +179,35 @@ class ModelReleaseTests(unittest.TestCase):
             restored = json.loads((root / "artifacts" / "report.json").read_text())
             self.assertEqual(restored["model"], "proxied")
 
+    def test_runtime_store_uses_vercel_deployment_url_when_binding_is_unavailable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = json.dumps({"release_id": "release-empty", "files": []}).encode()
+
+            def download(proxy_url, token, object_path, destination):
+                self.assertEqual(proxy_url, "https://ninth-deploy.vercel.app/api/internal/model-artifacts/sign")
+                self.assertEqual(token, "proxy-token")
+                self.assertEqual(object_path, "production/manifest.json")
+                destination.write_bytes(manifest)
+
+            with (
+                patch.object(artifact_store, "_download_from_proxy", side_effect=download),
+                patch.dict("os.environ", {
+                    "SUPABASE_URL": "",
+                    "SUPABASE_SERVICE_ROLE_KEY": "",
+                    "SUPABASE_SECRET_KEY": "",
+                    "NINTH_MODEL_API_URL": "",
+                    "NINTH_MODEL_PROXY_URL": "",
+                    "NINTH_MODEL_PROXY_TOKEN": "proxy-token",
+                    "VERCEL_URL": "ninth-deploy.vercel.app",
+                    "NINTH_ARTIFACT_DIR": str(root / "artifacts"),
+                    "NINTH_DATA_DIR": str(root / "data"),
+                }, clear=False),
+            ):
+                artifact_store._STATE.update({"checked_at": 0.0, "release_id": None})
+                result = artifact_store.ensure_current(force=True)
+            self.assertEqual(result["release_id"], "release-empty")
+
 
 if __name__ == "__main__":
     unittest.main()
