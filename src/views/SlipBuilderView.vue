@@ -829,7 +829,7 @@ h1 em {
   gap: 7px;
 }
 .score-actions button {
-  height: 42px;
+  height: 48px;
   padding: 0 14px;
   border: 1px solid #4a5046;
   display: flex;
@@ -1215,6 +1215,9 @@ button:disabled {
   .score-actions {
     grid-template-columns: 1fr 1fr;
   }
+  .score-actions .clear {
+    grid-column: 1 / -1;
+  }
   .game-grid {
     grid-template-columns: 1fr;
   }
@@ -1294,6 +1297,12 @@ button:disabled {
   }
   .slate-toolbar > :last-child {
     grid-column: auto;
+  }
+  .score-actions {
+    grid-template-columns: 1fr;
+  }
+  .score-actions .clear {
+    grid-column: 1;
   }
 }
 .calibration-audit {

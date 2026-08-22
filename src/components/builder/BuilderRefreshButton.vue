@@ -7,9 +7,64 @@ const reduced = useReducedMotion();
 </script>
 
 <template>
-  <div class="refresh-control"><span>DATA</span><motion.button type="button" :disabled="loading" :while-hover="reduced ? undefined : { y: -2 }" :while-press="reduced ? undefined : { scale: .97 }" @click="$emit('refresh')"><RefreshCw :class="{ spin: loading }" /> REFRESH</motion.button></div>
+  <div class="refresh-control">
+    <span>DATA</span
+    ><motion.button
+      type="button"
+      :disabled="loading"
+      :while-hover="reduced ? undefined : { y: -2 }"
+      :while-press="reduced ? undefined : { scale: 0.97 }"
+      @click="$emit('refresh')"
+      ><RefreshCw :class="{ spin: loading }" /> REFRESH</motion.button
+    >
+  </div>
 </template>
 
 <style scoped>
-.refresh-control{width:110px;min-width:110px}.refresh-control>span{display:block;margin-bottom:6px;font:500 7px 'DM Mono';letter-spacing:.1em;color:var(--muted)}button{width:110px;height:44px;padding:0 13px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;gap:8px;font:700 8px 'DM Mono';cursor:pointer}button:hover:not(:disabled){background:var(--selection-bg);border-color:var(--accent);color:var(--selection-text)}button:disabled{opacity:.55;cursor:wait}svg{width:14px}.spin{animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.refresh-control {
+  width: 100%;
+  min-width: 0;
+}
+.refresh-control > span {
+  display: block;
+  margin-bottom: 8px;
+  font: 700 11px "DM Mono";
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+button {
+  width: 100%;
+  height: 48px;
+  padding: 0 13px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: 700 11px "DM Mono";
+  cursor: pointer;
+}
+button:hover:not(:disabled) {
+  background: var(--selection-bg);
+  border-color: var(--accent);
+  color: var(--selection-text);
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+svg {
+  width: 14px;
+}
+.spin {
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>

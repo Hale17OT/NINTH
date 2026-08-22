@@ -1,30 +1,682 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
-import { AlertTriangle, ArrowRight, CalendarDays, Database, Search, ShieldCheck, UsersRound } from 'lucide-vue-next'
-import { useRoute } from 'vue-router'
-import SportIdentity from '../components/identity/SportIdentity.vue'
-import LoadingState from '../components/ui/LoadingState.vue'
-import LoadError from '../components/ui/LoadError.vue'
-import { sportById } from '../config/sports'
-import { esportsDisciplines, workspaceData } from '../config/sportWorkspaces'
-import { entityRoute, gamePrediction, probability, sportLabel } from '../domain/sports'
-import { api } from '../services/api'
-const props=defineProps({sport:{type:String,required:true},type:{type:String,required:true}}),route=useRoute(),payload=ref(null),loading=ref(true),error=ref(''),query=ref(''),competition=ref(String(route.query.competition||'all')),discipline=ref(String(route.query.discipline||'all')),limit=ref(72)
-const active=computed(()=>sportById(props.sport)),catalog=computed(()=>workspaceData[props.sport]),labels={leagues:'Competitions',games:'Games',teams:'Teams',players:'Players'},Icon=computed(()=>({leagues:Database,games:CalendarDays,teams:ShieldCheck,players:UsersRound}[props.type]))
-const items=computed(()=>{const needle=query.value.trim().toLowerCase();const rows=payload.value?.items||[];return needle?rows.filter(row=>JSON.stringify(row).toLowerCase().includes(needle)):rows}),visible=computed(()=>items.value.slice(0,limit.value))
-const groups=computed(()=>Object.entries(items.value.reduce((result,row)=>{(result[row.group||row.discipline||'Supported competition']??=[]).push(row);return result},{})))
-const load=async()=>{loading.value=true;error.value='';try{payload.value=await api.sportDirectory(props.sport,props.type,{competition:competition.value,discipline:discipline.value});limit.value=72}catch(caught){error.value=caught?.message||'The sport directory could not be loaded.'}finally{loading.value=false}}
-watch(()=>[props.sport,props.type],()=>{competition.value=String(route.query.competition||'all');discipline.value=String(route.query.discipline||'all');load()});watch([competition,discipline],load);watch(query,()=>limit.value=72);onMounted(load)
-const record=row=>row.statistics?.played?`${row.statistics.wins||0}-${row.statistics.losses||0}`:row.country||'ACTIVE'
+import { computed, onMounted, ref, watch } from "vue";
+import {
+  AlertTriangle,
+  ArrowRight,
+  CalendarDays,
+  Database,
+  Search,
+  ShieldCheck,
+  UsersRound,
+} from "lucide-vue-next";
+import { useRoute } from "vue-router";
+import SportIdentity from "../components/identity/SportIdentity.vue";
+import LoadingState from "../components/ui/LoadingState.vue";
+import LoadError from "../components/ui/LoadError.vue";
+import CustomSelect from "../components/ui/CustomSelect.vue";
+import { sportById } from "../config/sports";
+import { esportsDisciplines, workspaceData } from "../config/sportWorkspaces";
+import {
+  entityRoute,
+  gamePrediction,
+  probability,
+  sportLabel,
+} from "../domain/sports";
+import { api } from "../services/api";
+const props = defineProps({
+    sport: { type: String, required: true },
+    type: { type: String, required: true },
+  }),
+  route = useRoute(),
+  payload = ref(null),
+  loading = ref(true),
+  error = ref(""),
+  query = ref(""),
+  competition = ref(String(route.query.competition || "all")),
+  discipline = ref(String(route.query.discipline || "all")),
+  limit = ref(72);
+const active = computed(() => sportById(props.sport)),
+  catalog = computed(() => workspaceData[props.sport]),
+  labels = {
+    leagues: "Competitions",
+    games: "Games",
+    teams: "Teams",
+    players: "Players",
+  },
+  Icon = computed(
+    () =>
+      ({
+        leagues: Database,
+        games: CalendarDays,
+        teams: ShieldCheck,
+        players: UsersRound,
+      })[props.type],
+  );
+const items = computed(() => {
+    const needle = query.value.trim().toLowerCase();
+    const rows = payload.value?.items || [];
+    return needle
+      ? rows.filter((row) => JSON.stringify(row).toLowerCase().includes(needle))
+      : rows;
+  }),
+  visible = computed(() => items.value.slice(0, limit.value));
+const competitionOptions = computed(() => [
+  { value: "all", label: "All supported competitions" },
+  ...(payload.value?.competitions || []).map((item) => ({
+    value: item.id,
+    label: item.name,
+  })),
+]);
+const disciplineOptions = [
+  { value: "all", label: "Valorant + CS2 + LoL" },
+  ...esportsDisciplines.map((item) => ({ value: item.id, label: item.name })),
+];
+const groups = computed(() =>
+  Object.entries(
+    items.value.reduce((result, row) => {
+      (result[row.group || row.discipline || "Supported competition"] ??=
+        []).push(row);
+      return result;
+    }, {}),
+  ),
+);
+const load = async () => {
+  loading.value = true;
+  error.value = "";
+  try {
+    payload.value = await api.sportDirectory(props.sport, props.type, {
+      competition: competition.value,
+      discipline: discipline.value,
+    });
+    limit.value = 72;
+  } catch (caught) {
+    error.value = caught?.message || "The sport directory could not be loaded.";
+  } finally {
+    loading.value = false;
+  }
+};
+watch(
+  () => [props.sport, props.type],
+  () => {
+    competition.value = String(route.query.competition || "all");
+    discipline.value = String(route.query.discipline || "all");
+    load();
+  },
+);
+watch([competition, discipline], load);
+watch(query, () => (limit.value = 72));
+onMounted(load);
+const record = (row) =>
+  row.statistics?.played
+    ? `${row.statistics.wins || 0}-${row.statistics.losses || 0}`
+    : row.country || "ACTIVE";
 </script>
-<template><div class="directory" :style="{'--sport':active.accent}"><section class="directory-head"><div><span class="eyebrow">{{sportLabel(sport)}} / {{labels[type].toUpperCase()}}</span><h1>{{labels[type]}}<i>.</i></h1></div><p>{{type==='leagues'?'Enter a supported competition, then move into its teams, fixtures, analytics and builder.':`A source-backed ${labels[type].toLowerCase()} index with navigable identities and explicit competition context.`}}</p><b>{{active.numeral}}/{{type==='leagues'?'00':type==='games'?'01':type==='teams'?'02':'03'}}</b></section>
-  <section class="tools"><label><Search/><input v-model="query" :placeholder="`Search ${labels[type].toLowerCase()}`"><span>{{items.length}} RESULTS</span></label><select v-if="type!=='leagues'" v-model="competition"><option value="all">All supported competitions</option><option v-for="item in payload?.competitions||[]" :key="item.id" :value="item.id">{{item.name}}</option></select><select v-if="sport==='esports'&&type!=='leagues'" v-model="discipline"><option value="all">Valorant + CS2 + LoL</option><option v-for="item in esportsDisciplines" :key="item.id" :value="item.id">{{item.name}}</option></select></section>
-  <LoadingState v-if="loading" :label="`Loading ${labels[type].toLowerCase()}`" detail="Synchronizing source-backed identities and competition context."/><LoadError v-else-if="error" :message="error" @retry="load"/>
-  <template v-else><section v-if="type==='leagues'" class="league-groups"><article v-for="group in groups" :key="group[0]"><header><span>{{group[0]}}</span><b>{{group[1].length}}</b></header><div><RouterLink v-for="row in group[1]" :key="row.id" :to="entityRoute(sport,'leagues',row,{discipline:row.discipline})"><SportIdentity :identity="row" :size="66" square/><small>{{row.code}} · {{row.country}}</small><h2>{{row.name}}</h2><p v-if="row.matchCount">{{row.matchCount}} captured matches · {{row.nextMatchAt?'upcoming activity':'historical coverage'}}</p><p v-else>{{row.group}} workspace</p><span>OPEN COMPETITION <ArrowRight/></span></RouterLink></div></article></section>
-    <section v-else-if="type==='games'" class="games"><RouterLink v-for="row in visible" :key="row.id" :to="entityRoute(sport,'games',row,{competition:row.competitionId,discipline:row.competitionId})"><header><span>{{row.competitionCode}} · {{row.round}}</span><b>{{row.date}} · {{row.time}}</b></header><div class="match"><span><SportIdentity :identity="row.away" :size="46"/><b>{{row.away?.name}}</b><em>{{row.away?.score??'—'}}</em></span><i>@</i><span><SportIdentity :identity="row.home" :size="46"/><b>{{row.home?.name}}</b><em>{{row.home?.score??'—'}}</em></span></div><footer><span>{{row.status}} · {{row.venue}}</span><strong v-if="gamePrediction(row)">{{gamePrediction(row).label}} · {{probability(gamePrediction(row).probability)}}</strong><strong v-else>FORECAST NOT ATTACHED</strong></footer></RouterLink></section>
-    <section v-else-if="type==='teams'" class="entities teams"><RouterLink v-for="row in visible" :key="row.id" :to="entityRoute(sport,'teams',row,{competition:row.competitionId,discipline:row.competitionId})"><SportIdentity :identity="row" :size="86" square/><small>{{row.competition||row.country}}</small><h2>{{row.name}}</h2><p>{{row.venue}}</p><footer><span>{{row.statistics?.worldRank?`WORLD #${row.statistics.worldRank}`:row.formed?`EST. ${row.formed}`:'TEAM PROFILE'}}</span><b>{{record(row)}}</b></footer></RouterLink></section>
-    <section v-else class="entities players"><RouterLink v-for="row in visible" :key="row.id" :to="entityRoute(sport,'players',row,{team:row.teamId,competition:competition,discipline:row.competitionId})"><div class="portrait"><img v-if="row.image" :src="row.image" :alt="row.name"><SportIdentity v-else :identity="row" :size="90" square/></div><small>{{row.team}}</small><h2>{{row.name}}</h2><p>{{row.position}} · {{row.nationality}}</p><footer><span>{{row.statistics?.pointsPerGame!=null?`${row.statistics.pointsPerGame.toFixed(1)} PPG`:row.statistics?.rating?`RATING ${row.statistics.rating}`:'PLAYER PROFILE'}}</span><ArrowRight/></footer></RouterLink></section>
-    <div v-if="!items.length" class="empty"><component :is="Icon"/><b>No matching {{labels[type].toLowerCase()}}</b><p>Change the competition or search filter. NINTH does not add unsupported identities.</p></div><button v-if="visible.length<items.length" class="more" @click="limit+=72">SHOW 72 MORE · {{items.length-visible.length}} REMAINING</button>
-    <section class="integrity"><Database/><div><b>{{payload?.coverage}}</b><p>{{payload?.warning}}</p></div><span>{{payload?.source}}</span></section>
-  </template></div></template>
-<style scoped>.directory{padding-bottom:70px}.directory-head{min-height:350px;display:grid;grid-template-columns:1fr 430px 90px;align-items:end;gap:35px;padding:55px 0 40px;border-bottom:1px solid var(--line)}.directory-head h1{margin:14px 0 0;font-size:clamp(68px,9.5vw,140px);line-height:.78;letter-spacing:-.09em}.directory-head h1 i{font-style:normal;color:var(--sport)}.directory-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}.directory-head>b{align-self:start;justify-self:end;font:700 21px 'DM Mono';color:var(--sport)}.tools{display:flex;gap:8px;padding:23px 0}.tools label,.tools select{height:48px;border:1px solid var(--line);background:var(--surface);color:var(--text)}.tools label{flex:1;display:flex;align-items:center;gap:10px;padding:0 13px}.tools label svg{width:16px}.tools input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:var(--text)}.tools label span{font:700 7px 'DM Mono';color:var(--sport)}.tools select{min-width:220px;padding:0 11px;font:700 8px 'DM Mono'}.league-groups{display:grid;gap:14px}.league-groups>article{border:1px solid var(--line)}.league-groups>article>header{height:52px;padding:0 15px;display:flex;align-items:center;justify-content:space-between;background:var(--contrast);color:var(--on-contrast);font:700 8px 'DM Mono'}.league-groups>article>header span{color:var(--sport)}.league-groups>article>div{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}.league-groups a{min-height:245px;padding:20px;display:flex;flex-direction:column;background:var(--surface);color:var(--text);text-decoration:none}.league-groups a small{margin-top:16px;font:700 7px 'DM Mono';color:var(--sport)}.league-groups h2{margin:auto 0 6px;font-size:23px}.league-groups p{margin:0;color:var(--muted);font-size:9px}.league-groups a>span{display:flex;align-items:center;gap:7px;margin-top:15px;font:700 7px 'DM Mono'}.league-groups a>span svg{width:13px}.games{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.games>a{min-height:220px;padding:15px;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--surface);color:var(--text);text-decoration:none}.games header,.games footer{display:flex;justify-content:space-between;gap:12px;font:700 7px 'DM Mono';color:var(--muted)}.games header span{color:var(--sport)}.match{margin:auto 0;display:grid;grid-template-columns:1fr 20px 1fr;gap:8px;align-items:center}.match>span{display:grid;grid-template-columns:50px 1fr auto;align-items:center;gap:8px}.match b{font-size:10px}.match em{font:800 17px 'DM Mono';font-style:normal}.match>i{text-align:center;font:700 8px 'DM Mono';font-style:normal;color:var(--muted)}.games footer{padding-top:12px;border-top:1px solid var(--line)}.games footer strong{color:var(--sport);text-align:right}.entities{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}.entities>a{min-width:0;min-height:310px;padding:19px;display:flex;flex-direction:column;background:var(--surface);color:var(--text);text-decoration:none}.entities>a>small{margin-top:16px;font:700 7px 'DM Mono';color:var(--sport)}.entities h2{margin:auto 0 6px;font-size:21px}.entities p{margin:0;color:var(--muted);font-size:9px}.entities footer{display:flex;justify-content:space-between;align-items:center;margin-top:17px;padding-top:11px;border-top:1px solid var(--line);font:700 7px 'DM Mono';color:var(--muted)}.portrait{height:145px;margin:-19px -19px 0;display:grid;place-items:center;overflow:hidden;background:var(--raised)}.portrait img{width:100%;height:100%;object-fit:contain;object-position:center bottom}.empty{min-height:360px;display:grid;place-items:center;align-content:center;text-align:center;gap:9px;border:1px solid var(--line)}.empty svg{color:var(--sport)}.empty p{max-width:500px;margin:0;color:var(--muted);font-size:9px}.more{display:block;margin:25px auto;padding:12px 16px;border:1px solid var(--line);background:var(--contrast);color:var(--on-contrast);font:700 8px 'DM Mono'}.integrity{display:grid;grid-template-columns:25px 1fr auto;gap:13px;margin-top:15px;padding:17px;border:1px solid var(--line)}.integrity svg{color:var(--sport)}.integrity b{font-size:10px}.integrity p{margin:4px 0 0;color:var(--muted);font-size:8px}.integrity>span{font:600 7px 'DM Mono';color:var(--muted)}@media(max-width:1050px){.directory-head{grid-template-columns:1fr}.directory-head p{max-width:650px}.directory-head>b{display:none}.entities{grid-template-columns:repeat(3,1fr)}}@media(max-width:760px){.tools{display:grid}.tools select{width:100%}.league-groups>article>div{grid-template-columns:repeat(2,1fr)}.games{grid-template-columns:1fr}.entities{grid-template-columns:repeat(2,1fr)}.integrity{grid-template-columns:25px 1fr}.integrity>span{grid-column:2}}@media(max-width:480px){.league-groups>article>div{grid-template-columns:1fr}.entities{grid-template-columns:1fr 1fr}.entities>a{min-height:260px;padding:13px}.portrait{height:120px;margin:-13px -13px 0}.entities h2{font-size:15px}.match>span{grid-template-columns:35px 1fr}.match>span em{display:none}}</style>
+<template>
+  <div class="directory" :style="{ '--sport': active.accent }">
+    <section class="directory-head">
+      <div>
+        <span class="eyebrow"
+          >{{ sportLabel(sport) }} / {{ labels[type].toUpperCase() }}</span
+        >
+        <h1>{{ labels[type] }}<i>.</i></h1>
+      </div>
+      <p>
+        {{
+          type === "leagues"
+            ? "Enter a supported competition, then move into its teams, fixtures, analytics and builder."
+            : `A source-backed ${labels[type].toLowerCase()} index with navigable identities and explicit competition context.`
+        }}
+      </p>
+      <b
+        >{{ active.numeral }}/{{
+          type === "leagues"
+            ? "00"
+            : type === "games"
+              ? "01"
+              : type === "teams"
+                ? "02"
+                : "03"
+        }}</b
+      >
+    </section>
+    <section class="tools">
+      <label
+        ><Search /><input
+          v-model="query"
+          :placeholder="`Search ${labels[type].toLowerCase()}`"
+        /><span>{{ items.length }} RESULTS</span></label
+      ><CustomSelect
+        v-if="type !== 'leagues'"
+        v-model="competition"
+        :options="competitionOptions"
+        label="Competition"
+        searchable
+      /><CustomSelect
+        v-if="sport === 'esports' && type !== 'leagues'"
+        v-model="discipline"
+        :options="disciplineOptions"
+        label="Discipline"
+      />
+    </section>
+    <LoadingState
+      v-if="loading"
+      :label="`Loading ${labels[type].toLowerCase()}`"
+      detail="Synchronizing source-backed identities and competition context."
+    /><LoadError v-else-if="error" :message="error" @retry="load" />
+    <template v-else
+      ><section v-if="type === 'leagues'" class="league-groups">
+        <article v-for="group in groups" :key="group[0]">
+          <header>
+            <span>{{ group[0] }}</span
+            ><b>{{ group[1].length }}</b>
+          </header>
+          <div>
+            <RouterLink
+              v-for="row in group[1]"
+              :key="row.id"
+              :to="
+                entityRoute(sport, 'leagues', row, {
+                  discipline: row.discipline,
+                })
+              "
+              ><SportIdentity :identity="row" :size="66" square /><small
+                >{{ row.code }} · {{ row.country }}</small
+              >
+              <h2>{{ row.name }}</h2>
+              <p v-if="row.matchCount">
+                {{ row.matchCount }} captured matches ·
+                {{
+                  row.nextMatchAt ? "upcoming activity" : "historical coverage"
+                }}
+              </p>
+              <p v-else>{{ row.group }} workspace</p>
+              <span>OPEN COMPETITION <ArrowRight /></span
+            ></RouterLink>
+          </div>
+        </article>
+      </section>
+      <section v-else-if="type === 'games'" class="games">
+        <RouterLink
+          v-for="row in visible"
+          :key="row.id"
+          :to="
+            entityRoute(sport, 'games', row, {
+              competition: row.competitionId,
+              discipline: row.competitionId,
+            })
+          "
+          ><header>
+            <span>{{ row.competitionCode }} · {{ row.round }}</span
+            ><b>{{ row.date }} · {{ row.time }}</b>
+          </header>
+          <div class="match">
+            <span
+              ><SportIdentity :identity="row.away" :size="46" /><b>{{
+                row.away?.name
+              }}</b
+              ><em>{{ row.away?.score ?? "—" }}</em></span
+            ><i>@</i
+            ><span
+              ><SportIdentity :identity="row.home" :size="46" /><b>{{
+                row.home?.name
+              }}</b
+              ><em>{{ row.home?.score ?? "—" }}</em></span
+            >
+          </div>
+          <footer>
+            <span>{{ row.status }} · {{ row.venue }}</span
+            ><strong v-if="gamePrediction(row)"
+              >{{ gamePrediction(row).label }} ·
+              {{ probability(gamePrediction(row).probability) }}</strong
+            ><strong v-else>FORECAST NOT ATTACHED</strong>
+          </footer></RouterLink
+        >
+      </section>
+      <section v-else-if="type === 'teams'" class="entities teams">
+        <RouterLink
+          v-for="row in visible"
+          :key="row.id"
+          :to="
+            entityRoute(sport, 'teams', row, {
+              competition: row.competitionId,
+              discipline: row.competitionId,
+            })
+          "
+          ><SportIdentity :identity="row" :size="86" square /><small>{{
+            row.competition || row.country
+          }}</small>
+          <h2>{{ row.name }}</h2>
+          <p>{{ row.venue }}</p>
+          <footer>
+            <span>{{
+              row.statistics?.worldRank
+                ? `WORLD #${row.statistics.worldRank}`
+                : row.formed
+                  ? `EST. ${row.formed}`
+                  : "TEAM PROFILE"
+            }}</span
+            ><b>{{ record(row) }}</b>
+          </footer></RouterLink
+        >
+      </section>
+      <section v-else class="entities players">
+        <RouterLink
+          v-for="row in visible"
+          :key="row.id"
+          :to="
+            entityRoute(sport, 'players', row, {
+              team: row.teamId,
+              competition: competition,
+              discipline: row.competitionId,
+            })
+          "
+          ><div class="portrait">
+            <img
+              v-if="row.image"
+              :src="row.image"
+              :alt="row.name"
+            /><SportIdentity v-else :identity="row" :size="90" square />
+          </div>
+          <small>{{ row.team }}</small>
+          <h2>{{ row.name }}</h2>
+          <p>{{ row.position }} · {{ row.nationality }}</p>
+          <footer>
+            <span>{{
+              row.statistics?.pointsPerGame != null
+                ? `${row.statistics.pointsPerGame.toFixed(1)} PPG`
+                : row.statistics?.rating
+                  ? `RATING ${row.statistics.rating}`
+                  : "PLAYER PROFILE"
+            }}</span
+            ><ArrowRight /></footer
+        ></RouterLink>
+      </section>
+      <div v-if="!items.length" class="empty">
+        <component :is="Icon" /><b
+          >No matching {{ labels[type].toLowerCase() }}</b
+        >
+        <p>
+          Change the competition or search filter. NINTH does not add
+          unsupported identities.
+        </p>
+      </div>
+      <button
+        v-if="visible.length < items.length"
+        class="more"
+        @click="limit += 72"
+      >
+        SHOW 72 MORE · {{ items.length - visible.length }} REMAINING
+      </button>
+      <section class="integrity">
+        <Database />
+        <div>
+          <b>{{ payload?.coverage }}</b>
+          <p>{{ payload?.warning }}</p>
+        </div>
+        <span>{{ payload?.source }}</span>
+      </section>
+    </template>
+  </div>
+</template>
+<style scoped>
+.directory {
+  padding-bottom: 70px;
+}
+.directory-head {
+  min-height: 350px;
+  display: grid;
+  grid-template-columns: 1fr 430px 90px;
+  align-items: end;
+  gap: 35px;
+  padding: 55px 0 40px;
+  border-bottom: 1px solid var(--line);
+}
+.directory-head h1 {
+  margin: 14px 0 0;
+  font-size: clamp(68px, 9.5vw, 140px);
+  line-height: 0.78;
+  letter-spacing: -0.09em;
+}
+.directory-head h1 i {
+  font-style: normal;
+  color: var(--sport);
+}
+.directory-head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.directory-head > b {
+  align-self: start;
+  justify-self: end;
+  font: 700 21px "DM Mono";
+  color: var(--sport);
+}
+.tools {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  padding: 23px 0;
+}
+.tools > label {
+  flex: 1 1 300px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+.tools label svg {
+  width: 16px;
+}
+.tools input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+}
+.tools label span {
+  font: 700 9px "DM Mono";
+  color: var(--sport);
+}
+.tools :deep(.select-label) {
+  color: var(--muted);
+}
+.tools :deep(.custom-select) {
+  flex: 0 1 300px;
+  width: min(300px, 30vw);
+}
+.league-groups {
+  display: grid;
+  gap: 14px;
+}
+.league-groups > article {
+  border: 1px solid var(--line);
+}
+.league-groups > article > header {
+  height: 52px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--contrast);
+  color: var(--on-contrast);
+  font: 700 8px "DM Mono";
+}
+.league-groups > article > header span {
+  color: var(--sport);
+}
+.league-groups > article > div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+}
+.league-groups a {
+  min-height: 245px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+.league-groups a small {
+  margin-top: 16px;
+  font: 700 7px "DM Mono";
+  color: var(--sport);
+}
+.league-groups h2 {
+  margin: auto 0 6px;
+  font-size: 23px;
+}
+.league-groups p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+.league-groups a > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 15px;
+  font: 700 7px "DM Mono";
+}
+.league-groups a > span svg {
+  width: 13px;
+}
+.games {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.games > a {
+  min-height: 220px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+.games header,
+.games footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font: 700 7px "DM Mono";
+  color: var(--muted);
+}
+.games header span {
+  color: var(--sport);
+}
+.match {
+  margin: auto 0;
+  display: grid;
+  grid-template-columns: 1fr 20px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+.match > span {
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+.match b {
+  font-size: 10px;
+}
+.match em {
+  font: 800 17px "DM Mono";
+  font-style: normal;
+}
+.match > i {
+  text-align: center;
+  font: 700 8px "DM Mono";
+  font-style: normal;
+  color: var(--muted);
+}
+.games footer {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.games footer strong {
+  color: var(--sport);
+  text-align: right;
+}
+.entities {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.entities > a {
+  min-width: 0;
+  min-height: 310px;
+  padding: 19px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+.entities > a > small {
+  margin-top: 16px;
+  font: 700 7px "DM Mono";
+  color: var(--sport);
+}
+.entities h2 {
+  margin: auto 0 6px;
+  font-size: 21px;
+}
+.entities p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+.entities footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 17px;
+  padding-top: 11px;
+  border-top: 1px solid var(--line);
+  font: 700 7px "DM Mono";
+  color: var(--muted);
+}
+.portrait {
+  height: 145px;
+  margin: -19px -19px 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--raised);
+}
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+.empty {
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  gap: 9px;
+  border: 1px solid var(--line);
+}
+.empty svg {
+  color: var(--sport);
+}
+.empty p {
+  max-width: 500px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+.more {
+  display: block;
+  margin: 25px auto;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  background: var(--contrast);
+  color: var(--on-contrast);
+  font: 700 8px "DM Mono";
+}
+.integrity {
+  display: grid;
+  grid-template-columns: 25px 1fr auto;
+  gap: 13px;
+  margin-top: 15px;
+  padding: 17px;
+  border: 1px solid var(--line);
+}
+.integrity svg {
+  color: var(--sport);
+}
+.integrity b {
+  font-size: 10px;
+}
+.integrity p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 8px;
+}
+.integrity > span {
+  font: 600 7px "DM Mono";
+  color: var(--muted);
+}
+@media (max-width: 1050px) {
+  .directory-head {
+    grid-template-columns: 1fr;
+  }
+  .directory-head p {
+    max-width: 650px;
+  }
+  .directory-head > b {
+    display: none;
+  }
+  .entities {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .tools {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .tools :deep(.custom-select) {
+    width: 100%;
+  }
+  .league-groups > article > div {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .games {
+    grid-template-columns: 1fr;
+  }
+  .entities {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .integrity {
+    grid-template-columns: 25px 1fr;
+  }
+  .integrity > span {
+    grid-column: 2;
+  }
+}
+@media (max-width: 480px) {
+  .league-groups > article > div {
+    grid-template-columns: 1fr;
+  }
+  .entities {
+    grid-template-columns: 1fr 1fr;
+  }
+  .entities > a {
+    min-height: 260px;
+    padding: 13px;
+  }
+  .portrait {
+    height: 120px;
+    margin: -13px -13px 0;
+  }
+  .entities h2 {
+    font-size: 15px;
+  }
+  .match > span {
+    grid-template-columns: 35px 1fr;
+  }
+  .match > span em {
+    display: none;
+  }
+}
+</style>

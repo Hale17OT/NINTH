@@ -1,33 +1,595 @@
 <script setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { Check, KeyRound, Laptop, ShieldCheck, UserRound } from 'lucide-vue-next'
-import { useRoute, useRouter } from 'vue-router'
-import { api } from '../../services/api'
-import { useAuthStore } from '../../features/auth/stores/auth'
+import { computed, onMounted, reactive, ref, watch } from "vue";
+import {
+  Check,
+  KeyRound,
+  Laptop,
+  ShieldCheck,
+  UserRound,
+} from "lucide-vue-next";
+import { useRoute, useRouter } from "vue-router";
+import { api } from "../../services/api";
+import { useAuthStore } from "../../features/auth/stores/auth";
+import CustomSelect from "../../components/ui/CustomSelect.vue";
 
-const auth=useAuthStore(),route=useRoute(),router=useRouter(),loading=ref(true),error=ref(''),notice=ref(''),account=ref(null),sessions=ref([])
-const tabs=['profile','security','preferences'],active=ref(tabs.includes(String(route.query.panel))?String(route.query.panel):'profile')
-const profile=reactive({displayName:''}),password=reactive({currentPassword:'',password:'',passwordConfirmation:''}),preferences=reactive({preferredSport:null,preferredLeague:null,oddsFormat:'DECIMAL',timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,notificationPreferences:{security:true}})
-const hasPassword=computed(()=>account.value?.authenticationMethods?.some(item=>item.provider==='PASSWORD'))
-watch(active,value=>router.replace({query:{...route.query,panel:value==='profile'?undefined:value}}))
-const load=async()=>{loading.value=true;error.value='';try{const [details,sessionData]=await Promise.all([api.account(),api.accountSessions()]);account.value=details;sessions.value=sessionData.sessions;profile.displayName=details.user.displayName;Object.assign(preferences,details.preferences||{})}catch(failure){error.value=failure.message}finally{loading.value=false}}
-const saveProfile=async()=>{notice.value='';error.value='';try{const result=await api.updateProfile(profile);auth.setUser(result.user);account.value.user=result.user;notice.value='Profile updated.'}catch(failure){error.value=failure.message}}
-const savePreferences=async()=>{notice.value='';error.value='';try{const result=await api.updatePreferences(preferences);Object.assign(preferences,result.preferences);notice.value='Preferences saved.'}catch(failure){error.value=failure.message}}
-const changePassword=async()=>{notice.value='';error.value='';try{const result=await api.changePassword(password);notice.value=result.message;Object.assign(password,{currentPassword:'',password:'',passwordConfirmation:''})}catch(failure){error.value=failure.message}}
-const revoke=async session=>{try{const result=await api.revokeSession(session.id);if(result.current){auth.setUser(null);router.push('/auth/sign-in')}else sessions.value=sessions.value.filter(item=>item.id!==session.id)}catch(failure){error.value=failure.message}}
-onMounted(load)
+const sportOptions = [
+  { value: null, label: "No default" },
+  { value: "baseball", label: "Baseball" },
+  { value: "football", label: "Football" },
+  { value: "american-football", label: "American Football" },
+  { value: "basketball", label: "Basketball" },
+  { value: "esports", label: "Esports" },
+];
+const oddsFormatOptions = [
+  { value: "DECIMAL", label: "Decimal" },
+  { value: "AMERICAN", label: "American" },
+  { value: "FRACTIONAL", label: "Fractional" },
+];
+
+const auth = useAuthStore(),
+  route = useRoute(),
+  router = useRouter(),
+  loading = ref(true),
+  error = ref(""),
+  notice = ref(""),
+  account = ref(null),
+  sessions = ref([]);
+const tabs = ["profile", "security", "preferences"],
+  active = ref(
+    tabs.includes(String(route.query.panel))
+      ? String(route.query.panel)
+      : "profile",
+  );
+const profile = reactive({ displayName: "" }),
+  password = reactive({
+    currentPassword: "",
+    password: "",
+    passwordConfirmation: "",
+  }),
+  preferences = reactive({
+    preferredSport: null,
+    preferredLeague: null,
+    oddsFormat: "DECIMAL",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    notificationPreferences: { security: true },
+  });
+const hasPassword = computed(() =>
+  account.value?.authenticationMethods?.some(
+    (item) => item.provider === "PASSWORD",
+  ),
+);
+watch(active, (value) =>
+  router.replace({
+    query: { ...route.query, panel: value === "profile" ? undefined : value },
+  }),
+);
+const load = async () => {
+  loading.value = true;
+  error.value = "";
+  try {
+    const [details, sessionData] = await Promise.all([
+      api.account(),
+      api.accountSessions(),
+    ]);
+    account.value = details;
+    sessions.value = sessionData.sessions;
+    profile.displayName = details.user.displayName;
+    Object.assign(preferences, details.preferences || {});
+  } catch (failure) {
+    error.value = failure.message;
+  } finally {
+    loading.value = false;
+  }
+};
+const saveProfile = async () => {
+  notice.value = "";
+  error.value = "";
+  try {
+    const result = await api.updateProfile(profile);
+    auth.setUser(result.user);
+    account.value.user = result.user;
+    notice.value = "Profile updated.";
+  } catch (failure) {
+    error.value = failure.message;
+  }
+};
+const savePreferences = async () => {
+  notice.value = "";
+  error.value = "";
+  try {
+    const result = await api.updatePreferences(preferences);
+    Object.assign(preferences, result.preferences);
+    notice.value = "Preferences saved.";
+  } catch (failure) {
+    error.value = failure.message;
+  }
+};
+const changePassword = async () => {
+  notice.value = "";
+  error.value = "";
+  try {
+    const result = await api.changePassword(password);
+    notice.value = result.message;
+    Object.assign(password, {
+      currentPassword: "",
+      password: "",
+      passwordConfirmation: "",
+    });
+  } catch (failure) {
+    error.value = failure.message;
+  }
+};
+const revoke = async (session) => {
+  try {
+    const result = await api.revokeSession(session.id);
+    if (result.current) {
+      auth.setUser(null);
+      router.push("/auth/sign-in");
+    } else
+      sessions.value = sessions.value.filter((item) => item.id !== session.id);
+  } catch (failure) {
+    error.value = failure.message;
+  }
+};
+onMounted(load);
 </script>
-<template><div class="account-page">
-  <header class="account-hero"><div><span class="eyebrow">NINTH / PRIVATE WORKSPACE</span><h1>Account control.</h1><p>Identity, session security and analytical defaults—owned by you and isolated at the API.</p></div><aside><span v-if="auth.user?.avatarUrl"><img :src="auth.user.avatarUrl" alt=""></span><span v-else>{{auth.initials}}</span><div><b>{{auth.user?.displayName}}</b><small>{{auth.user?.email}}</small><em><ShieldCheck/> {{auth.user?.emailVerified?'VERIFIED':'VERIFICATION PENDING'}}</em></div></aside></header>
-  <nav class="account-tabs" aria-label="Account sections"><button v-for="tab in tabs" :key="tab" :class="{active:active===tab}" @click="active=tab">{{tab}}</button></nav>
-  <p v-if="error" class="account-message error">{{error}}</p><p v-if="notice" class="account-message success"><Check/>{{notice}}</p><div v-if="loading" class="account-loading">LOADING SECURE ACCOUNT…</div>
-  <section v-else-if="account" class="account-workspace">
-    <form v-if="active==='profile'" class="account-panel" @submit.prevent="saveProfile"><header><UserRound/><div><span>PROFILE</span><h2>Public identity</h2></div></header><label><span>Display name</span><input v-model="profile.displayName" autocomplete="name"></label><label><span>Email</span><input :value="account.user.email" disabled><small>Email changes require a separate verification flow.</small></label><div class="provider-list"><span>CONNECTED METHODS</span><b v-for="method in account.authenticationMethods" :key="method.provider">{{method.provider}} · {{new Date(method.connectedAt).toLocaleDateString()}}</b></div><button class="save-button">Save profile</button></form>
-    <div v-else-if="active==='security'" class="security-grid"><form v-if="hasPassword" class="account-panel" @submit.prevent="changePassword"><header><KeyRound/><div><span>SECURITY</span><h2>Change password</h2></div></header><label><span>Current password</span><input v-model="password.currentPassword" type="password" autocomplete="current-password" required></label><label><span>New password</span><input v-model="password.password" type="password" autocomplete="new-password" minlength="10" required></label><label><span>Confirm new password</span><input v-model="password.passwordConfirmation" type="password" autocomplete="new-password" required></label><button class="save-button">Update password</button></form><article v-else class="account-panel"><header><KeyRound/><div><span>SECURITY</span><h2>Google protected</h2></div></header><p>This account currently uses Google Sign-In. Password creation can be added as a connected method later.</p></article>
-      <article class="account-panel sessions"><header><Laptop/><div><span>ACTIVE ACCESS</span><h2>Sessions</h2></div></header><div v-for="session in sessions" :key="session.id" class="session-row"><div><b>{{session.current?'This browser':'Other session'}}</b><small>{{session.userAgent||'Unknown browser'}}</small><em>Active {{new Date(session.lastActiveAt).toLocaleString()}}</em></div><button type="button" @click="revoke(session)">{{session.current?'Sign out':'Revoke'}}</button></div></article></div>
-    <form v-else class="account-panel" @submit.prevent="savePreferences"><header><ShieldCheck/><div><span>DEFAULTS</span><h2>Analytical preferences</h2></div></header><div class="field-pair"><label><span>Preferred sport</span><select v-model="preferences.preferredSport"><option :value="null">No default</option><option value="baseball">Baseball</option><option value="football">Football</option><option value="american-football">American Football</option><option value="basketball">Basketball</option><option value="esports">Esports</option></select></label><label><span>Odds format</span><select v-model="preferences.oddsFormat"><option value="DECIMAL">Decimal</option><option value="AMERICAN">American</option><option value="FRACTIONAL">Fractional</option></select></label></div><label><span>Timezone</span><input v-model="preferences.timezone" autocomplete="off"></label><button class="save-button">Save preferences</button></form>
-  </section>
-</div></template>
+<template>
+  <div class="account-page">
+    <header class="account-hero">
+      <div>
+        <span class="eyebrow">NINTH / PRIVATE WORKSPACE</span>
+        <h1>Account control.</h1>
+        <p>
+          Identity, session security and analytical defaults—owned by you and
+          isolated at the API.
+        </p>
+      </div>
+      <aside>
+        <span v-if="auth.user?.avatarUrl"
+          ><img :src="auth.user.avatarUrl" alt="" /></span
+        ><span v-else>{{ auth.initials }}</span>
+        <div>
+          <b>{{ auth.user?.displayName }}</b
+          ><small>{{ auth.user?.email }}</small
+          ><em
+            ><ShieldCheck />
+            {{
+              auth.user?.emailVerified ? "VERIFIED" : "VERIFICATION PENDING"
+            }}</em
+          >
+        </div>
+      </aside>
+    </header>
+    <nav class="account-tabs" aria-label="Account sections">
+      <button
+        v-for="tab in tabs"
+        :key="tab"
+        :class="{ active: active === tab }"
+        @click="active = tab"
+      >
+        {{ tab }}
+      </button>
+    </nav>
+    <p v-if="error" class="account-message error">{{ error }}</p>
+    <p v-if="notice" class="account-message success"><Check />{{ notice }}</p>
+    <div v-if="loading" class="account-loading">LOADING SECURE ACCOUNT…</div>
+    <section v-else-if="account" class="account-workspace">
+      <form
+        v-if="active === 'profile'"
+        class="account-panel"
+        @submit.prevent="saveProfile"
+      >
+        <header>
+          <UserRound />
+          <div>
+            <span>PROFILE</span>
+            <h2>Public identity</h2>
+          </div>
+        </header>
+        <label
+          ><span>Display name</span
+          ><input v-model="profile.displayName" autocomplete="name" /></label
+        ><label
+          ><span>Email</span
+          ><input :value="account.user.email" disabled /><small
+            >Email changes require a separate verification flow.</small
+          ></label
+        >
+        <div class="provider-list">
+          <span>CONNECTED METHODS</span
+          ><b
+            v-for="method in account.authenticationMethods"
+            :key="method.provider"
+            >{{ method.provider }} ·
+            {{ new Date(method.connectedAt).toLocaleDateString() }}</b
+          >
+        </div>
+        <button class="save-button">Save profile</button>
+      </form>
+      <div v-else-if="active === 'security'" class="security-grid">
+        <form
+          v-if="hasPassword"
+          class="account-panel"
+          @submit.prevent="changePassword"
+        >
+          <header>
+            <KeyRound />
+            <div>
+              <span>SECURITY</span>
+              <h2>Change password</h2>
+            </div>
+          </header>
+          <label
+            ><span>Current password</span
+            ><input
+              v-model="password.currentPassword"
+              type="password"
+              autocomplete="current-password"
+              required /></label
+          ><label
+            ><span>New password</span
+            ><input
+              v-model="password.password"
+              type="password"
+              autocomplete="new-password"
+              minlength="10"
+              required /></label
+          ><label
+            ><span>Confirm new password</span
+            ><input
+              v-model="password.passwordConfirmation"
+              type="password"
+              autocomplete="new-password"
+              required /></label
+          ><button class="save-button">Update password</button>
+        </form>
+        <article v-else class="account-panel">
+          <header>
+            <KeyRound />
+            <div>
+              <span>SECURITY</span>
+              <h2>Google protected</h2>
+            </div>
+          </header>
+          <p>
+            This account currently uses Google Sign-In. Password creation can be
+            added as a connected method later.
+          </p>
+        </article>
+        <article class="account-panel sessions">
+          <header>
+            <Laptop />
+            <div>
+              <span>ACTIVE ACCESS</span>
+              <h2>Sessions</h2>
+            </div>
+          </header>
+          <div
+            v-for="session in sessions"
+            :key="session.id"
+            class="session-row"
+          >
+            <div>
+              <b>{{ session.current ? "This browser" : "Other session" }}</b
+              ><small>{{ session.userAgent || "Unknown browser" }}</small
+              ><em
+                >Active
+                {{ new Date(session.lastActiveAt).toLocaleString() }}</em
+              >
+            </div>
+            <button type="button" @click="revoke(session)">
+              {{ session.current ? "Sign out" : "Revoke" }}
+            </button>
+          </div>
+        </article>
+      </div>
+      <form v-else class="account-panel" @submit.prevent="savePreferences">
+        <header>
+          <ShieldCheck />
+          <div>
+            <span>DEFAULTS</span>
+            <h2>Analytical preferences</h2>
+          </div>
+        </header>
+        <div class="field-pair">
+          <CustomSelect v-model="preferences.preferredSport" label="Preferred sport" :options="sportOptions" />
+          <CustomSelect v-model="preferences.oddsFormat" label="Odds format" :options="oddsFormatOptions" />
+        </div>
+        <label
+          ><span>Timezone</span
+          ><input v-model="preferences.timezone" autocomplete="off" /></label
+        ><button class="save-button">Save preferences</button>
+      </form>
+    </section>
+  </div>
+</template>
 <style scoped>
-.account-page{padding-top:26px}.account-hero{min-height:360px;padding:48px;display:grid;grid-template-columns:1fr 360px;align-items:end;gap:48px;border:1px solid var(--line);background:radial-gradient(circle at 82% 20%,rgba(214,255,97,.12),transparent 28%),var(--surface)}.account-hero h1{margin:18px 0 10px;font-size:clamp(4rem,8vw,7.5rem);letter-spacing:-.075em;line-height:.85}.account-hero p{max-width:650px;color:var(--muted);font-size:15px;line-height:1.6}.account-hero aside{padding:22px;display:flex;align-items:center;gap:15px;border:1px solid var(--line);background:var(--surface-2)}.account-hero aside>span{width:66px;height:66px;display:grid;place-items:center;border-radius:50%;overflow:hidden;background:var(--accent);color:#10130f;font:700 18px 'DM Mono'}.account-hero aside img{width:100%;height:100%;object-fit:cover}.account-hero aside div{min-width:0;display:grid;gap:5px}.account-hero aside b{font-size:17px}.account-hero aside small{overflow:hidden;color:var(--muted);font:500 11px 'DM Mono';text-overflow:ellipsis}.account-hero aside em{display:flex;align-items:center;gap:6px;color:var(--accent);font:600 9px 'DM Mono';font-style:normal}.account-hero aside svg{width:14px}.account-tabs{height:66px;display:flex;align-items:stretch;border:1px solid var(--line);border-top:0;background:var(--surface)}.account-tabs button{min-width:140px;padding:0 24px;border:0;border-right:1px solid var(--line);background:transparent;color:var(--muted);font:600 11px 'DM Mono';letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.account-tabs button.active{background:var(--contrast);color:var(--accent)}.account-workspace{padding:38px 0;display:grid;grid-template-columns:minmax(0,760px);gap:14px}.account-panel{padding:30px;display:grid;gap:20px;border:1px solid var(--line);background:var(--surface)}.account-panel header{display:flex;align-items:center;gap:13px;padding-bottom:20px;border-bottom:1px solid var(--line)}.account-panel header>svg{width:24px;color:var(--accent)}.account-panel header div{display:grid;gap:4px}.account-panel header span,.account-panel>label>span,.provider-list>span{color:var(--muted);font:600 10px 'DM Mono';letter-spacing:.1em}.account-panel h2{margin:0;font-size:25px;letter-spacing:-.04em}.account-panel label{display:grid;gap:8px}.account-panel input,.account-panel select{width:100%;min-height:50px;padding:0 14px;border:1px solid var(--line);background:var(--paper);color:var(--text);font-size:13px}.account-panel input:focus,.account-panel select:focus{border-color:var(--accent);outline:0}.account-panel input:disabled{opacity:.6}.account-panel label small{color:var(--muted);font-size:11px}.provider-list{display:grid;gap:8px}.provider-list b{padding:11px;border:1px solid var(--line);font:600 11px 'DM Mono'}.save-button{min-height:50px;padding:0 18px;justify-self:start;border:0;background:var(--accent);color:#10130f;font-weight:800;cursor:pointer}.security-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.sessions{align-self:start}.session-row{padding:14px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line)}.session-row div{min-width:0;display:grid;gap:4px}.session-row b{font-size:13px}.session-row small,.session-row em{overflow:hidden;color:var(--muted);font:500 10px 'DM Mono';font-style:normal;text-overflow:ellipsis}.session-row button{min-height:38px;padding:0 10px;border:1px solid var(--line);background:transparent;color:var(--red);font-size:11px}.field-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.account-message{max-width:760px;margin:20px 0 0;padding:13px;border:1px solid var(--line)}.account-message.success{display:flex;gap:8px;color:var(--green)}.account-message svg{width:17px}.account-message.error{color:var(--red)}.account-loading{padding:40px 0;color:var(--muted);font:600 11px 'DM Mono'}@media(max-width:900px){.account-hero{grid-template-columns:1fr;padding:32px}.account-hero aside{max-width:420px}.security-grid{grid-template-columns:1fr}}@media(max-width:600px){.account-hero{min-height:0;padding:28px 20px}.account-hero h1{font-size:3.5rem}.account-tabs{overflow:auto}.account-tabs button{min-width:115px;padding:0 14px}.account-panel{padding:22px}.field-pair{grid-template-columns:1fr}}
+.account-page {
+  padding-top: 26px;
+}
+.account-hero {
+  min-height: 360px;
+  padding: 48px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  align-items: end;
+  gap: 48px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(
+      circle at 82% 20%,
+      rgba(214, 255, 97, 0.12),
+      transparent 28%
+    ),
+    var(--surface);
+}
+.account-hero h1 {
+  margin: 18px 0 10px;
+  font-size: clamp(4rem, 8vw, 7.5rem);
+  letter-spacing: -0.075em;
+  line-height: 0.85;
+}
+.account-hero p {
+  max-width: 650px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.account-hero aside {
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.account-hero aside > span {
+  width: 66px;
+  height: 66px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--accent);
+  color: #10130f;
+  font: 700 18px "DM Mono";
+}
+.account-hero aside img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.account-hero aside div {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+.account-hero aside b {
+  font-size: 17px;
+}
+.account-hero aside small {
+  overflow: hidden;
+  color: var(--muted);
+  font: 500 11px "DM Mono";
+  text-overflow: ellipsis;
+}
+.account-hero aside em {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font: 600 9px "DM Mono";
+  font-style: normal;
+}
+.account-hero aside svg {
+  width: 14px;
+}
+.account-tabs {
+  height: 66px;
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--line);
+  border-top: 0;
+  background: var(--surface);
+}
+.account-tabs button {
+  min-width: 140px;
+  padding: 0 24px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font: 600 11px "DM Mono";
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.account-tabs button.active {
+  background: var(--contrast);
+  color: var(--accent);
+}
+.account-workspace {
+  padding: 38px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 760px);
+  gap: 14px;
+}
+.account-panel {
+  padding: 30px;
+  display: grid;
+  gap: 20px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.account-panel header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.account-panel header > svg {
+  width: 24px;
+  color: var(--accent);
+}
+.account-panel header div {
+  display: grid;
+  gap: 4px;
+}
+.account-panel header span,
+.account-panel > label > span,
+.provider-list > span {
+  color: var(--muted);
+  font: 600 10px "DM Mono";
+  letter-spacing: 0.1em;
+}
+.account-panel h2 {
+  margin: 0;
+  font-size: 25px;
+  letter-spacing: -0.04em;
+}
+.account-panel label {
+  display: grid;
+  gap: 8px;
+}
+.account-panel input {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--text);
+  font-size: 13px;
+}
+.account-panel input:focus {
+  border-color: var(--accent);
+  outline: 0;
+}
+.account-panel input:disabled {
+  opacity: 0.6;
+}
+.account-panel label small {
+  color: var(--muted);
+  font-size: 11px;
+}
+.provider-list {
+  display: grid;
+  gap: 8px;
+}
+.provider-list b {
+  padding: 11px;
+  border: 1px solid var(--line);
+  font: 600 11px "DM Mono";
+}
+.save-button {
+  min-height: 50px;
+  padding: 0 18px;
+  justify-self: start;
+  border: 0;
+  background: var(--accent);
+  color: #10130f;
+  font-weight: 800;
+  cursor: pointer;
+}
+.security-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.sessions {
+  align-self: start;
+}
+.session-row {
+  padding: 14px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.session-row div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+.session-row b {
+  font-size: 13px;
+}
+.session-row small,
+.session-row em {
+  overflow: hidden;
+  color: var(--muted);
+  font: 500 10px "DM Mono";
+  font-style: normal;
+  text-overflow: ellipsis;
+}
+.session-row button {
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--red);
+  font-size: 11px;
+}
+.field-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.account-message {
+  max-width: 760px;
+  margin: 20px 0 0;
+  padding: 13px;
+  border: 1px solid var(--line);
+}
+.account-message.success {
+  display: flex;
+  gap: 8px;
+  color: var(--green);
+}
+.account-message svg {
+  width: 17px;
+}
+.account-message.error {
+  color: var(--red);
+}
+.account-loading {
+  padding: 40px 0;
+  color: var(--muted);
+  font: 600 11px "DM Mono";
+}
+@media (max-width: 900px) {
+  .account-hero {
+    grid-template-columns: 1fr;
+    padding: 32px;
+  }
+  .account-hero aside {
+    max-width: 420px;
+  }
+  .security-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .account-hero {
+    min-height: 0;
+    padding: 28px 20px;
+  }
+  .account-hero h1 {
+    font-size: 3.5rem;
+  }
+  .account-tabs {
+    overflow: auto;
+  }
+  .account-tabs button {
+    min-width: 115px;
+    padding: 0 14px;
+  }
+  .account-panel {
+    padding: 22px;
+  }
+  .field-pair {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
