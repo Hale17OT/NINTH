@@ -24,6 +24,7 @@ r.get("/alter-ego", ...requireAuth, wrap(c.alterEgo));
 r.post("/alter-ego/import", requireCsrf, ...requireAuth, wrap(c.importMelbetHistory));
 r.post("/alter-ego/import-batch", requireCsrf, ...requireAuth, wrap(c.importMelbetHistoryBatch));
 r.get("/dashboard", wrap(c.dashboard));
+r.get("/scoreboard", wrap(c.scoreboard));
 r.get("/games/live", wrap(c.games));
 r.get("/games/today", wrap(c.games));
 r.get("/games/completed", wrap(c.games));

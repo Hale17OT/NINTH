@@ -3,6 +3,7 @@ import { weatherProvider } from "./weatherProvider.js";
 import { oddsProvider } from "./oddsProvider.js";
 import { personalHistoryService } from "../modules/saved/personalHistory.service.js";
 import { databaseAvailable, prisma } from "../db/prisma.js";
+import { cache } from "./cache.js";
 
 const aliases = {
   nyy: 147,
@@ -437,127 +438,146 @@ export const dataService = {
     return mlbStatsProvider.recordPlayerPropBuild(payload);
   },
   async dashboard() {
-    const [today, yesterday, teams, projectionBoard] = await Promise.all([
-      providerGames(),
-      providerGames(isoDate(-1), false, false),
-      mlbStatsProvider.teams(),
-      mlbStatsProvider
-        .projectionBoard(isoDate(), 7)
-        .catch(() => ({ games: [] })),
-    ]);
-    const active = today.filter((game) => isLive(game.status)),
-      scheduled = today.filter(
-        (game) => !isLive(game.status) && !isFinal(game.status),
+    return cache.remember("dashboard:v2", 5 * 60_000, async () => {
+      const [today, yesterday, teams, projectionBoard] = await Promise.all([
+        providerGames(),
+        providerGames(isoDate(-1), false, false),
+        mlbStatsProvider.teams(),
+        mlbStatsProvider
+          .projectionBoard(isoDate(), 7)
+          .catch(() => ({ games: [] })),
+      ]);
+      const active = today.filter((game) => isLive(game.status)),
+        scheduled = today.filter(
+          (game) => !isLive(game.status) && !isFinal(game.status),
+        );
+      const finals = [...today, ...yesterday]
+        .filter((game) => isFinal(game.status))
+        .slice(-10)
+        .reverse();
+      const weatherCount = today.filter((game) => game.weatherData).length;
+      const teamById = new Map(teams.map((team) => [String(team.id), team]));
+      const projectionById = new Map(
+        (projectionBoard.games || []).map((game) => [String(game.game_id), game]),
       );
-    const finals = [...today, ...yesterday]
-      .filter((game) => isFinal(game.status))
-      .slice(-10)
-      .reverse();
-    const weatherCount = today.filter((game) => game.weatherData).length;
-    const teamById = new Map(teams.map((team) => [String(team.id), team]));
-    const projectionById = new Map(
-      (projectionBoard.games || []).map((game) => [String(game.game_id), game]),
-    );
-    const normalizedUpcoming = (projectionBoard.games || []).map((game) => ({
-      id: String(game.game_id),
-      gamePk: game.game_id,
-      status: game.status || "Scheduled",
-      inning: String(game.status || "Scheduled").toUpperCase(),
-      time: timeLabel(game.starts_at),
-      gameTime: game.starts_at,
-      stadium: game.venue || "Venue TBD",
-      weather: "Forecast pending",
-      weatherData: null,
-      away: { ...game.away, score: 0 },
-      home: { ...game.home, score: 0 },
-      pitchers: ["TBD", "TBD"],
-      source: "MLB-StatsAPI",
-    }));
-    const candidates = [...active, ...scheduled, ...normalizedUpcoming].filter(
-      (game, index, all) =>
-        all.findIndex((item) => String(item.id) === String(game.id)) === index,
-    );
-    const ratedCandidates = candidates
-      .map((game) => {
-        const awayStanding = teamById.get(String(game.away.id)),
-          homeStanding = teamById.get(String(game.home.id));
-        const awayPct = pct(awayStanding?.pct),
-          homePct = pct(homeStanding?.pct),
-          projection = projectionById.get(String(game.id));
-        const combinedStanding = (awayPct + homePct) / 2;
-        const modelProbability = projection?.recommended_probability || null;
-        const modelSide = projection?.recommended_side || null;
-        const ratedGame = {
-          ...game,
-          away: {
-            ...game.away,
-            name: awayStanding?.name || game.away.name,
-            abbr: awayStanding?.abbr || game.away.abbr,
-            record: awayStanding
-              ? `${awayStanding.wins}-${awayStanding.losses}`
-              : game.away.record,
-          },
-          home: {
-            ...game.home,
-            name: homeStanding?.name || game.home.name,
-            abbr: homeStanding?.abbr || game.home.abbr,
-            record: homeStanding
-              ? `${homeStanding.wins}-${homeStanding.losses}`
-              : game.home.record,
-          },
-          brief: {
-            combinedStanding,
-            combinedStandingLabel: `${Math.round(combinedStanding * 100)}% combined win rate`,
-            modelProbability,
-            modelConfidence: projection?.model_confidence ?? null,
-            modelSide,
-            projectionUpdatedAt: projection?.projection_updated_at || null,
-          },
-        };
-        ratedGame.brief.modelTeam = modelSide ? ratedGame[modelSide] : null;
-        return ratedGame;
-      })
-      .sort(
-        (a, b) =>
-          b.brief.combinedStanding - a.brief.combinedStanding ||
-          (b.brief.modelProbability || 0) - (a.brief.modelProbability || 0),
+      const normalizedUpcoming = (projectionBoard.games || []).map((game) => ({
+        id: String(game.game_id),
+        gamePk: game.game_id,
+        status: game.status || "Scheduled",
+        inning: String(game.status || "Scheduled").toUpperCase(),
+        time: timeLabel(game.starts_at),
+        gameTime: game.starts_at,
+        stadium: game.venue || "Venue TBD",
+        weather: "Forecast pending",
+        weatherData: null,
+        away: { ...game.away, score: 0 },
+        home: { ...game.home, score: 0 },
+        pitchers: ["TBD", "TBD"],
+        source: "MLB-StatsAPI",
+      }));
+      const candidates = [...active, ...scheduled, ...normalizedUpcoming].filter(
+        (game, index, all) =>
+          all.findIndex((item) => String(item.id) === String(game.id)) === index,
       );
-    const featured = ratedCandidates[0] || null;
-    return {
-      live: active,
-      today: scheduled,
-      completed: finals,
-      featured,
-      metrics: [
-        {
-          label: "Games live",
-          value: String(active.length),
-          delta: `${today.length} games today`,
-        },
-        {
-          label: "Scheduled",
-          value: String(scheduled.length),
-          delta: "Official MLB schedule",
-        },
-        {
-          label: "Recent finals",
-          value: String(finals.length),
-          delta: "Latest completed games",
-        },
-        {
-          label: "Forecast coverage",
-          value: `${weatherCount}/${today.length}`,
-          delta: "Open-Meteo game-time weather",
-        },
-      ],
-      standings: [...teams].sort((a, b) => pct(b.pct) - pct(a.pct)).slice(0, 6),
-      provider: { name: "MLB-StatsAPI", status: "live" },
-      oddsStatus: oddsProvider.status(),
-      updatedAt: new Date().toISOString(),
-    };
+      const ratedCandidates = candidates
+        .map((game) => {
+          const awayStanding = teamById.get(String(game.away.id)),
+            homeStanding = teamById.get(String(game.home.id));
+          const awayPct = pct(awayStanding?.pct),
+            homePct = pct(homeStanding?.pct),
+            projection = projectionById.get(String(game.id));
+          const combinedStanding = (awayPct + homePct) / 2;
+          const modelProbability = projection?.recommended_probability || null;
+          const modelSide = projection?.recommended_side || null;
+          const ratedGame = {
+            ...game,
+            away: {
+              ...game.away,
+              name: awayStanding?.name || game.away.name,
+              abbr: awayStanding?.abbr || game.away.abbr,
+              record: awayStanding
+                ? `${awayStanding.wins}-${awayStanding.losses}`
+                : game.away.record,
+            },
+            home: {
+              ...game.home,
+              name: homeStanding?.name || game.home.name,
+              abbr: homeStanding?.abbr || game.home.abbr,
+              record: homeStanding
+                ? `${homeStanding.wins}-${homeStanding.losses}`
+                : game.home.record,
+            },
+            brief: {
+              combinedStanding,
+              combinedStandingLabel: `${Math.round(combinedStanding * 100)}% combined win rate`,
+              modelProbability,
+              modelConfidence: projection?.model_confidence ?? null,
+              modelSide,
+              projectionUpdatedAt: projection?.projection_updated_at || null,
+            },
+          };
+          ratedGame.brief.modelTeam = modelSide ? ratedGame[modelSide] : null;
+          return ratedGame;
+        })
+        .sort(
+          (a, b) =>
+            b.brief.combinedStanding - a.brief.combinedStanding ||
+            (b.brief.modelProbability || 0) - (a.brief.modelProbability || 0),
+        );
+      const featured = ratedCandidates[0] || null;
+      return {
+        live: active,
+        today: scheduled,
+        completed: finals,
+        featured,
+        metrics: [
+          {
+            label: "Games live",
+            value: String(active.length),
+            delta: `${today.length} games today`,
+          },
+          {
+            label: "Scheduled",
+            value: String(scheduled.length),
+            delta: "Official MLB schedule",
+          },
+          {
+            label: "Recent finals",
+            value: String(finals.length),
+            delta: "Latest completed games",
+          },
+          {
+            label: "Forecast coverage",
+            value: `${weatherCount}/${today.length}`,
+            delta: "Open-Meteo game-time weather",
+          },
+        ],
+        standings: [...teams].sort((a, b) => pct(b.pct) - pct(a.pct)).slice(0, 6),
+        provider: { name: "MLB-StatsAPI", status: "live" },
+        oddsStatus: oddsProvider.status(),
+        updatedAt: new Date().toISOString(),
+      };
+    });
+  },
+  async scoreboard(date = isoDate()) {
+    return cache.remember(`scoreboard:${date}`, 45_000, async () => {
+      const games = await providerGames(date, false, false);
+      return {
+        live: games.filter((game) => isLive(game.status)),
+        today: games.filter(
+          (game) => !isLive(game.status) && !isFinal(game.status),
+        ),
+        completed: games
+          .filter((game) => isFinal(game.status))
+          .slice(-4)
+          .reverse(),
+        updatedAt: new Date().toISOString(),
+      };
+    });
   },
   async games(kind, date = isoDate()) {
-    const games = await providerGames(date);
+    const lightweight = kind === "live";
+    const games = await providerGames(date, !lightweight, !lightweight);
     if (kind === "live") return games.filter((game) => isLive(game.status));
     if (kind === "completed")
       return games.filter((game) => isFinal(game.status));

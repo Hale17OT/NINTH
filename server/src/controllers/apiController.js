@@ -2,7 +2,18 @@ import { dataService as data } from "../services/dataService.js";
 import { multiSportProvider } from "../services/multiSportProvider.js";
 
 export const apiController = {
-  dashboard: async (req, res) => res.json(await data.dashboard()),
+  dashboard: async (req, res) => {
+    const dashboard = await data.dashboard();
+    res
+      .set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=60")
+      .json(dashboard);
+  },
+  scoreboard: async (req, res) => {
+    const scoreboard = await data.scoreboard(req.query.date);
+    res
+      .set("Cache-Control", "public, s-maxage=45, stale-while-revalidate=120")
+      .json(scoreboard);
+  },
   model: async (req, res) => res.json(await data.model()),
   modelResults: async (req, res) =>
     res.json(

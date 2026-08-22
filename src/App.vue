@@ -5,24 +5,39 @@ import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion-
 import AppLayout from './components/layout/AppLayout.vue'
 import { useAppStore } from './stores/app'
 import { createSharedPoller } from './services/polling'
+import { PREGAME_REFRESH_MS, scoreboardRefreshMs } from './services/pollingPolicy'
 
 const store = useAppStore()
 const route = useRoute()
 const isBaseball = computed(() => route.meta?.sport === 'baseball')
+const isBaseballHome = computed(() => isBaseball.value && route.path === '/baseball')
 const pageLayout = computed(() => route.meta?.authLayout ? 'div' : AppLayout)
 const reduced = useReducedMotion()
 let dashboardPoller
+let scoreboardPoller
 
 onMounted(() => {
   dashboardPoller = createSharedPoller({
     key: 'dashboard',
-    task: () => isBaseball.value ? store.load(true) : undefined,
-    interval: () => !isBaseball.value ? 0 : store.dashboard?.live?.length ? 10_000 : 300_000,
+    task: () => isBaseballHome.value ? store.load(true) : undefined,
+    interval: () => isBaseballHome.value ? PREGAME_REFRESH_MS : 0,
+  })
+  scoreboardPoller = createSharedPoller({
+    key: 'scoreboard',
+    task: () => isBaseball.value ? store.loadScoreboard(true) : undefined,
+    interval: () => isBaseball.value
+      ? scoreboardRefreshMs(Boolean(store.scoreboard?.live?.length))
+      : 0,
   })
   dashboardPoller.start()
+  scoreboardPoller.start()
 })
-watch(isBaseball, active => { if (active) dashboardPoller?.trigger() })
-onBeforeUnmount(() => dashboardPoller?.stop())
+watch(isBaseballHome, active => { if (active) dashboardPoller?.trigger() })
+watch(isBaseball, active => { if (active) scoreboardPoller?.trigger() })
+onBeforeUnmount(() => {
+  dashboardPoller?.stop()
+  scoreboardPoller?.stop()
+})
 </script>
 
 <template>

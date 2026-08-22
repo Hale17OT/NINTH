@@ -5,6 +5,7 @@ import GameCard from '../components/game/GameCard.vue'
 import LoadingState from '../components/ui/LoadingState.vue'
 import LoadError from '../components/ui/LoadError.vue'
 import { createSharedPoller } from '../services/polling'
+import { LIVE_VIEW_REFRESH_MS } from '../services/pollingPolicy'
 
 const games = ref([])
 const loading = ref(true)
@@ -25,7 +26,7 @@ const load = async () => {
 }
 
 onMounted(() => {
-  poller = createSharedPoller({ key: 'live-center', task: load, interval: 10_000 })
+  poller = createSharedPoller({ key: 'live-center', task: load, interval: LIVE_VIEW_REFRESH_MS })
   poller.start()
 })
 onBeforeUnmount(() => poller?.stop())

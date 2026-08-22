@@ -124,8 +124,8 @@ export const api = {
       })}`,
       { timeoutMs: market === "player_props" ? 60000 : REQUEST_TIMEOUT_MS },
     ),
-  dashboard: (refresh = false) =>
-    request(`/dashboard${refresh ? `?refresh=${Date.now()}` : ""}`),
+  dashboard: () => request("/dashboard"),
+  scoreboard: () => request("/scoreboard"),
   projectionBoard: (startDate, days = 7) =>
     request(
       `/projection-board?start_date=${encodeURIComponent(startDate)}&days=${days}`,

@@ -46,17 +46,18 @@ const nav = computed(() =>
         ],
 );
 const isBaseball = computed(() => activeSport.value?.id === "baseball");
+const tickerBoard = computed(() => store.scoreboard || store.dashboard || {});
 const isNavActive = (path) =>
   route.path === path ||
   (path !== "/" &&
     path !== activeSport.value?.route &&
     route.path.startsWith(`${path}/`));
 const tickerGames = computed(() =>
-  (store.dashboard?.live?.length
-    ? store.dashboard.live
-    : store.dashboard?.today?.length
-      ? store.dashboard.today
-      : store.dashboard?.completed || []
+  (tickerBoard.value.live?.length
+    ? tickerBoard.value.live
+    : tickerBoard.value.today?.length
+      ? tickerBoard.value.today
+      : tickerBoard.value.completed || []
   ).slice(0, 4),
 );
 const quickResults = computed(() =>
@@ -277,8 +278,8 @@ onBeforeUnmount(() => {
 
       <div v-if="isBaseball" class="score-strip">
         <span class="strip-label"
-          ><i :class="{ 'live-dot': store.dashboard?.live?.length }"></i
-          >{{ store.dashboard?.live?.length ? "LIVE MLB" : "TODAY" }}</span
+          ><i :class="{ 'live-dot': tickerBoard.live?.length }"></i
+          >{{ tickerBoard.live?.length ? "LIVE MLB" : "TODAY" }}</span
         ><RouterLink
           v-for="game in tickerGames"
           :key="game.id"

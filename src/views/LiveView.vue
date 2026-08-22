@@ -11,6 +11,7 @@ import ContextBack from '../components/navigation/ContextBack.vue'
 import LoadingState from '../components/ui/LoadingState.vue'
 import LoadError from '../components/ui/LoadError.vue'
 import { createSharedPoller } from '../services/polling'
+import { LIVE_VIEW_REFRESH_MS } from '../services/pollingPolicy'
 const data = ref()
 const refreshing = ref(false)
 const error = ref('')
@@ -45,7 +46,7 @@ const loadActive = async () => {
   if (id) await load()
 }
 onMounted(() => {
-  poller = createSharedPoller({ key: () => `live-game:${activeId.value || route.params.id || 'current'}`, task: loadActive, interval: 10_000 })
+  poller = createSharedPoller({ key: () => `live-game:${activeId.value || route.params.id || 'current'}`, task: loadActive, interval: LIVE_VIEW_REFRESH_MS })
   poller.start()
 })
 onBeforeUnmount(() => poller?.stop())
